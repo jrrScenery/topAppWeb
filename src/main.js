@@ -6,12 +6,9 @@ import './assets/css/common.css'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import localstorage from './utils/localstorage';
-import axios from "axios";
-
+import localstorage from './utils/localstorage'
 
 Vue.config.productionTip = false
-Vue.prototype.$axios = axios;
 Vue.use(ElementUI)
 
 /* eslint-disable no-new */

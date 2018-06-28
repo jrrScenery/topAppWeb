@@ -8,6 +8,7 @@ import eventFeedback from '@/views/home/eventFeedback'
 import eventPeople from '@/views/home/eventPeople'
 import eventReplenish from '@/views/home/eventReplenish'
 import eventEvaluation from '@/views/home/eventEvaluation'
+import eventEvaluationEditor from '@/views/home/eventEvaluationEditor'
 import programList from '@/views/home/programList'
 import programShow from '@/views/home/programShow'
 import approve from '@/views/approve/approve'
@@ -23,33 +24,33 @@ export default new Router({
       path: '/',
       redirect: '/home',
       component: index,
-      name:'idnex',
+      name: 'idnex',
       children: [
         {
-          path:'/home',
-          name:'home',
-          component: home,
+          path: '/home',
+          name: 'home',
+          component: home
         },
         {
-          path:'/approve',
-          name:'approve',
+          path: '/approve',
+          name: 'approve',
           component: approve
         },
         {
-          path:'/workBench',
-          name:'workBench',
+          path: '/workBench',
+          name: 'workBench',
           component: workBench
         },
         {
-          path:'/reportForm',
-          name:'reportForm',
+          path: '/reportForm',
+          name: 'reportForm',
           component: reportForm
         },
         {
-          path:'/mine',
-          name:'mine',
+          path: '/mine',
+          name: 'mine',
           component: mine
-        },
+        }
       ]
     },
     {
@@ -81,6 +82,11 @@ export default new Router({
       path: '/home/eventEvaluation',
       name: 'eventEvaluation',
       component: eventEvaluation
+    },
+    {
+      path: '/home/eventEvaluationEditor',
+      name: 'eventEvaluationEditor',
+      component: eventEvaluationEditor
     },
     {
       path: '/home/programList',

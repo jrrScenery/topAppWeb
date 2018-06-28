@@ -27,22 +27,22 @@ export default {
   name: 'eventEvaluation',
 
   components: {
-    headerLast,
+    headerLast
   },
 
   data () {
-    return{
+    return {
       tableData: [{
         evaluateID: '1277962',
         evaluatetype: '客户评价故障处理服务',
         state: '已评论',
         evaluateNum: '3'
-      },{
+      }, {
         evaluateID: '1277962',
         evaluatetype: '一线评价二线',
         state: '未评论',
         evaluateNum: '3'
-      },{
+      }, {
         evaluateID: '1277962',
         evaluatetype: '南区服务部',
         state: '已评论',
@@ -50,32 +50,29 @@ export default {
       }],
       table_arr: [
         {
-          prop: 'evaluateID'
-          ,label: '评价ID'
-          ,fixed: true
-          ,width: '23%'
-        }
-        ,{
-          prop: 'evaluatetype'
-          ,label: '评价类型'
-          ,width: '45%'
-        }
-        ,{
-          prop: 'state'
-          ,label: '状态'
-          ,width: '20%'
-        }
-        ,{
-          prop: 'evaluateNum'
-          ,label: '评价分值'
-          ,width: '22%'
+          prop: 'evaluateID',
+          label: '评价ID',
+          fixed: true,
+          width: '23%'
+        }, {
+          prop: 'evaluatetype',
+          label: '评价类型',
+          width: '45%'
+        }, {
+          prop: 'state',
+          label: '状态',
+          width: '20%'
+        }, {
+          prop: 'evaluateNum',
+          label: '评价分值',
+          width: '22%'
         }
       ]
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>
@@ -87,4 +84,3 @@ export default {
   .content >>> .el-table td{padding: 0; text-align: center; color: #666666; font-size: 0.13rem;}
   .content >>> .el-table td>.cell{line-height: 0.3rem; padding: 0}
 </style>
-

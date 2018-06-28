@@ -24,7 +24,7 @@ export default {
   },
 
   data () {
-    return{
+    return {
       workType: '业务类型',
       workTit: '标题',
       approveArr:[
@@ -51,7 +51,7 @@ export default {
   },
 
   methods:{
-    
+
   }
 }
 </script>
