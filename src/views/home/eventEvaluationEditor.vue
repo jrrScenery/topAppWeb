@@ -3,7 +3,7 @@
     <header-last></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
-      <div class="editorView" v-for="items in editorArr">
+      <div class="editorView" v-for="items in editorArr" :key="items.id">
         <div class="star">
           <span class="starTit">{{items.tit}}</span>
           <el-rate
@@ -15,7 +15,7 @@
           <span>待改进选项</span>
           <div class="improveCell">
             <el-checkbox-group v-model="items.checkList">
-              <el-checkbox v-for="item in items.label" :label="item.cell"></el-checkbox>
+              <el-checkbox v-for="item in items.label" :label="item.cell" :key="item.id"></el-checkbox>
             </el-checkbox-group>
           </div>
         </div>
