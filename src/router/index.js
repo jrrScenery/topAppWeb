@@ -14,6 +14,8 @@ import programShow from '@/views/home/programShow'
 import approve from '@/views/approve/approve'
 import workBench from '@/views/workBench/workBench'
 import workBenchInfo from '@/views/workBench/workBenchInfo'
+import workBenchEventInfo from '@/views/workBench/workBenchEventInfo'
+import workBenchPeopleInfo from '@/views/workBench/workBenchPeopleInfo'
 import reportForm from '@/views/reportForm/reportForm'
 import mine from '@/views/mine/mine'
 
@@ -104,5 +106,15 @@ export default new Router({
       name: 'workBenchInfo',
       component: workBenchInfo
     },
+    {
+      path: '/workBench/workBenchEventInfo',
+      name: 'workBenchEventInfo',
+      component: workBenchEventInfo
+    },
+    {
+      path: '/workBench/workBenchPeopleInfo',
+      name: 'workBenchPeopleInfo',
+      component: workBenchPeopleInfo
+    }
   ]
 })

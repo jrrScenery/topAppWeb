@@ -2,9 +2,9 @@
   <div class="proHealthView">
     <div class="proHealthCell" v-for="item in proHealthArr">
       <div class="proHealthTit">{{item.title}}</div>
-      <content>
+      <div class="content">
         <ul class="tableTh">
-          <li><span>执行情况</span><span>检查项</span><span>数量</span></li>
+          <li><span>检查项</span><span>数量</span><span>评分</span></li>
         </ul>
         <ul class="tableTd">
           <li v-for="info in item.Arr"><span>{{info.check}}</span><span>{{info.num}}</span><span>{{info.score}}</span></li>
@@ -15,7 +15,7 @@
             <li v-for="info in i.item"><span>{{info.check}}</span><span>{{info.num}}</span><span>{{info.score}}</span></li>
           </ul>
         </div>
-      </content>
+      </div>
     </div>
   </div>
 </template>
