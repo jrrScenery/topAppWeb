@@ -1,3 +1,4 @@
+<!--质量-->
 <template>
   <div class="qualityView">
     <div class="qualityTop">

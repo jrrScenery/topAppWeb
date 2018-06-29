@@ -1,3 +1,4 @@
+<!--设备清单-->
 <template>
   <div class="proHealthView">
     设备清单

@@ -1,3 +1,4 @@
+<!--首页-事件详情-补充说明-->
 <template>
   <div class="eventReplenishView">
     <header-last></header-last>

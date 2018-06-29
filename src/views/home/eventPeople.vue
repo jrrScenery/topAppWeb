@@ -1,3 +1,4 @@
+<!--首页-事件详情-相关人员-->
 <template>
   <div class="eventPeopleView">
     <header-last></header-last>

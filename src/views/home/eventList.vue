@@ -1,3 +1,4 @@
+<!--首页-需关注事件-->
 <template>
   <div class="eventListView">
     <header-base></header-base>

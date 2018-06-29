@@ -1,3 +1,4 @@
+<!--工作台-人员信息-->
 <template>
   <div class="workBenchEventInfoView">
     <header-base></header-base>

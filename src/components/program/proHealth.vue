@@ -1,3 +1,4 @@
+<!--健康度-->
 <template>
   <div class="proHealthView">
     <div class="proHealthCell" v-for="item in proHealthArr">

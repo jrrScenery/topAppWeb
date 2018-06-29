@@ -1,3 +1,4 @@
+<!--事件详情搜索-->
 <template>
   <div class="searchView">
     <el-form ref="form" :model="form" label-width="65px">

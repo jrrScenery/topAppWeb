@@ -1,3 +1,4 @@
+<!--首页-->
 <template>
   <div class="homeView">
     <div class="swiper">
@@ -33,7 +34,7 @@
                 <span v-else class="table_name">{{scope.row[item.prop]}}</span>
               </template>
             </el-table-column>
-          </template> 
+          </template>
         </el-table>
       </div>
 
@@ -62,7 +63,7 @@
                 <span v-else class="table_name">{{scope.row[item.prop]}}</span>
               </template>
             </el-table-column>
-          </template> 
+          </template>
         </el-table>
       </div>
 
@@ -79,7 +80,7 @@
                   <el-table
                     :data="evaluateData"
                     style="width: 100%; max-height:1.85rem; border: 0.01rem solid #e1e1e1">
-                    <template v-for="item in evaluateTable">  
+                    <template v-for="item in evaluateTable">
                       <el-table-column
                         :fixed="item.fixed"
                         :key="item.id"
@@ -96,7 +97,7 @@
                           <span v-else class="table_name">{{scope.row[item.prop]}}</span>
                         </template>
                       </el-table-column>
-                    </template>                   
+                    </template>
                 </el-table>
               </el-tab-pane>
             </template>
@@ -143,7 +144,7 @@ export default {
           fixed: true,
           width: '28%'
         },
-        {          
+        {
           prop: 'CUSTOM',
           label: '客户名称',
           fixed: true,
@@ -214,7 +215,7 @@ export default {
   },
 
   methods:{
-    
+
   },
   created:function(){
 
@@ -228,8 +229,8 @@ export default {
 
     this.$axios.get(global_.proxyServer+"?action=GetCaseEvaluate&EMPID=1012856&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
       this.evaluateData = res.data.data;
-    }); 
-    
+    });
+
   }
 }
 </script>

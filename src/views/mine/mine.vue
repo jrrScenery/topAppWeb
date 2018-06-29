@@ -1,3 +1,4 @@
+<!--我的-->
 <template>
   <div class="mineView">
     <div class="mineBg" v-for="item in userData">

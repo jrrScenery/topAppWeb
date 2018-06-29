@@ -1,3 +1,4 @@
+<!--首页-事件详情-->
 <template>
   <div class="eventShowView">
     <header-base></header-base>

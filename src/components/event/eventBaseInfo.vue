@@ -1,3 +1,4 @@
+<!--基础信息-->
 <template>
   <div class="eventBaseInfoView">
     <div class="eventBaseInfoTit">{{title}}</div>

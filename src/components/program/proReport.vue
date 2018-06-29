@@ -1,3 +1,4 @@
+<!--分析报表-->
 <template>
   <div class="proHealthView">
     分析报表

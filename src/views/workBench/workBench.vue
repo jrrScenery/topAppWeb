@@ -1,7 +1,8 @@
+<!--工作台-->
 <template>
   <div class="workBenchView">
-    <ul class="ul_workBench" v-for="items in workBenchObj">
-      <li class="li_workBench" v-for="item in items.arr">
+    <ul class="ul_workBench" v-for="items in workBenchObj" :key="items.id">
+      <li class="li_workBench" v-for="item in items.arr" :key="item.id">
         <img :src="item.imgSrc" alt="">
         <span>{{item.text}}</span>
       </li>

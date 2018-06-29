@@ -1,3 +1,4 @@
+<!--首页-事件详情头部-带搜索-->
 <template>
   <div class="headerView">
     <header>
