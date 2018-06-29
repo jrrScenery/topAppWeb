@@ -18,33 +18,33 @@ export default {
   },
 
   data () {
-    return{
-      workBenchObj:[
-        {arr:[
-          {imgSrc: require('@/assets/images/workBench_1.png'),text: '项目信息'},
-          {imgSrc: require('@/assets/images/workBench_2.png'),text: '事件信息'},
-          {imgSrc: require('@/assets/images/workBench_3.png'),text: '人员信息'},
-          {imgSrc: require('@/assets/images/workBench_4.png'),text: '备件库存'},
-          {imgSrc: require('@/assets/images/workBench_5.png'),text: '供应商信息'},
-          {imgSrc: require('@/assets/images/workBench_6.png'),text: 'PO信息'}
+    return {
+      workBenchObj: [
+        {arr: [
+          {imgSrc: require('@/assets/images/workBench_1.png'), text: '项目信息'},
+          {imgSrc: require('@/assets/images/workBench_2.png'), text: '事件信息'},
+          {imgSrc: require('@/assets/images/workBench_3.png'), text: '人员信息'},
+          {imgSrc: require('@/assets/images/workBench_4.png'), text: '备件库存'},
+          {imgSrc: require('@/assets/images/workBench_5.png'), text: '供应商信息'},
+          {imgSrc: require('@/assets/images/workBench_6.png'), text: 'PO信息'}
         ]},
-        {arr:[
-          {imgSrc: require('@/assets/images/workBench_7.png'),text: '我的事件'},
-          {imgSrc: require('@/assets/images/workBench_8.png'),text: '所有事件'},
-          {imgSrc: require('@/assets/images/workBench_9.png'),text: '我的项目'},
-          {imgSrc: require('@/assets/images/workBench_10.png'),text: '所有项目'}
+        {arr: [
+          {imgSrc: require('@/assets/images/workBench_7.png'), text: '我的事件'},
+          {imgSrc: require('@/assets/images/workBench_8.png'), text: '所有事件'},
+          {imgSrc: require('@/assets/images/workBench_9.png'), text: '我的项目'},
+          {imgSrc: require('@/assets/images/workBench_10.png') ,text: '所有项目'}
         ]},
-        {arr:[
-          {imgSrc: require('@/assets/images/workBench_11.png'),text: '我的任务'},
-          {imgSrc: require('@/assets/images/workBench_12.png'),text: '事件申报'},
-          {imgSrc: require('@/assets/images/workBench_13.png'),text: '单次支持'}
+        {arr: [
+          {imgSrc: require('@/assets/images/workBench_11.png'), text: '我的任务'},
+          {imgSrc: require('@/assets/images/workBench_12.png'), text: '事件申报'},
+          {imgSrc: require('@/assets/images/workBench_13.png'), text: '单次支持'}
         ]}
       ]
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

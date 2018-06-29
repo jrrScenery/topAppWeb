@@ -25,11 +25,11 @@ export default {
   name: 'eventReplenish',
 
   components: {
-    headerLast,
+    headerLast
   },
 
   data () {
-    return{
+    return {
       eventReplenishData: [
         {type: '项目编号：', desc: '51478'},
         {type: '项目名称：', desc: 'TOP系统测试项目-华东'},
@@ -41,9 +41,9 @@ export default {
     }
   },
 
-  methods:{
-    onSubmit() {
-      alert('submit!');
+  methods: {
+    onSubmit () {
+      alert('submit!')
     }
   }
 }

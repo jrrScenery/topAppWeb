@@ -1,20 +1,21 @@
 <template>
-  <div class="proHealthView">
-    人员地图
+  <div class="workBenchInfoView">
+
   </div>
 </template>
 
 <script>
+
 export default {
-  name: 'eventPeople',
+  name: 'workBenchInfo',
 
   components: {
-
   },
 
   data () {
     return {
-
+      workBenchInfoObj: [
+      ]
     }
   },
 
@@ -25,5 +26,5 @@ export default {
 </script>
 
 <style scoped>
-
+  .workBenchView{ width: 100%;}
 </style>

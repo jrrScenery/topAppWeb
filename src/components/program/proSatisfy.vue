@@ -9,17 +9,17 @@ export default {
   name: 'proSatisfy',
 
   components: {
-    
+
   },
 
   data () {
-    return{
+    return {
 
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

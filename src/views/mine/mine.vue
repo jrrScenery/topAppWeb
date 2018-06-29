@@ -23,11 +23,11 @@ export default {
   },
 
   data () {
-    return{
-      userData:[
+    return {
+      userData: [
         {imgSrc: require('@/assets/images/mine_bg.jpg'), userName: '购买时光', phone: '13888888888'}
       ],
-      liObj:[
+      liObj: [
         {imgSrc: require('@/assets/images/mine_1.png'), text: '通知'},
         {imgSrc: require('@/assets/images/mine_2.png'), text: '我的报修'},
         {imgSrc: require('@/assets/images/mine_3.png'), text: '我的意见反馈'},
@@ -36,8 +36,8 @@ export default {
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

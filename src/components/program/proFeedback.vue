@@ -9,17 +9,17 @@ export default {
   name: 'proFeedback',
 
   components: {
-    
+
   },
 
   data () {
-    return{
+    return {
 
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

@@ -22,18 +22,18 @@ export default {
     searchView
   },
 
-  data() {
+  data () {
     return {
       title: 'List',
       headerRight: '查询',
-      popBg: false,
+      popBg: false
     }
   },
 
-  watch:{
+  watch: {
   },
 
-  created() {
+  created () {
   },
 
   methods: {

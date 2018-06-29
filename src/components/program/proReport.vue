@@ -9,17 +9,17 @@ export default {
   name: 'proReport',
 
   components: {
-    
+
   },
 
   data () {
-    return{
+    return {
 
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

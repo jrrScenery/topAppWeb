@@ -2,7 +2,7 @@
   <div class="programShowView">
     <header-base></header-base>
     <div style="height: 0.45rem;"></div>
-    <content>
+    <div class="content">
       <div class="programCell" v-for="item in programListArr">
         <div class="cellTop">
           <el-row>
@@ -63,7 +63,7 @@
           <el-tab-pane label="意见反馈" name="eighth"><pro-feedback></pro-feedback></el-tab-pane>
         </el-tabs>
       </div>
-    </content>
+    </div>
   </div>
 </template>
 
@@ -93,8 +93,8 @@ export default {
   },
 
   data () {
-    return{
-      programListArr:[
+    return {
+      programListArr: [
         {
           num: 'WVJAH60TSF',
           numone: '90.2',
@@ -120,8 +120,8 @@ export default {
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

@@ -8,7 +8,7 @@
         </ul>
         <ul class="tableTd">
           <li v-for="info in item.Arr"><span>{{info.check}}</span><span>{{info.num}}</span><span>{{info.score}}</span></li>
-        </ul>  
+        </ul>
         <div v-if="item.title == '执行情况'" v-for="i in item.OArr">
           <ul class="tableTh"><li>{{i.title}}</li></ul>
           <ul class="tableTd">
@@ -25,39 +25,39 @@ export default {
   name: 'proHealth',
 
   components: {
-    
+
   },
 
   data () {
-    return{
-      proHealthArr:[
+    return {
+      proHealthArr: [
         {
           title: '执行情况',
-          Arr:[{
+          Arr: [{
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '项目服务团队人员稳定',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
@@ -65,7 +65,7 @@ export default {
           OArr: [
             {
               title: 'case SLA达成率（累计）',
-              item:[
+              item: [
                 {
                   check: '故障Case总数',
                   num: '0',
@@ -85,7 +85,7 @@ export default {
             },
             {
               title: '超长期case数',
-              item:[
+              item: [
                 {
                   check: '故障Case总数',
                   num: '0',
@@ -100,7 +100,7 @@ export default {
             },
             {
               title: '一次实施不成功率',
-              item:[
+              item: [
                 {
                   check: '故障Case总数',
                   num: '0',
@@ -115,7 +115,7 @@ export default {
             },
             {
               title: '备件到场不可用率',
-              item:[
+              item: [
                 {
                   check: '故障Case总数',
                   num: '0',
@@ -130,7 +130,7 @@ export default {
             },
             {
               title: '巡检执行情况',
-              item:[
+              item: [
                 {
                   check: '故障Case总数',
                   num: '0',
@@ -147,31 +147,31 @@ export default {
         },
         {
           title: '评价满意度',
-          Arr:[{
+          Arr: [{
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '项目服务团队人员稳定',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
@@ -179,31 +179,31 @@ export default {
         },
         {
           title: '潜在风险',
-          Arr:[{
+          Arr: [{
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '项目服务团队人员稳定',
             score: '0'
-          },{
+          }, {
             check: '故障Case总数',
             num: '0',
             score: '0'
@@ -213,8 +213,8 @@ export default {
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

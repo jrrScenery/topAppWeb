@@ -1,5 +1,3 @@
-
-
 <template>
   <header class="headerView">
     <div class="headerLeft "><i class="el-icon-arrow-left"></i></div>
@@ -12,19 +10,19 @@
 export default {
   name: 'headerLast',
 
-  data() {
+  data () {
     return {
-      title: 'List',
+      title: 'List'
     }
-  }
+  },
 
-  ,watch:{
-  }
+  watch: {
+  },
 
-  ,created() {
-  }
+  created () {
+  },
 
-  ,methods: {
+  methods: {
   }
 }
 </script>

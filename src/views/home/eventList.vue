@@ -2,7 +2,7 @@
   <div class="eventListView">
     <header-base></header-base>
     <div style="height: 0.45rem;"></div>
-    <content>
+    <div class="content">
       <div class="eventCell" v-for="item in eventListArr">
         <div class="cellTop">
           <el-row>
@@ -31,7 +31,7 @@
           </el-row>
         </div>
       </div>
-    </content>
+    </div>
   </div>
 </template>
 
@@ -45,17 +45,17 @@ export default {
   },
 
   data () {
-    return{
-      eventListArr:[
+    return {
+      eventListArr: [
         {
           num: 'CS1608260014',
           timeone: '2016-08-26',
           timetwo: '09:24:57',
           firm: 'IBM',
           model: '9117-570(P5 570)',
-          state:'待管理人处理',
-          type:'非故障技术支持',
-          alarm:'CASE人员到场OLA超时'
+          state: '待管理人处理',
+          type: '非故障技术支持',
+          alarm: 'CASE人员到场OLA超时'
         },
         {
           num: 'CS1608260014',
@@ -63,16 +63,16 @@ export default {
           timetwo: '09:24:57',
           firm: 'IBM',
           model: '9117-570(P5 570)',
-          state:'待管理人处理',
-          type:'非故障技术支持',
-          alarm:'CASE人员到场OLA超时'
-        },
+          state: '待管理人处理',
+          type: '非故障技术支持',
+          alarm: 'CASE人员到场OLA超时'
+        }
       ]
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

@@ -9,17 +9,17 @@ export default {
   name: 'proRepair',
 
   components: {
-    
+
   },
 
   data () {
-    return{
+    return {
 
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

@@ -12,30 +12,30 @@ export default {
   name: 'eventBaseInfo',
 
   components: {
-    
+
   },
 
   data () {
-    return{
+    return {
       title: '事件基本信息',
-      eventBaseInfoArr:[
-        {tit: '项目名称',desc: '维保项目toptext07'},
-        {tit: '项目编号',desc: 'toptext07'},
-        {tit: '事件编号',desc: 'CS1611290103'},
-        {tit: '事件类型',desc: '故障'},
-        {tit: '事件级别',desc: '四级'},
-        {tit: '厂商',desc: 'IMB'},
-        {tit: '设备型号',desc: '9117-570(P5 570)'},
-        {tit: '设备SN',desc: 'toptext071156'},
-        {tit: '工单编号',desc: '2016113000305W101'},
-        {tit: '标准任务项',desc: '常规AIS'},
-        {tit: '概要说明',desc: '测试技术咨询201608011042'},
+      eventBaseInfoArr: [
+        {tit: '项目名称', desc: '维保项目toptext07'},
+        {tit: '项目编号', desc: 'toptext07'},
+        {tit: '事件编号', desc: 'CS1611290103'},
+        {tit: '事件类型', desc: '故障'},
+        {tit: '事件级别', desc: '四级'},
+        {tit: '厂商', desc: 'IMB'},
+        {tit: '设备型号', desc: '9117-570(P5 570)'},
+        {tit: '设备SN', desc: 'toptext071156'},
+        {tit: '工单编号', desc: '2016113000305W101'},
+        {tit: '标准任务项', desc: '常规AIS'},
+        {tit: '概要说明', desc: '测试技术咨询201608011042'}
       ]
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

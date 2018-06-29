@@ -2,7 +2,7 @@
   <div class="programListView">
     <header-base></header-base>
     <div style="height: 0.45rem;"></div>
-    <content>
+    <div class="content">
       <div class="programCell" v-for="item in programListArr">
         <div class="cellTop">
           <el-row>
@@ -32,7 +32,7 @@
           </el-row>
         </div>
       </div>
-    </content>
+    </div>
   </div>
 </template>
 
@@ -46,8 +46,8 @@ export default {
   },
 
   data () {
-    return{
-      programListArr:[
+    return {
+      programListArr: [
         {
           num: 'WVJAH60TSF',
           numone: '90.2',
@@ -56,8 +56,8 @@ export default {
           title: '2017年河南联通IT设备维保服务公开招标项目',
           sale: '绍振洲',
           proLeader: '绍振洲',
-          startTime:'2017-06-01',
-          endTime:'2017-06-01'
+          startTime: '2017-06-01',
+          endTime: '2017-06-01'
         },
         {
           num: 'WVJAH60TSF',
@@ -67,8 +67,8 @@ export default {
           title: '2017年河南联通IT设备维保服务公开招标项目',
           sale: '绍振洲',
           proLeader: '绍振洲',
-          startTime:'2017-06-01',
-          endTime:'2017-06-01'
+          startTime: '2017-06-01',
+          endTime: '2017-06-01'
         },
         {
           num: 'WVJAH60TSF',
@@ -78,15 +78,15 @@ export default {
           title: '2017年河南联通IT设备维保服务公开招标项目',
           sale: '绍振洲',
           proLeader: '绍振洲',
-          startTime:'2017-06-01',
-          endTime:'2017-06-01'
+          startTime: '2017-06-01',
+          endTime: '2017-06-01'
         },
       ]
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

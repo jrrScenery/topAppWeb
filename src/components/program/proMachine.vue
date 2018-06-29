@@ -9,17 +9,17 @@ export default {
   name: 'proMachine',
 
   components: {
-    
+
   },
 
   data () {
-    return{
+    return {
 
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

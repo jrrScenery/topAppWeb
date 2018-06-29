@@ -1,5 +1,3 @@
-
-
 <template>
   <header v-if="!(title =='我的')" class="headerHomeView">
     <div class="headerLeft">
@@ -17,39 +15,39 @@
 export default {
   name: 'headerHome',
 
-  data() {
+  data () {
     return {
       headerLeft: '扫码',
       title: ''
     }
-  }
+  },
 
-  ,watch:{
-    "$route": 'routerChange'
-  }
+  watch: {
+    '$route': 'routerChange'
+  },
 
-  ,created() {
+  created () {
     this.routerChange(this.$route)
-  }
+  },
 
-  ,methods: {
-    routerChange(e) {
-      switch(e.name){
+  methods: {
+    routerChange (e) {
+      switch (e.name) {
         case 'home':
           this.title = '首页'
-          break;
+          break
         case 'approve':
           this.title = '待审批'
-          break;
+          break
         case 'workBench':
           this.title = '工作台'
-          break;
+          break
         case 'reportForm':
           this.title = '报表'
-          break;
+          break
         case 'mine':
           this.title = '我的'
-          break;
+          break
       }
     }
   }

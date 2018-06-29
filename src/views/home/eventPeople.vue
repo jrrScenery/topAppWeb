@@ -25,16 +25,16 @@ export default {
   name: 'eventPeople',
 
   components: {
-    headerLast,
+    headerLast
   },
 
   data () {
-    return{
+    return {
       eventPeopleData: [
         {
           imgSrc: '',
           name: '吕阳',
-          arr:[
+          arr: [
             {type: '角色', desc: '项目经理'},
             {type: '电话', desc: '010-34347834'},
             {type: '手机', desc: '13515664564'},
@@ -45,7 +45,7 @@ export default {
         {
           imgSrc: '',
           name: '吕阳',
-          arr:[
+          arr: [
             {type: '角色', desc: '项目经理'},
             {type: '电话', desc: '010-34347834'},
             {type: '手机', desc: '13515664564'},
@@ -57,8 +57,8 @@ export default {
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

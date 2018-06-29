@@ -54,15 +54,15 @@ export default {
   },
 
   data () {
-    return{
+    return {
       activeName: 'first',
-      eventShowArr:[
+      eventShowArr: [
       ]
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

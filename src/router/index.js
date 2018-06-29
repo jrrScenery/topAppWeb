@@ -13,6 +13,7 @@ import programList from '@/views/home/programList'
 import programShow from '@/views/home/programShow'
 import approve from '@/views/approve/approve'
 import workBench from '@/views/workBench/workBench'
+import workBenchInfo from '@/views/workBench/workBenchInfo'
 import reportForm from '@/views/reportForm/reportForm'
 import mine from '@/views/mine/mine'
 
@@ -97,6 +98,11 @@ export default new Router({
       path: '/home/programShow',
       name: 'programShow',
       component: programShow
+    },
+    {
+      path: '/workBench/workBenchInfo',
+      name: 'workBenchInfo',
+      component: workBenchInfo
     },
   ]
 })

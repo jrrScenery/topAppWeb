@@ -34,11 +34,11 @@ export default {
   name: 'eventFeedback',
 
   components: {
-    headerLast,
+    headerLast
   },
 
   data () {
-    return{
+    return {
       title: '意见内容',
       formData: {
         name: '',
@@ -49,14 +49,14 @@ export default {
     }
   },
 
-  methods:{
-    submitForm(formName) {
+  methods: {
+    submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          alert('submit!')
         } else {
-          alert('err');
-          return false;
+          alert('err')
+          return false
         }
       });
     },

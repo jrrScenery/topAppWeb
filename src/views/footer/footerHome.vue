@@ -1,13 +1,10 @@
-
-
 <template>
   <div class="footerSelect">
     <el-menu
       :default-active="defaultActive"
       :collapse="false"
-      mode="horizontal"  
-      @select="select"
-    >
+      mode="horizontal"
+      @select="select">
     <template v-for="item in footerArr">
       <el-menu-item :index="item.index" @click="routerPush(item.index)">
         <img v-if="item.elType == 3" :src="item.imgSrc" class="workImg" />
@@ -20,72 +17,71 @@
 </template>
 
 <script>
-  export default {
-    name: 'footerHome',
-    data: function () {
-      return {
-        footerArr:[
-          {elType:1,index:'home',text:'首页',imgSrc: require('@/assets/images/footer_1.png')},
-          {elType:2,index:'approve',text:'待审批',imgSrc: require('@/assets/images/footer_2.png')},
-          {elType:3,index:'workBench',text:'工作台',imgSrc: require('@/assets/images/footer_3.png')},
-          {elType:4,index:'reportForm',text:'报表',imgSrc: require('@/assets/images/footer_4.png')},
-          {elType:5,index:'mine',text:'我的',imgSrc: require('@/assets/images/footer_5.png')}
-        ],
-        title:[],
-        defaultActive:'home'
+export default {
+  name: 'footerHome',
+  data: function () {
+    return {
+      footerArr: [
+        {elType: 1, index: 'home', text: '首页', imgSrc: require('@/assets/images/footer_1.png')},
+        {elType: 2, index: 'approve', text: '待审批', imgSrc: require('@/assets/images/footer_2.png')},
+        {elType: 3, index: 'workBench', text: '工作台', imgSrc: require('@/assets/images/footer_3.png')},
+        {elType: 4, index: 'reportForm', text: '报表', imgSrc: require('@/assets/images/footer_4.png')},
+        {elType: 5, index: 'mine', text: '我的', imgSrc: require('@/assets/images/footer_5.png')}
+      ],
+      title: [],
+      defaultActive: 'home'
+    }
+  },
+
+  created () {
+    this.routerChange(this.$route)
+  },
+
+  methods: {
+    select (index, indexPath, e) {
+      let footerSelectObj = localStorage.getItem('footerSelectObj') || JSON.stringify({})
+      let footerArr = this.footerArr
+      let dealAfterObj = JSON.parse(footerSelectObj)
+      console.log(dealAfterObj[index])
+      if (dealAfterObj[index]) return
+      for (let i = 0; i < footerArr.length; i++) {
+        if (index === footerArr[i].index) {
+          dealAfterObj[index] = {path: footerArr[i].index, text: footerArr[i].text}
+          localStorage.setItem('footerSelectObj', JSON.stringify(dealAfterObj))
+          return
+        }
       }
     },
 
-    created () {
-      this.routerChange(this.$route)
-    },
-
-    methods: {
-      select(index,indexPath,e) {
-        let footerSelectObj = localStorage.getItem('footerSelectObj') || JSON.stringify({});
-        let footerArr = this.footerArr;
-        let  dealAfterObj = JSON.parse(footerSelectObj);
-        console.log(dealAfterObj[index])
-        if ( dealAfterObj[index] ) return;
-        for (let i = 0;i<footerArr.length;i++ ) {
-          if ( index === footerArr[i].index ) {
-            dealAfterObj[index] = {path:footerArr[i].index,text:footerArr[i].text};
-            localStorage.setItem('footerSelectObj',JSON.stringify(dealAfterObj));
-            return;
-          }
-
+    routerChange (e) {
+      let path = e.path.split('/')[1]
+      let footerArr = this.footerArr
+      for (let i = 0; i < footerArr.length; i++) {
+        if (footerArr[i].index === path) {
+          this.defaultActive = path
+          break
         }
-      },
 
-      routerChange(e) {
-        let path = e.path.split('/')[1];
-        let footerArr = this.footerArr;
-        for ( let i = 0;i<footerArr.length;i++ ) {
-          if ( footerArr[i].index === path ) {
-            this.defaultActive = path;
-            break;
-          }
-
-          if ( footerArr[i].arr ) {
-            for ( let j = 0;j<footerArr[i].arr.length;j++ ) {
-              if ( footerArr[i].arr[j].index === path ) {
-                this.defaultActive = path;
-                break;
-              }
+        if (footerArr[i].arr) {
+          for (let j = 0; j < footerArr[i].arr.length; j++) {
+            if (footerArr[i].arr[j].index === path) {
+              this.defaultActive = path
+              break
             }
           }
         }
       }
-
-      ,routerPush(path) {
-        this.$router.push({path: '/'+path});
-      }
     },
 
-    watch: {
-      "$route": 'routerChange'
+    routerPush (path) {
+      this.$router.push({path: '/' + path})
     }
+  },
+
+  watch: {
+    '$route': 'routerChange'
   }
+}
 </script>
 
 <style>

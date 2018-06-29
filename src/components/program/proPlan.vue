@@ -24,53 +24,53 @@ export default {
   name: 'proPlan',
 
   components: {
-    
+
   },
 
   data () {
-    return{
+    return {
       tableData: [{
         batch: '2018年第二次巡检',
         startTime: '2017-01-01',
         endTime: '2017-01-01'
-      },{
+      }, {
         batch: '2018年第二次巡检',
         startTime: '2017-01-01',
         endTime: '2017-01-01'
-      },{
+      }, {
         batch: '2018年第二次巡检',
         startTime: '2017-01-01',
         endTime: '2017-01-01'
-      },{
+      }, {
         batch: '2018年第二次巡检',
         startTime: '2017-01-01',
         endTime: '2017-01-01'
-      },],
+      }],
       table_arr: [
         {
-          prop: 'batch'
-          ,label: '巡检批次'
-          ,fixed: true
-          ,width: '42%'
-        }
-        ,{
-          prop: 'startTime'
-          ,label: '计划开始时间'
-          ,fixed: true
-          ,width: '29%'
-        }
-        ,{
-          prop: 'endTime'
-          ,label: '计划结束时间'
-          ,fixed: true
-          ,width: '29%'
+          prop: 'batch',
+          label: '巡检批次',
+          fixed: true,
+          width: '42%'
+        },
+        {
+          prop: 'startTime',
+          label: '计划开始时间',
+          fixed: true,
+          width: '29%'
+        },
+        {
+          prop: 'endTime',
+          label: '计划结束时间',
+          fixed: true,
+          width: '29%'
         }
       ]
     }
   },
 
-  methods:{
-    
+  methods: {
+
   }
 }
 </script>

@@ -18,34 +18,33 @@
 <script>
 import headerHome from './header/headerHome'
 import footerHome from './footer/footerHome'
+export default {
+  name: 'index',
 
-  export default {
-    name: 'index',
+  components: {
+    headerHome,
+    footerHome
+  },
 
-    components: {
-      headerHome,
-      footerHome
-    },
+  data () {
+    return {
 
-    data() {
-      return {
-        
-      }
-    },
+    }
+  },
 
-    computed: {
-      
-    },
+  computed: {
 
-    watch: {
-      
-    },
+  },
 
-    created() {
-    },
+  watch: {
 
-    methods: {}
-  }
+  },
+
+  created () {
+  },
+
+  methods: {}
+}
 </script>
 
 <style scoped>
@@ -55,6 +54,6 @@ import footerHome from './footer/footerHome'
     height: 100%;
   }
   .containerHeaderView{
-    
+
   }
 </style>
