@@ -6,10 +6,14 @@ import './assets/css/common.css'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import axios from 'axios'
+import echarts from 'echarts'
 import localstorage from './utils/localstorage'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.prototype.$axios = axios
+Vue.prototype.$echarts = echarts
 
 /* eslint-disable no-new */
 new Vue({
