@@ -2,7 +2,7 @@
   <div class="reportFormView">
     <el-tabs v-model="activeName">
       <el-tab-pane label="业务" name="first"><business></business></el-tab-pane>
-      <el-tab-pane label="质量" name="second">质量</el-tab-pane>
+      <el-tab-pane label="质量" name="second"><quality></quality></el-tab-pane>
       <el-tab-pane label="效能" name="third">效能</el-tab-pane>
     </el-tabs>
   </div>
@@ -10,12 +10,14 @@
 
 <script>
 import business from '../../components/reportForm/business'
+import quality from '../../components/reportForm/quality'
 
 export default {
   name: 'reportForm',
 
   components: {
-    business
+    business,
+    quality
   },
 
   data () {
