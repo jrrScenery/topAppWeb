@@ -1,5 +1,5 @@
 <template>
-  <div class="headerView" @click="popBg = false"> 
+  <div class="headerView">
     <header>
       <div class="headerLeft"><i class="el-icon-arrow-left"></i></div>
       <h2>{{title}}</h2>
@@ -10,7 +10,7 @@
         <search-view></search-view>
       </div>
     </template>
-  </div> 
+  </div>
 </template>
 
 <script>
@@ -46,5 +46,5 @@ export default {
   h2{display: flex; background: #e0002a;font-size: 0.16rem;}
   .headerLeft,.headerRight{display: flex; flex-direction: column; justify-content: center; align-items: center; width: 0.45rem; height: 0.45rem; font-size: 0.14rem;}
   .headerLeft i{font-size: 0.2rem;}
-  .popBg{background: rgba(0,0,0,0.5); position: fixed; top: 0.45rem; bottom: 0; width: 100%; z-index: 999}
+  .popBg{background: rgba(0,0,0,0.5); position: fixed; top: 0.45rem; bottom: 0; z-index: 999; padding: 0 0.25rem;}
 </style>
