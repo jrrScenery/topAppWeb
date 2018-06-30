@@ -117,9 +117,9 @@ export default {
   .searchView >>> .el-input__prefix{display: none;}
   .searchView >>> .el-input--prefix .el-input__inner{padding: 0; text-align: center;}
   .searchView >>> .el-col-1{text-align: center; line-height: 0.4rem}
-  .tableView >>> .el-table th{border-top: 0.01rem solid #e1e1e1; line-height: 0.25rem;}
+  .tableView >>> .el-table th{border-top: 0.01rem solid #e1e1e1; line-height: 0.25rem; color: #333333;}
   .tableView >>> .el-table .cell{text-align: center; padding: 0}
-  .tableView >>> .el-table tr{line-height: 0.25rem;}
+  .tableView >>> .el-table tr{line-height: 0.25rem; color: #666666}
   .tableView >>> .el-table tr:nth-child(2n+1){background: #f7f7f7;}
   .tableView >>> .el-table tr:nth-child(2n){background: #ffffff;}
 </style>

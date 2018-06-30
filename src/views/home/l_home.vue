@@ -72,7 +72,7 @@
         </div>
         <div class="opinionTab">
           <el-tabs v-model="activeName" type="card">
-            <template v-for="item in opinionTab">
+            <template v-for="item in opinionTab" :key="item.id">
 
               <el-tab-pane :label="item.label" :name="item.name">
                 <el-table

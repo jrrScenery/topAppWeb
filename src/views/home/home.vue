@@ -9,7 +9,7 @@
       </el-carousel>
     </div>
 
-    <content>
+    <div class="content">
 
       <div class="event">
         <div class="title">
@@ -104,7 +104,7 @@
           </el-tabs>
         </div>
       </div>
-    </content>
+    </div>
   </div>
 </template>
 

@@ -107,11 +107,11 @@ export default {
 
 <style scoped>
   .workBenchSupplierView{width: 100%;}
-  .content{margin-top: 0.05rem;}
+  .content{margin-top: 0.05rem; color: #666666}
   .content >>> .el-table__body{width: 100%!important}
   .content >>> .el-table__header{width: 100%!important}
   .content >>> .el-table{font-size: 0.13rem; text-align: center}
-  .content >>> .el-table th{text-align: center; background: #f7f7f7}
+  .content >>> .el-table th{text-align: center; background: #f7f7f7; color: #333333}
   .content >>> .el-table td{border: none}
   .content >>> .el-table .cell{padding: 0;}
 </style>
