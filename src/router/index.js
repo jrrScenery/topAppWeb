@@ -16,6 +16,9 @@ import workBench from '@/views/workBench/workBench'
 import workBenchInfo from '@/views/workBench/workBenchInfo'
 import workBenchEventInfo from '@/views/workBench/workBenchEventInfo'
 import workBenchPeopleInfo from '@/views/workBench/workBenchPeopleInfo'
+import workBenchParts from '@/views/workBench/workBenchParts'
+import workBenchSupplier from '@/views/workBench/workBenchSupplier'
+import workBenchPoinfo from '@/views/workBench/workBenchPoinfo'
 import reportForm from '@/views/reportForm/reportForm'
 import mine from '@/views/mine/mine'
 
@@ -115,6 +118,21 @@ export default new Router({
       path: '/workBench/workBenchPeopleInfo',
       name: 'workBenchPeopleInfo',
       component: workBenchPeopleInfo
+    },
+    {
+      path: '/workBench/workBenchParts',
+      name: 'workBenchParts',
+      component: workBenchParts
+    },
+    {
+      path: '/workBench/workBenchSupplier',
+      name: 'workBenchSupplier',
+      component: workBenchSupplier
+    },
+    {
+      path: '/workBench/workBenchPoinfo',
+      name: 'workBenchPoinfo',
+      component: workBenchPoinfo
     }
   ]
 })

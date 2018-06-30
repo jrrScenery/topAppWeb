@@ -1,6 +1,6 @@
-<!--工作台-人员信息-->
+<!--工作台-PO信息-->
 <template>
-  <div class="workBenchPeopleInfoView">
+  <div class="workBenchPOinfoView">
     <header-base></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content">
@@ -13,25 +13,25 @@
           label="城市"
           width="24%">
         </el-table-column>
-        <el-table-column label="人员数量">
+        <el-table-column label="供应商类型">
           <el-table-column
-            prop="move"
-            label="机动人员"
+            prop="people"
+            label="人员"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="stationed"
-            label="驻场人员"
+            prop="parts"
+            label="备件"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="person"
-            label="个人合作"
+            prop="logistics"
+            label="物流"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="company"
-            label="公司合作"
+            prop="subpackage"
+            label="分包"
             width="19%">
           </el-table-column>
         </el-table-column>
@@ -43,7 +43,7 @@
 <script>
 import headerBase from '../header/headerBase'
 export default {
-  name: 'workBenchPeopleInfo',
+  name: 'workBenchPoinfo',
 
   components: {
     headerBase
@@ -53,46 +53,46 @@ export default {
     return {
       tableData: [{
         city: '北京',
-        move: '625',
-        stationed: '315',
-        person: '421',
-        company: '271'
+        people: '625',
+        parts: '315',
+        logistics: '421',
+        subpackage: '271'
       }, {
         city: '北京',
-        move: '625',
-        stationed: '315',
-        person: '421',
-        company: '271'
+        people: '625',
+        parts: '315',
+        logistics: '421',
+        subpackage: '271'
       }, {
         city: '北京',
-        move: '625',
-        stationed: '315',
-        person: '421',
-        company: '271'
+        people: '625',
+        parts: '315',
+        logistics: '421',
+        subpackage: '271'
       }, {
         city: '北京',
-        move: '625',
-        stationed: '315',
-        person: '421',
-        company: '271'
+        people: '625',
+        parts: '315',
+        logistics: '421',
+        subpackage: '271'
       }, {
         city: '北京',
-        move: '625',
-        stationed: '315',
-        person: '421',
-        company: '271'
+        people: '625',
+        parts: '315',
+        logistics: '421',
+        subpackage: '271'
       }, {
         city: '北京',
-        move: '625',
-        stationed: '315',
-        person: '421',
-        company: '271'
+        people: '625',
+        parts: '315',
+        logistics: '421',
+        subpackage: '271'
       }, {
         city: '北京',
-        move: '625',
-        stationed: '315',
-        person: '421',
-        company: '271'
+        people: '625',
+        parts: '315',
+        logistics: '421',
+        subpackage: '271'
       }],
       workBenchPeopleInfo: [
         {}
@@ -106,7 +106,7 @@ export default {
 </script>
 
 <style scoped>
-  .workBenchPeopleInfoView{width: 100%;}
+  .workBenchPOinfoView{width: 100%;}
   .content{margin-top: 0.05rem;}
   .content >>> .el-table__body{width: 100%!important}
   .content >>> .el-table__header{width: 100%!important}
