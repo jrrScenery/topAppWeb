@@ -2,10 +2,13 @@
 <template>
   <div class="workBenchView">
     <ul class="ul_workBench" v-for="items in workBenchObj" :key="items.id">
-      <li class="li_workBench" v-for="item in items.arr" :key="item.id">
-        <img :src="item.imgSrc" alt="">
-        <span>{{item.text}}</span>
-      </li>
+
+        <li class="li_workBench" v-for="item in items.arr" :key="item.id">
+          <router-link :to="{name:item.href}">
+            <img :src="item.imgSrc" alt="">
+          </router-link>
+          <span>{{item.text}}</span>
+        </li>
     </ul>
   </div>
 </template>
@@ -22,12 +25,12 @@ export default {
     return {
       workBenchObj: [
         {arr: [
-          {imgSrc: require('@/assets/images/workBench_1.png'), text: '项目信息'},
-          {imgSrc: require('@/assets/images/workBench_2.png'), text: '事件信息'},
-          {imgSrc: require('@/assets/images/workBench_3.png'), text: '人员信息'},
-          {imgSrc: require('@/assets/images/workBench_4.png'), text: '备件库存'},
-          {imgSrc: require('@/assets/images/workBench_5.png'), text: '供应商信息'},
-          {imgSrc: require('@/assets/images/workBench_6.png'), text: 'PO信息'}
+          {imgSrc: require('@/assets/images/workBench_1.png'), text: '项目信息',href:'workBenchInfo'},
+          {imgSrc: require('@/assets/images/workBench_2.png'), text: '事件信息',href:'workBenchEventInfo'},
+          {imgSrc: require('@/assets/images/workBench_3.png'), text: '人员信息',href:'workBenchPeopleInfo'},
+          {imgSrc: require('@/assets/images/workBench_4.png'), text: '备件库存',href:'workBenchParts'},
+          {imgSrc: require('@/assets/images/workBench_5.png'), text: '供应商信息',href:'workBenchSupplier'},
+          {imgSrc: require('@/assets/images/workBench_6.png'), text: 'PO信息',href:'workBenchPOinfo'}
         ]},
         {arr: [
           {imgSrc: require('@/assets/images/workBench_7.png'), text: '我的事件'},
