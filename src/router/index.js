@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import index from '@/views/index'
-import home from '@/views/home/home'
-import eventList from '@/views/home/eventList'
+/**
 import eventShow from '@/views/home/eventShow'
 import eventFeedback from '@/views/home/eventFeedback'
 import eventPeople from '@/views/home/eventPeople'
@@ -11,8 +11,6 @@ import eventEvaluation from '@/views/home/eventEvaluation'
 import eventEvaluationEditor from '@/views/home/eventEvaluationEditor'
 import programList from '@/views/home/programList'
 import programShow from '@/views/home/programShow'
-import approve from '@/views/approve/approve'
-import workBench from '@/views/workBench/workBench'
 import workBenchInfo from '@/views/workBench/workBenchInfo'
 import workBenchInfoDetail from '@/views/workBench/workBenchInfoDetail'
 import workBenchEventInfo from '@/views/workBench/workBenchEventInfo'
@@ -23,10 +21,8 @@ import workBenchPOinfo from '@/views/workBench/workBenchPOinfo'
 import workBenchMyEvent from '@/views/workBench/workBenchMyEvent'
 import workBenchMyPro from '@/views/workBench/workBenchMyPro'
 import workBenchDeclare from '@/views/workBench/workBenchDeclare'
-import reportForm from '@/views/reportForm/reportForm'
-import mine from '@/views/mine/mine'
 import mineNotice from '@/views/mine/mineNotice'
-import mineFeedback from '@/views/mine/mineFeedback'
+import mineFeedback from '@/views/mine/mineFeedback'*/
 
 Vue.use(Router)
 
@@ -41,134 +37,134 @@ export default new Router({
         {
           path: '/home',
           name: 'home',
-          component: home
+          component: resolve => require(['@/views/home/home'],resolve)
         },
         {
           path: '/approve',
           name: 'approve',
-          component: approve
+          component: resolve => require(['@/views/approve/approve'],resolve)
         },
         {
           path: '/workBench',
           name: 'workBench',
-          component: workBench
+          component: resolve => require(['@/views/workBench/workBench'],resolve)
         },
         {
           path: '/reportForm',
           name: 'reportForm',
-          component: reportForm
+          component: resolve => require(['@/views/reportForm/reportForm'],resolve)
         },
         {
           path: '/mine',
           name: 'mine',
-          component: mine
+          component: resolve => require(['@/views/mine/mine'],resolve)
         }
       ]
     },
     {
       path: '/home/eventList',
       name: 'eventList',
-      component: eventList
+      component: resolve => require(['@/views/home/eventList'],resolve)
     },
     {
       path: '/home/eventShow',
       name: 'eventShow',
-      component: eventShow
+      component: resolve => require(['@/views//home/eventShow'],resolve)
     },
     {
       path: '/home/eventFeedback',
       name: 'eventFeedback',
-      component: eventFeedback
+      component: resolve => require(['@/views/home/eventFeedback'],resolve)
     },
     {
       path: '/home/eventPeople',
       name: 'eventPeople',
-      component: eventPeople
+      component: resolve => require(['@/views/home/eventPeople'],resolve)
     },
     {
       path: '/home/eventReplenish',
       name: 'eventReplenish',
-      component: eventReplenish
+      component: resolve => require(['@/views/home/eventReplenish'],resolve)
     },
     {
       path: '/home/eventEvaluation',
       name: 'eventEvaluation',
-      component: eventEvaluation
+      component: resolve => require(['@/views/home/eventEvaluation'],resolve)
     },
     {
       path: '/home/eventEvaluationEditor',
       name: 'eventEvaluationEditor',
-      component: eventEvaluationEditor
+      component: resolve => require(['@/views/home/eventEvaluationEditor'],resolve)
     },
     {
       path: '/home/programList',
       name: 'programList',
-      component: programList
+      component: resolve => require(['@/views/home/programList'],resolve)
     },
     {
       path: '/home/programShow',
       name: 'programShow',
-      component: programShow
+      component: resolve => require(['@/views/home/programShow'],resolve)
     },
     {
       path: '/workBench/workBenchInfo',
       name: 'workBenchInfo',
-      component: workBenchInfo
+      component: resolve => require(['@/views/workBench/workBenchInfo'],resolve)
     },
     {
       path: '/workBench/workBenchInfoDetail',
       name: 'workBenchInfoDetail',
-      component: workBenchInfoDetail
+      component: resolve => require(['@/views/workBench/workBenchInfoDetail'],resolve)
     },
     {
       path: '/workBench/workBenchEventInfo',
       name: 'workBenchEventInfo',
-      component: workBenchEventInfo
+      component: resolve => require(['@/views/workBench/workBenchEventInfo'],resolve)
     },
     {
       path: '/workBench/workBenchPeopleInfo',
       name: 'workBenchPeopleInfo',
-      component: workBenchPeopleInfo
+      component: resolve => require(['@/views/workBench/workBenchPeopleInfo'],resolve)
     },
     {
       path: '/workBench/workBenchParts',
       name: 'workBenchParts',
-      component: workBenchParts
+      component: resolve => require(['@/views/workBench/workBenchParts'],resolve)
     },
     {
       path: '/workBench/workBenchSupplier',
       name: 'workBenchSupplier',
-      component: workBenchSupplier
+      component: resolve => require(['@/views/workBench/workBenchSupplier'],resolve)
     },
     {
       path: '/workBench/workBenchPOinfo',
       name: 'workBenchPOinfo',
-      component: workBenchPOinfo
+      component: resolve => require(['@/views/workBench/workBenchPOinfo'],resolve)
     },
     {
       path: '/workBench/workBenchMyEvent',
       name: 'workBenchMyEvent',
-      component: workBenchMyEvent
+      component: resolve => require(['@/views/workBench/workBenchMyEvent'],resolve)
     },
     {
       path: '/workBench/workBenchMyPro',
       name: 'workBenchMyPro',
-      component: workBenchMyPro
+      component: resolve => require(['@/views/workBench/workBenchMyPro'],resolve)
     },
     {
       path: '/workBench/workBenchDeclare',
       name: 'workBenchDeclare',
-      component: workBenchDeclare
+      component: resolve => require(['@/views/workBench/workBenchDeclare'],resolve)
     },
     {
       path: '/mine/mineNotice',
       name: 'mineNotice',
-      component: mineNotice
+      component: resolve => require(['@/views/mine/mineNotice'],resolve)
     },
     {
       path: '/mine/mineFeedback',
       name: 'mineFeedback',
-      component: mineFeedback
+      component: resolve => require(['@/views//mine/mineFeedback'],resolve)
     }
   ]
 })
