@@ -117,6 +117,11 @@ export default new Router({
       component: resolve => require(['@/views/home/programShow'],resolve)
     },
     {
+      path: '/home/opinion',
+      name: 'opinion',
+      component: resolve => require(['@/views/home/opinion'],resolve)
+    },
+    {
       path: '/workBench/workBenchInfo',
       name: 'workBenchInfo',
       component: resolve => require(['@/views/workBench/workBenchInfo'],resolve)
