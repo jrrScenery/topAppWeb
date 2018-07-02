@@ -19,7 +19,7 @@ export default {
   data () {
     return {
       headerLeft: '扫码',
-      title: ''
+      title: 'list'
     }
   },
 
