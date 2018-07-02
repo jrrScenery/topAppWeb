@@ -14,7 +14,7 @@
       <div class="event">
         <div class="title">
           <div class="titleLeft">
-            <!--<img src="../../assets/images/index_1.png" alt="">-->
+            <img src="../../assets/images/index_1.png" alt="">
             <router-link :to="{name:'eventList'}">
             {{eventTitle}}
             </router-link>
@@ -46,8 +46,7 @@
       <div class="program">
         <div class="title">
           <div class="titleLeft">
-            <!--<img src="../../assets/images/index_2.png" alt="">
-            -->
+            <img src="../../assets/images/index_2.png" alt="">
             <router-link :to="{name:'programList'}">
             {{programTitle}}
             </router-link>
@@ -81,9 +80,7 @@
       <div class="opinion">
         <div class="title">
           <div class="titleLeft">
-            <!--
-            <img src="../../assets/images/index_1.png" alt="">
-            -->
+            <img src="../../assets/images/index_3.png" alt="">
             <router-link :to="{name:'eventEvaluation'}">
               {{opinionTitle}}
             </router-link>
@@ -257,14 +254,14 @@ export default {
   .homeView{width: 100%;}
   .swiper >>> .el-carousel__button{width: 0.08rem; height: 0.08rem; border-radius: 100%;}
   .swiper >>> .el-carousel__indicator.is-active button{background: #199dff}
-  content{margin: 0 0.14rem; display: block;}
-  content .title{display: flex; justify-content: space-between;height: 0.33rem; line-height: 0.33rem; font-size: 0.14rem; color: #e0002a;}
-  content .title .titleRight{font-size: 0.13rem; color: #999999;}
-  content .title img{width: 0.18rem; height: 0.18rem; vertical-align: text-bottom; margin-right: 0.08rem;}
-  content >>> .el-table td{height: 0.3rem!important; box-sizing: border-box; margin: 0; text-align: center; padding: 0;}
-  content >>> .el-table th{height: 0.3rem!important; box-sizing: border-box; margin: 0; text-align: center; padding: 0;}
-  content >>> .el-table td>.cell{text-align: center; color: #666666; padding: 0}
-  content >>> .el-table th>.cell{text-align: center; color: #333333; padding: 0;}
+  .content{margin: 0 0.14rem; display: block;}
+  .content .title{display: flex; justify-content: space-between;height: 0.33rem; line-height: 0.33rem; font-size: 0.14rem; color: #e0002a;}
+  .content .title .titleRight{font-size: 0.13rem; color: #999999;}
+  .content .title img{width: 0.18rem; height: 0.18rem; vertical-align: text-bottom; margin-right: 0.08rem;}
+  .content >>> .el-table td{height: 0.3rem!important; box-sizing: border-box; margin: 0; text-align: center; padding: 0;}
+  .content >>> .el-table th{height: 0.3rem!important; box-sizing: border-box; margin: 0; text-align: center; padding: 0;}
+  .content >>> .el-table td>.cell{text-align: center; color: #666666; padding: 0}
+  .content >>> .el-table th>.cell{text-align: center; color: #333333; padding: 0;}
   .table_name{display: block; width: 100%; height: 0.3rem; line-height: 0.3rem; overflow: hidden; text-overflow: ellipsis;white-space: nowrap;}
   .opinionTab >>> .el-tabs__item.is-active{color: #ff5930; background: #ffffff; border: 1px solid #e1e1e1; border-radius: 0.2rem;}
   .opinionTab >>> .el-tabs--card>.el-tabs__header{border: none; margin-bottom: 0.1rem;}
