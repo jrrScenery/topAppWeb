@@ -1,7 +1,7 @@
 <template>
   <div class="loginView">
     <div class="loginBox">
-      <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="demo-ruleForm">
+      <el-form :model="ruleForm" status-icon ref="ruleForm" class="demo-ruleForm">
         <el-form-item prop="userName">
           <el-input v-model.number="ruleForm.userName"></el-input>
         </el-form-item>
@@ -9,7 +9,7 @@
           <el-input type="password" v-model="ruleForm.pass" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+          <el-button @click="submitForm('ruleForm')">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -20,44 +20,10 @@
 export default {
   name: 'login',
   data () {
-    let checkAge = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('年龄不能为空'))
-      }
-      setTimeout(() => {
-        if (!Number.isInteger(value)) {
-          callback(new Error('请输入数字值'))
-        } else {
-          if (value < 18) {
-            callback(new Error('必须年满18岁'))
-          } else {
-            callback()
-          }
-        }
-      }, 1000)
-    }
-    let validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        if (this.ruleForm.checkPass !== '') {
-          this.$refs.ruleForm.validateField('checkPass');
-        }
-        callback()
-      }
-    }
     return {
       ruleForm: {
         pass: '',
         userName: ''
-      },
-      rules: {
-        pass: [
-          { validator: validatePass, trigger: 'blur' }
-        ],
-        userName: [
-          { validator: checkAge, trigger: 'blur' }
-        ]
       }
     }
   },
@@ -79,4 +45,12 @@ export default {
 <style scoped>
   .loginView{background: url("../../assets/images/login.jpg") 0 0 no-repeat; width: 100%; height: 100%; background-size: 100% 100%; position: relative}
   .loginView .loginBox{position: absolute; top: 2rem; left: 0.17rem; right: 0.17rem;}
+  .loginView .loginBox >>> .el-input__inner{padding: 0 0.4rem; border-radius: 0; border: none}
+  .loginView .loginBox >>> .el-input__inner:focus{ border: none;}
+  .loginView .loginBox >>> .el-form-item:nth-child(1){margin: 0}
+  .loginView .loginBox >>> .el-form-item:nth-child(1) .el-input__inner{border-top-left-radius: 0.04rem;border-top-right-radius: 0.04rem; position: relative}
+  .loginView .loginBox >>> .el-form-item:nth-child(1):after{position: absolute; left: 5%; width: 90%; height: 0.01rem; content: ''; background: #acacac;z-index: 999}
+  .loginView .loginBox >>> .el-form-item:nth-child(2) .el-input__inner{border-bottom-left-radius: 0.04rem;border-bottom-right-radius: 0.04rem;}
+  .loginView .loginBox >>> .el-button{ width: 100%; background: #4cc9ff; color: #ffffff;}
+  .loginView .loginBox >>> .el-button:focus, .el-button:hover{background: #4cc9ff; color: #ffffff}
 </style>
