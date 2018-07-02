@@ -4,9 +4,11 @@
       <el-form :model="ruleForm" status-icon ref="ruleForm" class="demo-ruleForm">
         <el-form-item prop="userName">
           <el-input v-model.number="ruleForm.userName"></el-input>
+          <img src="../../assets/images/login_1.png" alt="">
         </el-form-item>
         <el-form-item prop="pass">
           <el-input type="password" v-model="ruleForm.pass" auto-complete="off"></el-input>
+          <img src="../../assets/images/login_2.png" alt="">
         </el-form-item>
         <el-form-item>
           <el-button @click="submitForm('ruleForm')">登录</el-button>
@@ -51,6 +53,8 @@ export default {
   .loginView .loginBox >>> .el-form-item:nth-child(1) .el-input__inner{border-top-left-radius: 0.04rem;border-top-right-radius: 0.04rem; position: relative}
   .loginView .loginBox >>> .el-form-item:nth-child(1):after{position: absolute; left: 5%; width: 90%; height: 0.01rem; content: ''; background: #acacac;z-index: 999}
   .loginView .loginBox >>> .el-form-item:nth-child(2) .el-input__inner{border-bottom-left-radius: 0.04rem;border-bottom-right-radius: 0.04rem;}
+  .loginView .loginBox >>> .el-form-item__content{position: relative}
+  .loginView .loginBox >>> .el-form-item img{width: 0.2rem; height: 0.2rem; position: absolute; z-index: 999; top: 0.1rem; left: 0.15rem;}
   .loginView .loginBox >>> .el-button{ width: 100%; background: #4cc9ff; color: #ffffff;}
   .loginView .loginBox >>> .el-button:focus, .el-button:hover{background: #4cc9ff; color: #ffffff}
 </style>
