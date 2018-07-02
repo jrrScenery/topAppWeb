@@ -4,7 +4,8 @@
     <header-base></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content">
-      <div class="programCell" v-for="item in programListArr" :key="item.id">
+      <div class="programCell" v-for="item in programListArr">
+        <router-link :to="{name:'programShow'}">
         <div class="cellTop">
           <el-row>
             <el-col :span="8">
@@ -32,6 +33,7 @@
             <el-col :span="12"><span class="tit">结束时间：{{item.endTime}}</span></el-col>
           </el-row>
         </div>
+        </router-link>
       </div>
     </div>
   </div>

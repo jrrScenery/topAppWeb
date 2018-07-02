@@ -13,7 +13,12 @@
 
       <div class="event">
         <div class="title">
-          <div class="titleLeft"><img src="../../assets/images/index_1.png" alt="">{{eventTitle}}</div>
+          <div class="titleLeft">
+            <!--<img src="../../assets/images/index_1.png" alt="">-->
+            <router-link :to="{name:'eventList'}">
+            {{eventTitle}}
+            </router-link>
+          </div>
           <div class="titleRight">{{more}}</div>
         </div>
         <el-table
@@ -40,7 +45,13 @@
 
       <div class="program">
         <div class="title">
-          <div class="titleLeft"><img src="../../assets/images/index_2.png" alt="">{{programTitle}}</div>
+          <div class="titleLeft">
+            <!--<img src="../../assets/images/index_2.png" alt="">
+            -->
+            <router-link :to="{name:'programList'}">
+            {{programTitle}}
+            </router-link>
+          </div>
           <div class="titleRight">{{more}}</div>
         </div>
         <el-table
@@ -69,7 +80,14 @@
 
       <div class="opinion">
         <div class="title">
-          <div class="titleLeft"><img src="../../assets/images/index_1.png" alt="">{{opinionTitle}}</div>
+          <div class="titleLeft">
+            <!--
+            <img src="../../assets/images/index_1.png" alt="">
+            -->
+            <router-link :to="{name:'eventEvaluation'}">
+              {{opinionTitle}}
+            </router-link>
+          </div>
           <div class="titleRight">{{more}}</div>
         </div>
         <div class="opinionTab">

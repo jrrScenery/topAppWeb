@@ -9,13 +9,15 @@
         stripe
         style="width: 100%">
         <template v-for="item in table_arr">
-          <el-table-column
-            :fixed="item.fixed"
-            :key="item.id"
-            :prop="item.prop"
-            :label="item.label"
-            :min-width="item.width">
-          </el-table-column>
+          <router-link :to="{name:'eventEvaluationEditor'}">
+            <el-table-column
+              :fixed="item.fixed"
+              :key="item.id"
+              :prop="item.prop"
+              :label="item.label"
+              :min-width="item.width">
+            </el-table-column>
+          </router-link>
         </template>
       </el-table>
     </div>

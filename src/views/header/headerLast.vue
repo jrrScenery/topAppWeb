@@ -1,7 +1,7 @@
 <!--终极头部-->
 <template>
   <header class="headerView">
-    <div class="headerLeft "><i class="el-icon-arrow-left"></i></div>
+    <div class="headerLeft " v-on:click="back"><i class="el-icon-arrow-left"></i></div>
     <h2>{{title}}</h2>
     <div class="headerRight"></div>
   </header>
@@ -24,6 +24,11 @@ export default {
   },
 
   methods: {
+
+    back: function (event) {
+      this.$router.back(-1)
+    }
+
   }
 }
 </script>

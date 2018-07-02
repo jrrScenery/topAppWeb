@@ -4,7 +4,8 @@
     <header-base></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content">
-      <div class="eventCell" v-for="item in eventListArr" :key="item.id">
+      <div class="eventCell" v-for="item in eventListArr">
+        <router-link :to="{name:'eventShow'}">
         <div class="cellTop">
           <el-row>
             <el-col :span="10">
@@ -18,6 +19,7 @@
             </el-col>
           </el-row>
         </div>
+
         <div class="cellContent">
           <el-row>
             <el-col :span="12"><span class="tit">厂商：</span><span>{{item.firm}}</span></el-col>
@@ -31,6 +33,7 @@
             <el-col :span="24"><span class="tit">告警项：</span><span>{{item.alarm}}</span></el-col>
           </el-row>
         </div>
+        </router-link>
       </div>
     </div>
   </div>
