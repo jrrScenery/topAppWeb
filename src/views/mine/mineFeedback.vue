@@ -17,7 +17,7 @@
 <script>
 import headerLast from '../header/headerLast'
 export default {
-  name: 'mineNotice',
+  name: 'mineFeedback',
   components: {
     headerLast
   },

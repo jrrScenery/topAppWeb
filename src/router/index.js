@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import index from '@/views/index'
+import login from '@/views/login/login'
 import home from '@/views/home/home'
 import eventList from '@/views/home/eventList'
 import eventShow from '@/views/home/eventShow'
@@ -27,6 +28,7 @@ import reportForm from '@/views/reportForm/reportForm'
 import mine from '@/views/mine/mine'
 import mineNotice from '@/views/mine/mineNotice'
 import mineFeedback from '@/views/mine/mineFeedback'
+import mineFeedbackShow from '@/views/mine/mineFeedbackShow'
 
 Vue.use(Router)
 
@@ -64,6 +66,11 @@ export default new Router({
           component: mine
         }
       ]
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
     },
     {
       path: '/home/eventList',
@@ -169,6 +176,11 @@ export default new Router({
       path: '/mine/mineFeedback',
       name: 'mineFeedback',
       component: mineFeedback
+    },
+    {
+      path: '/mine/mineFeedbackShow',
+      name: 'mineFeedbackShow',
+      component: mineFeedbackShow
     }
   ]
 })

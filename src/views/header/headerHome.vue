@@ -60,5 +60,5 @@ export default {
   h2{display: flex; background: #e0002a;font-size: 0.16rem;}
   .headerLeft,.headerRight{display: flex; flex-direction: column; justify-content: center; align-items: center; width: 0.45rem; height: 0.45rem;}
   .headerLeft img,.headerRight img{width: 0.22rem; height: 0.22rem;}
-  .headerLeft p{font-size: 0.05rem; line-height: 1}
+  .headerLeft p{font-size: 0.12rem; line-height: 1; margin-top: 0.03rem}
 </style>

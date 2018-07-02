@@ -90,7 +90,7 @@ export default {
   .footerSelect .el-menu-item, .el-submenu__title{height: 0.45rem;}
   .footerSelect .el-menu--horizontal{width: 100%; padding: 0 0.1rem;}
   .footerSelect .el-menu--horizontal>.el-menu-item{display: flex; flex-direction: column; align-content: space-around; justify-content: space-around; border: none;width: 20%; text-align: center; padding: 0; color: #8a8a8a!important; background: #ffffff!important; font-size: 0.1rem;}
-  .footerSelect .el-menu--horizontal>.el-menu-item span{line-height: 1.5}
+  .footerSelect .el-menu--horizontal>.el-menu-item span{line-height: 0.2rem;}
   .footerSelect .el-menu--horizontal>.el-menu-item.is-active{border: none; color: #e0002a!important; background: #ffffff!important;}
   .footerSelect .el-menu--horizontal>.el-menu-item img{width: 0.22rem; height: 0.22rem; margin: auto;}
   .footerSelect .el-menu--horizontal>.el-menu-item .workImg{width: 0.57rem; height: 0.57rem; margin: auto; margin-top: -0.3rem;}

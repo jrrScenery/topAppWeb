@@ -39,7 +39,7 @@
         </el-col>
       </el-form-item>
       <el-form-item class="searchBtn">
-        <el-button>取消</el-button>
+        <el-button @click="onCancel">取消</el-button>
         <el-button class="searchBtnCell" @click="onSearch">查询</el-button>
       </el-form-item>
     </el-form>
@@ -75,6 +75,9 @@ export default {
   },
 
   methods: {
+    onCancel () {
+      console.log('cancel!')
+    },
     onSearch () {
       console.log('search!')
     }
@@ -100,6 +103,7 @@ export default {
   .searchView >>> .searchBtn{position: absolute; bottom: -0.15rem; left: 0; right: 0; height: 0.4rem;}
   .searchView >>> .searchBtn .el-button{width: 50%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
   .searchView >>> .searchBtn .el-button:hover{background: #ffffff;}
+  .searchView >>> .searchBtn .searchBtnCell:hover{background: #e0002a;}
   .searchView >>> .searchBtn .el-form-item__content{margin: 0!important; display: flex;}
   .searchView >>> .searchBtn .searchBtnCell{background: #e0002a; color: #ffffff;}
 </style>
