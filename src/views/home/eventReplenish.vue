@@ -5,7 +5,7 @@
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <ul>
-        <li v-for="item in eventReplenishData"><span>{{item.type}}</span>{{item.desc}}</li>
+        <li v-for="item in eventReplenishData" :key="item.id"><span>{{item.type}}</span>{{item.desc}}</li>
       </ul>
       <el-form ref="form" :model="form">
         <el-form-item class="text">

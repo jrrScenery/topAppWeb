@@ -43,6 +43,7 @@ export default {
       title: '意见内容',
       formData: {
         name: '',
+        phone: '',
         region: '',
         type: '',
         article: ''
@@ -59,8 +60,8 @@ export default {
           alert('err')
           return false
         }
-      });
-    },
+      })
+    }
   }
 }
 </script>
@@ -79,4 +80,3 @@ export default {
   .submitBtn >>> .el-form-item__content{margin: 0!important;}
   .submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #e0002a; background: #e0002a; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;}
 </style>
-

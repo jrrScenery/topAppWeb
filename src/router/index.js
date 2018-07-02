@@ -14,13 +14,19 @@ import programShow from '@/views/home/programShow'
 import approve from '@/views/approve/approve'
 import workBench from '@/views/workBench/workBench'
 import workBenchInfo from '@/views/workBench/workBenchInfo'
+import workBenchInfoDetail from '@/views/workBench/workBenchInfoDetail'
 import workBenchEventInfo from '@/views/workBench/workBenchEventInfo'
 import workBenchPeopleInfo from '@/views/workBench/workBenchPeopleInfo'
 import workBenchParts from '@/views/workBench/workBenchParts'
 import workBenchSupplier from '@/views/workBench/workBenchSupplier'
 import workBenchPOinfo from '@/views/workBench/workBenchPOinfo'
+import workBenchMyEvent from '@/views/workBench/workBenchMyEvent'
+import workBenchMyPro from '@/views/workBench/workBenchMyPro'
+import workBenchDeclare from '@/views/workBench/workBenchDeclare'
 import reportForm from '@/views/reportForm/reportForm'
 import mine from '@/views/mine/mine'
+import mineNotice from '@/views/mine/mineNotice'
+import mineFeedback from '@/views/mine/mineFeedback'
 
 Vue.use(Router)
 
@@ -110,6 +116,11 @@ export default new Router({
       component: workBenchInfo
     },
     {
+      path: '/workBench/workBenchInfoDetail',
+      name: 'workBenchInfoDetail',
+      component: workBenchInfoDetail
+    },
+    {
       path: '/workBench/workBenchEventInfo',
       name: 'workBenchEventInfo',
       component: workBenchEventInfo
@@ -133,6 +144,31 @@ export default new Router({
       path: '/workBench/workBenchPOinfo',
       name: 'workBenchPOinfo',
       component: workBenchPOinfo
+    },
+    {
+      path: '/workBench/workBenchMyEvent',
+      name: 'workBenchMyEvent',
+      component: workBenchMyEvent
+    },
+    {
+      path: '/workBench/workBenchMyPro',
+      name: 'workBenchMyPro',
+      component: workBenchMyPro
+    },
+    {
+      path: '/workBench/workBenchDeclare',
+      name: 'workBenchDeclare',
+      component: workBenchDeclare
+    },
+    {
+      path: '/mine/mineNotice',
+      name: 'mineNotice',
+      component: mineNotice
+    },
+    {
+      path: '/mine/mineFeedback',
+      name: 'mineFeedback',
+      component: mineFeedback
     }
   ]
 })

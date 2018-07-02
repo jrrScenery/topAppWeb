@@ -72,9 +72,9 @@
         </div>
         <div class="opinionTab">
           <el-tabs v-model="activeName" type="card">
-            <template v-for="item in opinionTab" :key="item.id">
+            <template v-for="item in opinionTab">
 
-              <el-tab-pane :label="item.label" :name="item.name">
+              <el-tab-pane :label="item.label" :name="item.name" :key="item.id">
                 <el-table
                   :data="item.tableDataThree"
                   style="width: 100%; max-height:1.85rem; border: 0.01rem solid #e1e1e1">
@@ -126,7 +126,7 @@ export default {
         health: '严重',
         eventNum: 'CS1805140003',
         alarm: 'CASE人员到场OLA超时',
-        customName: '东风康明斯',
+        customName: '东风康明斯'
       }, {
         health: '严重',
         eventNum: 'CS1805140003',
@@ -217,7 +217,7 @@ export default {
               startTime: '2017-01-01',
               endTime: '2017-01-01'
             }
-          ],
+          ]
         },
         {
           name: 'second',
@@ -236,7 +236,7 @@ export default {
               startTime: '2017-01-01',
               endTime: '2017-01-01'
             }
-          ],
+          ]
         },
         {
           name: 'third',
@@ -255,10 +255,10 @@ export default {
               startTime: '2017-01-01',
               endTime: '2017-01-01'
             }
-          ],
+          ]
         }
       ],
-      activeName: 'first',
+      activeName: 'first'
     }
   },
 

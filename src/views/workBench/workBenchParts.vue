@@ -1,4 +1,4 @@
-<!--工作台-人员信息-->
+<!--工作台-备件信息-->
 <template>
   <div class="workBenchPartsView">
     <header-base></header-base>

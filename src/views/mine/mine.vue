@@ -1,12 +1,12 @@
 <!--我的-->
 <template>
   <div class="mineView">
-    <div class="mineBg" v-for="item in userData">
+    <div class="mineBg" v-for="item in userData" :key="item.id">
       <img :src="item.imgSrc" alt="">
       <p><span>{{item.userName}}</span><span>{{item.phone}}</span></p>
     </div>
     <ul class="ul_mineView">
-      <li class="li_mineView" v-for="item in liObj">
+      <li class="li_mineView" v-for="item in liObj" :key="item.id">
         <img :src="item.imgSrc" alt="">
         <span>{{item.text}}</span>
         <i class="el-icon-arrow-right"></i>

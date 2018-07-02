@@ -4,19 +4,19 @@
     <header-base></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content">
-      <div class="programCell" v-for="item in programListArr">
+      <div class="programCell" v-for="item in programListArr" :key="item.id">
         <div class="cellTop">
           <el-row>
             <el-col :span="8">
               <div class="cellTopNum">{{item.num}}</div>
             </el-col>
-            <el-col :span="10">
+            <el-col :span="9">
               <div class="cellTopColor">
                 <span style="background: #00c400"></span>{{item.numone}}
                 <span style="background: #ffd300"></span>{{item.numtwo}}
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="7">
               <div class="cellTopState">状态：<span>{{item.state}}</span></div>
             </el-col>
           </el-row>
@@ -81,7 +81,7 @@ export default {
           proLeader: '绍振洲',
           startTime: '2017-06-01',
           endTime: '2017-06-01'
-        },
+        }
       ]
     }
   },
@@ -96,7 +96,7 @@ export default {
   .programCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-top: 0.1rem;}
   .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
   .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #e0002a;}
-  .programCell .cellTop .cellTopColor span{display: inline-block; width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0 0.05rem 0 0.1rem;}
+  .programCell .cellTop .cellTopColor span{display: inline-block; width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0 0.03rem;}
   .programCell .cellTop .cellTopState{text-align: right; color: #333333;}
   .programCell .cellTop .cellTopState span{color: #999999;}
   .programCell .cellContent p{line-height: 0.3rem; color: #333333; font-size: 0.15rem;}

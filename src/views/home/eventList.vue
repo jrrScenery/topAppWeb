@@ -4,7 +4,7 @@
     <header-base></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content">
-      <div class="eventCell" v-for="item in eventListArr">
+      <div class="eventCell" v-for="item in eventListArr" :key="item.id">
         <div class="cellTop">
           <el-row>
             <el-col :span="10">
