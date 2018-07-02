@@ -10,27 +10,27 @@
           <el-row>
             <el-col :span="10">
               <div class="cellTopNum">
-                <span style="background: #1ca2a5;">5</span>{{item.num}}
+                <span style="background: #1ca2a5;">5</span>{{item.CODE}}
               </div>
             </el-col>
             <el-col :span="2"><div class="cellTopColor" style="background: #e9c430"></div></el-col>
             <el-col :span="12">
-              <div class="cellTopTime"><span>{{item.timeone}}</span><span style="margin-left: 0.05rem;">{{item.timetwo}}</span></div>
+              <div class="cellTopTime"><span>{{item.DATE_TIME}}</span><span style="margin-left: 0.05rem;">{{item.timetwo}}</span></div>
             </el-col>
           </el-row>
         </div>
 
         <div class="cellContent">
           <el-row>
-            <el-col :span="12"><span class="tit">厂商：</span><span>{{item.firm}}</span></el-col>
-            <el-col :span="12"><span class="tit">型号：</span><span>{{item.model}}</span></el-col>
+            <el-col :span="12"><span class="tit">厂商：</span><span>{{item.FACTORY_NM}}</span></el-col>
+            <el-col :span="12"><span class="tit">型号：</span><span>{{item.MODEL_NAME}}</span></el-col>
           </el-row>
           <el-row>
-            <el-col :span="12"><span class="tit">状态：</span><span>{{item.state}}</span></el-col>
-            <el-col :span="12"><span class="tit">类型：</span><span>{{item.type}}</span></el-col>
+            <el-col :span="12"><span class="tit">状态：</span><span>{{item.CASE_STATUS}}</span></el-col>
+            <el-col :span="12"><span class="tit">类型：</span><span>{{item.TYPE}}</span></el-col>
           </el-row>
           <el-row>
-            <el-col :span="24"><span class="tit">告警项：</span><span>{{item.alarm}}</span></el-col>
+            <el-col :span="24"><span class="tit">告警项：</span><span>{{item.ITEM}}</span></el-col>
           </el-row>
         </div>
         </router-link>
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import global_ from '../../components/Global'
 import headerBase from '../header/headerBase'
 export default {
   name: 'eventList',
@@ -77,7 +78,16 @@ export default {
 
   methods: {
 
+  },
+
+  created:function(){
+
+    this.$axios.get(global_.proxyServer+"?action=GetFocusCase&EMPID=1012856&PAGE_NUM=1&PAGE_TOTAL=10",{}).then(res=>{      
+      this.eventListArr = res.data.data;
+      console.log(this.eventListArr);
+    });
   }
+
 }
 </script>
 

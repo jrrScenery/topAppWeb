@@ -15,11 +15,11 @@
         <div class="title">
           <div class="titleLeft">
             <img src="../../assets/images/index_1.png" alt="">
-            <router-link :to="{name:'eventList'}">
             {{eventTitle}}
-            </router-link>
           </div>
-          <div class="titleRight">{{more}}</div>
+          <router-link :to="{name:'eventList'}">
+            <div class="titleRight">{{more}}</div>
+          </router-link>
         </div>
         <el-table
           :data="caseData"
@@ -91,11 +91,10 @@
           <el-tabs v-model="activeName" type="card">
             <template v-for="item in opinionTab">
               <el-tab-pane :label="item.label" :name="item.name">
-
                   <el-table
-                    :data="evaluateData"
+                    :data="item.data"
                     style="width: 100%; max-height:1.85rem; border: 0.01rem solid #e1e1e1">
-                    <template v-for="item in evaluateTable">
+                    <template v-for="item in item.table">
                       <el-table-column
                         :fixed="item.fixed"
                         :key="item.id"
@@ -191,40 +190,103 @@ export default {
         {
           name: 'first',
           label: 'Case评价',
-          tableStruct : 'evaluateTable'
+          table:[
+            {
+              prop: 'PROJECT_NAME',
+              label: '项目名称',
+              fixed: true,
+              width: '43%'
+            },
+            {
+              prop: 'CASE_CD',
+              label: '事件编号',
+              fixed: true,
+              width: '30%'
+            },
+            {
+              prop: 'TOTAL_SCORE',
+              label: '评价分值',
+              fixed: true,
+              width: '25%'
+            }
+          ],
+          data:[]
         },
         {
           name: 'second',
           label: '项目满意度',
-          tableStruct : 'evaluateTable'
+          table:[
+            {
+              prop: 'PROJECT_NAME',
+              label: '项目名称',
+              fixed: true,
+              width: '43%'
+            },
+            {
+              prop: 'CASE_CD',
+              label: '评价状态',
+              fixed: true,
+              width: '20%'
+            },
+            {
+              prop: 'TOTAL_SCORE',
+              label: '评价分值',
+              fixed: true,
+              width: '20%'
+            },
+            {
+              prop: 'EVALUATE_FROM_NAME',
+              label: '评价人',
+              fixed: true,
+              width: '30%'
+            },
+            {
+              prop: 'EVALUATE_TIME',
+              label: '实际评价时间',
+              fixed: true,
+              width: '30%'
+            }
+          ],
+          data:[]
         },
         {
           name: 'third',
           label: '意见投诉',
-          tableStruct : 'evaluateTable'
+          table:[
+            {
+              prop: 'TASK_CODE',
+              label: '任务编号',
+              fixed: true,
+              width: '43%'
+            },
+            {
+              prop: 'CASE_CD',
+              label: '意见类型',
+              fixed: true,
+              width: '30%'
+            },
+            {
+              prop: 'TASK_FROM',
+              label: '意见来源',
+              fixed: true,
+              width: '25%'
+            },
+            {
+              prop: 'COMPLAINT_COMMENT',
+              label: '意见内容',
+              fixed: true,
+              width: '40%'
+            },
+            {
+              prop: 'CREATE_ON',
+              label: '创建时间',
+              fixed: true,
+              width: '25%'
+            }
+          ],
+          data:[]
         }
       ],
-      evaluateTable:[
-        {
-          prop: 'PROJECT_NAME',
-          label: '项目名称',
-          fixed: true,
-          width: '43%'
-        },
-        {
-          prop: 'CASE_CD',
-          label: '事件编号',
-          fixed: true,
-          width: '30%'
-        },
-        {
-          prop: 'TOTAL_SCORE',
-          label: '评价分值',
-          fixed: true,
-          width: '25%'
-        }
-      ],
-      evaluateData:[],
       activeName: 'first',
     }
   },
@@ -243,8 +305,17 @@ export default {
     });
 
     this.$axios.get(global_.proxyServer+"?action=GetCaseEvaluate&EMPID=1012856&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
-      this.evaluateData = res.data.data;
+      this.opinionTab[0].data = res.data.data;
     });
+
+    this.$axios.get(global_.proxyServer+"?action=GetProjectEvaluate&EMPID=1012856&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+      this.opinionTab[1].data = res.data.data;
+    });
+
+    this.$axios.get(global_.proxyServer+"?action=GetComplaintsList&EMPID=1012856&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+      this.opinionTab[2].data = res.data.data;
+    });
+
 
   }
 }
