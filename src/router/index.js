@@ -69,7 +69,7 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: login
+      component: resolve => require(['@/views/login/login'],resolve)
     },
     {
       path: '/home/eventList',
