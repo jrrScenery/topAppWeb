@@ -3,6 +3,10 @@ import Router from 'vue-router'
 
 import index from '@/views/index'
 /**
+import login from '@/views/login/login'
+import home from '@/views/home/home'
+import eventList from '@/views/home/eventList'
+>>>>>>> 4e0a5d184d6bb66073138f82fbbcdd65395d1281
 import eventShow from '@/views/home/eventShow'
 import eventFeedback from '@/views/home/eventFeedback'
 import eventPeople from '@/views/home/eventPeople'
@@ -22,7 +26,8 @@ import workBenchMyEvent from '@/views/workBench/workBenchMyEvent'
 import workBenchMyPro from '@/views/workBench/workBenchMyPro'
 import workBenchDeclare from '@/views/workBench/workBenchDeclare'
 import mineNotice from '@/views/mine/mineNotice'
-import mineFeedback from '@/views/mine/mineFeedback'*/
+import mineFeedback from '@/views/mine/mineFeedback'
+import mineFeedbackShow from '@/views/mine/mineFeedbackShow'*/
 
 Vue.use(Router)
 
@@ -60,6 +65,11 @@ export default new Router({
           component: resolve => require(['@/views/mine/mine'],resolve)
         }
       ]
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
     },
     {
       path: '/home/eventList',
@@ -165,6 +175,11 @@ export default new Router({
       path: '/mine/mineFeedback',
       name: 'mineFeedback',
       component: resolve => require(['@/views//mine/mineFeedback'],resolve)
+    },
+    {
+      path: '/mine/mineFeedbackShow',
+      name: 'mineFeedbackShow',
+      component: resolve => require(['@/views//mine/mineFeedbackShow'],resolve)
     }
   ]
 })
