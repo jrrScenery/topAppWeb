@@ -7,8 +7,8 @@
       mode="horizontal"
       @select="select">
     <template v-for="item in footerArr">
-      <el-menu-item :index="item.index" @click="routerPush(item.index)">
-        <img v-if="item.elType == 3" :src="item.imgSrc" class="workImg" />
+      <el-menu-item :index="item.index" @click="routerPush(item.index)" :key="item.id">
+        <img v-if="item.elType === 3" :src="item.imgSrc" class="workImg" />
         <i :class="item.className"></i>
         <span>{{ item.text }}</span>
       </el-menu-item>

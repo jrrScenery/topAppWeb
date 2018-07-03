@@ -334,6 +334,7 @@ export default {
   .content >>> .el-table td>.cell{text-align: center; color: #666666; padding: 0}
   .content >>> .el-table th>.cell{text-align: center; color: #333333; padding: 0;}
   .table_name{display: block; width: 100%; height: 0.3rem; line-height: 0.3rem; overflow: hidden; text-overflow: ellipsis;white-space: nowrap;}
+  .opinionTab >>> .el-tabs__item{width: 33%; padding: 0!important; text-align: center; border: 1px solid #f7f7f7; border-radius: 0.2rem;}
   .opinionTab >>> .el-tabs__item.is-active{color: #2698d6; background: #ffffff; border: 1px solid #e1e1e1; border-radius: 0.2rem;}
   .opinionTab >>> .el-tabs--card>.el-tabs__header{border: none; margin-bottom: 0.1rem;}
   .opinionTab >>> .el-tabs--card>.el-tabs__header .el-tabs__nav{display: flex; justify-content: space-around; border: none; width: 100%;}
