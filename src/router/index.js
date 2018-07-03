@@ -55,9 +55,9 @@ export default new Router({
           component: resolve => require(['@/views/workBench/workBench'],resolve)
         },
         {
-          path: '/reportForm',
+          path: '/reportform',
           name: 'reportForm',
-          component: resolve => require(['@/views/reportForm/reportForm'],resolve)
+          component: resolve => require(['@/views/reportform/reportForm'],resolve)
         },
         {
           path: '/mine',

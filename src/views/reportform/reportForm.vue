@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import business from '../../components/reportForm/business'
-import quality from '../../components/reportForm/quality'
+import business from '../../components/form/business'
+import quality from '../../components/form/quality'
 
 export default {
   name: 'reportForm',

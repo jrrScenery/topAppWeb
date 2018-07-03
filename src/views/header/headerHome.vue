@@ -2,12 +2,12 @@
 <template>
   <header v-if="!(title =='我的')" class="headerHomeView">
     <div class="headerLeft">
-      <img src="../../assets/images//header_sao.png" alt="">
+      <img src="../../assets/images/header_sao.png" alt="">
       <p>{{headerLeft}}</p>
     </div>
     <h2>{{title}}</h2>
     <div class="headerRight">
-      <img src="../../assets/images//header_info.png" alt="">
+      <img src="../../assets/images/header_info.png" alt="">
     </div>
   </header>
 </template>
@@ -43,7 +43,7 @@ export default {
         case 'workBench':
           this.title = '工作台'
           break
-        case 'reportForm':
+        case 'form':
           this.title = '报表'
           break
         case 'mine':
