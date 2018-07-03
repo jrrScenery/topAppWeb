@@ -44,7 +44,7 @@ export default {
   .content{width: 100%; margin-top: 0.05rem; color: #999999}
   .content ul li{padding: 0 0.2rem; margin-bottom: 0.05rem; background: #ffffff;}
   .content ul li .title{display: flex; justify-content: space-between; line-height: 0.36rem;}
-  .content ul li .title p{color: #e0002a; font-size: 0.14rem;}
+  .content ul li .title p{color: #2698d6; font-size: 0.14rem;}
   .content ul li .title span{display: inline-block; width: 0.9rem;}
   .content ul li .desc{font-size: 0.14rem; color: #333333; height: 0.3rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap}
 </style>

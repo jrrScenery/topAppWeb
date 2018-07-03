@@ -71,8 +71,8 @@ export default {
 <style scoped>
   .eventShowTabs{margin-top: 0.05rem; background: #ffffff;}
   .eventShowTabs >>> .el-tabs__header{margin: 0 0 0.1rem;}
-  .eventShowTabs >>> .el-tabs__item.is-active{color: #e0002a;}
-  .eventShowTabs >>> .el-tabs__active-bar{background: #e0002a;}
+  .eventShowTabs >>> .el-tabs__item.is-active{color: #2698d6;}
+  .eventShowTabs >>> .el-tabs__active-bar{background: #2698d6;}
   .eventShowTabs >>> .el-tabs__nav{width: 100%; text-align: center;}
   .eventShowTabs >>> .el-tabs__item{width: 25%; padding: 0; font-size: 0.14rem; color: #666666;}
   .eventShowFooter{position: absolute; left: 0; right: 0; bottom: 0; height: 0.5rem; background: #ffffff;}

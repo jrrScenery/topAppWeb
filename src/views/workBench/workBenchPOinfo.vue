@@ -118,6 +118,6 @@ export default {
   .content >>> .el-tabs__header{margin: 0;}
   .content >>> .el-tabs__nav{width: 100%}
   .content >>> .el-tabs__nav .el-tabs__item{width: 50%}
-  .content >>> .el-tabs__nav .el-tabs__item.is-active{color: #e0002a}
-  .content >>> .el-tabs__active-bar{background: #e0002a}
+  .content >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}
+  .content >>> .el-tabs__active-bar{background: #2698d6}
 </style>

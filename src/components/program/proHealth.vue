@@ -222,8 +222,8 @@ export default {
 
 <style scoped>
   .proHealthCell{}
-  .proHealthCell .proHealthTit{position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.14rem; color: #e0002a;}
-  .proHealthCell .proHealthTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #e0002a;}
+  .proHealthCell .proHealthTit{position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.14rem; color: #2698d6;}
+  .proHealthCell .proHealthTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
   .proHealthCell .proHealthTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
   .tableTh li{display: flex; line-height: 0.25rem; font-size: 0.14rem; padding: 0 0.2rem; color: #000000;}
   .tableTh span{width: 15%; text-align: center;}

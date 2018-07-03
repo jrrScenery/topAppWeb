@@ -97,7 +97,7 @@ export default {
 <style scoped>
   .programCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-top: 0.1rem;}
   .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
-  .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #e0002a;}
+  .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
   .programCell .cellTop .cellTopColor span{display: inline-block; width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0 0.03rem;}
   .programCell .cellTop .cellTopState{text-align: right; color: #333333;}
   .programCell .cellTop .cellTopState span{color: #999999;}

@@ -94,7 +94,7 @@ export default {
 <style scoped>
   .eventCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-top: 0.1rem;}
   .eventCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
-  .eventCell .cellTop .cellTopNum{font-size: 0.14rem; color: #e0002a;}
+  .eventCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
   .eventCell .cellTop .cellTopNum span{display: inline-block; height: 0.19rem; width: 0.19rem; border-radius: 50%; vertical-align: text-top; margin-right: 0.03rem; color: #ffffff; text-align: center; line-height: 0.2rem;}
   .eventCell .cellTop .cellTopColor{width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0.15rem 0 0 -0.03rem; text-align: right}
   .eventCell .cellTop .cellTopTime{text-align: right; color: #999999;}

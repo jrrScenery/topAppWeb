@@ -94,5 +94,5 @@ export default {
   .takePhoto{position: absolute; bottom: 0; left: 0.15rem; right: 0.15rem; line-height: 0.5rem; display: flex; justify-content: space-between; color: #999999}
   .takePhoto img{width: 0.3rem; height: 0.3rem; margin: 0.1rem 0 0 0.1rem;}
   .submitBtn >>> .el-form-item__content{margin: 0!important;}
-  .submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #e0002a; background: #e0002a; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;}
+  .submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;}
 </style>

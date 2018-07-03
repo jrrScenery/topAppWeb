@@ -43,7 +43,7 @@ export default {
 
 <style scoped>
   .eventBaseInfoTit{position: relative; line-height: 0.35rem; margin-left: 0.2rem; font-size: 0.14rem; color: #000000;}
-  .eventBaseInfoTit::before{position: absolute; top: 0.1rem; left: -0.12rem; width: 0.05rem; height: 0.15rem; content: ''; background: #e0002a;}
+  .eventBaseInfoTit::before{position: absolute; top: 0.1rem; left: -0.12rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
   .eventBaseInfoCell{padding: 0 0.2rem 0.1rem; line-height: 0.28rem; color: #262626;}
   .eventBaseInfoCell span{width: 0.9rem; color: #999999; display: inline-block;}
 </style>

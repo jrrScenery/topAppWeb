@@ -130,15 +130,15 @@ export default {
 <style scoped>
   .programCell{padding: 0 0.2rem 0.1rem; margin-top: 0.1rem;}
   .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
-  .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #e0002a;}
+  .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
   .programCell .cellTop .cellTopColor span{display: inline-block; width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0 0.05rem 0 0.1rem;}
   .programCell .cellTop .cellTopState{text-align: right; color: #333333;}
   .programCell .cellTop .cellTopState span{color: #999999;}
   .programCell .cellContent p{line-height: 0.3rem; color: #333333; font-size: 0.15rem;}
   .programCell .cellContent .el-col{line-height: 0.25rem; color: #999999;}
   .programShowView >>> .el-tabs__item{font-size: 0.14rem; color: #666666}
-  .programShowView >>> .el-tabs__active-bar{ background-color: #e0002a}
-  .programShowView >>> .el-tabs__item.is-active{color: #e0002a;}
+  .programShowView >>> .el-tabs__active-bar{ background-color: #2698d6}
+  .programShowView >>> .el-tabs__item.is-active{color: #2698d6;}
   .programShowView >>> .el-tabs__header{margin: 0 0.1rem}
   .programShowView >>> .el-tabs__header .el-tabs__nav-prev{font-size: 0.2rem}
   .programShowView >>> .el-tabs__header .el-tabs__nav-next{font-size: 0.2rem}

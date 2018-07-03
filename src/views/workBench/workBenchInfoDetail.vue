@@ -82,7 +82,7 @@ export default {
   .workBenchInfoDetailView{width: 100%;}
   .programCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-top: 0.1rem;}
   .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
-  .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #e0002a;}
+  .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
   .programCell .cellTop .cellTopState{text-align: right; color: #999999;}
   .programCell .cellContent p{line-height: 0.3rem; color: #333333; font-size: 0.15rem;}
   .programCell .cellContent .el-col{line-height: 0.25rem; color: #999999;}

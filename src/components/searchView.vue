@@ -92,18 +92,18 @@ export default {
   .searchView >>> .el-select .el-input__inner:focus{border-color: #dcdfe6;}
   .searchView >>> .el-form-item__label{text-align: left; color: #999999; font-size: 0.13rem;}
   .searchView >>> .el-checkbox-button__inner{border-radius: 0.15rem; margin-right: 0.03rem; background: #f6f6f6; color: #333333; font-size: 0.13rem;border: 0.01rem solid #f6f6f6;}
-  .searchView >>> .el-checkbox-button.is-checked .el-checkbox-button__inner{border: 0.01rem solid #e0002a; background: #fef4f3; color: #e0002a; box-shadow: none;}
+  .searchView >>> .el-checkbox-button.is-checked .el-checkbox-button__inner{border: 0.01rem solid #2698d6; background: #fef4f3; color: #2698d6; box-shadow: none;}
   .searchView >>> .bInput .el-input__inner{width: 80%;}
   .searchView >>> .bInput .el-input__inner:focus{border-color: #dcdfe6;}
-  .searchView >>> .el-select-dropdown__item.selected{color: #e0002a;}
-  .searchView >>> .el-select-dropdown__item span{color: #e0002a!important;}
+  .searchView >>> .el-select-dropdown__item.selected{color: #2698d6;}
+  .searchView >>> .el-select-dropdown__item span{color: #2698d6!important;}
   .searchView >>> .el-input__prefix{display: none;}
   .searchView >>> .el-input--prefix .el-input__inner{padding: 0; text-align: center;}
   .searchView >>> .el-col-2{text-align: center;}
   .searchView >>> .searchBtn{position: absolute; bottom: -0.15rem; left: 0; right: 0; height: 0.4rem;}
   .searchView >>> .searchBtn .el-button{width: 50%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
   .searchView >>> .searchBtn .el-button:hover{background: #ffffff;}
-  .searchView >>> .searchBtn .searchBtnCell:hover{background: #e0002a;}
+  .searchView >>> .searchBtn .searchBtnCell:hover{background: #2698d6;}
   .searchView >>> .searchBtn .el-form-item__content{margin: 0!important; display: flex;}
-  .searchView >>> .searchBtn .searchBtnCell{background: #e0002a; color: #ffffff;}
+  .searchView >>> .searchBtn .searchBtnCell{background: #2698d6; color: #ffffff;}
 </style>
