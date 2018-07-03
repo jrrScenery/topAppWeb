@@ -26,7 +26,7 @@ export default {
         {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1'},
         {elType: 2, index: 'approve', text: '待审批', className: 'el-icon-footer_2'},
         {elType: 3, index: 'workBench', text: '工作台', imgSrc: require('@/assets/images/footer_3.png')},
-        {elType: 4, index: 'form', text: '报表', className: 'el-icon-footer_4'},
+        {elType: 4, index: 'reportForm', text: '报表', className: 'el-icon-footer_4'},
         {elType: 5, index: 'mine', text: '我的', className: 'el-icon-footer_5'}
       ],
       title: [],

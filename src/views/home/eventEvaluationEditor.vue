@@ -9,6 +9,7 @@
           <span class="starTit">{{items.tit}}</span>
           <el-rate
             v-model="items.value"
+            disabled
             :colors="['#666666', '#999999', '#FF9900']">
           </el-rate>
         </div>
@@ -16,12 +17,21 @@
           <span>待改进选项</span>
           <div class="improveCell">
             <el-checkbox-group v-model="items.checkList">
-              <el-checkbox v-for="item in items.label" :label="item.cell" :key="item.id"></el-checkbox>
+              <el-checkbox disabled v-for="item in items.label" :label="item.cell" :key="item.id"></el-checkbox>
             </el-checkbox-group>
           </div>
         </div>
       </div>
-      <div class="signature"></div>
+      <ul class="signature">
+        <li>
+          <span>客户签字</span>
+          <div class="sign"></div>
+        </li>
+        <li>
+          <span>工程师</span>
+          <p>{{engineer}}</p>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -37,6 +47,7 @@ export default {
 
   data () {
     return {
+      engineer: '梁瑛',
       editorArr: [
         {tit: '1.报障热线服务', value: '', checkList: [], label: [{cell: '受理不及时'}, {cell: '服务态度不好'}, {cell: '沟通互动不足'}]},
         {tit: '2.二线技术支持', value: '', checkList: [], label: [{cell: '响应不及时'}, {cell: '服务态度不好'}, {cell: '沟通互动不足'}, {cell: '技术能力不够'}]},
@@ -54,10 +65,13 @@ export default {
 </script>
 
 <style scoped>
-  .content{margin-top: 0.05rem; background: #ffffff; color: #999999; padding: 0 0.25rem;}
+  .content{margin-top: 0.05rem; background: #ffffff; color: #999999; padding: 0.1rem 0.25rem 0.15rem;}
   .editorView .star{display: flex;}
-  .editorView .star .starTit{}
-  .editorView .improve{}
+  .editorView .star .starTit{ display: inline-block; width: 1.2rem; line-height: 0.28rem}
+  .editorView .improve span{line-height: 0.24rem}
   .editorView .improve >>> .el-checkbox{display: block; margin: 0; font-size: 0.13rem; color: #999999;}
-  .signature{display: block; margin: 0; font-size: 0.13rem; color: #999999;}
+  .signature li{display: flex; margin: 0; line-height: 0.35rem; color: #2698d6; border-bottom: 0.01rem solid #e1e1e1}
+  .signature li:first-child{line-height: 0.8rem;}
+  .signature li .sign{margin-left: 0.15rem; background: pink; width: 0.8rem}
+  .signature li p{color: #333333; margin-left: 0.3rem}
 </style>
