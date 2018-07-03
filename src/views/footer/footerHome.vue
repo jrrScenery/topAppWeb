@@ -85,7 +85,7 @@ export default {
 </script>
 
 <style>
-  .footerSelect{display: flex;position: fixed; bottom: 0; left: 0; right: 0; z-index: 999; : 100%; height: 0.45rem; box-shadow: 0 -0.01rem 0.02rem 0 #d9d9d9}
+  .footerSelect{display: flex;position: fixed; bottom: 0; left: 0; right: 0; z-index: 999; width: 100%; height: 0.45rem; box-shadow: 0 -0.01rem 0.02rem 0 #d9d9d9}
   .footerSelect .el-menu-item, .el-submenu__title{height: 0.45rem!important;}
   .footerSelect .el-menu--horizontal{width: 100%; padding: 0 0.1rem;}
   .footerSelect .el-menu--horizontal>.el-menu-item{display: flex; flex-direction: column; align-content: space-around; justify-content: space-around; border: none;width: 20%; text-align: center; padding: 0; color: #8a8a8a!important; background: #ffffff!important; font-size: 0.1rem;}

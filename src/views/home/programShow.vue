@@ -10,13 +10,13 @@
             <el-col :span="8">
               <div class="cellTopNum">{{item.num}}</div>
             </el-col>
-            <el-col :span="10">
+            <el-col :span="9">
               <div class="cellTopColor">
                 <span style="background: #00c400"></span>{{item.numone}}
                 <span style="background: #ffd300"></span>{{item.numtwo}}
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="7">
               <div class="cellTopState">状态：<span>{{item.state}}</span></div>
             </el-col>
           </el-row>
@@ -121,17 +121,34 @@ export default {
     }
   },
 
-  methods: {
+  mounted () {
+    // window.addEventListener('scroll', this.handleScroll())
+  },
 
+  // destroyed () {
+  //   window.removeEventListener('scroll', this.handleScroll)
+  // },
+
+  methods: {
+    // handleScroll () {
+    //   let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+    //   let tabTop = document.getElementsByClassName('el-tabs__header')
+    //   console.log(scrollTop)
+    //   if (scrollTop > 260) {
+    //     tabTop.style.backgroundColor = 'red'
+    //   } else {
+    //     this.isFixed = false
+    //   }
+    // }
   }
 }
 </script>
 
 <style scoped>
-  .programCell{padding: 0 0.2rem 0.1rem; margin-top: 0.1rem;}
+  .programCell{padding: 0 0.15rem 0.1rem; margin-top: 0.1rem;}
   .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
   .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
-  .programCell .cellTop .cellTopColor span{display: inline-block; width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0 0.05rem 0 0.1rem;}
+  .programCell .cellTop .cellTopColor span{display: inline-block; width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin-right: 0.05rem;}
   .programCell .cellTop .cellTopState{text-align: right; color: #333333;}
   .programCell .cellTop .cellTopState span{color: #999999;}
   .programCell .cellContent p{line-height: 0.3rem; color: #333333; font-size: 0.15rem;}
