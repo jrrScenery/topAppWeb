@@ -9,7 +9,7 @@
     <template v-for="item in footerArr">
       <el-menu-item :index="item.index" @click="routerPush(item.index)">
         <img v-if="item.elType == 3" :src="item.imgSrc" class="workImg" />
-        <img v-else :src="item.imgSrc"/>
+        <i :class="item.className"></i>
         <span>{{ item.text }}</span>
       </el-menu-item>
     </template>
@@ -23,11 +23,11 @@ export default {
   data: function () {
     return {
       footerArr: [
-        {elType: 1, index: 'home', text: '首页', imgSrc: require('@/assets/images/footer_1.png')},
-        {elType: 2, index: 'approve', text: '待审批', imgSrc: require('@/assets/images/footer_2.png')},
+        {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1'},
+        {elType: 2, index: 'approve', text: '待审批', className: 'el-icon-footer_2'},
         {elType: 3, index: 'workBench', text: '工作台', imgSrc: require('@/assets/images/footer_3.png')},
-        {elType: 4, index: 'reportForm', text: '报表', imgSrc: require('@/assets/images/footer_4.png')},
-        {elType: 5, index: 'mine', text: '我的', imgSrc: require('@/assets/images/footer_5.png')}
+        {elType: 4, index: 'reportForm', text: '报表', className: 'el-icon-footer_4'},
+        {elType: 5, index: 'mine', text: '我的', className: 'el-icon-footer_5'}
       ],
       title: [],
       defaultActive: 'home'
@@ -62,7 +62,6 @@ export default {
           this.defaultActive = path
           break
         }
-
         if (footerArr[i].arr) {
           for (let j = 0; j < footerArr[i].arr.length; j++) {
             if (footerArr[i].arr[j].index === path) {
@@ -92,6 +91,6 @@ export default {
   .footerSelect .el-menu--horizontal>.el-menu-item{display: flex; flex-direction: column; align-content: space-around; justify-content: space-around; border: none;width: 20%; text-align: center; padding: 0; color: #8a8a8a!important; background: #ffffff!important; font-size: 0.1rem;}
   .footerSelect .el-menu--horizontal>.el-menu-item span{line-height: 0.2rem!important;}
   .footerSelect .el-menu--horizontal>.el-menu-item.is-active{border: none; color: #2698d6!important; background: #ffffff!important;}
-  .footerSelect .el-menu--horizontal>.el-menu-item img{width: 0.22rem; height: 0.22rem; margin: auto;}
+  .footerSelect .el-menu--horizontal>.el-menu-item i{display: inline-block; width: 0.22rem; height: 0.22rem; margin: auto; font-size: 0.24rem!important;}
   .footerSelect .el-menu--horizontal>.el-menu-item .workImg{width: 0.57rem; height: 0.57rem; margin: auto; margin-top: -0.3rem;}
 </style>

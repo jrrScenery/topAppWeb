@@ -8,6 +8,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import echarts from 'echarts'
+import '@/assets/icon/iconfont.css'
 import localstorage from './utils/localstorage'
 
 Vue.config.productionTip = false

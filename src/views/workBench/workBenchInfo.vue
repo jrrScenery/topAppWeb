@@ -75,7 +75,7 @@ export default {
 
 <style scoped>
   .workBenchInfoView{width: 100%; color: #999999; line-height: 0.3rem}
-  .tableTh span{display: inline-block; width: 25%; text-align: center; color: #666666;}
+  .tableTh span{display: inline-block; width: 25%; text-align: center; color: #666666; line-height: 0.4rem;}
   .tableTd .tableTitle{color: #2698d6; padding-left: 0.25rem; position: relative; background: #ffffff;}
   .tableTd .tableTitle:before{width: 0.05rem; height: 0.12rem; content: ''; position: absolute; left: 0.1rem; top: 0.09rem; background: #2698d6;}
   .tableTd .ulTable{text-align: center; display: flex; flex-wrap: wrap;}
