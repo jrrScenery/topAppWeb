@@ -87,10 +87,10 @@ export default {
 
 <style>
   .footerSelect{display: flex;position: fixed; bottom: 0; left: 0; right: 0; z-index: 999; : 100%; height: 0.45rem; box-shadow: 0 -0.01rem 0.02rem 0 #d9d9d9}
-  .footerSelect .el-menu-item, .el-submenu__title{height: 0.45rem;}
+  .footerSelect .el-menu-item, .el-submenu__title{height: 0.45rem!important;}
   .footerSelect .el-menu--horizontal{width: 100%; padding: 0 0.1rem;}
   .footerSelect .el-menu--horizontal>.el-menu-item{display: flex; flex-direction: column; align-content: space-around; justify-content: space-around; border: none;width: 20%; text-align: center; padding: 0; color: #8a8a8a!important; background: #ffffff!important; font-size: 0.1rem;}
-  .footerSelect .el-menu--horizontal>.el-menu-item span{line-height: 0.2rem;}
+  .footerSelect .el-menu--horizontal>.el-menu-item span{line-height: 0.2rem!important;}
   .footerSelect .el-menu--horizontal>.el-menu-item.is-active{border: none; color: #2698d6!important; background: #ffffff!important;}
   .footerSelect .el-menu--horizontal>.el-menu-item img{width: 0.22rem; height: 0.22rem; margin: auto;}
   .footerSelect .el-menu--horizontal>.el-menu-item .workImg{width: 0.57rem; height: 0.57rem; margin: auto; margin-top: -0.3rem;}
