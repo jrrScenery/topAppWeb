@@ -1,7 +1,7 @@
 <!--工作台-我的事件-->
 <template>
   <div class="workBenchMyEventView">
-    <header-base></header-base>
+    <header-base :title="workBenchMyEventTit"></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <el-tabs v-model="activeName">
@@ -11,12 +11,12 @@
             <div class="eventCell" v-for="info in item.eventListArr" :key="info.id">
               <div class="cellTop">
                 <el-row>
-                  <el-col :span="10">
+                  <el-col :span="11">
                     <div class="cellTopNum">
                       <span style="background: #1ca2a5;">5</span>{{info.num}}
                     </div>
                   </el-col>
-                  <el-col :span="2"><div class="cellTopColor" style="background: #e9c430"></div></el-col>
+                  <el-col :span="1"><div class="cellTopColor" style="background: #e9c430"></div></el-col>
                   <el-col :span="12">
                     <div class="cellTopTime"><span>{{info.timeone}}</span><span style="margin-left: 0.05rem;">{{info.timetwo}}</span></div>
                   </el-col>
@@ -49,6 +49,7 @@
 
 <script>
 import headerBase from '../header/headerBase'
+import global_ from '../../components/Global'
 export default {
   name: 'workBenchMyEvent',
 
@@ -58,6 +59,7 @@ export default {
 
   data () {
     return {
+      workBenchMyEventTit: '我的事件',
       opinionTab: [
         {
           name: 'first',
@@ -203,7 +205,12 @@ export default {
       activeName: 'first'
     }
   },
-
+  created () {
+    this.$axios.get(global_.proxyServer+"?action=GetCaseStat&EMPID="+global_.empId,{}).then(res=>{
+      var baseInfo = res.data.data;
+      console.log(res.data.data);
+    });
+  },
   methods: {
   }
 }
@@ -217,11 +224,11 @@ export default {
   .content >>> .el-tabs__active-bar{background: #2698d6}
   .content >>> .el-tabs__nav .el-tabs__item{width: 20%; text-align: center; padding: 0; color: #999999}
   .content >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}
-  .eventCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-bottom: 0.1rem;}
+  .eventCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-bottom: 0.05rem;}
   .eventCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
   .eventCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
   .eventCell .cellTop .cellTopNum span{display: inline-block; height: 0.19rem; width: 0.19rem; border-radius: 50%; vertical-align: text-top; margin-right: 0.08rem; color: #ffffff; text-align: center; line-height: 0.2rem;}
-  .eventCell .cellTop .cellTopColor{width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0.15rem 0 0.15rem 0.12rem; text-align: right}
+  .eventCell .cellTop .cellTopColor{width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0.15rem 0; text-align: right}
   .eventCell .cellTop .cellTopTime{text-align: right; color: #999999;}
   .eventCell .cellContent .el-col{line-height: 0.25rem; color: #333333;}
   .eventCell .cellContent .el-col .tit{line-height: 0.25rem; color: #999999;}

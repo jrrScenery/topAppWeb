@@ -1,7 +1,7 @@
 <!--工作台-人员信息-->
 <template>
   <div class="workBenchPeopleInfoView">
-    <header-base></header-base>
+    <header-last :title="workBenchPeopleInfoTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <el-table
@@ -9,28 +9,28 @@
         :data="tableData"
         style="width: 100%">
         <el-table-column
-          prop="city"
+          prop="areaname"
           label="城市"
           width="24%">
         </el-table-column>
         <el-table-column label="人员数量">
           <el-table-column
-            prop="move"
+            prop="c1"
             label="机动人员"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="stationed"
+            prop="c2"
             label="驻场人员"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="person"
+            prop="c3"
             label="个人合作"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="company"
+            prop="c4"
             label="公司合作"
             width="19%">
           </el-table-column>
@@ -41,65 +41,27 @@
 </template>
 
 <script>
-import headerBase from '../header/headerBase'
+import headerLast from '../header/headerLast'
+import global_ from '../../components/Global'
 export default {
   name: 'workBenchPeopleInfo',
 
   components: {
-    headerBase
+    headerLast
   },
 
   data () {
     return {
-      tableData: [{
-        city: '北京',
-        move: '625',
-        stationed: '315',
-        person: '421',
-        company: '271'
-      }, {
-        city: '北京',
-        move: '625',
-        stationed: '315',
-        person: '421',
-        company: '271'
-      }, {
-        city: '北京',
-        move: '625',
-        stationed: '315',
-        person: '421',
-        company: '271'
-      }, {
-        city: '北京',
-        move: '625',
-        stationed: '315',
-        person: '421',
-        company: '271'
-      }, {
-        city: '北京',
-        move: '625',
-        stationed: '315',
-        person: '421',
-        company: '271'
-      }, {
-        city: '北京',
-        move: '625',
-        stationed: '315',
-        person: '421',
-        company: '271'
-      }, {
-        city: '北京',
-        move: '625',
-        stationed: '315',
-        person: '421',
-        company: '271'
-      }],
-      workBenchPeopleInfo: [
-        {}
-      ]
+      workBenchPeopleInfoTit: '人员信息',
+      tableData: []
     }
   },
-
+  created () {
+    this.$axios.get(global_.proxyServer+"?action=GetPersonStat&EMPID="+global_.empId,{}).then(res=>{
+      this.tableData = res.data.data;
+      console.log(this.tableData);
+    });
+  },
   methods: {
   }
 }
@@ -114,4 +76,5 @@ export default {
   .content >>> .el-table th{text-align: center; background: #f7f7f7; color: #333333}
   .content >>> .el-table td{border: none}
   .content >>> .el-table .cell{padding: 0;}
+  .content >>> .el-table__empty-block{position: initial}
 </style>

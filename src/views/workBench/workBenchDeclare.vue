@@ -1,29 +1,29 @@
 <!--工作台-事件申报-->
 <template>
   <div class="workBenchDeclareView">
-    <header-base></header-base>
+    <header-base-four :title="workBenchDeclareTit"></header-base-four>
     <div style="height: 0.45rem;"></div>
     <div class="content">
-      <el-form :model="formData" label-width="0.8rem" ref="formData">
-        <el-form-item label="序列号">
+      <el-form :model="formData" label-width="0.9rem" ref="formData">
+        <el-form-item label="序列号：">
           <el-input v-model="formData.num" placeholder="请输入序列号"></el-input>
         </el-form-item>
-        <el-form-item label="型号">
+        <el-form-item label="型号：">
           <el-input v-model="formData.type" placeholder="请输入型号"></el-input>
         </el-form-item>
-        <el-form-item label="厂商">
+        <el-form-item label="厂商：">
           <el-input v-model="formData.firm" placeholder="请输入厂商"></el-input>
         </el-form-item>
-        <el-form-item label="所在城市">
+        <el-form-item label="所在城市：">
           <el-input v-model="formData.city" :disabled="true" placeholder="所在城市"></el-input>
         </el-form-item>
-        <el-form-item label="影响程度">
+        <el-form-item label="影响程度：">
           <el-select v-model="formData.degree" placeholder="请选择">
             <el-option label="区域一" value="shanghai"></el-option>
             <el-option label="区域二" value="beijing"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="影响范围">
+        <el-form-item label="影响范围：">
           <el-select v-model="formData.range" placeholder="请选择">
             <el-option label="区域一" value="shanghai"></el-option>
             <el-option label="区域二" value="beijing"></el-option>
@@ -42,16 +42,17 @@
 </template>
 
 <script>
-import headerBase from '../header/headerBase'
+import headerBaseFour from '../header/headerBaseFour'
 export default {
   name: 'workBenchDeclare',
 
   components: {
-    headerBase
+    headerBaseFour
   },
 
   data () {
     return {
+      workBenchDeclareTit: '事件申报',
       formData: {
         num: '',
         type: '',
@@ -81,7 +82,7 @@ export default {
 
 <style scoped>
   .workBenchDeclareView{width: 100%;}
-  .content{margin-top: 0.05rem; background: #ffffff; position: relative; padding-bottom: 0.5rem;}
+  .content{margin-top: 0.05rem; background: #ffffff; position: relative; padding-bottom: 0.5rem; margin-bottom: 0.5rem}
   .content >>> .el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
   .content >>> .el-form-item__label{font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.25rem; text-align: left}
   .content >>> .el-input__inner{border: none; color: #333333;}

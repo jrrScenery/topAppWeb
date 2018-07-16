@@ -1,56 +1,62 @@
 <!--首页-需关注项目-->
 <template>
   <div class="programListView">
-    <header-base></header-base>
+    <header-base-two :title="programListTit"></header-base-two>
     <div style="height: 0.45rem;"></div>
-    <div class="content">
-      <div class="programCell" v-for="item in programListArr">
-        <router-link :to="{name:'programShow'}">
+    <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+      <div class="programCell" v-for="item in programListArr" :key="item.id">
+        <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID}}">
         <div class="cellTop">
           <el-row>
             <el-col :span="8">
-              <div class="cellTopNum">{{item.num}}</div>
+              <div class="cellTopNum">{{item.PROJECT_CODE}}</div>
             </el-col>
             <el-col :span="9">
               <div class="cellTopColor">
-                <span style="background: #00c400"></span>{{item.numone}}
-                <span style="background: #ffd300"></span>{{item.numtwo}}
+                <span style="background: #00c400"></span>{{item.HEALTH_BASE_VALUE}}
+                <span style="background: #ffd300"></span>{{item.HEALTH_CURRENT_VALUE}}
               </div>
             </el-col>
             <el-col :span="7">
-              <div class="cellTopState">状态：<span>{{item.state}}</span></div>
+              <div class="cellTopState">状态：<span>{{item.PROJECT_STATUS}}</span></div>
             </el-col>
           </el-row>
         </div>
         <div class="cellContent">
-          <p>{{item.title}}</p>
+          <p>{{item.PROJECT_NAME}}</p>
           <el-row>
-            <el-col :span="12"><span class="tit">销售：{{item.sale}}</span></el-col>
-            <el-col :span="12"><span class="tit">项目经理：{{item.proLeader}}</span></el-col>
+            <el-col :span="12"><span class="tit">销售：{{item.SALESMAN_NAME}}</span></el-col>
+            <el-col :span="12"><span class="tit">项目经理：{{item.PM_NAME}}</span></el-col>
           </el-row>
           <el-row>
-            <el-col :span="12"><span class="tit">开始时间：{{item.startTime}}</span></el-col>
-            <el-col :span="12"><span class="tit">结束时间：{{item.endTime}}</span></el-col>
+            <el-col :span="12"><span class="tit">开始时间：{{item.START_DATE}}</span></el-col>
+            <el-col :span="12"><span class="tit">结束时间：{{item.END_DATE}}</span></el-col>
           </el-row>
         </div>
         </router-link>
       </div>
+      <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
     </div>
   </div>
 </template>
 
 <script>
-import headerBase from '../header/headerBase'
+import global_ from '../../components/Global'
+import headerBaseTwo from '../header/headerBaseTwo'
+import loadingtmp from '@/components/load/loading'
 export default {
   name: 'programList',
 
   components: {
-    headerBase
+    headerBaseTwo,
+    loadingtmp
   },
 
   data () {
     return {
+      programListTit: '需关注项目',
       programListArr: [
+      /**
         {
           num: 'WVJAH60TSF',
           numone: '90.2',
@@ -61,41 +67,52 @@ export default {
           proLeader: '绍振洲',
           startTime: '2017-06-01',
           endTime: '2017-06-01'
-        },
-        {
-          num: 'WVJAH60TSF',
-          numone: '90.2',
-          numtwo: '90.2',
-          state: '执行中',
-          title: '2017年河南联通IT设备维保服务公开招标项目',
-          sale: '绍振洲',
-          proLeader: '绍振洲',
-          startTime: '2017-06-01',
-          endTime: '2017-06-01'
-        },
-        {
-          num: 'WVJAH60TSF',
-          numone: '90.2',
-          numtwo: '90.2',
-          state: '执行中',
-          title: '2017年河南联通IT设备维保服务公开招标项目',
-          sale: '绍振洲',
-          proLeader: '绍振洲',
-          startTime: '2017-06-01',
-          endTime: '2017-06-01'
-        }
-      ]
+        }*/
+      ],
+      page:1,
+      pageSize:10,
+      busy:false,
+      loadall: false
     }
   },
 
   methods: {
-
+    getEventList(flag){
+      this.$axios.get(global_.proxyServer+"?action=GetFocusProject",{params:{PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize}}).then(res=>{
+        if(flag){
+          this.programListArr = this.programListArr.concat(res.data.data);
+        }else{
+          this.programListArr = res.data.data;
+        }
+        if(0 == res.data.data.length){
+          this.busy = true;
+          this.loadall = true;
+        }
+        else{
+          this.busy = false;
+          this.page++
+        }
+      });
+    },
+    loadMore(){
+      this.busy = true;
+      setTimeout(() => {
+        this.getEventList(this.page>1);
+      }, 500);
+    }
+  },
+  created:function(){
+    // this.$axios.get(global_.proxyServer+"?action=GetFocusProject&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=10",{}).then(res=>{
+    //   this.programListArr = res.data.data;
+    //   //console.log(this.programListArr);
+    // });
   }
 }
 </script>
 
 <style scoped>
-  .programCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-top: 0.1rem;}
+  .content{ width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
+  .programCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-top: 0.05rem;}
   .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
   .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
   .programCell .cellTop .cellTopColor span{display: inline-block; width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0 0.03rem;}

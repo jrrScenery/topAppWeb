@@ -1,7 +1,7 @@
 <!--我的-我的意见反馈-->
 <template>
   <div class="mineFeedbackView">
-    <header-last></header-last>
+    <header-last :title="mineFeedbackTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <ul>
@@ -24,6 +24,7 @@ export default {
 
   data () {
     return {
+      mineFeedbackTit: '我的意见反馈',
       mineFeedbackObj: [
         {num: 'CS1805140003', score: '3', desc: '国家外汇管理局2017年度小型机存储国家外汇管理局2017年度小型机存储…'},
         {num: 'CS1805140003', score: '4', desc: '国家外汇管理局2017年度小型机存储…'},

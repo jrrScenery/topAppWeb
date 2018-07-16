@@ -92,5 +92,5 @@ export default {
   .footerSelect .el-menu--horizontal>.el-menu-item span{line-height: 0.2rem!important;}
   .footerSelect .el-menu--horizontal>.el-menu-item.is-active{border: none; color: #2698d6!important; background: #ffffff!important;}
   .footerSelect .el-menu--horizontal>.el-menu-item i{display: inline-block; width: 0.22rem; height: 0.22rem; margin: auto; font-size: 0.24rem!important;}
-  .footerSelect .el-menu--horizontal>.el-menu-item .workImg{width: 0.57rem; height: 0.57rem; margin: auto; margin-top: -0.3rem;}
+  .footerSelect .el-menu--horizontal>.el-menu-item .workImg{width: 0.57rem; height: 0.57rem; margin: auto; position: absolute; top: -0.3rem; left: 50%; margin-left: -0.285rem}
 </style>

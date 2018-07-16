@@ -19,13 +19,14 @@
 </template>
 
 <script>
+import global_ from '../../components/Global'
 export default {
   name: 'login',
   data () {
     return {
       ruleForm: {
-        pass: '',
-        userName: ''
+        pass: 'smits123',
+        userName: 'duxinc'
       }
     }
   },
@@ -33,10 +34,28 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          this.$axios.post(global_.proxyServer+"?action=userLogin","ACCOUNT="+this.ruleForm.userName+"&PASSWORD="+this.ruleForm.pass).then(res=>{
+
+            if(res.data.STATUSCODE=="0"){
+              global_.userInfo = res.data.userInfo;
+              global_.userPermission = res.data.userPermission;
+              global_.userRole = res.data.userRole;
+              global_.empId = res.data.userInfo[0].EMPID;
+              console.log(typeof(android));
+              if(typeof(android)!="undefined"){
+                android.getClient("invoke form html");              
+              }
+              //console.log(res.data.userInfo[0]);
+              this.$router.push({name: 'home'});
+
+            }else{
+              alert(res.data.MESSAGE);
+            }
+          });
+          //alert('submit!');
         } else {
           console.log('error submit!!')
-          return false
+          return false;
         }
       })
     }

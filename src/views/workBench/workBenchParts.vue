@@ -1,7 +1,7 @@
-<!--工作台-备件信息-->
+<!--工作台-备件库存-->
 <template>
   <div class="workBenchPartsView">
-    <header-base></header-base>
+    <header-last :title="workBenchPartsTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <el-table
@@ -9,30 +9,30 @@
         :data="tableData"
         style="width: 100%">
         <el-table-column
-          prop="city"
+          prop="provinceName"
           label="城市"
           width="24%">
         </el-table-column>
         <el-table-column label="自有">
           <el-table-column
-            prop="ownNum"
+            prop="zyPartNumber"
             label="数量"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="ownMoney"
+            prop="zyPartAmount"
             label="金额"
             width="19%">
           </el-table-column>
         </el-table-column>
         <el-table-column label="供应商">
           <el-table-column
-            prop="otherNum"
+            prop="gysPartNumber"
             label="数量"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="otherMoney"
+            prop="gysPartAmount"
             label="金额"
             width="19%">
           </el-table-column>
@@ -43,65 +43,27 @@
 </template>
 
 <script>
-import headerBase from '../header/headerBase'
+import headerLast from '../header/headerLast'
+import global_ from '../../components/Global'
 export default {
   name: 'workBenchParts',
 
   components: {
-    headerBase
+    headerLast
   },
 
   data () {
     return {
-      tableData: [{
-        city: '北京',
-        ownNum: '625',
-        ownMoney: '315',
-        otherNum: '421',
-        otherMoney: '271'
-      }, {
-        city: '北京',
-        ownNum: '625',
-        ownMoney: '315',
-        otherNum: '421',
-        otherMoney: '271'
-      }, {
-        city: '北京',
-        ownNum: '625',
-        ownMoney: '315',
-        otherNum: '421',
-        otherMoney: '271'
-      }, {
-        city: '北京',
-        ownNum: '625',
-        ownMoney: '315',
-        otherNum: '421',
-        otherMoney: '271'
-      }, {
-        city: '北京',
-        ownNum: '625',
-        ownMoney: '315',
-        otherNum: '421',
-        otherMoney: '271'
-      }, {
-        city: '北京',
-        ownNum: '625',
-        ownMoney: '315',
-        otherNum: '421',
-        otherMoney: '271'
-      }, {
-        city: '北京',
-        ownNum: '625',
-        ownMoney: '315',
-        otherNum: '421',
-        otherMoney: '271'
-      }],
-      workBenchPeopleInfo: [
-        {}
-      ]
+      workBenchPartsTit: '备件库存',
+      tableData: []
     }
   },
-
+  created () {
+    this.$axios.get(global_.proxyServer+"?action=GetPartStat&EMPID="+global_.empId,{}).then(res=>{
+      this.tableData = res.data.data;
+      // console.log(this.tableData);
+    });
+  },
   methods: {
   }
 }
@@ -116,4 +78,5 @@ export default {
   .content >>> .el-table th{text-align: center; background: #f7f7f7}
   .content >>> .el-table td{border: none}
   .content >>> .el-table .cell{padding: 0;}
+  .content >>> .el-table__empty-block{position: initial}
 </style>

@@ -1,7 +1,7 @@
 <!--首页-事件详情-补充说明-->
 <template>
   <div class="eventReplenishView">
-    <header-last></header-last>
+    <header-last :title="eventReplenishTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <ul>
@@ -21,7 +21,13 @@
 </template>
 
 <script>
+
+import global_ from '../../components/Global'
 import headerLast from '../header/headerLast'
+import fetch from '../../utils/ajax'
+
+var caseId ;
+
 export default {
   name: 'eventReplenish',
 
@@ -31,6 +37,7 @@ export default {
 
   data () {
     return {
+      eventReplenishTit: '补充说明',
       eventReplenishData: [
         {type: '项目编号：', desc: '51478'},
         {type: '项目名称：', desc: 'TOP系统测试项目-华东'},
@@ -44,8 +51,22 @@ export default {
 
   methods: {
     onSubmit () {
-      alert('submit!')
+      //alert('submit!');
+      fetch.get("?action=UpdateProcessInfo&CASE_ID="+caseId+"&REMARK="+this.form.desc,"").then(res=>{
+        if(res.STATUSCODE=="0"){
+          alert("提交成功");
+        }
+      });
     }
+  },
+  created:function(){
+    caseId = this.$route.params.caseId;
+    this.$axios.get(global_.proxyServer+"?action=GetCaseInfo&CASE_ID="+this.$route.params.caseId,{}).then(res=>{
+      var baseInfo = res.data.data;
+      this.eventReplenishData[0].desc = baseInfo.PROJECT_NO ;
+      this.eventReplenishData[1].desc = baseInfo.PROJECT_NAME ;
+      this.eventReplenishData[2].desc = baseInfo.CASE_NO ;
+    });
   }
 }
 </script>

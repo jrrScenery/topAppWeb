@@ -1,7 +1,7 @@
 <!--我的-意见反馈详情-->
 <template>
   <div class="mineFeedbackShowView">
-    <header-last></header-last>
+    <header-last :title="mineFeedbackShowTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <div class="cell" v-for="item in mineFeedbackShowObj" :key="item.id">
@@ -22,6 +22,7 @@ export default {
 
   data () {
     return {
+      mineFeedbackShowTit: '意见反馈详情',
       mineFeedbackShowObj: [
         {
           title: '基本信息',

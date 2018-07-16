@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="container"
     element-loading-text="导入中..."
@@ -9,7 +7,7 @@
     <div class="containerHeaderView">
       <div style="height: 0.45rem;"></div>
       <router-view></router-view>
-      <div style="height: 0.45rem;"></div>
+      <div style="height: 0.75rem;"></div>
     </div>
     <footer-home></footer-home>
   </div>

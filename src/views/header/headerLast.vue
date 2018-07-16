@@ -13,9 +13,10 @@ export default {
 
   data () {
     return {
-      title: 'list'
+
     }
   },
+  props: ['title'],
 
   watch: {
   },

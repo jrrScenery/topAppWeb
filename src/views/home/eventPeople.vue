@@ -1,7 +1,7 @@
 <!--首页-事件详情-相关人员-->
 <template>
   <div class="eventPeopleView">
-    <header-last></header-last>
+    <header-last :title="eventPeopleTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <div class="eventPeopleCell" v-for="item in eventPeopleData" :key="item.id" @click="ringUp">
@@ -28,6 +28,8 @@
 
 <script>
 import headerLast from '../header/headerLast'
+import fetch from '../../utils/ajax'
+var caseId;
 export default {
   name: 'eventPeople',
 
@@ -37,6 +39,7 @@ export default {
 
   data () {
     return {
+      eventPeopleTit: '相关人员',
       popBg: false,
       eventPeopleData: [
         {
@@ -69,6 +72,21 @@ export default {
     ringUp () {
       this.popBg = !this.popBg
     }
+  },
+  created:function(){
+    caseId = this.$route.params.caseId;
+    fetch.get("?action=GetSupportorList&CASE_ID="+this.$route.params.caseId,{}).then(res=>{
+      console.log(res.data);
+      for(var i=0;i<res.data.length;i++){
+        var info = res.data[i];
+        this.eventPeopleData[i].name = info.SUPPORTOR_NAME;
+        this.eventPeopleData[i].arr[0].desc = info.ROLE;
+        this.eventPeopleData[i].arr[1].desc = info.TEL;
+        this.eventPeopleData[i].arr[2].desc = info.MOBILE;
+        this.eventPeopleData[i].arr[3].desc = info.ORGNAME;
+        this.eventPeopleData[i].arr[4].desc = info.EMAIL;
+      }
+    });
   }
 }
 </script>

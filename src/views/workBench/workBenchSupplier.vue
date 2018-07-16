@@ -1,7 +1,7 @@
 <!--工作台-供应商信息-->
 <template>
   <div class="workBenchSupplierView">
-    <header-base></header-base>
+    <header-last :title="workBenchSupplierTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <el-table
@@ -9,28 +9,28 @@
         :data="tableData"
         style="width: 100%">
         <el-table-column
-          prop="city"
+          prop="areaname"
           label="城市"
           width="24%">
         </el-table-column>
         <el-table-column label="供应商类型">
           <el-table-column
-            prop="people"
+            prop="count1"
             label="人员"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="parts"
+            prop="count2"
             label="备件"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="logistics"
+            prop="count3"
             label="物流"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="subpackage"
+            prop="count4"
             label="分包"
             width="19%">
           </el-table-column>
@@ -41,63 +41,26 @@
 </template>
 
 <script>
-import headerBase from '../header/headerBase'
+import headerLast from '../header/headerLast'
+import global_ from '../../components/Global'
 export default {
   name: 'workBenchSupplier',
 
   components: {
-    headerBase
+    headerLast
   },
 
   data () {
     return {
-      tableData: [{
-        city: '北京',
-        people: '625',
-        parts: '315',
-        logistics: '421',
-        subpackage: '271'
-      }, {
-        city: '北京',
-        people: '625',
-        parts: '315',
-        logistics: '421',
-        subpackage: '271'
-      }, {
-        city: '北京',
-        people: '625',
-        parts: '315',
-        logistics: '421',
-        subpackage: '271'
-      }, {
-        city: '北京',
-        people: '625',
-        parts: '315',
-        logistics: '421',
-        subpackage: '271'
-      }, {
-        city: '北京',
-        people: '625',
-        parts: '315',
-        logistics: '421',
-        subpackage: '271'
-      }, {
-        city: '北京',
-        people: '625',
-        parts: '315',
-        logistics: '421',
-        subpackage: '271'
-      }, {
-        city: '北京',
-        people: '625',
-        parts: '315',
-        logistics: '421',
-        subpackage: '271'
-      }],
-      workBenchPeopleInfo: [
-        {}
-      ]
+      workBenchSupplierTit: '供应商信息',
+      tableData: []
     }
+  },
+
+  created () {
+    this.$axios.get(global_.proxyServer+"?action=GetSupplierStat&EMPID="+global_.empId,{}).then(res=>{
+      this.tableData = res.data.data
+    });
   },
 
   methods: {
@@ -114,4 +77,5 @@ export default {
   .content >>> .el-table th{text-align: center; background: #f7f7f7; color: #333333}
   .content >>> .el-table td{border: none}
   .content >>> .el-table .cell{padding: 0;}
+  .content >>> .el-table__empty-block{position: initial}
 </style>

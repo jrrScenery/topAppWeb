@@ -1,15 +1,20 @@
 <!--首页-事件详情-意见反馈-->
 <template>
   <div class="eventFeedbackView">
-    <header-last></header-last>
+    <header-last :title="eventFeedbackTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <el-form :model="formData" label-width="0.8rem" ref="formData">
         <el-form-item label="意见类型">
-          <el-input v-model="formData.type" placeholder="请输入意见类型"></el-input>
+          <template>
+            <el-select v-model="value4" clearable placeholder="请选择意见类型">
+              <el-option v-for="item in options" :label="item.label" :value="item.value" :key="item.value">
+              </el-option>
+            </el-select>
+          </template>
         </el-form-item>
         <el-form-item label="姓名">
-          <el-input v-model="formData.name" :disabled="true"></el-input>
+          <el-input v-model="formData.name" ></el-input>
         </el-form-item>
         <el-form-item label="联系电话">
           <el-input v-model="formData.phone" placeholder="请输入电话号码"></el-input>
@@ -31,6 +36,10 @@
 
 <script>
 import headerLast from '../header/headerLast'
+import global_ from '../../components/Global'
+import fetch from '../../utils/ajax'
+var caseId,projectId ;
+
 export default {
   name: 'eventFeedback',
 
@@ -40,14 +49,33 @@ export default {
 
   data () {
     return {
+      eventFeedbackTit: '意见反馈',
       title: '意见内容',
       formData: {
         name: '',
         phone: '',
         region: '',
         type: '',
-        article: ''
-      }
+        article: '',
+        email : ''
+      },
+      options: [{
+          value: '1',
+          label: '意见'
+        }, {
+          value: '2',
+          label: '投诉'
+        }, {
+          value: '3',
+          label: '咨询'
+        }, {
+          value: '4',
+          label: '扣款'
+        }, {
+          value: '5',
+          label: '事故'
+        }],
+        value4: '1'
     }
   },
 
@@ -55,13 +83,29 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          var params = "&PROJECT_ID="+ projectId +"&TYPE="+this.value4 + "&NAME="+this.formData.name + "&PHONE="+this.formData.phone+  "&CONTENT="+this.formData.article;
+          fetch.get("?action=UpdateSuggest&CASE_ID="+caseId+params,"").then(res=>{
+            if(res.STATUSCODE=="0"){
+              alert("提交成功");
+            }else{
+              alert(res.STATUSCODE);
+            }
+          });
         } else {
           alert('err')
           return false
         }
       })
     }
+  },
+  created:function(){
+    this.formData.name = global_.userInfo[0].REALNAME;
+    this.formData.phone = global_.userInfo[0].MOBILE;
+    this.formData.email = global_.userInfo[0].EMAIL;
+    caseId = this.$route.params.caseId;
+    fetch.get("?action=GetCaseInfo&CASE_ID="+this.$route.params.caseId,{}).then(res=>{
+      projectId = res.data.PROJECT_ID;
+    });
   }
 }
 </script>

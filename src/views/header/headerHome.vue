@@ -1,6 +1,6 @@
 <!--一级头部-->
 <template>
-  <header v-if="!(title =='我的')" class="headerHomeView">
+  <header v-if="!(title ==='我的')" class="headerHomeView">
     <div class="headerLeft">
       <img src="../../assets/images/header_sao.png" alt="">
       <p>{{headerLeft}}</p>
@@ -43,7 +43,7 @@ export default {
         case 'workBench':
           this.title = '工作台'
           break
-        case 'form':
+        case 'reportForm':
           this.title = '报表'
           break
         case 'mine':

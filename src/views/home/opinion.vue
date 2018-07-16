@@ -1,7 +1,7 @@
-<!--工作台-PO信息-->
+<!--首页-意见与反馈列表页-->
 <template>
   <div class="opinionView">
-    <header-base></header-base>
+    <header-base :title="opinionTit"></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <el-tabs v-model="activeName">
@@ -9,7 +9,7 @@
           <el-tab-pane :label="item.label" :name="item.name" :key="item.id">
             <el-table
               :data="item.tableData"
-              style="width: 100%; max-height:1.85rem; border: 0.01rem solid #e1e1e1">
+              style="width: 100%; border: 0.01rem solid #e1e1e1">
               <template v-if="item.label ==='Case评价'" v-for="info in opinionTableOne">
                 <el-table-column
                   :fixed="info.fixed"
@@ -41,7 +41,8 @@
                   :key="info.id"
                   :prop="info.prop"
                   :label="info.label"
-                  :min-width="info.width">
+                  :min-width="info.width"
+                  class="opinion">
                   <template slot-scope="scope">
                     <span class="table_name">{{scope.row[info.prop]}}</span>
                   </template>
@@ -57,6 +58,7 @@
 
 <script>
 import headerBase from '../header/headerBase'
+import global_ from '../../components/Global'
 export default {
   name: 'opinion',
 
@@ -66,148 +68,152 @@ export default {
 
   data () {
     return {
+      opinionTit: '意见和投诉',
       POinfoTab: [
         {
           name: 'first',
-          label: 'Case评价',
+          label: '意见投诉',
           tableData: [
-            {
-              num: 'CS1805110047',
-              type: '客户评价故障处理服务',
-              score: '5',
-              name: '2017中国电信总部IT'
-            }, {
-              num: 'CS1805110047',
-              type: '客户评价故障处理服务',
-              score: '5',
-              name: '2017中国电信总部IT'
-            }, {
-              num: 'CS1805110047',
-              type: '客户评价故障处理服务',
-              score: '5',
-              name: '2017中国电信总部IT'
-            }
+            // {
+            //   num: 'QQM021802280001',
+            //   desc: '国家税务总局小型机构维保国家税务总局小型机构维保国家税务总局小型机构维保国家税务总局小型机构维保',
+            //   time: '18-04-26'
+            // }, {
+            //   num: 'QQM021802280001',
+            //   desc: '国家税务总局小型机构维保',
+            //   time: '2018-04-26  20:04'
+            // }, {
+            //   num: 'QQM021802280001',
+            //   desc: '国家税务总局小型机构维保',
+            //   time: '18-04-26'
+            // }
           ]
         },
         {
           name: 'second',
           label: '项目满意度',
           tableData: [
-            {
-              name: '金税三期身份认证售后服务',
-              score: '10',
-              people: '梁卓明',
-              time: '2018-04-26  20:04'
-            }, {
-              name: '金税三期身份认证售后服务',
-              score: '10',
-              people: '梁卓明',
-              time: '2018-04-26  20:04'
-            }, {
-              name: '金税三期身份认证售后服务',
-              score: '10',
-              people: '梁卓明',
-              time: '2018-04-26  20:04'
-            }
+            // {
+            //   name: '金税三期身份认证售后服务',
+            //   score: '10',
+            //   people: '梁卓明',
+            //   time: '2018-04-26  20:04'
+            // }, {
+            //   name: '金税三期身份认证售后服务',
+            //   score: '10',
+            //   people: '梁卓明',
+            //   time: '18-04-26'
+            // }, {
+            //   name: '金税三期身份认证售后服务',
+            //   score: '10',
+            //   people: '梁卓明',
+            //   time: '2018-04-26  20:04'
+            // }
           ]
         },
         {
           name: 'third',
-          label: '意见投诉',
+          label: 'Case评价',
           tableData: [
-            {
-              num: 'QQM021802280001',
-              desc: '国家税务总局小型机构维保',
-              time: '2018-04-26  20:04'
-            }, {
-              num: 'QQM021802280001',
-              desc: '国家税务总局小型机构维保',
-              time: '2018-04-26  20:04'
-            }, {
-              num: 'QQM021802280001',
-              desc: '国家税务总局小型机构维保',
-              time: '2018-04-26  20:04'
-            }
+            // {
+            //   num: 'CS1805110047',
+            //   type: '客户评价故障处理服务',
+            //   score: '5',
+            //   name: '2017中国电信总部IT'
+            // }, {
+            //   num: 'CS1805110047',
+            //   type: '客户评价故障处理服务',
+            //   score: '5',
+            //   name: '2017中国电信总部IT'
+            // }, {
+            //   num: 'CS1805110047',
+            //   type: '客户评价故障处理服务',
+            //   score: '5',
+            //   name: '2017中国电信总部IT'
+            // }
           ]
         }
       ],
       activeName: 'first',
       opinionTableOne: [
         {
-          prop: 'num',
+          prop: 'PROJECT_NAME',
+          label: '项目名称',
+          fixed: true,
+          width: '58%'
+        },
+        {
+          prop: 'CASE_CD',
           label: '事件编号',
           fixed: true,
           width: '30%'
         },
         {
-          prop: 'type',
-          label: '评价类型',
+          prop: 'TOTAL_SCORE',
+          label: '分值',
           fixed: true,
-          width: '30%'
-        },
-        {
-          prop: 'score',
-          label: '评价分值',
-          fixed: true,
-          width: '10%'
-        },
-        {
-          prop: 'name',
-          label: '项目名称',
-          fixed: true,
-          width: '30%'
+          width: '12%'
         }
       ],
       opinionTableTwo: [
         {
-          prop: 'name',
+          prop: 'PROJECT_NAME',
           label: '项目名称',
           fixed: true,
-          width: '35%'
+          width: '50%'
         },
         {
-          prop: 'score',
-          label: '评价分值',
+          prop: 'TOTAL_SCORE',
+          label: '分值',
           fixed: true,
-          width: '10%'
+          width: '12%'
         },
         {
-          prop: 'people',
+          prop: 'EVALUATE_FROM_NAME',
           label: '评价人',
           fixed: true,
-          width: '15%'
+          width: '16%'
         },
         {
-          prop: 'time',
-          label: '实际评价时间',
+          prop: 'EVALUATE_TIME',
+          label: '评价时间',
           fixed: true,
-          width: '40%'
+          width: '22%'
         }
       ],
       opinionTableThree: [
         {
-          prop: 'num',
-          label: '任务编号',
-          fixed: true,
-          width: '30%'
-        },
-        {
-          prop: 'desc',
+          prop: 'COMPLAINT_COMMENT',
           label: '意见内容',
           fixed: true,
-          width: '30%'
+          width: '78%'
         },
         {
-          prop: 'time',
-          label: '创建时间',
+          prop: 'CREATE_ON',
+          label: '提交日期',
           fixed: true,
-          width: '40%'
+          width: '22%'
         }
       ]
     }
   },
 
   methods: {
+  },
+
+  created () {
+    this.$axios.get(global_.proxyServer+"?action=GetCaseEvaluate&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+      console.log(res)
+      this.POinfoTab[2].tableData = res.data.data
+    });
+
+    this.$axios.get(global_.proxyServer+"?action=GetProjectEvaluate&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+      this.POinfoTab[1].tableData = res.data.data
+    });
+
+    this.$axios.get(global_.proxyServer+"?action=GetComplaintsList&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+      this.POinfoTab[0].tableData = res.data.data
+    });
   }
 }
 </script>
@@ -218,8 +224,10 @@ export default {
   .content >>> .el-table th{text-align: center; padding: 0; line-height: 0.4rem; color: #333333; background: #f7f7f7}
   .content >>> .el-table tr:nth-child(2n){background: #f7f7f7}
   .content >>> .el-table td{padding: 0;}
-  .content >>> .el-table .cell{padding: 0; font-size: 0.13rem;}
+  .content >>> .el-table td:nth-child(1){text-align: left}
+  .content >>> .el-table .cell{padding: 0 0.02rem; font-size: 0.13rem;}
   .content >>> .el-table .cell .table_name{display: block; width: 100%; height: 0.35rem; line-height: 0.35rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+  .content #pane-first >>> .el-table .cell .table_name{height: 100%; min-height: 0.35rem!important; overflow: initial; text-overflow: initial; white-space: initial;}
   .content >>> .el-tabs__header{margin: 0;}
   .content >>> .el-tabs__nav{width: 100%}
   .content >>> .el-tabs__nav .el-tabs__item{width: 33%}

@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import global_ from '../../components/Global'
 export default {
   name: 'proMachine',
 
@@ -50,25 +51,22 @@ export default {
         serialNum: ''
       },
       tableData: [
-        {firm: 'HP', type: 'DL380G6', serial: 'CNG944S1VT', startTime: '2017-01-01', endTime: '2017-01-01'},
-        {firm: 'HP', type: 'DL380G6', serial: 'CNG944S1VT', startTime: '2017-01-01', endTime: '2017-01-01'},
-        {firm: 'HP', type: 'DL380G6', serial: 'CNG944S1VT', startTime: '2017-01-01', endTime: '2017-01-01'},
-        {firm: 'HP', type: 'DL380G6', serial: 'CNG944S1VT', startTime: '2017-01-01', endTime: '2017-01-01'},
-        {firm: 'HP', type: 'DL380G6', serial: 'CNG944S1VT', startTime: '2017-01-01', endTime: '2017-01-01'},
-        {firm: 'HP', type: 'DL380G6', serial: 'CNG944S1VT', startTime: '2017-01-01', endTime: '2017-01-01'},
-        {firm: 'HP', type: 'DL380G6', serial: 'CNG944S1VT', startTime: '2017-01-01', endTime: '2017-01-01'},
-        {firm: 'HP', type: 'DL380G6', serial: 'CNG944S1VT', startTime: '2017-01-01', endTime: '2017-01-01'}
+        {FACTORY_NM: 'HP', type: 'DL380G6', serial: 'CNG944S1VT', startTime: '2017-01-01', endTime: '2017-01-01'}
       ],
       proMachineObj: [
-        {prop: 'firm', lable: '厂商', width: '15%'},
-        {prop: 'type', lable: '型号', width: '15%'},
-        {prop: 'serial', lable: '序列号', width: '22%'},
-        {prop: 'startTime', lable: '开始时间', width: '24%'},
-        {prop: 'endTime', lable: '结束时间', width: '24%'}
+        {prop: 'FACTORY_NM', lable: '厂商', width: '15%'},
+        {prop: 'MODEL_NAME', lable: '型号', width: '15%'},
+        {prop: 'SN', lable: '序列号', width: '22%'},
+        {prop: 'SERVICE_BEGIN', lable: '开始时间', width: '24%'},
+        {prop: 'SERVICE_END', lable: '结束时间', width: '24%'}
       ]
     }
   },
-
+  created () {
+    this.$axios.get(global_.proxyServer+"?action=GetProjectDeviceList&EMPID="+global_.empId+"&PROJECT_ID="+this.$route.query.projectId,{}).then(res=>{
+      this.tableData = res.data.data;
+    });
+  },
   methods: {
     onSubmit () {
       console.log('submit!')
@@ -87,6 +85,6 @@ export default {
   .proMachineTop >>> .el-button{padding: 0 0.05rem; height: 0.25rem; background: #2698d6; color: #ffffff; font-size: 0.13rem;}
   .proMachineBtm >>> th{padding: 0; background: #f5f5f9}
   .proMachineBtm >>> td{padding: 0;}
-  .proMachineBtm >>> .cell{padding: 0 0.05rem; text-align: center; height: 0.3rem; line-height: 0.3rem;}
+  .proMachineBtm >>> .cell{padding: 0 0.05rem; text-align: center; height: 0.3rem; line-height: 0.3rem; font-size: 0.13rem;}
   .proMachineBtm >>> td .cell{overflow: hidden; text-overflow: ellipsis; white-space: nowrap}
 </style>

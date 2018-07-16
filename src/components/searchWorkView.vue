@@ -54,7 +54,10 @@ export default {
 
   methods: {
     onCancel () {
-      console.log('cancel!')
+      let data = {
+        popBg: false
+      }
+      this.$emit('change', data)
     },
     onSearch () {
       console.log('search!')
@@ -64,7 +67,7 @@ export default {
 </script>
 
 <style scoped>
-  .searchView{background: #ffffff; padding: 0.15rem 0.2rem; position: relative;}
+  .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0.5rem; position: relative;}
   .searchView >>> .el-form-item{margin-bottom: 0.1rem;}
   .searchView >>> .el-select{width: 80%;}
   .searchView >>> .el-select .el-input__inner:focus{border-color: #dcdfe6;}

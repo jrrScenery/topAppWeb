@@ -5,17 +5,27 @@
       <img :src="item.imgSrc" alt="">
       <p><span>{{item.userName}}</span><span>{{item.phone}}</span></p>
     </div>
-    <ul class="ul_mineView">
-      <li class="li_mineView" v-for="item in liObj" :key="item.id">
-        <img :src="item.imgSrc" alt="">
-        <span>{{item.text}}</span>
-        <i class="el-icon-arrow-right"></i>
-      </li>
-    </ul>
+      <ul class="ul_mineView" >
+        <li class="li_mineView" v-for="item in liObj" :key="item.id">
+          <template v-if="item.action == 'logout'">
+            <img :src="item.imgSrc" alt="">
+            <span v-on:click="onLogout">{{item.text}}</span>
+            <i class="el-icon-arrow-right"></i>
+          </template>
+          <template v-else>
+            <img :src="item.imgSrc" alt="">
+            <span>{{item.text}}</span>
+            <i class="el-icon-arrow-right"></i>
+          </template>
+        </li>
+      </ul>
   </div>
 </template>
 
 <script>
+
+import global_ from '../../components/Global'
+import fetch from '../../utils/ajax'
 
 export default {
   name: 'mine',
@@ -29,16 +39,21 @@ export default {
         {imgSrc: require('@/assets/images/mine_bg.jpg'), userName: '购买时光', phone: '13888888888'}
       ],
       liObj: [
-        {imgSrc: require('@/assets/images/mine_1.png'), text: '通知'},
-        {imgSrc: require('@/assets/images/mine_2.png'), text: '我的报修'},
-        {imgSrc: require('@/assets/images/mine_3.png'), text: '我的意见反馈'},
-        {imgSrc: require('@/assets/images/mine_4.png'), text: '退出当前账户'}
+        {imgSrc: require('@/assets/images/mine_1.png'), text: '通知',action:''},
+        {imgSrc: require('@/assets/images/mine_2.png'), text: '我的报修',action:''},
+        {imgSrc: require('@/assets/images/mine_3.png'), text: '我的意见反馈',action:''},
+        {imgSrc: require('@/assets/images/mine_4.png'), text: '退出当前账户',action:'logout'}
       ]
     }
   },
 
   methods: {
-
+    onLogout () {
+      var url = "?action=logOut";
+      fetch.get(url,"").then(res=>{
+        
+      });
+    }
   }
 }
 </script>

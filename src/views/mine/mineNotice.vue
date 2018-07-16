@@ -1,7 +1,7 @@
 <!--我的-通知-->
 <template>
   <div class="mineNoticeView">
-    <header-last></header-last>
+    <header-last :title="mineNoticeTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <ul>
@@ -28,6 +28,7 @@ export default {
 
   data () {
     return {
+      mineNoticeTit: '通知',
       mineNoticeObj: [
         {title: '新用户审核新用户审核新用户审核新用户审核新用户审核新用户审核', name: '系统', time: '2017-11-23  10:1:38', desc: '周新甫于Thu Nov 20 10:13:13CST 2017变更苏军未国家外汇管理局2017'},
         {title: '新用户审核', name: '张三', time: '2017-11-23 10:1:38', desc: '周新甫于Thu Nov 20 10:13:13CST 2017变更苏军未国家外汇管理局2017'},

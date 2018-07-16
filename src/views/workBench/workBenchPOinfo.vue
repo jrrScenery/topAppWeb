@@ -1,7 +1,7 @@
 <!--工作台-PO信息-->
 <template>
   <div class="workBenchPOinfoView">
-    <header-base></header-base>
+    <header-last :title="workBenchPOinfoTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <el-tabs v-model="activeName">
@@ -9,7 +9,7 @@
           <el-tab-pane :label="item.label" :name="item.name" :key="item.id">
             <el-table
               :data="item.tableData"
-              style="width: 100%; max-height:1.85rem; border: 0.01rem solid #e1e1e1">
+              style="width: 100%; border: 0.01rem solid #e1e1e1">
               <template v-for="info in POinfotable">
                 <el-table-column
                   :fixed="info.fixed"
@@ -31,72 +31,46 @@
 </template>
 
 <script>
-import headerBase from '../header/headerBase'
+import global_ from '../../components/Global'
+import headerLast from '../header/headerLast'
 export default {
   name: 'workBenchPOinfo',
 
   components: {
-    headerBase
+    headerLast
   },
 
   data () {
     return {
+      workBenchPOinfoTit: 'PO信息',
       POinfoTab: [
         {
           name: 'first',
           label: '人员',
-          tableData: [
-            {
-              time: '2017-11',
-              totalMoney: '538772',
-              money: '15700'
-            }, {
-              time: '2017-11',
-              totalMoney: '538772',
-              money: '15700'
-            }, {
-              time: '2017-11',
-              totalMoney: '538772',
-              money: '15700'
-            }
-          ]
+          tableData: []
         },
         {
           name: 'second',
           label: '备件',
-          tableData: [
-            {
-              time: '2017-11',
-              totalMoney: '538772',
-              money: '15700'
-            }, {
-              time: '2017-11',
-              totalMoney: '538772',
-              money: '15700'
-            }, {
-              time: '2017-11',
-              totalMoney: '538772',
-              money: '15700'
-            }
-          ]
+          tableData: []
         }
       ],
       activeName: 'first',
       POinfotable: [
         {
-          prop: 'time',
+          prop: 'YM',
           label: '年月',
           fixed: true,
           width: '34%'
         },
         {
-          prop: 'totalMoney',
+          prop: 'TOTALAMOUNT',
           label: '总金额',
           fixed: true,
           width: '33%'
         },
         {
-          prop: 'money',
+          prop: 'FAMOUNT',
           label: '已支付金额',
           fixed: true,
           width: '33%'
@@ -104,7 +78,14 @@ export default {
       ]
     }
   },
-
+  created () {
+    this.$axios.get(global_.proxyServer+"?action=GetPoPerson&EMPID="+global_.empId,{}).then(res=>{
+      this.POinfoTab[0].tableData = res.data.data;
+    });
+    this.$axios.get(global_.proxyServer+"?action=GetPoParts&EMPID="+global_.empId,{}).then(res=>{
+      this.POinfoTab[1].tableData = res.data.data;
+    });
+  },
   methods: {
   }
 }

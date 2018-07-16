@@ -4,7 +4,7 @@
     <ul class="ul_workBench" v-for="items in workBenchObj" :key="items.id">
 
         <li class="li_workBench" v-for="item in items.arr" :key="item.id">
-          <router-link :to="{name:item.href}">
+          <router-link :to="{name:item.href,params:item.params}" >
             <img :src="item.imgSrc" alt="">
           </router-link>
           <span>{{item.text}}</span>
@@ -33,10 +33,10 @@ export default {
           {imgSrc: require('@/assets/images/workBench_6.png'), text: 'PO信息', href: 'workBenchPOinfo'}
         ]},
         {arr: [
-          {imgSrc: require('@/assets/images/workBench_7.png'), text: '我的事件'},
-          {imgSrc: require('@/assets/images/workBench_8.png'), text: '所有事件'},
-          {imgSrc: require('@/assets/images/workBench_9.png'), text: '我的项目'},
-          {imgSrc: require('@/assets/images/workBench_10.png') ,text: '所有项目'}
+          {imgSrc: require('@/assets/images/workBench_7.png'), text: '我的事件',href: 'eventList',params:{type:'my'}},
+          {imgSrc: require('@/assets/images/workBench_8.png'), text: '所有事件',href: 'eventList',params:{type:'all'}},
+          {imgSrc: require('@/assets/images/workBench_9.png'), text: '我的项目',href: 'projectList',params:{type:'my'}},
+          {imgSrc: require('@/assets/images/workBench_10.png') ,text: '所有项目',href: 'projectList',params:{type:'all'}}
         ]},
         {arr: [
           {imgSrc: require('@/assets/images/workBench_11.png'), text: '我的任务'},

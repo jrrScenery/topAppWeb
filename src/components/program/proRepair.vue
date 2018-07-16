@@ -6,37 +6,95 @@
       suffix-icon="el-icon-search"
       v-model="value">
     </el-input>
-    <div class="proRepairCell" v-for="item in proRepairObj" :key="item.id">
-      <p>编号：{{item.num}}</p>
-      <ul>
-        <li>{{item.time}}</li>
-        <li><span>厂商：{{item.firm}}</span><span>级别：{{item.level}}</span></li>
-        <li>时间描述：{{item.desc}}</li>
-      </ul>
+    <div class="content" style="max-height: 3.1rem; overflow: scroll">
+      <div class="proRepairCell" v-for="item in proRepairObj" >
+        <p>编号：{{item.CASE_CD}}</p>
+        <ul>
+          <li>{{item.CREATED_ON}}</li>
+          <li><span>厂商：{{item.FACTORY_NM}}</span><span>级别：{{item.CASE_LEVEL}}</span></li>
+          <li>时间描述：{{item.CUSTOMER_NAME}}</li>
+        </ul>
+      </div>
+      <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
     </div>
   </div>
 </template>
 
 <script>
+import global_ from '../../components/Global'
+import loadingtmp from '@/components/load/loading'
+import fetch from '../../utils/ajax'
+
 export default {
   name: 'proRepair',
 
   components: {
-
+    loadingtmp
   },
 
   data () {
     return {
       value: '',
-      proRepairObj: [
-        {num: 'CS1708290002', time: '2016-12-08  12:40:11', firm: '富士通', level: 'M5000', desc: 'RHOU209902设备出现故障RHOU209902设备出现故障，持续报警…'},
-        {num: 'CS1708290002', time: '2016-12-08  12:40:11', firm: '富士通', level: 'M5000', desc: 'RHOU209902设备出现故障，持续报警…'}
-      ]
+      proRepairObj: [],
+
+      page: 1,
+      pageSize: 5,
+      total: 0,
+      busy: false,
+      loadall: false
     }
   },
+  created () {
 
+  },
   methods: {
-
+    checkDivScroolTop(){
+      let scrollDiv = document.querySelector('.content');
+      let _this = this
+      scrollDiv.addEventListener('scroll', function() {
+        if(_this.busy)
+          return;
+        console.log("...............scroll");
+        _this.busy = true;
+        setTimeout(() => {
+          _this.getEventList(_this.page);
+        }, 500);
+      }, true);
+    },
+    getEventList (page) {
+      if (!this.loadall) {
+        var url = "?action=GetRelateCaseOfProject&PROJECT_ID="+this.$route.query.projectId;
+        url += "&PAGE_NUM="+this.page+"&PAGE_TOTAL="+this.pageSize;
+        console.log(url);
+        fetch.get(url,{}).then(res=>{
+          console.log(res.data);
+          if(res.data.length==0){
+            return;
+          }
+          this.total = res.data.length
+          if (page == 1) {
+            for (let i = 0; i < 10; i++) {
+              this.proRepairObj = this.proRepairObj.concat(res.data[i])
+            }
+            this.page++
+            console.log(1)
+          }
+          if (page > 1 && this.proRepairObj.length < this.total) {
+            this.proRepairObj = []
+            for (let i = 0; i < 10 * page; i++) {
+              this.proRepairObj = this.proRepairObj.concat(res.data[i])
+            }
+            this.busy = false
+            this.page++
+            console.log(2)
+          }
+        })
+      }
+    }
+  },
+  mounted () {
+    this.getEventList(this.page)
+    this.checkDivScroolTop()
   }
 }
 </script>

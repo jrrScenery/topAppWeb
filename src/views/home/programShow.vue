@@ -1,54 +1,54 @@
 <!--首页-项目详情-->
 <template>
   <div class="programShowView">
-    <header-base></header-base>
+    <header-last :title="programShowTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <div class="programCell" v-for="item in programListArr">
         <div class="cellTop">
           <el-row>
             <el-col :span="8">
-              <div class="cellTopNum">{{item.num}}</div>
+              <div class="cellTopNum">{{projectInfo.PROJECT_CODE}}</div>
             </el-col>
             <el-col :span="9">
               <div class="cellTopColor">
-                <span style="background: #00c400"></span>{{item.numone}}
-                <span style="background: #ffd300"></span>{{item.numtwo}}
+                <span style="background: #00c400"></span>{{projectInfo.HEALTH_BASE_VALUE}}
+                <span style="background: #ffd300"></span>{{projectInfo.HEALTH_CURRENT_VALUE}}
               </div>
             </el-col>
             <el-col :span="7">
-              <div class="cellTopState">状态：<span>{{item.state}}</span></div>
+              <div class="cellTopState">状态：<span>{{projectInfo.PROJECT_STATUS}}</span></div>
             </el-col>
           </el-row>
         </div>
         <div class="cellContent">
-          <p>{{item.title}}</p>
+          <p>{{item.PROJECT_NAME}}</p>
           <el-row>
-            <el-col :span="12"><span class="tit">业务类型：{{item.type}}</span></el-col>
-            <el-col :span="12"><span class="tit">开始时间：{{item.startTime}}</span></el-col>
+            <el-col :span="12"><span class="tit">业务类型：{{projectInfo.BUSINESS_TYPE}}</span></el-col>
+            <el-col :span="12"><span class="tit">开始时间：{{projectInfo.START_DATE}}</span></el-col>
           </el-row>
           <el-row>
-            <el-col :span="12"><span class="tit">业务小类：{{item.stype}}</span></el-col>
-            <el-col :span="12"><span class="tit">结束时间：{{item.endTime}}</span></el-col>
+            <el-col :span="12"><span class="tit">业务小类：{{projectInfo.BUSINESS_CLASS}}</span></el-col>
+            <el-col :span="12"><span class="tit">结束时间：{{projectInfo.END_DATE}}</span></el-col>
           </el-row>
           <el-row>
-            <el-col :span="12"><span class="tit">项目级别：{{item.level}}</span></el-col>
-            <el-col :span="12"><span class="tit">销售姓名：{{item.sale}}</span></el-col>
+            <el-col :span="12"><span class="tit">项目级别：{{projectInfo.PROJECT_LEVEL}}</span></el-col>
+            <el-col :span="12"><span class="tit">销售姓名：{{projectInfo.SALESMAN_NAME}}</span></el-col>
           </el-row>
           <el-row>
-            <el-col :span="12"><span class="tit">交付类型：{{item.payType}}</span></el-col>
-            <el-col :span="12"><span class="tit">销售电话：{{item.phone}}</span></el-col>
+            <el-col :span="12"><span class="tit">交付类型：{{projectInfo.DELIVERY_TYPE_NAME}}</span></el-col>
+            <el-col :span="12"><span class="tit">销售电话：{{projectInfo.SALESMAN_MOBILE}}</span></el-col>
           </el-row>
           <el-row>
-            <el-col :span="12"><span class="tit">签约类型：{{item.signType}}</span></el-col>
-            <el-col :span="12"><span class="tit">PM姓名：{{item.PMname}}</span></el-col>
+            <el-col :span="12"><span class="tit">签约类型：{{projectInfo.CONTRACT_WAY}}</span></el-col>
+            <el-col :span="12"><span class="tit">PM姓名：{{projectInfo.PM_NAME}}</span></el-col>
           </el-row>
           <el-row>
-            <el-col :span="12"><span class="tit">客户名称：{{item.custom}}</span></el-col>
-            <el-col :span="12"><span class="tit">PM电话：{{item.PMphone}}</span></el-col>
+            <el-col :span="12"><span class="tit">客户名称：{{projectInfo.CUSTOMER_CONTACT}}</span></el-col>
+            <el-col :span="12"><span class="tit">PM电话：{{projectInfo.PM_MOBILE}}</span></el-col>
           </el-row>
           <el-row>
-            <el-col :span="24"><span class="tit">责任交付部门：{{item.department}}</span></el-col>
+            <el-col :span="24"><span class="tit">责任交付部门：{{projectInfo.AREA_NAME}}</span></el-col>
           </el-row>
         </div>
       </div>
@@ -69,7 +69,8 @@
 </template>
 
 <script>
-import headerBase from '../header/headerBase'
+import global_ from '../../components/Global'
+import headerLast from '../header/headerLast'
 import proHealth from '../../components/program/proHealth'
 import proMachine from '../../components/program/proMachine'
 import proPlan from '../../components/program/proPlan'
@@ -82,7 +83,7 @@ export default {
   name: 'programShow',
 
   components: {
-    headerBase,
+    headerLast,
     proHealth,
     proMachine,
     proPlan,
@@ -95,52 +96,46 @@ export default {
 
   data () {
     return {
+      programShowTit: '需关注项目',
       programListArr: [
         {
-          num: 'WVJAH60TSF',
-          numone: '90.2',
-          numtwo: '90.2',
-          state: '执行中',
-          title: '2017年河南联通IT设备维保服务公开招标项目',
-          type: '运维',
-          startTime: '2018-01-01',
-          stype: '运维-基础运维',
-          endTime: '2018-01-01',
-          level: 'A',
-          sale: '章三',
-          payType: '正式交付',
-          phone: '13888888888',
-          signType: '新签',
-          PMname: '章三',
-          custom: '北京电信',
-          PMphone: '13888888888',
-          department: '北区运维一部',
+
         }
       ],
+      projectInfo:{},
       activeName: 'first'
     }
   },
 
-  mounted () {
-    // window.addEventListener('scroll', this.handleScroll())
+  created () {
+    this.$axios.get(global_.proxyServer+"?action=GetProjectInfo&EMPID="+global_.empId+"&PROJECT_ID="+this.$route.query.projectId,{}).then(res=>{
+      console.log(res)
+      let baseInfo = res.data.data;
+      this.projectInfo = baseInfo;
+    });
   },
 
-  // destroyed () {
-  //   window.removeEventListener('scroll', this.handleScroll)
-  // },
+  mounted () {
+    window.addEventListener('scroll', this.handleScroll,true)
+  },
 
   methods: {
-    // handleScroll () {
-    //   let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-    //   let tabTop = document.getElementsByClassName('el-tabs__header')
-    //   console.log(scrollTop)
-    //   if (scrollTop > 260) {
-    //     tabTop.style.backgroundColor = 'red'
-    //   } else {
-    //     this.isFixed = false
-    //   }
-    // }
-  }
+    handleScroll () {
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      let headerTop = document.querySelector('.el-tabs__header')
+      let bijiaoHeight = document.querySelector('.programTable').offsetTop - 45
+      if (scrollTop >= bijiaoHeight) {
+        headerTop.classList.add('moveTop')
+        headerTop.style.top = (Number(scrollTop) / 100) - (bijiaoHeight / 100) + 'rem'
+      } else {
+        headerTop.classList.remove('moveTop')
+        headerTop.style.top = 0 + 'rem'
+      }
+    },
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.handleScroll,true)
+  },
 }
 </script>
 
@@ -156,8 +151,9 @@ export default {
   .programShowView >>> .el-tabs__item{font-size: 0.14rem; color: #666666}
   .programShowView >>> .el-tabs__active-bar{ background-color: #2698d6}
   .programShowView >>> .el-tabs__item.is-active{color: #2698d6;}
-  .programShowView >>> .el-tabs__header{margin: 0 0.1rem}
+  .programShowView >>> .el-tabs__header{padding: 0 0.1rem; margin: 0}
   .programShowView >>> .el-tabs__header .el-tabs__nav-prev{font-size: 0.2rem}
   .programShowView >>> .el-tabs__header .el-tabs__nav-next{font-size: 0.2rem}
   .programTable{background: #ffffff; padding-bottom: 0.2rem;}
+  .programShowView >>> .moveTop{z-index: 999; background: #ffffff; -webkit-transform: translateZ(0)}
 </style>

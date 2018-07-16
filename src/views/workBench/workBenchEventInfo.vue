@@ -1,23 +1,23 @@
 <!--工作台-事件信息-->
 <template>
   <div class="workBenchEventInfoView">
-    <header-base></header-base>
+    <header-last :title="workBenchEventInfoTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <div class="searchView">
         <el-form>
-          <el-col :span="9">
+          <el-col :span="8">
             <el-form-item prop="date1">
               <el-date-picker type="date" placeholder="请选择日期" v-model="form.date1" style="width: 90%;"></el-date-picker>
             </el-form-item>
           </el-col>
-          <el-col class="line" :span="1">~</el-col>
-          <el-col :span="9">
+          <el-col class="line" :span="2">~</el-col>
+          <el-col :span="8">
             <el-form-item prop="date2">
               <el-date-picker type="date" placeholder="请选择日期" v-model="form.date2" style="width: 90%;"></el-date-picker>
             </el-form-item>
           </el-col>
-          <el-col :span="5">
+          <el-col :span="6">
             <el-form-item>
               <el-button>搜索</el-button>
             </el-form-item>
@@ -27,9 +27,9 @@
       <div class="tableView">
         <el-table
           :data="tableData"
-          height="3.88rem"
           :summary-method="getSummaries"
           show-summary
+          max-height="437"
           style="width: 100%;">
           <template v-for="item in workBenchEventInfoObj">
             <el-table-column
@@ -46,39 +46,42 @@
 </template>
 
 <script>
-import headerBase from '../header/headerBase'
+import headerLast from '../header/headerLast'
+import global_ from '../../components/Global'
 export default {
   name: 'workBenchEventInfo',
 
   components: {
-    headerBase
+    headerLast
   },
 
   data () {
     return {
+      workBenchEventInfoTit: '事件信息',
       form: {
         date1: '',
         date2: ''
       },
-      tableData: [
-        { industry: '移动', break: '1013', nobreak: '234', total: '' },
-        { industry: '移动', break: '1013', nobreak: '234', total: '' },
-        { industry: '移动', break: '1013', nobreak: '234', total: '' },
-        { industry: '移动', break: '1013', nobreak: '234', total: '' },
-        { industry: '移动', break: '1013', nobreak: '234', total: '' },
-        { industry: '移动', break: '1013', nobreak: '234', total: '' },
-        { industry: '移动', break: '1013', nobreak: '234', total: '' },
-        { industry: '移动', break: '1013', nobreak: '234', total: '' }
-      ],
+      tableData: [],
       workBenchEventInfoObj: [
-        {prop: 'industry', label: '行业', width: ''},
-        {prop: 'break', label: '故障类', width: ''},
-        {prop: 'nobreak', label: '非故障类', width: ''},
-        {prop: 'total', label: '总计', width: ''}
+        {prop: 'INDUSTRY', label: '行业', width: '25%'},
+        {prop: 'FAULT_NUM', label: '故障类', width: '25%'},
+        {prop: 'NON_FAULT_NUM', label: '非故障类', width: '25%'},
+        {prop: 'total', label: '总计', width: '25%'}
       ]
     }
   },
-
+  created () {
+    this.$axios.get(global_.proxyServer+"?action=GetCaseStat&EMPID="+global_.empId,{}).then(res=>{
+      this.tableData = res.data.data
+      let _this = this
+      for (let i = 0; i < this.tableData.length; i++) {
+        let totalNum = this.tableData[i].FAULT_NUM + this.tableData[i].NON_FAULT_NUM
+        _this.tableData[i] = {INDUSTRY: _this.tableData[i].INDUSTRY, FAULT_NUM: _this.tableData[i].FAULT_NUM, NON_FAULT_NUM: _this.tableData[i].NON_FAULT_NUM, total: totalNum}
+      }
+      console.log(this.tableData)
+    })
+  },
   methods: {
     getSummaries (param) {
       const { columns, data } = param
@@ -114,9 +117,11 @@ export default {
   .workBenchEventInfoView .content{margin-top: 0.05rem; background: #ffffff;}
   .searchView{padding: 0.15rem 0.25rem;}
   .searchView >>> .el-form{height: 0.4rem;}
+  .searchView >>> .el-input__icon{display: none}
   .searchView >>> .el-input__prefix{display: none;}
   .searchView >>> .el-input--prefix .el-input__inner{padding: 0; text-align: center;}
   .searchView >>> .el-col-1{text-align: center; line-height: 0.4rem}
+  .searchView >>> .el-form .line{text-align: center; line-height: 0.4rem}
   .tableView >>> .el-table th{border-top: 0.01rem solid #e1e1e1; line-height: 0.25rem; color: #333333;}
   .tableView >>> .el-table .cell{text-align: center; padding: 0}
   .tableView >>> .el-table tr{line-height: 0.25rem; color: #666666}

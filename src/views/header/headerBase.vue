@@ -8,7 +8,7 @@
     </header>
     <template v-if="popBg">
       <div class="popBg">
-        <search-view></search-view>
+        <search-view @change="updatePopBg"></search-view>
       </div>
     </template>
   </div>
@@ -25,11 +25,12 @@ export default {
 
   data () {
     return {
-      title: 'List',
       headerRight: '查询',
       popBg: false
     }
   },
+
+  props: ['title'],
 
   watch: {
   },
@@ -38,6 +39,10 @@ export default {
   },
 
   methods: {
+    updatePopBg (data) {
+      this.popBg = data.popBg
+      // console.log(this.popBg)
+    },
 
     back: function (event) {
       this.$router.back(-1)

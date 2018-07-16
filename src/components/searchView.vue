@@ -8,14 +8,17 @@
           <el-option label="医药" value=""></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="事件类型">
-        <el-checkbox-group v-model="form.type" size="small">
-          <el-checkbox-button label="故障" name="type"></el-checkbox-button>
-          <el-checkbox-button label="RMA" name="type"></el-checkbox-button>
-          <el-checkbox-button label="巡检" name="type"></el-checkbox-button>
-          <el-checkbox-button label="咨询" name="type"></el-checkbox-button>
-          <el-checkbox-button label="非故障技术支持" name="type"></el-checkbox-button>
-        </el-checkbox-group>
+      <el-form-item label="事件类型" style="position: relative">
+        <template>
+          <div style="position: absolute; top: 0.25rem; left: -0.65rem; color: #999999; font-size: 0.1rem">可多选</div>
+          <el-checkbox-group v-model="form.type" size="small">
+            <el-checkbox-button label="故障" name="type"></el-checkbox-button>
+            <el-checkbox-button label="RMA" name="type"></el-checkbox-button>
+            <el-checkbox-button label="巡检" name="type"></el-checkbox-button>
+            <el-checkbox-button label="咨询" name="type"></el-checkbox-button>
+            <el-checkbox-button label="非故障技术支持" name="type"></el-checkbox-button>
+          </el-checkbox-group>
+        </template>
       </el-form-item>
       <el-form-item label="客户">
         <el-input v-model="form.customer" class="bInput"></el-input>
@@ -76,7 +79,10 @@ export default {
 
   methods: {
     onCancel () {
-      console.log('cancel!')
+      let data = {
+        popBg: false
+      }
+      this.$emit('change', data)
     },
     onSearch () {
       console.log('search!')
@@ -86,12 +92,14 @@ export default {
 </script>
 
 <style scoped>
-  .searchView{background: #ffffff; padding: 0.15rem 0.2rem; position: relative;}
+  .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0.5rem; position: relative;}
   .searchView >>> .el-form-item{margin-bottom: 0.1rem;}
   .searchView >>> .el-select{width: 80%;}
+  .searchView >>> .el-input__icon{display: none}
+  .searchView >>> .el-input__inner{padding: 0 0.05rem}
   .searchView >>> .el-select .el-input__inner:focus{border-color: #dcdfe6;}
   .searchView >>> .el-form-item__label{text-align: left; color: #999999; font-size: 0.13rem;}
-  .searchView >>> .el-checkbox-button__inner{border-radius: 0.15rem; margin-right: 0.03rem; background: #f6f6f6; color: #333333; font-size: 0.13rem;border: 0.01rem solid #f6f6f6;}
+  .searchView >>> .el-checkbox-button__inner{padding: 0.09rem; border-radius: 0.15rem; margin-right: 0.03rem; background: #f6f6f6; color: #333333; font-size: 0.13rem;border: 0.01rem solid #f6f6f6;}
   .searchView >>> .el-checkbox-button.is-checked .el-checkbox-button__inner{border: 0.01rem solid #2698d6; background: #fef4f3; color: #2698d6; box-shadow: none;}
   .searchView >>> .bInput .el-input__inner{width: 80%;}
   .searchView >>> .bInput .el-input__inner:focus{border-color: #dcdfe6;}

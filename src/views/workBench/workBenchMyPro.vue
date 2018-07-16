@@ -1,7 +1,7 @@
 <!--工作台-我的项目-->
 <template>
   <div class="workBenchMyProView">
-    <header-base></header-base>
+    <header-base-two :title="workBenchMyProTit"></header-base-two>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <el-tabs v-model="activeName">
@@ -46,16 +46,17 @@
 </template>
 
 <script>
-import headerBase from '../header/headerBase'
+import headerBaseTwo from '../header/headerBaseTwo'
 export default {
   name: 'workBenchMyPro',
 
   components: {
-    headerBase
+    headerBaseTwo
   },
 
   data () {
     return {
+      workBenchMyProTit: '我的项目',
       workBenchMyProTab: [
         {
           name: 'first',
@@ -192,7 +193,7 @@ export default {
   .content >>> .el-tabs__active-bar{background: #2698d6}
   .content >>> .el-tabs__nav .el-tabs__item{width: 33%; text-align: center; padding: 0; color: #999999}
   .content >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}
-  .programCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-top: 0.1rem;}
+  .programCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-bottom: 0.05rem;}
   .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
   .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
   .programCell .cellTop .cellTopColor span{display: inline-block; width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0 0.03rem;}

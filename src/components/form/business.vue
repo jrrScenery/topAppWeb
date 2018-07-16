@@ -1,35 +1,40 @@
 <!--业务-->
 <template>
   <div class="businessView">
-    <el-form ref="form" :model="form" label-width="0.6rem">
-      <el-form-item label="客户">
-        <el-input v-model="form.custom"></el-input>
-      </el-form-item>
-      <el-form-item label="项目">
-        <el-input v-model="form.program"></el-input>
-      </el-form-item>
-      <el-form-item label="时间段">
-        <el-col :span="11">
-          <el-date-picker type="date" placeholder="开始日期" v-model="form.startTime" style="width: 100%;"></el-date-picker>
-        </el-col>
-        <el-col class="line" :span="2">~</el-col>
-        <el-col :span="11">
-          <el-date-picker type="date" placeholder="结束日期" v-model="form.endTime" style="width: 100%;"></el-date-picker>
-        </el-col>
-      </el-form-item>
-      <el-form-item label="行业">
-        <el-select v-model="form.industry" placeholder="请选择行业">
-          <el-option label="IT" value=""></el-option>
-          <el-option label="企事业" value=""></el-option>
-        </el-select>
-      </el-form-item>
-    </el-form>
+    <div class="businessTop">
+      <el-form ref="form" :model="form" label-width="0.6rem">
+        <el-form-item label="客户">
+          <el-input v-model="form.custom"></el-input>
+        </el-form-item>
+        <el-form-item label="项目">
+          <el-input v-model="form.program"></el-input>
+        </el-form-item>
+        <el-form-item label="时间段">
+          <el-col :span="11">
+            <el-date-picker type="date" placeholder="开始日期" v-model="form.startTime" style="width: 100%;"></el-date-picker>
+          </el-col>
+          <el-col class="line" :span="2">~</el-col>
+          <el-col :span="11">
+            <el-date-picker type="date" placeholder="结束日期" v-model="form.endTime" style="width: 100%;"></el-date-picker>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="行业">
+          <el-select v-model="form.industry" placeholder="请选择行业">
+            <el-option label="IT" value=""></el-option>
+            <el-option label="企事业" value=""></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="businessBtm"><report-echarts></report-echarts></div>
   </div>
 </template>
 
 <script>
+import ReportEcharts from '../reportEcharts'
 export default {
   name: 'business',
+  components: {ReportEcharts},
   data () {
     return {
       form: {
@@ -45,10 +50,12 @@ export default {
 </script>
 
 <style scoped>
-  .businessView{padding: 0 0.25rem;}
+  .businessView{}
+  .businessView .businessTop{padding: 0 0.25rem; margin-bottom: 0.1rem}
   .businessView >>> .el-form-item__label{text-align: left}
   .businessView >>> .el-form-item{margin: 0.15rem 0 0 0;}
   .businessView >>> .line{text-align: center}
+  .businessView >>> .el-input__icon{display: none}
   .businessView >>> .el-select .el-input__inner:focus{border-color: #dcdfe6;}
   .businessView >>> .el-input__inner:focus{border-color: #dcdfe6;}
   .businessView >>> .el-input__prefix{display: none;}

@@ -1,7 +1,7 @@
 <!--首页-事件详情-服务评价编辑-->
 <template>
   <div class="eventEvaluationEditorView">
-    <header-last></header-last>
+    <header-last :title="eventEvaluationTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <div class="editorView" v-for="items in editorArr" :key="items.id">
@@ -47,6 +47,7 @@ export default {
 
   data () {
     return {
+      eventEvaluationTit: '服务评价',
       engineer: '梁瑛',
       editorArr: [
         {tit: '1.报障热线服务', value: '', checkList: [], label: [{cell: '受理不及时'}, {cell: '服务态度不好'}, {cell: '沟通互动不足'}]},
@@ -67,7 +68,7 @@ export default {
 <style scoped>
   .content{margin-top: 0.05rem; background: #ffffff; color: #999999; padding: 0.1rem 0.25rem 0.15rem;}
   .editorView .star{display: flex;}
-  .editorView .star .starTit{ display: inline-block; width: 1.2rem; line-height: 0.28rem}
+  .editorView .star .starTit{ display: inline-block; width: 1.2rem;}
   .editorView .improve span{line-height: 0.24rem}
   .editorView .improve >>> .el-checkbox{display: block; margin: 0; font-size: 0.13rem; color: #999999;}
   .signature li{display: flex; margin: 0; line-height: 0.35rem; color: #2698d6; border-bottom: 0.01rem solid #e1e1e1}
