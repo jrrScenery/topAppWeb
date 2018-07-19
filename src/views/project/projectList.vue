@@ -62,7 +62,7 @@ export default {
 
   },
   created:function(){
-    var url = "?action=GetProjectList&EMPID=1012856&TYPE="+this.$route.params.type+"&PAGE_NUM=1&PAGE_TOTAL=10";
+    let url = "?action=GetProjectList&EMPID=1012856&TYPE="+this.$route.params.type+"&PAGE_NUM=1&PAGE_TOTAL=10";
     let result = fetch.get(url,"");
     result.then(res => {
        this.programListArr = res.data;

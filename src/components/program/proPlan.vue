@@ -29,7 +29,9 @@ import fetch from '../../utils/ajax'
 
 export default {
   name: 'proPlan',
-
+  props:{
+    proplanpage: Number
+  },
   components: {
     loadingtmp
   },
@@ -39,19 +41,19 @@ export default {
       tableData: [],
       table_arr: [
         {
-          prop: 'inspectBatch',
+          prop: 'PLAN_NAME',
           label: '巡检批次',
           fixed: true,
           width: '40%'
         },
         {
-          prop: 'planStartDate',
+          prop: 'PLAN_START_DATE',
           label: '计划开始时间',
           fixed: true,
           width: '30%'
         },
         {
-          prop: 'planEndDate',
+          prop: 'PLAN_END_DATE',
           label: '计划结束时间',
           fixed: true,
           width: '30%'
@@ -78,15 +80,17 @@ export default {
     },
     getEventList (page) {
       if (!this.loadall) {
-        fetch.get("?action=GetProjectInspectionPlan&PROJECT_ID="+this.$route.query.projectId,{}).then(res=>{
-          console.log(res.data)
+        //let url = "?action=GetProjectInspectionPlan&PROJECT_ID="+this.$route.query.projectId;
+        let url = "?action=GetProjectInspectionPlan";
+        fetch.get(url,{PROJECT_ID:this.$route.query.projectId}).then(res=>{
+          //console.log(res.data)
           this.total = res.data.length
           if (page == 1) {
             for (let i = 0; i < 10; i++) {
               this.tableData = this.tableData.concat(res.data[i])
             }
             this.page++
-            console.log(1)
+            //console.log(1)
           }
           if (page > 1 && this.tableData.length < this.total) {
             this.tableData = []
@@ -100,6 +104,11 @@ export default {
           }
         })
       }
+    }
+  },
+  watch:{
+    proplanpag(curVal,oldVal){
+      console.log(curVal+"||"+oldVal);
     }
   }
 }

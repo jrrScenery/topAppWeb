@@ -6,23 +6,23 @@ import axios from 'axios'
 import router from '@/router'
 
 // 配置请求头
-var instance = axios.create({
+let instance = axios.create({
     //baseURL: 'http://localhost:8081/api/proxy',
     baseURL: 'http://139.129.207.35:8084/api/proxy',
     timeout: 5000,
     withCredentials: true,
 });
-//var baseURL = "http://localhost:8081/api/proxy";
-//var baseURL = "http://47.104.200.60/api/proxy";
-//var baseURL = "http://47.104.236.209:8084/api/proxy";
-var baseURL = "http://139.129.207.35:8084/api/proxy";
+//let baseURL = "http://localhost:8081/api/proxy";
+//let baseURL = "http://47.104.200.60/api/proxy";
+//let baseURL = "http://47.104.236.209:8084/api/proxy";
+let baseURL = "http://139.129.207.35:8084/api/proxy";
 // 这里我声明了一个全局变量loading，来统一控制请求时的等待数据的loading效果。也可以在实际请求的时候写loading，不过我觉得那样太过繁琐，多了许多代码
 let loading;
 
 // request 拦截器  在请求或响应被 then 或 catch 处理前拦截它们
 instance.interceptors.request.use(config => {
     // 请求时loading效果
-/*    loading = Loading.service({ 
+/*    loading = Loading.service({
         fullscreen: true,
         lock: true,
         text: '正在加载，请稍等……',
@@ -87,9 +87,9 @@ export default {
             if(res.data.sTATUSCODE=='-1'){
                 router.push({name: 'login'});
             }else{
-                resolve(res.data)                
+                resolve(res.data)
             }
-            resolve(res.data) 
+            resolve(res.data)
           }).catch(err => {
             reject(err)
           })
@@ -108,7 +108,7 @@ export default {
             if(res.data.sTATUSCODE=='-1'){
                 router.push({name: 'login'});
             }else{
-                resolve(res.data)                
+                resolve(res.data)
             }
           }).catch(err => {
             reject(err)

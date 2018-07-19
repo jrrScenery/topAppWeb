@@ -4,7 +4,7 @@
         <p>加载中...</p>
     </div>
     <div class="loadall" v-show="loadall">
-        <p>已加载全部内容</p>
+        <p>已加载全部数据</p>
     </div>
     </div>
 </template>

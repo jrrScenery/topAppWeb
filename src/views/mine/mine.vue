@@ -49,9 +49,9 @@ export default {
 
   methods: {
     onLogout () {
-      var url = "?action=logOut";
+      let url = "?action=logOut";
       fetch.get(url,"").then(res=>{
-        
+
       });
     }
   }

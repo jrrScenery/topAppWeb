@@ -9,7 +9,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import echarts from 'echarts'
-import localstorage from './utils/localstorage'
+// import localstorage from './utils/localstorage'
 import commonUtil from './utils/common'
 
 Vue.config.productionTip = false

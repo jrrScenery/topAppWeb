@@ -1,4 +1,3 @@
-
 import Vue from 'vue'
 import Router from 'vue-router'
 import index from '@/views/index'
@@ -89,6 +88,11 @@ export default new Router({
       component: resolve => require(['@/views/home/eventEvaluationEditor'], resolve)
     },
     {
+      path: '/home/eventEvaluationShow',
+      name: 'eventEvaluationShow',
+      component: resolve => require(['@/views/home/eventEvaluationShow'], resolve)
+    },
+    {
       path: '/home/programList',
       name: 'programList',
       component: resolve => require(['@/views/home/programList'], resolve)
@@ -119,9 +123,9 @@ export default new Router({
       component: resolve => require(['@/views/workBench/workBenchEventInfo'], resolve)
     },
     {
-      path: '/workBench/workBenchEventInfoList',
-      name: 'workBenchEventInfoList',
-      component: resolve => require(['@/views/workBench/workBenchEventInfoList'], resolve)
+      path: '/workBench/workBenchEventInfoShow',
+      name: 'workBenchEventInfoShow',
+      component: resolve => require(['@/views/workBench/workBenchEventInfoShow'], resolve)
     },
     {
       path: '/workBench/workBenchPeopleInfo',
@@ -149,9 +153,19 @@ export default new Router({
       component: resolve => require(['@/views/workBench/workBenchMyEvent'], resolve)
     },
     {
+      path: '/workBench/workBenchMyEventAll',
+      name: 'workBenchMyEventAll',
+      component: resolve => require(['@/views/workBench/workBenchMyEventAll'], resolve)
+    },
+    {
       path: '/workBench/workBenchMyPro',
       name: 'workBenchMyPro',
       component: resolve => require(['@/views/workBench/workBenchMyPro'], resolve)
+    },
+    {
+      path: '/workBench/workBenchMyProAll',
+      name: 'workBenchMyProAll',
+      component: resolve => require(['@/views/workBench/workBenchMyProAll'], resolve)
     },
     {
       path: '/workBench/workBenchDeclare',
@@ -178,16 +192,16 @@ export default new Router({
       name: 'mineFeedbackShow',
       component: resolve => require(['@/views//mine/mineFeedbackShow'], resolve)
     },
-    {
-      path: '/event/eventList',
-      name: 'eventList',
-      component: resolve => require(['@/views/event/eventList'], resolve)
-    },
-    {
-      path: '/project/projectList',
-      name: 'projectList',
-      component: resolve => require(['@/views/project/projectList'], resolve)
-    },
+    // {
+    //   path: '/event/eventList',
+    //   name: 'eventList',
+    //   component: resolve => require(['@/views/event/eventList'], resolve)
+    // },
+    // {
+    //   path: '/project/projectList',
+    //   name: 'projectList',
+    //   component: resolve => require(['@/views/project/projectList'], resolve)
+    // },
     {
       path: '/home/caseEvaluateList',
       name: 'caseEvaluateList',

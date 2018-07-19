@@ -20,15 +20,20 @@
 
 <script>
 import global_ from '../../components/Global'
+import fetch from '../../utils/ajax'
 export default {
   name: 'login',
   data () {
     return {
       ruleForm: {
         pass: 'smits123',
-        userName: 'duxinc'
+        userName: 'duxinc',
+        intervale: 20
       }
     }
+  },
+  created () {
+
   },
   methods: {
     submitForm (formName) {
@@ -36,17 +41,42 @@ export default {
         if (valid) {
           this.$axios.post(global_.proxyServer+"?action=userLogin","ACCOUNT="+this.ruleForm.userName+"&PASSWORD="+this.ruleForm.pass).then(res=>{
 
+            console.log(res);
+
             if(res.data.STATUSCODE=="0"){
+              console.log(res.data);
               global_.userInfo = res.data.userInfo;
               global_.userPermission = res.data.userPermission;
               global_.userRole = res.data.userRole;
               global_.empId = res.data.userInfo[0].EMPID;
-              console.log(typeof(android));
-              if(typeof(android)!="undefined"){
-                android.getClient("invoke form html");              
+
+              sessionStorage.setItem("empId", res.data.userInfo[0].EMPID);
+              sessionStorage.setItem("realName", res.data.userInfo[0].REALNAME);
+              sessionStorage.setItem("mobile", res.data.userInfo[0].MOBILE);
+              sessionStorage.setItem("email", res.data.userInfo[0].EMAIL);
+
+              var isGps = 0;
+              if(res.data.userPermission.length>0){
+                for(var i=0;i<res.data.userPermission.length;i++){
+                  if(res.data.userPermission[i].PRIVID=="topApp_GPS"){
+                    isGps = 1;
+                    break;
+                  }
+                }
               }
-              //console.log(res.data.userInfo[0]);
-              this.$router.push({name: 'home'});
+              //console.log(isGps);
+              //console.log(global_.userInfo);
+
+              if(isGps==1&&typeof(android)!="undefined"){
+                fetch.get("?action=getDict&type=GPS_UPDATE_INTERVAL","").then(res=>{
+                  this.intervale = res.data[0].name;
+                  var value = "{action:login,empId:"+sessionStorage.getItem('empId')+",interval:"+this.intervale+"}";
+                  android.getClient(value);
+                  this.$router.push({name: 'home'});
+                });
+              }else{
+                this.$router.push({name: 'home'});
+              }
 
             }else{
               alert(res.data.MESSAGE);

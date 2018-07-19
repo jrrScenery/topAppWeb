@@ -3,15 +3,13 @@
   <div class="searchView">
     <el-form ref="form" :model="form" label-width="65px">
       <el-form-item label="业务方向">
-        <el-select v-model="form.direction" placeholder="请选择行业">
-          <el-option label="运维" value=""></el-option>
-          <el-option label="医药" value=""></el-option>
+        <el-select v-model="form.direction" placeholder="请选择业务方向" multiple>
+          <el-option v-for="item in businessType" :label="item.name" :value="item.value" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="行业">
-        <el-select v-model="form.industry" placeholder="请选择行业">
-          <el-option label="IT" value=""></el-option>
-          <el-option label="医药" value=""></el-option>
+        <el-select v-model="form.industry" placeholder="请选择行业" multiple>
+          <el-option v-for="item in industryType" :label="item.name" :value="item.value" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="客户">
@@ -29,6 +27,7 @@
 </template>
 
 <script>
+import fetch from '../utils/ajax'
 export default {
   name: 'searchProView',
 
@@ -43,13 +42,23 @@ export default {
         industry: '',
         customer: '',
         proName: ''
-      }
+      },
+      businessType: [],
+      industryType: []
     }
   },
 
   watch: {},
 
   created () {
+    fetch.get("?action=getDict&type=PRO_BUSINESS_TYPE","").then(res=>{
+      // console.log(res.data);
+      this.businessType = res.data;
+    });
+    fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
+      // console.log(res.data);
+      this.industryType = res.data;
+    });
   },
 
   methods: {
@@ -60,7 +69,13 @@ export default {
       this.$emit('change', data)
     },
     onSearch () {
-      console.log('search!')
+      let form = this.form
+      this.$emit('search', form)
+      // console.log(this.form, '------------------')
+      let data = {
+        popBg: false
+      }
+      this.$emit('change', data)
     }
   }
 }

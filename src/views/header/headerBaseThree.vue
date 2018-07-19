@@ -8,7 +8,7 @@
     </header>
     <template v-if="popBg">
       <div class="popBg">
-        <search-work-view @change="updatePopBg"></search-work-view>
+        <search-work-view @change="updatePopBg" @search="searchData"></search-work-view>
       </div>
     </template>
   </div>
@@ -17,7 +17,7 @@
 <script>
 import searchWorkView from '@/components/searchWorkView'
 export default {
-  name: 'headerBase',
+  name: 'headerBaseThree',
 
   components: {
     searchWorkView
@@ -41,6 +41,10 @@ export default {
   methods: {
     updatePopBg (data) {
       this.popBg = data.popBg
+    },
+
+    searchData (data) {
+      this.$emit('searchPro', data)
     },
 
     back: function (event) {

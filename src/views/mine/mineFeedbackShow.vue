@@ -6,7 +6,11 @@
     <div class="content">
       <div class="cell" v-for="item in mineFeedbackShowObj" :key="item.id">
         <div class="title">{{item.title}}</div>
-        <ul><li v-for="info in item.cellObj" :key="info.id"><p>{{info.leftTit}}</p><p>{{info.rightCon}}</p></li></ul>
+        <ul>
+          <li v-for="info in item.cellObj" :key="info.id">
+            <p>{{info.leftTit}}</p><p>{{info.rightCon}}</p>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -14,6 +18,7 @@
 
 <script>
 import headerLast from '../header/headerLast'
+import fetch from '../../utils/ajax'
 export default {
   name: 'mineFeedbackShow',
   components: {
@@ -63,7 +68,33 @@ export default {
 
   methods: {
 
-  }
+  },
+  created () {
+    let url = "?action=GetComplaintsInfo&COMPLANT_ID="+this.$route.query.complantId;
+    fetch.get(url,"").then(res=>{
+      console.log(res.data);
+      this.mineFeedbackShowObj[0].cellObj[0].rightCon = res.data.TASK_CODE;
+      this.mineFeedbackShowObj[0].cellObj[1].rightCon = res.data.TASK_FROM;
+      this.mineFeedbackShowObj[0].cellObj[2].rightCon = res.data.TASK_TYPE;
+      this.mineFeedbackShowObj[0].cellObj[3].rightCon = res.data.COMPLAINT_USER;
+      this.mineFeedbackShowObj[0].cellObj[4].rightCon = res.data.TELEPHONE;
+      this.mineFeedbackShowObj[0].cellObj[5].rightCon = res.data.CREATE_ON;
+      this.mineFeedbackShowObj[0].cellObj[6].rightCon = res.data.PROJECT_CODE;
+      this.mineFeedbackShowObj[0].cellObj[7].rightCon = res.data.PROJECT_NAME;
+      this.mineFeedbackShowObj[0].cellObj[8].rightCon = res.data.CASE_CD;
+      this.mineFeedbackShowObj[0].cellObj[9].rightCon = res.data.COMPLAINT_COMMENT;
+
+      this.mineFeedbackShowObj[1].cellObj[0].rightCon = res.data.CONFIRM_COMMENT;
+      this.mineFeedbackShowObj[1].cellObj[1].rightCon = res.data.ACCEPT_OPINION;
+      this.mineFeedbackShowObj[1].cellObj[2].rightCon = res.data.EVALUATOR;
+      this.mineFeedbackShowObj[1].cellObj[3].rightCon = res.data.CLOSE_TIME;
+
+      this.mineFeedbackShowObj[2].cellObj[0].rightCon = res.data.QUALITY_RESULT;
+      this.mineFeedbackShowObj[2].cellObj[1].rightCon = res.data.QUESTION_TYPE;
+      this.mineFeedbackShowObj[2].cellObj[2].rightCon = res.data.RESPONSIBLE_BY;
+      this.mineFeedbackShowObj[2].cellObj[3].rightCon = res.data.QUESTION_REMARK;
+    });
+  },
 }
 </script>
 

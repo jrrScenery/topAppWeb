@@ -1,18 +1,21 @@
 <!--一级头部-->
 <template>
   <header v-if="!(title ==='我的')" class="headerHomeView">
-    <div class="headerLeft">
+    <div class="headerLeft" @click="onSao">
       <img src="../../assets/images/header_sao.png" alt="">
       <p>{{headerLeft}}</p>
     </div>
     <h2>{{title}}</h2>
     <div class="headerRight">
-      <img src="../../assets/images/header_info.png" alt="">
+      <router-link :to="{name:'mineNotice',params:{}}" >
+        <img src="../../assets/images/header_info.png" alt="">
+      </router-link>
     </div>
   </header>
 </template>
 
 <script>
+
 export default {
   name: 'headerHome',
 
@@ -50,6 +53,12 @@ export default {
           this.title = '我的'
           break
       }
+    },
+    onSao(){
+      if(typeof(android)!="undefined"){
+        var value = "{action:sao,empId:"+sessionStorage.getItem('empId')+"}";
+        android.getClient(value);
+      }
     }
   }
 }
@@ -60,5 +69,6 @@ export default {
   h2{display: flex; background: #2698d6;font-size: 0.16rem;}
   .headerLeft,.headerRight{display: flex; flex-direction: column; justify-content: center; align-items: center; width: 0.45rem; height: 0.45rem;}
   .headerLeft img,.headerRight img{width: 0.22rem; height: 0.22rem;}
+  .headerRight a{display: block; width: 100%; text-align: center; line-height: 0.45}
   .headerLeft p{font-size: 0.1rem; line-height: 1; margin-top: 0.03rem}
 </style>

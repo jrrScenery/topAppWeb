@@ -1,22 +1,7 @@
 <!--备件地图-->
 <template>
   <div class="eventPartsView" id="content">
-    <div class="searchBox">
-      <el-form ref="form" :model="form">
-        <el-form-item>
-          <el-input v-model="form.eventNum" placeholder="请输入事件编号"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button>转到</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.place" placeholder="请输入地点"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button>搜索</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+    
     <div id="allmap"></div>
   </div>
 </template>

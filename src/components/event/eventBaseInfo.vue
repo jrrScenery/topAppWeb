@@ -12,11 +12,11 @@
           </div>
         </el-col>
         <el-col :span="1">
-          <span v-if="health == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></span>
-          <span v-if="health == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span>
-          <span v-if="health == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></span>
-          <span v-if="health == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></span>
-          <span v-if="health == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span>
+          <span v-if="CASEHEALTH == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></span>
+          <span v-if="CASEHEALTH == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></span>
+          <span v-if="CASEHEALTH == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ffff00;"></span>
+          <span v-if="CASEHEALTH == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></span>
+          <span v-if="CASEHEALTH == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span>
         </el-col>
         <el-col :span="12">
           <div class="cellTopTime"><span>{{eventTime}}</span><span style="margin-left: 0.05rem;"></span></div>
@@ -32,7 +32,7 @@
         <p>{{companyInfo.size}}</p>
       </div>
       <div class="speed">
-        <el-steps :active="status.active" align-center>
+        <el-steps :active="status.active>2?status.active-1:status.active" align-center>
           <template v-for="item in status.title">
             <el-step :title="item.tit" :key="item.id"></el-step>
           </template>
@@ -44,20 +44,20 @@
           <img v-if="item.imgSrc" :src="item.imgSrc" alt="">
           <img v-else src="../../assets/images/photo.png" alt="">
           <div>
-            <p>
-              {{item.name}} 
-              <a href="tel:item.phone"> {{item.phone}} </a>
+            <p style="font-size: 0.14rem">
+              {{item.name}}<br>
+              <a v-bind:href="'tel:'+item.phone" style="font-size: 0.13em; color: #2698d6;"> {{item.phone}} </a>
             </p>
-            <span>{{item.position}}</span></div>
+            <span style="font-size: 0.1rem; color: #999999">{{item.position}}</span></div>
         </div>
       </div>
       <ul class="eventBaseInfoCell">
-        <li v-for="item in baseInfoArr" :key="item.id"><span>{{item.tit}}</span>{{item.desc}} 
-          <a href="tel:item.phone"> {{item.phone}} </a>
+        <li v-for="item in baseInfoArr" :key="item.id"><span>{{item.tit}}</span>{{item.desc}}
+          <a  v-bind:href="'tel:'+item.phone"  style="font-size: 0.13em; color: #2698d6;"> {{item.phone}} </a>
         </li>
       </ul>
       <div class="resolvent">
-        <div style="display: flex; justify-content: space-between"><p>{{resolventObj.tit}}</p><p><span>解决时间：{{resolventObj.time}}</span></p></div>
+        <div style="display: flex; justify-content: space-between"><p>{{resolventObj.tit}}</p><p v-if="resolventObj.time"><span>解决时间：{{resolventObj.time}}</span></p></div>
         <div class="desc">{{resolventObj.desc}}</div>
       </div>
     </div>
@@ -79,20 +79,21 @@ export default {
     return {
       title: '事件基本信息',
       health: '',
-      eventNum: 'CS1608240019',
-      eventTime: '2018-09-09 03:34:34',
+      eventNum: '',
+      eventTime: '',
       caseLevel: '',
-      companyInfo: {name: '上海联通', tit: '2018年-2019年上海联通IT及Oracle服务项目', equipment: 'DELL PE2950', SN: 'DQ5DN2X', desc: '上海联通疆场DELL DQ5DN2X一块硬告警'},
-      status: {active: 2, title: [{tit: '受理'}, {tit: '诊断'}, {tit: '处理'}, {tit: '关闭'}], state: '待管理责任人处理'},
-      peopleInfo: [{imgSrc: '', name: '里斯', position: '管理责任人',phone:''}, {imgSrc: '', name: '张三', position: '技术责任人',phone:''}],
+      CASEHEALTH: '',
+      companyInfo: {name: '', tit: '', equipment: '', SN: '', desc: ''},
+      status: {active: 1, title: [{tit: '受理'}, {tit: '诊断'}, {tit: '处理'}, {tit: '关闭'}], state: ''},
+      peopleInfo: [{imgSrc: '', name: '', position: '管理责任人',phone:''}, {imgSrc: '', name: '', position: '技术责任人',phone:''}],
       baseInfoArr: [
-        {tit: 'PM：', desc: '史蒂夫',phone:''},
-        {tit: '销售：', desc: '阿斯顿发',phone:''},
-        {tit: '所属区域：', desc: '北区一部'},
-        {tit: '城市：', desc: '河北省石家庄'},
-        {tit: '地址：', desc: '上海市就是的风景而'}
+        {tit: 'PM：', desc: '',phone:''},
+        {tit: '销售：', desc: '',phone:''},
+        {tit: '所属区域：', desc: ''},
+        {tit: '城市：', desc: ''},
+        {tit: '地址：', desc: ''}
       ],
-      resolventObj: {tit: '最终解决办法', time: '2018-09-09 23:23:23', desc: '的撒风洒到家发恶汉文化风景卡号放假啊哈佛诶发哈解放军红色'}
+      resolventObj: {tit: '最终解决办法', time: '', desc: ''}
     }
   },
 
@@ -103,7 +104,7 @@ export default {
 
     let url = "?action=GetCaseInfo&CASE_ID="+this.$route.query.caseId;
     fetch.get(url,"").then(res=>{
-      //console.log(res.data);
+      console.log(res.data);
       let baseInfo = res.data;
       this.eventNum = baseInfo.CASE_NO;
       this.health = baseInfo.CASE_HEALTH;
@@ -113,7 +114,7 @@ export default {
       this.companyInfo.equipment = baseInfo.DEVICE;
       this.companyInfo.SN = baseInfo.SN;
       this.companyInfo.desc = baseInfo.PROBLEM_DETAIL;
-      this.status.active = parseInt(baseInfo.ACCEPT_STATUS);
+      this.status.active = parseInt(baseInfo.CASE_STEP)-1;
       this.status.state = baseInfo.DEAL_STATUS_NAME;
       this.peopleInfo[0].name = baseInfo.MANAGER_REALNAME;
       this.peopleInfo[0].phone = baseInfo.MANAGER_MOBILE;
@@ -129,6 +130,7 @@ export default {
       this.resolventObj.time = baseInfo.SOLVING_TIME;
       this.resolventObj.desc = baseInfo.FINAL_SOLUTION;
       this.caseLevel = parseInt(baseInfo.CASE_LEVEL);
+      this.CASEHEALTH = parseInt(baseInfo.CASE_HEALTH);
      });
   }
 
@@ -150,8 +152,8 @@ export default {
   .baseInfoBottom .speed >>> .el-step__icon-inner{display: none}
   .baseInfoBottom .speed >>> .el-step__title{font-size: 0.13rem}
   .baseInfoBottom .speed p{line-height: 0.4rem; color: #e0be35; text-align: center}
-  .baseInfoBottom .peopleInfo{display: flex; margin-bottom: 0.1rem; line-height: 0.25rem}
-  .baseInfoBottom .peopleInfo img{width: 0.5rem; height: 0.5rem; border-radius: 50%; margin-right: 0.1rem}
+  .baseInfoBottom .peopleInfo{display: flex; margin-bottom: 0.1rem; line-height: 0.2rem}
+  .baseInfoBottom .peopleInfo img{width: 0.5rem; height: 0.5rem; border-radius: 50%; margin: 0.06rem 0.1rem 0 0;}
   .baseInfoBottom .resolvent{line-height: 0.2rem}
   .baseInfoBottom .resolvent p{line-height: 0.3rem}
   .baseInfoBottom .resolvent span{color: #999999}

@@ -65,7 +65,7 @@ export default {
 
   },
   created:function(){
-    var url = global_.proxyServer+"?action=GetCaseEvaluate&PAGE_NUM=1&PAGE_TOTAL=10";
+    let url = global_.proxyServer+"?action=GetCaseEvaluate&PAGE_NUM=1&PAGE_TOTAL=10";
     console.log(url);
     this.$axios.get(url,{}).then(res=>{
       this.tableData = res.data.data;

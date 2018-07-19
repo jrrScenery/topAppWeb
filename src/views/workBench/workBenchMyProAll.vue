@@ -1,4 +1,4 @@
-<!--工作台-我的项目-->
+<!--工作台-所有项目-->
 <template>
   <div class="workBenchMyProView">
     <header-base-five :title="workBenchMyProTit" @searchPro="searchProInfo"></header-base-five>
@@ -57,7 +57,7 @@ import headerBaseFive from '../header/headerBaseFive'
 import loadingtmp from '@/components/load/loading'
 import global_ from '../../components/Global'
 export default {
-  name: 'workBenchMyPro',
+  name: 'workBenchMyProAll',
 
   components: {
     headerBaseFive,
@@ -66,7 +66,7 @@ export default {
 
   data () {
     return {
-      workBenchMyProTit: '我的项目',
+      workBenchMyProTit: '所有项目',
       workBenchMyProTab: [
         {
           name: 'first',
@@ -137,45 +137,18 @@ export default {
           if (this.tab_box === 2) {
             this.page = 1
             this.loadall = false
-            this.$axios.get(global_.proxyServer + "?action=GetProjectList&EMPID=1012856&TYPE=my", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize}}).then(res => {
+            this.$axios.get(global_.proxyServer + "?action=GetProjectList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize}}).then(res => {
               let obj = this.workBenchMyProTab[2].programListArr
               this.workBenchMyProTab[2].programListArr = this.returnList(flag, res, obj)
             });
           } else {
-            this.$axios.get(global_.proxyServer + "?action=GetProjectList&EMPID=1012856&TYPE=my", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, IF_SURANCE: i}}).then(res => {
+            this.$axios.get(global_.proxyServer + "?action=GetProjectList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, IF_SURANCE: i}}).then(res => {
               let obj = this.workBenchMyProTab[i].programListArr
               this.workBenchMyProTab[i].programListArr = this.returnList(flag, res, obj)
             });
           }
         }
       }
-      // if (this.tab_box === 0) {
-      //   this.page = 1
-      //   this.loadall = false
-      //   this.$axios.get(global_.proxyServer + "?action=GetProjectList&EMPID=1012856&TYPE=my", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, IF_SURANCE: 0}}).then(res => {
-      //     // console.log(0, '-----------------', res)
-      //     let obj = this.workBenchMyProTab[0].programListArr
-      //     this.workBenchMyProTab[0].programListArr = this.returnList(flag, res, obj)
-      //   });
-      // }
-      // if (this.tab_box === 1) {
-      //   this.page = 1
-      //   this.loadall = false
-      //   this.$axios.get(global_.proxyServer + "?action=GetProjectList&EMPID=1012856&TYPE=my", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, IF_SURANCE: 0}}).then(res => {
-      //     // for (let i = 0; i < res.data.data.length; i++) {console.log(1, '-----------------', res.data.data[i].BASE_COLOR)}
-      //     let obj = this.workBenchMyProTab[1].programListArr
-      //     this.workBenchMyProTab[1].programListArr = this.returnList(flag, res, obj)
-      //   });
-      // }
-      // if (this.tab_box === 2) {
-      //   this.page = 1
-      //   this.loadall = false
-      //   this.$axios.get(global_.proxyServer + "?action=GetProjectList&EMPID=1012856&TYPE=my", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize}}).then(res => {
-      //     // console.log(2, '-----------------', res)
-      //     let obj = this.workBenchMyProTab[2].programListArr
-      //     this.workBenchMyProTab[2].programListArr = this.returnList(flag, res, obj)
-      //   });
-      // }
     },
     loadMore(){
       this.busy = true;
@@ -198,7 +171,7 @@ export default {
       this.loadall = false
       this.activeName = 'third'
       this.tab_box = 3
-      this.$axios.get(global_.proxyServer + "?action=GetProjectList&EMPID=1012856&TYPE=my", {params: {PAGE_NUM: this.searchpage, PAGE_TOTAL: this.pageSize, BUSINESS_TYPE: formData.business, INDUSTRY: formData.industry, CUST_NAME: formData.customer, PROJECT_NAME: formData.proName, SALE_NAME: formData.sale, PM_NAME: formData.PM}}).then(res => {
+      this.$axios.get(global_.proxyServer + "?action=GetProjectList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.searchpage, PAGE_TOTAL: this.pageSize, BUSINESS_TYPE: formData.business, INDUSTRY: formData.industry, CUST_NAME: formData.customer, PROJECT_NAME: formData.proName, SALE_NAME: formData.sale, PM_NAME: formData.PM}}).then(res => {
         if(this.searchpage>1){
           this.workBenchMyProTab[2].programListArr = this.workBenchMyProTab[2].programListArr.concat(res.data.data);
         }else{

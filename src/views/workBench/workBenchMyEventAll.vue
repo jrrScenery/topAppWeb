@@ -1,4 +1,4 @@
-<!--工作台-我的事件-->
+<!--工作台-所有事件-->
 <template>
   <div class="workBenchMyEventView">
     <header-base :title="workBenchMyEventTit" @searchPro="searchProInfo"></header-base>
@@ -7,17 +7,24 @@
       <el-tabs v-model="activeName" @tab-click="tabClick">
         <template v-for="item in opinionTab">
           <el-tab-pane :label="item.label" :name="item.name" :key="item.id">
+            <router-link :to="{name:'eventShow',query:{caseId:item.CASE_ID}}">
             <div class="eventCell" v-for="info in item.eventListArr" :key="info.id">
-              <router-link :to="{name:'eventShow',query: {caseId:info.CASE_ID}}">
               <div class="cellTop">
                 <el-row>
                   <el-col :span="11">
                     <div class="cellTopNum">
-                      <span class="speventlevel" :class="'speventlevelcolor'+info.CASE_LEVEL" >{{info.CASE_LEVEL}}</span>{{info.CASE_NO}}
+                      <span v-if="info.CASE_LEVEL == 1 || info.CASE_LEVEL == 2" style="background: #ff0000;">{{info.CASE_LEVEL}}</span>
+                      <span v-if="info.CASE_LEVEL == 3" style="background: #ff9900;">{{info.CASE_LEVEL}}</span>
+                      <span v-if="info.CASE_LEVEL == 4" style="background: #ffff00;">{{info.CASE_LEVEL}}</span>
+                      <span v-if="info.CASE_LEVEL == 5" style="background: #1ca2a5;">{{info.CASE_LEVEL}}</span>{{info.CASE_NO}}
                     </div>
                   </el-col>
                   <el-col :span="1">
-                    <span class="spheathcolor" :class="'spheathcolor'+info.CASE_TYPEID" ></span>
+                    <span v-if="info.CASE_TYPEID == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></span>
+                    <span v-if="info.CASE_TYPEID == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></span>
+                    <span v-if="info.CASE_TYPEID == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ffff00;"></span>
+                    <span v-if="info.CASE_TYPEID == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></span>
+                    <span v-if="info.CASE_TYPEID == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span>
                   </el-col>
                   <el-col :span="12">
                     <div class="cellTopTime"><span>{{info.CREATE_DATE}}</span></div>
@@ -40,9 +47,9 @@
                   <el-col :span="24"><span class="tit">说明：</span><span>{{info.PROBLEM_DETAIL}}</span></el-col>
                 </el-row>
               </div>
-              </router-link>
             </div>
             <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
+            </router-link>
           </el-tab-pane>
         </template>
       </el-tabs>
@@ -55,7 +62,7 @@ import headerBase from '../header/headerBase'
 import loadingtmp from '@/components/load/loading'
 import global_ from '../../components/Global'
 export default {
-  name: 'workBenchMyEvent',
+  name: 'workBenchMyEventAll',
 
   components: {
     headerBase,
@@ -64,7 +71,7 @@ export default {
 
   data () {
     return {
-      workBenchMyEventTit: '我的事件',
+      workBenchMyEventTit: '所有事件',
       opinionTab: [
         {
           name: 'first',
@@ -104,6 +111,7 @@ export default {
   },
   methods: {
     tabClick (e) {
+      console.log(e)
       if (e.label === '事件处理') {
         this.tab_box = 1
       }
@@ -120,6 +128,7 @@ export default {
         this.tab_box = 6
       }
       this.loadMore()
+      // console.log(this.tab_box)
     },
     returnList (flag, res, obj) {
       if(flag){
@@ -138,29 +147,10 @@ export default {
       return obj
     },
     getEventList(flag){
-      // for (let i = 0; i < this.opinionTab.length; i++) {
-      //   if (this.tab_box === (i + 1)) {
-      //     this.page = 1
-      //     this.loadall = false
-      //     if (this.tab_box === 5) {
-      //       this.page = 1
-      //       this.loadall = false
-      //       this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=my", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize}}).then(res => {
-      //         let obj = this.opinionTab[4].eventListArr
-      //         this.opinionTab[4].eventListArr = this.returnList(flag, res, obj)
-      //       })
-      //     } else {
-      //       this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=my", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, CASE_STEP: (i + 1)}}).then(res => {
-      //         let obj = this.opinionTab[i].eventListArr
-      //         this.opinionTab[i].eventListArr = this.returnList(flag, res, obj)
-      //       })
-      //     }
-      //   }
-      // }
       if (this.tab_box === 1) {
         this.page = 1
         this.loadall = false
-        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=my", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, CASE_STEP: 1}}).then(res => {
+        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, CASE_STEP: 1}}).then(res => {
           // console.log(0, '-----------------', res)
           let obj = this.opinionTab[0].eventListArr
           this.opinionTab[0].eventListArr = this.returnList(flag, res, obj)
@@ -169,7 +159,7 @@ export default {
       if (this.tab_box === 2) {
         this.page = 1
         this.loadall = false
-        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=my", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, CASE_STEP: 2}}).then(res => {
+        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, CASE_STEP: 2}}).then(res => {
           // console.log(1, '-----------------', res.data.data)
           let obj = this.opinionTab[1].eventListArr
           this.opinionTab[1].eventListArr = this.returnList(flag, res, obj)
@@ -178,7 +168,7 @@ export default {
       if (this.tab_box === 4) {
         this.page = 1
         this.loadall = false
-        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=my", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, CASE_STEP: 4}}).then(res => {
+        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, CASE_STEP: 4}}).then(res => {
           // console.log(2, '-----------------', res.data.data)
           let obj = this.opinionTab[2].eventListArr
           this.opinionTab[2].eventListArr = this.returnList(flag, res, obj)
@@ -187,7 +177,7 @@ export default {
       if (this.tab_box === 5) {
         this.page = 1
         this.loadall = false
-        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=my", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, CASE_STEP: 5}}).then(res => {
+        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, CASE_STEP: 5}}).then(res => {
           // console.log(3, '-----------------', res.data.data)
           let obj = this.opinionTab[3].eventListArr
           this.opinionTab[3].eventListArr = this.returnList(flag, res, obj)
@@ -196,7 +186,7 @@ export default {
       if (this.tab_box === 6) {
         this.page = 1
         this.loadall = false
-        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=my", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize}}).then(res => {
+        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize}}).then(res => {
           // console.log(4, '-----------------', res.data.data)
           let obj = this.opinionTab[4].eventListArr
           this.opinionTab[4].eventListArr = this.returnList(flag, res, obj)
@@ -225,7 +215,7 @@ export default {
       this.loadall = false
       this.activeName = 'fifth'
       this.tab_box = 7
-      this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=my", {params: {PAGE_NUM: this.searchpage, PAGE_TOTAL: this.pageSize, INDUSTRY_NAME: formData.industry, CASE_TYPEID: formData.type, CREATE_DATE_BEGIN: formData.startTime, CREATE_DATE_END: formData.endTime, CUSTOMER_NAME: formData.customer, PROJECT_NAME: formData.proName, SALE_NAME: formData.sale, PM_NAME: formData.PM, CASE_NO: formData.eventNum, KEYWORD: formData.keyWord}}).then(res => {
+      this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.searchpage, PAGE_TOTAL: this.pageSize, INDUSTRY_NAME: formData.industry, CASE_TYPEID: formData.type, CREATE_DATE_BEGIN: formData.startTime, CREATE_DATE_END: formData.endTime, CUSTOMER_NAME: formData.customer, PROJECT_NAME: formData.proName, SALE_NAME: formData.sale, PM_NAME: formData.PM, CASE_NO: formData.eventNum, KEYWORD: formData.keyWord}}).then(res => {
         if(this.searchpage>1){
           this.opinionTab[4].eventListArr = this.opinionTab[4].eventListArr.concat(res.data.data);
         }else{
@@ -261,15 +251,4 @@ export default {
   .eventCell .cellTop .cellTopTime{text-align: right; color: #999999;}
   .eventCell .cellContent .el-col{line-height: 0.25rem; color: #333333;}
   .eventCell .cellContent .el-col .tit{line-height: 0.25rem; color: #999999;}
-  .speventlevel{}
-  .speventlevelcolor1{ background:#ff0000; }
-  .speventlevelcolor2{ background:#ff0000; }
-  .speventlevelcolor3{ background:#ff9900; }
-  .speventlevelcolor4{ background:#ffff00; }
-  .speventlevelcolor5{ background:#1ca2a5; }
-  .eventCell .cellTop .spheathcolor{display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;}
-  .spheathcolor1{background: #009900;}
-  .spheathcolor2{background: #ffff00;}
-  .spheathcolor3{background: #ff9900;}
-  .spheathcolor4{background: #ff0000;}
 </style>

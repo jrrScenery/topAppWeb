@@ -23,6 +23,7 @@
 
 <script>
 import global_ from '../../components/Global'
+import fetch from '../../utils/ajax'
 export default {
   name: 'proPlan',
 
@@ -56,9 +57,9 @@ export default {
     }
   },
   created () {
-    this.$axios.get(global_.proxyServer+"?action=GetComplaintsList&EMPID="+global_.empId+"&PROJECT_NAME="+this.$route.query.projectId,{}).then(res=>{
-      this.tableData = res.data.data;
-      console.log(res.data.data);
+    fetch.get("?action=GetComplaintsList&PROJECT_NAME="+this.$route.query.projectId,{}).then(res=>{
+      this.tableData = res.data;
+      //console.log(res.data);
     });
   },
   methods: {

@@ -11,10 +11,10 @@
         <el-tab-pane label="备件地图" name="fourth"><event-parts></event-parts></el-tab-pane>
       </el-tabs>
     </div>
-    <div class="eventShowFooter">
+    <div class="eventShowFooter" v-if="activeName!='third'&& activeName!='fourth'" >
       <el-row>
         <el-col :span="7">
-          <router-link :to="{name:'eventReplenish',params:{caseId:this.$route.query.caseId}}">
+          <router-link :to="{name:'eventReplenish',query:{caseId:this.caseId}}">
             <div>
               <img src="../../assets/images/eventBaseInfo_1.png" style="width: 0.11rem; height: 0.135rem;" alt="">
               <span>补充说明</span>
@@ -22,7 +22,7 @@
           </router-link>
         </el-col>
         <el-col :span="7">
-          <router-link :to="{name:'eventFeedback',params:{caseId:this.$route.query.caseId}}">
+          <router-link :to="{name:'eventFeedback',query:{caseId:this.caseId,projectId:this.projectId}}">
           <div>
             <img src="../../assets/images/eventBaseInfo_2.png" style="width: 0.15rem; height: 0.135rem;" alt="">
             <span>意见反馈</span>
@@ -30,7 +30,7 @@
           </router-link>
         </el-col>
         <el-col :span="7">
-          <router-link :to="{name:'eventEvaluation',params:{caseId:this.$route.query.caseId}}">
+          <router-link :to="{name:'eventEvaluation',query:{caseId:this.caseId}}">
             <div>
               <img src="../../assets/images/eventBaseInfo_3.png" style="width: 0.145rem; height: 0.145rem;" alt="">
               <span>服务评价</span>
@@ -42,10 +42,10 @@
     </div>
     <div v-if="popBg" class="popBg" @click.stop="popBg=!popBg">
       <ul>
-        <router-link :to="{name:'eventPeople',params:{caseId:this.$route.query.caseId}}">
+        <router-link :to="{name:'eventPeople',query:{caseId:this.caseId}}">
         <li><img src="../../assets/images/eventBaseInfo_4.png" alt="">相关人员</li>
         </router-link>
-        <router-link :to="{name:'eventRepair',query:{caseId:this.$route.query.caseId,projectId:this.projectId}}">
+        <router-link :to="{name:'eventRepair',query:{caseId:this.caseId,projectId:this.projectId}}">
         <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">相关报修</li>
         </router-link>
       </ul>
@@ -76,7 +76,8 @@ export default {
       eventShowTit: '事件详情',
       activeName: 'first',
       popBg: false,
-      projectId : ''
+      caseId: this.$route.query.caseId,
+      projectId: this.$route.query.projectId
     }
   },
 
@@ -85,7 +86,7 @@ export default {
   },
   created:function(){
     fetch.get("?action=GetCaseInfo&CASE_ID="+this.$route.query.caseId,{}).then(res=>{
-      var baseInfo = res.data;
+      let baseInfo = res.data;
       this.projectId = baseInfo.PROJECT_ID ;
       console.log(this.projectId);
     });

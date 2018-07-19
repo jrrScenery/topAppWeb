@@ -3,20 +3,15 @@
   <div class="searchView">
     <el-form ref="form" :model="form" label-width="65px">
       <el-form-item label="行业">
-        <el-select v-model="form.industry" placeholder="请选择行业">
-          <el-option label="IT" value=""></el-option>
-          <el-option label="医药" value=""></el-option>
+        <el-select v-model="form.industry" placeholder="请选择行业" multiple>
+          <el-option v-for="item in industryType" :label="item.name" :value="item.value" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="事件类型" style="position: relative">
         <template>
           <div style="position: absolute; top: 0.25rem; left: -0.65rem; color: #999999; font-size: 0.1rem">可多选</div>
           <el-checkbox-group v-model="form.type" size="small">
-            <el-checkbox-button label="故障" name="type"></el-checkbox-button>
-            <el-checkbox-button label="RMA" name="type"></el-checkbox-button>
-            <el-checkbox-button label="巡检" name="type"></el-checkbox-button>
-            <el-checkbox-button label="咨询" name="type"></el-checkbox-button>
-            <el-checkbox-button label="非故障技术支持" name="type"></el-checkbox-button>
+            <el-checkbox-button v-for="item in Type" :label="item.value" name="type" :key="item.id">{{item.name}}</el-checkbox-button>
           </el-checkbox-group>
         </template>
       </el-form-item>
@@ -31,6 +26,12 @@
       </el-form-item>
       <el-form-item label="PM">
         <el-input v-model="form.PM" class="bInput"></el-input>
+      </el-form-item>
+      <el-form-item label="事件编号">
+        <el-input v-model="form.eventNum" class="bInput"></el-input>
+      </el-form-item>
+      <el-form-item label="关键词">
+        <el-input v-model="form.keyWord" class="bInput"></el-input>
       </el-form-item>
       <el-form-item label="创建时间" style="margin-bottom: 0.3rem">
         <el-col :span="11">
@@ -50,6 +51,7 @@
 </template>
 
 <script>
+import fetch from '../utils/ajax'
 export default {
   name: 'searchView',
 
@@ -66,15 +68,27 @@ export default {
         proName: '',
         sale: '',
         PM: '',
+        eventNum: '',
+        keyWord: '',
         startTime: '',
         endTime: ''
-      }
+      },
+      industryType: [],
+      Type: []
     }
   },
 
   watch: {},
 
   created () {
+    fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
+      // console.log(res.data);
+      this.industryType = res.data;
+    });
+    fetch.get("?action=getDict&type=NT_CASE_TYPE","").then(res=>{
+      // console.log(res.data);
+      this.Type = res.data;
+    });
   },
 
   methods: {
@@ -85,7 +99,13 @@ export default {
       this.$emit('change', data)
     },
     onSearch () {
-      console.log('search!')
+      let form = this.form
+      this.$emit('search', form)
+      // console.log(this.form, '------------------')
+      let data = {
+        popBg: false
+      }
+      this.$emit('change', data)
     }
   }
 }
@@ -95,7 +115,6 @@ export default {
   .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0.5rem; position: relative;}
   .searchView >>> .el-form-item{margin-bottom: 0.1rem;}
   .searchView >>> .el-select{width: 80%;}
-  .searchView >>> .el-input__icon{display: none}
   .searchView >>> .el-input__inner{padding: 0 0.05rem}
   .searchView >>> .el-select .el-input__inner:focus{border-color: #dcdfe6;}
   .searchView >>> .el-form-item__label{text-align: left; color: #999999; font-size: 0.13rem;}

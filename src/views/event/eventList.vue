@@ -1,7 +1,7 @@
 <!--首页-关注事件-->
 <template>
   <div class="eventListView">
-    <header-base></header-base>
+    <header-base :title="myEventTit"></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <div class="eventCell" v-for="item in eventListArr">
@@ -54,6 +54,7 @@ export default {
 
   data () {
     return {
+      myEventTit: '我的事件',
       eventListArr: [
         {
           num: 'CS1608260014',
@@ -95,7 +96,7 @@ export default {
 </script>
 
 <style scoped>
-  .eventCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-top: 0.1rem;}
+  .eventCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-top: 0.05rem;}
   .eventCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
   .eventCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
   .eventCell .cellTop .cellTopNum span{display: inline-block; height: 0.19rem; width: 0.19rem; border-radius: 50%; vertical-align: text-top; margin-right: 0.03rem; color: #ffffff; text-align: center; line-height: 0.2rem;}

@@ -96,6 +96,8 @@ export default {
   .content{margin-top: 0.05rem; text-align: center; color: #666666; background: #ffffff;}
   .content >>> .el-table th{text-align: center; color: #333333; background: #f7f7f7}
   .content >>> .el-table tr:nth-child(2n){background: #f7f7f7}
+  .content >>> .el-table td:nth-child(2){text-align: right}
+  .content >>> .el-table td:nth-child(3){text-align: right}
   .content >>> .el-tabs__header{margin: 0;}
   .content >>> .el-tabs__nav{width: 100%}
   .content >>> .el-tabs__nav .el-tabs__item{width: 50%}

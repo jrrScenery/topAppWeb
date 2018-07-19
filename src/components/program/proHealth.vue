@@ -1,18 +1,19 @@
 <!--健康度-->
 <template>
   <div class="proHealthView">
-    <div class="proHealthCell">
-      <div class="proHealthTit">执行概况</div>
+
+    <div class="proHealthCell" v-for="groupItem in dataArray">
+      <div class="proHealthTit">{{groupItem[0].GROUP_NAME}}</div>
       <div class="content">
         <ul class="tableTh">
           <li style="background: #fafafa!important;">
             <span>检查项</span>
             <span>数量</span>
-            <span>评分</span></li>
+            <span>加减分</span></li>
         </ul>
       </div>
-      <div class="content" v-for="item in dataArray">
-        <ul v-if="item.IF_PARENT == 1" class="tableTh"><li>{{item.GROUP_NAME}}</li></ul>
+      <div class="content" v-for="item in groupItem">
+        <ul v-if="item.IF_PARENT == 1" class="tableTh"><li>{{item.ITEM_NAME}}</li></ul>
         <ul v-if="item.IF_PARENT != 1" class="tableTd">
           <li>
             <span>{{item.ITEM_NAME}}</span>
@@ -22,6 +23,7 @@
         </ul>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -29,7 +31,9 @@
 import global_ from '../../components/Global'
 export default {
   name: 'proHealth',
-
+  props:{
+    prohealthpage:Number
+  },
   components: {
 
   },
@@ -43,37 +47,34 @@ export default {
     }
   },
   created () {
-    this.$axios.get(global_.proxyServer + '?action=GetProjectHealthList&EMPID=' + global_.empId + '&PROJECT_ID=' + this.$route.query.projectId, {}).then(res => {
-      this.dataArray = res.data.data;
-      // console.log(this.dataArray);
-      // let j = 0
-      // let k = 0
-      // let z = 0
-      // let oneArr = {}
-      // let twoArr = {}
-      // let threeArr = {}
-      // for (let i = 0; i < this.dataArray.length; i++) {
-      //   if (this.dataArray[i].GROUP_NAME == '执行情况') {
-      //     oneArr = {check: this.dataArray[i].ITEM_NAME, num: this.dataArray[i].ITEM_RESULT, score: this.dataArray[i].ITEM_SCORE}
-      //     this.situationArr[j] = oneArr
-      //     j++
-      //   }
-      //   if (this.dataArray[i].GROUP_NAME == '评价/满意度') {
-      //     twoArr = {check: this.dataArray[i].ITEM_NAME, num: this.dataArray[i].ITEM_RESULT, score: this.dataArray[i].ITEM_SCORE}
-      //     this.evaluateArr[j] = twoArr
-      //     k++
-      //   }
-      //   if (this.dataArray[i].GROUP_NAME == '潜在风险') {
-      //     threeArr = {check: this.dataArray[i].ITEM_NAME, num: this.dataArray[i].ITEM_RESULT, score: this.dataArray[i].ITEM_SCORE}
-      //     this.riskArr[j] = threeArr
-      //     z++
-      //   }
-      // }
+    this.$axios.get(global_.proxyServer + '?action=GetProjectHealthList&PROJECT_ID=' + this.$route.query.projectId, {}).then(res => {
+      let k =-1,m=0;
+      let groupName = '';
+      let groupArray = [];
+      for (let i = 0; i < res.data.data.length; i++) {
+          let item = res.data.data[i];
+          if(groupName!=item.GROUP_NAME){
+            groupName = item.GROUP_NAME;
+            k++;
+            groupArray[k] = [];
+            m = 0;
+          }else{
+            m++;
+          }
+          groupArray[k][m] = item;
+      }
+      this.dataArray = groupArray;
+
     })
   },
 
   methods: {
 
+  },
+  watch:{
+    prohealthpage(curVal,oldVal){
+      console.log(curVal,oldVal);
+    },
   }
 
 }

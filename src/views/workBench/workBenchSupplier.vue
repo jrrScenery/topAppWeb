@@ -9,28 +9,28 @@
         :data="tableData"
         style="width: 100%">
         <el-table-column
-          prop="areaname"
+          prop="AREANAME"
           label="城市"
           width="24%">
         </el-table-column>
         <el-table-column label="供应商类型">
           <el-table-column
-            prop="count1"
+            prop="COUNT1"
             label="人员"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="count2"
+            prop="COUNT2"
             label="备件"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="count3"
+            prop="COUNT3"
             label="物流"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="count4"
+            prop="COUNT4"
             label="分包"
             width="19%">
           </el-table-column>
@@ -60,6 +60,7 @@ export default {
   created () {
     this.$axios.get(global_.proxyServer+"?action=GetSupplierStat&EMPID="+global_.empId,{}).then(res=>{
       this.tableData = res.data.data
+      console.log(this.tableData)
     });
   },
 

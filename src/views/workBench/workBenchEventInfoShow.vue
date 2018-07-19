@@ -1,4 +1,4 @@
-<!--工作台-事件信息-->
+<!--工作台-事件明细-->
 <template>
   <div class="workBenchEventInfoView">
     <header-last :title="workBenchEventInfoTit"></header-last>
@@ -28,18 +28,19 @@
         <el-table
           :data="tableData"
           :summary-method="getSummaries"
+          max-height="440"
           show-summary
-          max-height="437"
-          @row-click="rowClick"
           style="width: 100%;">
-          <template v-for="item in workBenchEventInfoObj">
-            <el-table-column
-              :key="item.id"
-              :prop="item.prop"
-              :label="item.label"
-              :min-width="item.width">
-            </el-table-column>
-          </template>
+          <el-table-column :label="this.$route.query.industry">
+            <template v-for="item in workBenchEventInfoObj">
+              <el-table-column
+                :key="item.id"
+                :prop="item.prop"
+                :label="item.label"
+                :min-width="item.width">
+              </el-table-column>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
     </div>
@@ -49,9 +50,8 @@
 <script>
 import headerLast from '../header/headerLast'
 import global_ from '../../components/Global'
-import fetch from '../../utils/ajax'
 export default {
-  name: 'workBenchEventInfo',
+  name: 'workBenchEventInfoShow',
 
   components: {
     headerLast
@@ -66,10 +66,10 @@ export default {
       },
       tableData: [],
       workBenchEventInfoObj: [
-        {prop: 'INDUSTRY', label: '行业', width: '25%'},
-        {prop: 'FAULT_NUM', label: '故障类', width: '25%'},
-        {prop: 'NON_FAULT_NUM', label: '非故障类', width: '25%'},
-        {prop: 'total', label: '总计', width: '25%'}
+        {prop: 'CUST_NAME', label: '客户', width: ''},
+        {prop: 'FAULT_NUM', label: '故障类', width: ''},
+        {prop: 'NON_FAULT_NUM', label: '非故障类', width: ''},
+        {prop: 'total', label: '总计', width: ''}
       ],
       pickerOptions: {
         disabledDate: (time) => {
@@ -83,17 +83,13 @@ export default {
   },
   methods: {
     returnList () {
-      this.$axios.get(global_.proxyServer+"?action=GetCaseStat&EMPID="+global_.empId, {params: {START_TIME: this.form.date1, END_TIME: this.form.date2}}).then(res=>{
+      this.$axios.get(global_.proxyServer+"?action=GetCaseStatList&EMPID="+ global_.empId, {params: {START_TIME: this.form.date1, END_TIME: this.form.date2, INDUSTRY_NAME: this.$route.query.industry}}).then(res=>{
         this.tableData = res.data.data
+        // console.log(res)
         let _this = this
         for (let i = 0; i < this.tableData.length; i++) {
           let totalNum = this.tableData[i].FAULT_NUM + this.tableData[i].NON_FAULT_NUM
-          _this.tableData[i] = {
-            INDUSTRY: _this.tableData[i].INDUSTRY,
-            FAULT_NUM: _this.tableData[i].FAULT_NUM,
-            NON_FAULT_NUM: _this.tableData[i].NON_FAULT_NUM,
-            total: totalNum
-          }
+          _this.tableData[i] = {CUST_NAME: _this.tableData[i].CUST_NAME, FAULT_NUM: _this.tableData[i].FAULT_NUM, NON_FAULT_NUM: _this.tableData[i].NON_FAULT_NUM, total: totalNum}
         }
       })
     },
@@ -121,10 +117,6 @@ export default {
       })
 
       return sums
-    },
-    // 跳转链接
-    rowClick (row) {
-      this.$router.push({name: 'workBenchEventInfoShow', query: {industry: row.INDUSTRY}})
     },
     searchInfo () {
       this.returnList()
@@ -163,4 +155,5 @@ export default {
   .tableView >>> .el-table tr{line-height: 0.25rem; color: #666666}
   .tableView >>> .el-table tr:nth-child(2n+1){background: #f7f7f7;}
   .tableView >>> .el-table tr:nth-child(2n){background: #ffffff;}
+  .tableView >>> .el-table--border, .el-table--group{border: none}
 </style>

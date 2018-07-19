@@ -6,58 +6,54 @@
     <div class="tableTh"><span>行业</span><span>客户数量</span><span>项目数量</span><span>合同规模</span></div>
     <div class="tableTd" v-for="items in workBenchInfoObj">
       <div class="tableTitle">业务方向：{{items.title}}</div>
-      <ul class="ulTable">
-        <li v-for="item in items.yunArr">
-          <span>{{item.industry}}</span>
-          <span>{{item.Cnum}}</span>
-          <span>
-            <router-link :to="{name:'workBenchInfoDetail',query:{business:item.business,industry:item.industry}}" > 
-              {{item.Pnum}}
-            </router-link>
-          </span>
-          <span>{{item.contract}}</span>
-        </li>
-      </ul>
-      <ul class="ulTable">
-        <li v-for="item in items.waiArr">
+      <div class="divTable">
+        <router-link v-for="item in items.yunArr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.business,industry:item.industry}}">
           <span>{{item.industry}}</span>
           <span>{{item.Cnum}}</span>
           <span>{{item.Pnum}}</span>
           <span>{{item.contract}}</span>
-        </li>
-      </ul>
-      <ul class="ulTable">
-        <li v-for="item in items.zhiArr">
+        </router-link>
+      </div>
+      <div class="divTable">
+        <router-link v-for="item in items.waiArr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.business,industry:item.industry}}">
           <span>{{item.industry}}</span>
           <span>{{item.Cnum}}</span>
           <span>{{item.Pnum}}</span>
           <span>{{item.contract}}</span>
-        </li>
-      </ul>
-      <ul class="ulTable">
-        <li v-for="item in items.SDCArr">
+        </router-link>
+      </div>
+      <div class="divTable">
+        <router-link v-for="item in items.zhiArr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.business,industry:item.industry}}">
           <span>{{item.industry}}</span>
           <span>{{item.Cnum}}</span>
           <span>{{item.Pnum}}</span>
           <span>{{item.contract}}</span>
-        </li>
-      </ul>
-      <ul class="ulTable">
-        <li v-for="item in items.qiArr">
+        </router-link>
+      </div>
+      <div class="divTable">
+        <router-link v-for="item in items.SDCArr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.business,industry:item.industry}}">
           <span>{{item.industry}}</span>
           <span>{{item.Cnum}}</span>
           <span>{{item.Pnum}}</span>
           <span>{{item.contract}}</span>
-        </li>
-      </ul>
-      <ul class="ulTable">
-        <li v-for="item in items.weiArr">
+        </router-link>
+      </div>
+      <div class="divTable">
+        <router-link v-for="item in items.qiArr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.business,industry:item.industry}}">
           <span>{{item.industry}}</span>
           <span>{{item.Cnum}}</span>
           <span>{{item.Pnum}}</span>
           <span>{{item.contract}}</span>
-        </li>
-      </ul>
+        </router-link>
+      </div>
+      <div class="divTable">
+        <router-link v-for="item in items.weiArr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.business,industry:item.industry}}">
+          <span>{{item.industry}}</span>
+          <span>{{item.Cnum}}</span>
+          <span>{{item.Pnum}}</span>
+          <span>{{item.contract}}</span>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -130,13 +126,15 @@ export default {
 </script>
 
 <style scoped>
-  .workBenchInfoView{width: 100%; color: #999999; line-height: 0.3rem}
-  .tableTh span{display: inline-block; width: 25%; text-align: center; color: #666666; line-height: 0.4rem;}
+  .workBenchInfoView{width: 100%; color: #999999; line-height: 0.3rem;}
+  .tableTh span{display: inline-block; width: 23%; color: #666666; line-height: 0.4rem; text-align: center;}
+  .tableTh span:last-child{width: 31%;}
   .tableTd .tableTitle{color: #2698d6; padding-left: 0.25rem; position: relative; background: #ffffff;}
   .tableTd .tableTitle:before{width: 0.05rem; height: 0.12rem; content: ''; position: absolute; left: 0.1rem; top: 0.09rem; background: #2698d6;}
-  .tableTd .ulTable{text-align: center; display: flex; flex-wrap: wrap;}
-  .tableTd .ulTable li{width: 100%; display: flex}
-  .tableTd .ulTable li:nth-child(2n+1){background: #f7f7f7;}
-  .tableTd .ulTable li:nth-child(2n){text-align: center; background: #ffffff;}
-  .tableTd .ulTable li span{display: inline-block; width: 25%; overflow: hidden}
+  .tableTd .divTable{text-align: center; display: flex; flex-wrap: wrap;}
+  .tableTd .divTable a{display: flex; width: 100%; color: #999999}
+  .tableTd .divTable a:nth-child(2n+1){background: #f7f7f7;}
+  .tableTd .divTable a:nth-child(2n){text-align: center; background: #ffffff;}
+  .tableTd .divTable a span{display: inline-block; width: 23%; overflow: hidden; text-align: center;}
+  .tableTd .divTable a span:last-child{width: 31%; text-align: right; padding-right: 0.05rem}
 </style>

@@ -9,32 +9,32 @@
         :data="tableData"
         style="width: 100%">
         <el-table-column
-          prop="provinceName"
-          label="城市"
-          width="24%">
+          prop="PROVINCE_NAME"
+          label="地点"
+          width="16%">
         </el-table-column>
         <el-table-column label="自有">
           <el-table-column
-            prop="zyPartNumber"
+            prop="ZY_PART_NUMBER"
             label="数量"
-            width="19%">
+            width="15%">
           </el-table-column>
           <el-table-column
-            prop="zyPartAmount"
+            prop="ZY_PART_AMOUNT"
             label="金额"
-            width="19%">
+            width="27%">
           </el-table-column>
         </el-table-column>
         <el-table-column label="供应商">
           <el-table-column
-            prop="gysPartNumber"
+            prop="GYS_PART_NUMBER"
             label="数量"
-            width="19%">
+            width="15%">
           </el-table-column>
           <el-table-column
-            prop="gysPartAmount"
+            prop="GYS_PART_AMOUNT"
             label="金额"
-            width="19%">
+            width="27%">
           </el-table-column>
         </el-table-column>
       </el-table>
@@ -77,6 +77,8 @@ export default {
   .content >>> .el-table{font-size: 0.13rem; text-align: center}
   .content >>> .el-table th{text-align: center; background: #f7f7f7}
   .content >>> .el-table td{border: none}
+  .content >>> .el-table td:nth-child(3){text-align: right;}
+  .content >>> .el-table td:nth-child(5){text-align: right; padding-right: 0.05rem}
   .content >>> .el-table .cell{padding: 0;}
   .content >>> .el-table__empty-block{position: initial}
 </style>

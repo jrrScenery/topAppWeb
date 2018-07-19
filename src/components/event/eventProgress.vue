@@ -2,7 +2,7 @@
 <template>
   <div class="eventProgressView">
     <el-collapse v-model="activeName" v-for="items in eventProgressObj" :key="items.name">
-      <el-collapse-item :name="items.name">
+      <el-collapse-item :name="items.inx">
         <template slot="title">
           <img class="titleImg" :src="items.imgSrc" alt="">{{items.title}}
         </template>
@@ -47,33 +47,19 @@ export default {
 
   },
   mounted(){
-    var url = "?action=GetCaseLogList&CASE_ID="+this.$route.query.caseId;
+    let url = "?action=GetCaseLogList&CASE_ID="+this.$route.query.caseId;
     fetch.get(url,"").then(res=>{
       //console.log(res.data)
-      var logData = res.data;
-      var temparr= [] ;
-      for(var i=0;i<logData.length;i++){
-        var data = logData[i];
-        var curStep = data.CASE_STEP-1;
-        if(!temparr[curStep]){
-          temparr[curStep] = {};
+      let logData = res.data;
+      let temparr= [] ;
+      let tempstep = -1;
+      logData.forEach(function(v,i,ar){
+        if(0 == temparr.length || v.CASE_STEP!= temparr[temparr.length-1]["name"] ){
+          temparr.push({"title":v.CASE_STEP_NAME,"inx":i,"name":v.CASE_STEP,imgSrc:require('@/assets/images/eventProgress_1.png'),desc:[]});
         }
-        if(!temparr[curStep].title){
-          temparr[curStep].title = data.CASE_STEP_NAME;
-          temparr[curStep].name = data.CASE_STEP;
-          temparr[curStep].imgSrc = require('@/assets/images/eventProgress_2.png');
-        }
-        var descIndex = 0;
-        if(!temparr[curStep].desc){
-          temparr[curStep].desc = [];
-        }else{
-          descIndex = temparr[curStep].desc.length;
-        }
-        temparr[curStep].desc[descIndex] = {};
-        temparr[curStep].desc[descIndex].info = data.PROCESSING_LOG;
-        temparr[curStep].desc[descIndex].time = data.CREATE_DATE;
-      }
-      //console.log(this.eventProgressObj);
+        temparr[temparr.length-1]["desc"].push({info:v.PROCESSING_LOG,time:v.CREATE_DATE});
+      })
+
       this.activeName = 1;
       this.eventProgressObj = temparr;
     });

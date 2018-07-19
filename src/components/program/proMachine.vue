@@ -19,14 +19,14 @@
     </div>
     <div class="proMachineBtm">
       <el-table
-        :data="tableData"
-        style="width: 100%">
+              :data="tableData"
+              style="width: 100%">
         <template v-for="item in proMachineObj">
           <el-table-column
-            :key="item.id"
-            :prop="item.prop"
-            :label="item.lable"
-            :min-width="item.width">
+                  :key="item.id"
+                  :prop="item.prop"
+                  :label="item.lable"
+                  :min-width="item.width">
           </el-table-column>
         </template>
       </el-table>
@@ -35,44 +35,80 @@
 </template>
 
 <script>
-import global_ from '../../components/Global'
-export default {
-  name: 'proMachine',
+  import global_ from '../../components/Global'
+  import fetch from '../../utils/ajax'
 
-  components: {
+  export default {
+    name: 'proMachine',
+    props:{
+      promachinepage: Number
+    },
+    components: {
 
-  },
-
-  data () {
-    return {
-      form: {
-        firm: '',
-        typeNum: '',
-        serialNum: ''
+    },
+    data () {
+      return {
+        form: {
+          firm: '',
+          typeNum: '',
+          serialNum: ''
+        },
+        tableData: [
+          {FACTORY_NM: 'HP', type: 'DL380G6', serial: 'CNG944S1VT', startTime: '2017-01-01', endTime: '2017-01-01'}
+        ],
+        proMachineObj: [
+          {prop: 'FACTORY_NM', lable: '厂商', width: '15%'},
+          {prop: 'MODEL_NAME', lable: '型号', width: '15%'},
+          {prop: 'SN', lable: '序列号', width: '22%'},
+          {prop: 'SERVICE_BEGIN', lable: '开始时间', width: '24%'},
+          {prop: 'SERVICE_END', lable: '结束时间', width: '24%'}
+        ],
+        projectId:this.$route.query.projectId,
+        pageSize:5,
+        busy: false,
+        loadall: false
+      }
+    },
+    created () {
+//      fetch.get("?action=GetProjectDeviceList&PROJECT_ID="+this.projectId).then(res=>{
+//        this.tableData = res.data;
+//    });
+    },
+    methods: {
+      onSubmit () {
+        fetch.get("?action=GetProjectDeviceList&PROJECT_ID="+this.projectId+"&FACTORY_NAME="+this.form.firm+"&MODEL_NAME="+this.form.typeNum+"&SN="+this.form.serialNum,{}).then(res=>{
+          this.tableData = res.data;
+        });
       },
-      tableData: [
-        {FACTORY_NM: 'HP', type: 'DL380G6', serial: 'CNG944S1VT', startTime: '2017-01-01', endTime: '2017-01-01'}
-      ],
-      proMachineObj: [
-        {prop: 'FACTORY_NM', lable: '厂商', width: '15%'},
-        {prop: 'MODEL_NAME', lable: '型号', width: '15%'},
-        {prop: 'SN', lable: '序列号', width: '22%'},
-        {prop: 'SERVICE_BEGIN', lable: '开始时间', width: '24%'},
-        {prop: 'SERVICE_END', lable: '结束时间', width: '24%'}
-      ]
-    }
-  },
-  created () {
-    this.$axios.get(global_.proxyServer+"?action=GetProjectDeviceList&EMPID="+global_.empId+"&PROJECT_ID="+this.$route.query.projectId,{}).then(res=>{
-      this.tableData = res.data.data;
-    });
-  },
-  methods: {
-    onSubmit () {
-      console.log('submit!')
+      loadmachine(flag){
+
+        this.$axios.get(global_.proxyServer+"?action=GetProjectDeviceList&EMPID="+global_.empId,{params:{PROJECT_ID:this.projectId,PAGE_NUM:this.promachinepage,PAGE_TOTAL:this.pageSize}}).then(res=>{
+          //console.log(this.eventListArr);
+          if(flag){
+            this.tableData = this.tableData.concat(res.data.data);
+          }else{
+            this.tableData = res.data.data;
+          }
+          console.log(res.data);
+          if(0 == res.data.data.length || res.data.length<this.pageSize ){
+            this.busy = true;
+            this.loadall = true;
+          }
+          else{
+            this.busy = false;
+            this.page++
+          }
+
+        });
+      }
+    },
+    watch:{
+      promachinepage(curVal,oldVal){
+        console.log(curVal+"||"+oldVal);
+        this.loadmachine(this.promachinepage>1);
+      }
     }
   }
-}
 </script>
 
 <style scoped>

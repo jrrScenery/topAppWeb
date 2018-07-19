@@ -4,10 +4,10 @@
     <div class="proReportTop">
       <el-form :inline="true" :model="form" class="demo-form-inline">
         <el-form-item>
-          <el-date-picker type="date" placeholder="请输入时间段" v-model="form.startTime" style="width: 100%;" :picker-options="pickerOptions"></el-date-picker>
+          <el-date-picker type="month" placeholder="请输入时间段" v-model="form.startTime" style="width: 100%;" :picker-options="pickerOptions"></el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-date-picker type="date" placeholder="请输入时间段" v-model="form.endTime" style="width: 100%;" :picker-options="pickerOptions"></el-date-picker>
+          <el-date-picker type="month" placeholder="请输入时间段" v-model="form.endTime" style="width: 100%;" :picker-options="pickerOptions"></el-date-picker>
         </el-form-item>
         <el-form-item>
           <el-button @click="onSubmit">查询</el-button>
@@ -15,19 +15,18 @@
       </el-form>
     </div>
     <div class="proReportBtm">
-      <report-echarts></report-echarts>
+      <charts ref="charts" :startMonth="form.startTime" :endMonth="form.endTime"></charts>
     </div>
   </div>
 </template>
 
 <script>
-import ReportEcharts from '../reportEcharts'
+import charts from '../reportEcharts'
 import global_ from '../../components/Global'
 export default {
   name: 'proReport',
-
   components: {
-    ReportEcharts
+    charts
   },
 
   data () {
@@ -55,7 +54,7 @@ export default {
 
   methods: {
     onSubmit () {
-      console.log('submit')
+      this.$refs.charts.reFetchAll()
     },
     standardDate(join,...num){
       let arr = [];

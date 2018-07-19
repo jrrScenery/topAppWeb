@@ -17,6 +17,15 @@
         </el-form-item>
       </el-form>
     </div>
+
+    <el-upload
+      list-type="picture-card"
+      :action="upaction"
+      :http-request="upload"
+      :before-upload="beforeAvatarUpload">
+      <i class="el-icon-plus"></i>
+    </el-upload>
+
   </div>
 </template>
 
@@ -45,23 +54,50 @@ export default {
       ],
       form: {
         desc: ''
-      }
+      },
+      caseid: this.$route.query.caseId,
+      //upaction: 'http://139.129.207.35:8084/api/upload'
+      upaction: 'http://localhost:8081/api/upload?EMPID=' + sessionStorage.getItem("empId")
     }
   },
 
   methods: {
     onSubmit () {
       //alert('submit!');
-      fetch.get("?action=UpdateProcessInfo&CASE_ID="+caseId+"&REMARK="+this.form.desc,"").then(res=>{
-        if(res.STATUSCODE=="0"){
-          alert("提交成功");
-        }
+      var vm = this;
+      this.$axios.get(global_.proxyServer+"?action=GetComplaintsList&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+        this.opinionTab[0].data = res.data.data;
       });
+
+
+      fetch.get("?action=UpdateProcessInfo&CASE_ID="+this.caseid+"&REMARK="+this.form.desc,"").then(res=>{
+        if(res.STATUSCODE=="0"){
+          this.$message({
+            message:'提交成功',
+            type: 'success',
+            center: true
+          });
+          var nowcaseid = vm.caseid;
+          setTimeout(function(){vm.$router.push({ name: 'eventShow',query:{caseId:nowcaseid}})},1000);
+        }
+        else{
+          this.$message({
+            message:res.MESSAGE,
+            type: 'error',
+            center: true
+          });
+        }
+      }).catch(function(res){
+        this.$message({
+          message:res.MESSAGE,
+          type: 'error',
+          center: true
+        });
+      }) ;
     }
   },
   created:function(){
-    caseId = this.$route.params.caseId;
-    this.$axios.get(global_.proxyServer+"?action=GetCaseInfo&CASE_ID="+this.$route.params.caseId,{}).then(res=>{
+    this.$axios.get(global_.proxyServer+"?action=GetCaseInfo&CASE_ID="+this.caseid,{}).then(res=>{
       var baseInfo = res.data.data;
       this.eventReplenishData[0].desc = baseInfo.PROJECT_NO ;
       this.eventReplenishData[1].desc = baseInfo.PROJECT_NAME ;

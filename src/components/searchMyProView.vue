@@ -1,7 +1,12 @@
-<!--需关注项目-->
+<!--我的项目、所有项目查询-->
 <template>
   <div class="searchView">
     <el-form ref="form" :model="form" label-width="65px">
+      <el-form-item label="业务方向">
+        <el-select v-model="form.business" placeholder="请选择业务方向">
+          <el-option v-for="item in businessType" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="行业">
         <el-select v-model="form.industry" placeholder="请选择行业" multiple>
           <el-option v-for="item in industryType" :label="item.name" :value="item.value" :key="item.id"></el-option>
@@ -29,9 +34,8 @@
 
 <script>
 import fetch from '../utils/ajax'
-
 export default {
-  name: 'searchProView',
+  name: 'searchMyProView',
 
   components: {
 
@@ -40,12 +44,14 @@ export default {
   data () {
     return {
       form: {
+        business: '',
         industry: '',
         customer: '',
         proName: '',
         sale: '',
         PM: ''
       },
+      businessType: [],
       industryType: []
     }
   },
@@ -53,8 +59,12 @@ export default {
   watch: {},
 
   created () {
+    fetch.get("?action=getDict&type=PRO_BUSINESS_TYPE","").then(res=>{
+      console.log(res.data);
+      this.businessType = res.data;
+    });
     fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
-      //console.log(res.data);
+      console.log(res.data);
       this.industryType = res.data;
     });
   },
@@ -69,7 +79,7 @@ export default {
     onSearch () {
       let form = this.form
       this.$emit('search', form)
-      // console.log(form)
+      // console.log(this.form, '------------------')
       let data = {
         popBg: false
       }

@@ -38,7 +38,7 @@
 import headerLast from '../header/headerLast'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
-var caseId,projectId ;
+import qs from 'qs'
 
 export default {
   name: 'eventFeedback',
@@ -75,37 +75,58 @@ export default {
           value: '5',
           label: '事故'
         }],
-        value4: '1'
+        value4: '1',
+        caseId: this.$route.query.caseId,
+        projectId: this.$route.query.projectId
     }
   },
 
   methods: {
     submitForm (formName) {
+      let vm= this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          var params = "&PROJECT_ID="+ projectId +"&TYPE="+this.value4 + "&NAME="+this.formData.name + "&PHONE="+this.formData.phone+  "&CONTENT="+this.formData.article;
-          fetch.get("?action=UpdateSuggest&CASE_ID="+caseId+params,"").then(res=>{
-            if(res.STATUSCODE=="0"){
-              alert("提交成功");
-            }else{
-              alert(res.STATUSCODE);
-            }
+          let params = "&PROJECT_ID="+ this.projectId +"&TYPE="+this.value4 + "&NAME="+this.formData.name + "&PHONE="+this.formData.phone+  "&CONTENT="+window.encodeURI(this.formData.article);
+          fetch.get("?action=UpdateSuggest&CASE_ID="+this.caseId+params,"").then(res=>{
+            // this.$axios.post(global_.proxyServer+"?action=UpdateSuggest",qs.stringify({CASE_ID:this.caseId,PROJECT_ID:this.projectId,TYPE:this.value4,NAME:this.formData.name,EMAIL:this.formData.email,PHONE:this.formData.phone,CONTENT:this.formData.article})).then(res=>{
+            // fetch.post("?action=UpdateSuggest",qs.stringify({CASE_ID:this.caseId,PROJECT_ID:this.projectId,TYPE:this.value4,NAME:this.formData.name,EMAIL:this.formData.email,PHONE:this.formData.phone,CONTENT:this.formData.article})).then(res=>{
+            // this.$axios.get(global_.proxyServer+"?action=UpdateSuggest",{params:{CASE_ID:this.caseId,PROJECT_ID:this.projectId,TYPE:this.value4,NAME:this.formData.name,PHONE:this.formData.phone,CONTENT:this.formData.article}}).then(res=>{
+              // res= res.data;
+              if(res.STATUSCODE=="0"){
+                this.$message({
+                  message:'提交成功',
+                  type: 'success',
+                  center: true
+                });
+
+                  let nowcaseid = vm.caseId;
+                  setTimeout(function(){vm.$router.push({ name: 'eventShow',query:{caseId:nowcaseid}})},1000);
+              }
+              else{
+                this.$message({
+                  message:res.MESSAGE+"发生错误",
+                  type: 'error',
+                  center: true
+                });
+              }
           });
         } else {
-          alert('err')
+          this.$message({
+                  message:"请正确填写",
+                  type: 'error',
+                  center: true
+                });
           return false
         }
       })
     }
   },
   created:function(){
-    this.formData.name = global_.userInfo[0].REALNAME;
-    this.formData.phone = global_.userInfo[0].MOBILE;
-    this.formData.email = global_.userInfo[0].EMAIL;
-    caseId = this.$route.params.caseId;
-    fetch.get("?action=GetCaseInfo&CASE_ID="+this.$route.params.caseId,{}).then(res=>{
-      projectId = res.data.PROJECT_ID;
-    });
+
+    this.formData.name = sessionStorage.getItem("realName");
+    this.formData.phone = sessionStorage.getItem("mobile");
+    this.formData.email = sessionStorage.getItem("email");
+
   }
 }
 </script>

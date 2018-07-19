@@ -1,33 +1,12 @@
 <!--人员地图-->
 <template>
   <div class="eventPeopleView" id="content">
-    <div class="searchBox">
-      <el-form ref="form" :model="form">
-        <el-form-item>
-          <el-input v-model="form.eventNum" placeholder="请输入事件编号"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button>转到</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.orderNum" placeholder="请输入派单编号"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button>转到</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.place" placeholder="请输入地点"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button>搜索</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+
     <div id="peopleAllMap"></div>
     <div class="peopleinfo" :class="{infoon: infoon}">
-      <div class="infoh" @click="infoon=!infoon">参与工程师信息</div>
+      <div class="infoh" @click="infoon=(workerData.length==0?infoon:(!infoon))">参与工程师信息{{workerData.length==0?"：暂无数据":""}}</div>
       <ul class="ulpeoinfo">
-        <li v-for="item in workerData" :key="item.WORK_ID">
+        <li v-for="(item,i) in workerData" :key="item.WORK_ID" @click="showworker(i)">
           <div class="imgbox">
             <img src="" alt="">
             <i>{{item.RESOURCE_TYPE}}</i>
@@ -46,13 +25,15 @@
             </p>
             <span class="workstatus">{{item.WORK_STATUS}}</span>
           </div>
-          
+
         </li>
-        
+
+
       </ul>
+
     </div>
   </div>
-  
+
 </template>
 
 
@@ -73,9 +54,11 @@ export default {
         orderNum: '',
         place: ''
       },
-      infoon: false,
-      detaildata:{},
-      workerData:[]
+      infoon: true,
+      detailData:{},
+      workerData:[],
+      bmapmarks:[],
+      bmap:{}
     }
   },
 
@@ -84,6 +67,7 @@ export default {
   },
   methods: {
     loadpoint(){
+      var vm=this;
       this.$axios.get(global_.proxyServer+"?action=GetMapEngineer&EMPID="+global_.empId,{params:{CASE_ID:+this.$route.query.caseId}}).then(res=>{
         if("0"== res.data.STATUSCODE){
           this.detailData = res.data.detailData;
@@ -91,52 +75,76 @@ export default {
           this.workerData = workerArr.filter(function(item){
             return  1==item.LOCATION_TYPE ;
           });
-
+          console.log(this.workerData);
 
           if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
             let winHeight = document.documentElement.clientHeight
             let mapHeight = document.getElementById('peopleAllMap')
             let contentHeight = document.getElementById('content')
-            mapHeight.style.height = winHeight - 200 + 'px'
-            contentHeight.style.height = winHeight - 150 + 'px'
-            //console.log(mapHeight.style.height)
+            mapHeight.style.height = winHeight - 130 + 'px'
+            contentHeight.style.height = winHeight - 100 + 'px'
+            console.log(mapHeight.style.height)
           }
           let map = new BMap.Map('peopleAllMap')
-          let cpoint = new BMap.Point(this.detailData.longitude, this.detailData.latitude)
+          this.bmap =map;
+          let cpoint = new BMap.Point(this.detailData.LONGITUDE, this.detailData.LATITUDE)
           map.centerAndZoom(cpoint, 12)
 
           addMarker(cpoint,require("../../assets/images/maperror.png"));
 
           this.workerData.forEach(element => {
-            console.log(element.LONGITUDE);
-            var point = new BMap.Point(element.LONGITUDE, element.LATITUDE);
-            addMarker(point,require("../../assets/images/mapworker.png"));
+            console.log(element.LONGITUDE+"|"+element.LATITUDE);
+            if(element.LONGITUDE){
+              var point = new BMap.Point(element.LONGITUDE, element.LATITUDE);
+              addMarker(point,require("../../assets/images/mapworker.png"));
+            }
+            else{
+              vm.bmapmarks.push(null);
+            }
           });
 
 
-          function addMarker(point, imgurl,index){  // 创建图标对象   
-              var myIcon = new BMap.Icon(imgurl, new BMap.Size(23, 25), {    
-                  anchor: new BMap.Size(10, 25),    
-                  imageOffset: new BMap.Size(0,0)     
-              });      
-              var marker = new BMap.Marker(point, {icon: myIcon});    
-              marker.addEventListener("click",function(e){
-                console.log(e);
-                map.zoomTo(map.getZoom() + 1);    
-              })
-              map.addOverlay(marker);    
-          }    
+          function addMarker(point, imgurl,index){  // 创建图标对象
+            var myIcon = new BMap.Icon(imgurl, new BMap.Size(25, 25), {
+              anchor: new BMap.Size(0, 0),
+              imageOffset: new BMap.Size(0,0)
+            });
+            var marker = new BMap.Marker(point, {icon: myIcon});
+            marker.addEventListener("click",function(e){
+              console.log(e);
+              map.zoomTo(map.getZoom() + 1);
+            })
+            vm.bmapmarks.push(marker);
+            map.addOverlay(marker);
+          }
 
         }
-        
+
       });
+    },
+    showworker(i){
+      var marker = this.bmapmarks[i+1];
+      if(marker == null){
+        this.$message({
+          message:'暂无位置信息',
+          type: 'error',
+          center: true
+        });
+      }
+      else{
+        marker.setIcon(new BMap.Icon(require("../../assets/images/mapworker.png"), new BMap.Size(25, 25)));
+        this.bmap.setCenter(marker.getPosition());
+      }
+
     }
+
+
   }
 }
 </script>
 
 <style scoped>
-  
+
   .eventPeopleView{padding: 0 0.15rem;}
   .searchBox{width: 100%; height: 0.5rem; background: #175a91}
   .searchBox >>> .el-form-item{margin: 0 -0.01rem; display: inline-block}
@@ -147,9 +155,10 @@ export default {
   .searchBox >>> .el-button{padding: 0; background: #169ad6}
   #peopleAllMap{}
 
-  .peopleinfo{ position: absolute; left: 0;right: 0; top: 100%; transform: translate(0,-0.3rem); background: #fff; transition: all 0.3s;}
-  .infoon{ transform: translate(0,-2rem);}
-  .peopleinfo .infoh{ line-height: 0.3rem; text-align: center;}
+  .peopleinfo{ position: absolute; left: 0;right: 0; bottom:0; max-height: 0.3rem; overflow: hidden;  background: #fff; transition: all 0.3s;}
+  .infoon{ max-height:2.1rem; }
+  .peopleinfo .infoh{ line-height: 0.3rem;text-align: center; }
+  .peopleinfo ul{max-height: 1.9rem; overflow: scroll;}
   .ulpeoinfo{ }
   .ulpeoinfo li{ display: flex;}
   .ulpeoinfo li .imgbox{ width: 0.5rem; height: 0.5rem;}
@@ -158,4 +167,5 @@ export default {
   .ulpeoinfo li .txtbox{ flex-grow: 1; position: relative;}
   .ulpeoinfo li .txtbox p{}
   .ulpeoinfo li .txtbox .workstatus{ position: absolute; right: 0.1rem; top: 0.06rem;}
+  .noworkers{ text-align: center; padding: 3px 0; color: #888;}
 </style>

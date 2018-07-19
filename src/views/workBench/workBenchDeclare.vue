@@ -76,6 +76,15 @@ export default {
         }
       })
     }
+  },
+  created:function(){
+    if(this.$route.query.result){
+      var array = this.$route.query.result.split(",");
+      this.formData.num = array[2];
+      this.formData.type = array[1];
+      this.formData.firm = array[0];
+      this.formData.city = array[3];
+    }
   }
 }
 </script>

@@ -29,22 +29,49 @@
 </template>
 
 <script>
+import fetch from '../utils/ajax'
+
 // let echarts = require('echarts/lib/echarts')
 export default {
   name: 'reportEcharts',
-
+  props:['startMonth','endMonth'],
   components: {
 
   },
 
   data () {
     return {
-      chartOneTit: '月度报修数量统计（过去一年）',
+      chartOneTit: '月度报修数量统计',
       chartTwoTit: '厂商报修数统计',
       chartThreeTit: '技术方向报修数统计',
       chartFourTit: '设备型号报修数统计',
       chartFiveTit: '报障级别统计',
-      chartSixTit: '备件更换量统计'
+      chartSixTit: '备件更换量统计',
+      oneDataX: [],
+      oneData:  [],
+      sixDataX:[],
+      sixData:[],
+      factoryData:[{value: 335, name: 'IBM'},
+        {value: 310, name: 'DELL'},
+        {value: 234, name: '华为'},
+        {value: 135, name: 'HP'},
+        {value: 1548, name: 'CISCO'}],
+      deviceTypeData:[
+        {value: 335, name: 'IBM'},
+        {value: 310, name: 'DELL'},
+        {value: 234, name: '华为'},
+        {value: 135, name: 'HP'},
+        {value: 1548, name: 'CISCO'}
+      ],
+      deviceModelXData:['HP DL580G7', 'IBM X3650 M4', 'HP VLS12000', 'IBM X3650 M3', 'DELL PER720', '华为S8508', 'CISCO UCS B460 M4', 'CISCO B440 M2'],
+      deviceModelYData:[182, 289, 294, 104, 144, 230, 230, 230],
+      caseLevelData:[
+        {value: 335, name: '直接访问'},
+        {value: 310, name: '邮件营销'},
+        {value: 234, name: '联盟广告'},
+        {value: 135, name: '视频广告'},
+        {value: 1548, name: '搜索引擎'}
+      ]
     }
   },
 
@@ -52,9 +79,111 @@ export default {
     this.drawLine()
   },
 
+  created () {
+    this.reFetchAll()
+  },
+
   methods: {
     onSubmit () {
-      console.log('submit')
+      //console.log('submit')
+    },
+    crtTimeFtt(val) {
+      if (val != null) {
+        var date = new Date(val);
+        return date.getFullYear() + '-' + (date.getMonth() + 1) ;//+ '-' + date.getDate()
+      }
+    },
+    reFetchAll(){
+      this.fetchAll(this.crtTimeFtt(this.startMonth),this.crtTimeFtt(this.endMonth));
+    },
+    fetchAll(startDay,endDay){
+
+      var projectId = this.$route.query.projectId;
+      
+      var url = "?action=GetStatisticsCaseData&dimensionType=date&timeRangeType=month&projectId="+projectId+"&timeStart="+startDay+"&timeEnd="+endDay;
+      fetch.get(url,{}).then(res=>{
+        var reportData = res.DATA;
+        //console.log(reportData);
+        var dataArray = [];
+        var dataArrayX = [];
+        for(var i=0;i<reportData.length;i++){
+          dataArrayX[i] = reportData[i].DIMENSIONTYPE;
+          dataArray[i] = reportData[i].NUMS;
+        }
+        this.oneData = dataArray;
+        this.oneDataX = dataArrayX;
+        this.drawLineOne();
+      });
+
+      url = "?action=GetStatisticsCaseData&dimensionType=factory&timeRangeType=month&projectId="+projectId+"&timeStart="+startDay+"&timeEnd="+endDay;
+      fetch.get(url,{}).then(res=>{
+        var reportData = res.DATA;
+        var dataArray = [];
+        for(var i=0;i<reportData.length;i++){
+          dataArray[i] = {};
+          dataArray[i].name = reportData[i].DIMENSIONTYPE;
+          dataArray[i].value = reportData[i].NUMS;
+        }
+        this.factoryData = dataArray;
+        this.drawLineTwo();
+      });
+
+      url = "?action=GetStatisticsCaseData&dimensionType=deviceType&timeRangeType=month&projectId="+projectId+"&timeStart="+startDay+"&timeEnd="+endDay;
+      fetch.get(url,{}).then(res=>{
+        var reportData = res.DATA;
+        var dataArray = [];
+        for(var i=0;i<reportData.length;i++){
+          dataArray[i] = {};
+          dataArray[i].name = reportData[i].DIMENSIONTYPE;
+          dataArray[i].value = reportData[i].NUMS;
+        }
+        this.deviceTypeData = dataArray;
+        this.drawLineThree();
+      });
+
+      url = "?action=GetStatisticsCaseData&dimensionType=deviceModel&timeRangeType=month&projectId="+projectId+"&timeStart="+startDay+"&timeEnd="+endDay;
+      fetch.get(url,{}).then(res=>{
+        var reportData = res.DATA;
+        var xData = [] ,yData = [];
+        for(var i=0;i<reportData.length;i++){
+          xData[i] = reportData[i].DIMENSIONTYPE;
+          yData[i] = reportData[i].NUMS;
+        }
+        this.deviceModelXData = xData;
+        this.deviceModelYData = yData;
+        this.drawLineFour();
+      });
+
+      url = "?action=GetStatisticsCaseData&dimensionType=caseLevel&timeRangeType=month&projectId="+projectId+"&timeStart="+startDay+"&timeEnd="+endDay;
+      fetch.get(url,{}).then(res=>{
+        var reportData = res.DATA;
+        var dataArray = [];
+        if(typeof(reportData)!='undefined'){
+          for(var i=0;i<reportData.length;i++){
+            dataArray[i] = {};
+            dataArray[i].name = reportData[i].DIMENSIONTYPE;
+            dataArray[i].value = reportData[i].NUMS;
+          }
+          this.caseLevelData = dataArray;
+          this.drawLineFive();          
+        }
+      });
+
+      var url = "?action=GetStatisticsCaseData&dimensionType=partUse&timeRangeType=month&ORGID="+projectId+"&timeStart="+startDay+"&timeEnd="+endDay;
+      fetch.get(url,{}).then(res=>{
+        var reportData = res.DATA;
+        //console.log(reportData);
+        var dataArray = [];
+        var dataArrayX = [];
+        for(var i=0;i<reportData.length;i++){
+          dataArrayX[i] = reportData[i].DIMENSIONTYPE;
+          dataArray[i] = reportData[i].NUMS;
+        }
+        this.sixData = dataArray;
+        this.sixDataX = dataArrayX;
+        this.drawLineSix();
+      });
+
     },
     drawLineOne () {
       let myChartBox = document.getElementById('myChartOne')
@@ -72,7 +201,7 @@ export default {
         xAxis: [
           {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            data: this.oneDataX,
             axisTick: {
               alignWithLabel: true
             }
@@ -88,7 +217,7 @@ export default {
             name: '直接访问',
             type: 'bar',
             barWidth: '50%',
-            data: [10, 52, 200, 334, 390, 330, 220],
+            data: this.oneData,
             label: {
               normal: {
                 show: true,
@@ -110,22 +239,21 @@ export default {
             type: 'pie',
             radius: '55%',
             center: ['50%', '60%'],
-            data: [
-              {value: 335, name: 'IBM'},
-              {value: 310, name: 'DELL'},
-              {value: 234, name: '华为'},
-              {value: 135, name: 'HP'},
-              {value: 1548, name: 'CISCO'}
-            ],
+            data: this.factoryData,
             labelLine: {
               normal: {
-                show: false
+                show: true
               }
             },
-            label: {
-              normal: {
-                show: false,
-                position: 'center'
+            itemStyle: {
+              normal:{
+                label:{
+                  show:true,
+                  formatter: '{b} : {c} \n ({d}%)'
+                },
+                labelLine:{
+                  show:true
+                }
               }
             }
           }
@@ -143,22 +271,21 @@ export default {
             type: 'pie',
             radius: '55%',
             center: ['50%', '60%'],
-            data: [
-              {value: 335, name: 'IBM'},
-              {value: 310, name: 'DELL'},
-              {value: 234, name: '华为'},
-              {value: 135, name: 'HP'},
-              {value: 1548, name: 'CISCO'}
-            ],
+            data: this.deviceTypeData,
             labelLine: {
               normal: {
-                show: false
+                show: true
               }
             },
-            label: {
-              normal: {
-                show: false,
-                position: 'center'
+            itemStyle: {
+              normal:{
+                label:{
+                  show:true,
+                  formatter: '{b} : {c} \n ({d}%)'
+                },
+                labelLine:{
+                  show:true
+                }
               }
             }
           }
@@ -183,14 +310,25 @@ export default {
         },
         yAxis: {
           type: 'category',
-          data: ['HP DL580G7', 'IBM X3650 M4', 'HP VLS12000', 'IBM X3650 M3', 'DELL PER720', '华为S8508', 'CISCO UCS B460 M4', 'CISCO B440 M2']
+          data: this.deviceModelXData
         },
         series: [
           {
             name: '2011年',
             type: 'bar',
-            data: [182, 289, 294, 104, 144, 230, 230, 230]
-          }
+            data: this.deviceModelYData,
+            itemStyle: {
+              normal:{
+                label:{
+                  show:true,
+                  formatter: '{c}'
+                },
+                labelLine:{
+                  show:true
+                }
+              }
+            }
+          },
         ]
       })
     },
@@ -219,16 +357,21 @@ export default {
             },
             labelLine: {
               normal: {
-                show: false
+                show: true
               }
             },
-            data: [
-              {value: 335, name: '直接访问'},
-              {value: 310, name: '邮件营销'},
-              {value: 234, name: '联盟广告'},
-              {value: 135, name: '视频广告'},
-              {value: 1548, name: '搜索引擎'}
-            ]
+            data: this.caseLevelData,
+            itemStyle: {
+              normal:{
+                label:{
+                  show:true,
+                  formatter: '{b} : {c} \n ({d}%)'
+                },
+                labelLine:{
+                  show:true
+                }
+              }
+            }
           }
         ]
       })
@@ -249,7 +392,7 @@ export default {
         xAxis: [
           {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            data: this.sixDataX,
             axisTick: {
               alignWithLabel: true
             }
@@ -265,7 +408,7 @@ export default {
             name: '直接访问',
             type: 'bar',
             barWidth: '50%',
-            data: [10, 52, 200, 334, 390, 330, 220],
+            data: this.sixData,
             label: {
               normal: {
                 show: true,
@@ -277,12 +420,12 @@ export default {
       })
     },
     drawLine () {
-      this.drawLineOne()
-      this.drawLineTwo()
-      this.drawLineThree()
-      this.drawLineFour()
-      this.drawLineFive()
-      this.drawLineSix()
+      //this.drawLineOne()
+      //this.drawLineTwo()
+      //this.drawLineThree()
+      //this.drawLineFour()
+      //this.drawLineFive()
+      //this.drawLineSix()
     }
   }
 }

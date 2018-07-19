@@ -72,7 +72,7 @@ export default {
   },
 
   created:function(){
-    var url = "?action=GetProjectEvaluate&PAGE_NUM=1&PAGE_TOTAL=10";
+    let url = "?action=GetProjectEvaluate&PAGE_NUM=1&PAGE_TOTAL=10";
     fetch.get(url,"").then(res=>{
       console.log(res.data);
       this.tableData = res.data;

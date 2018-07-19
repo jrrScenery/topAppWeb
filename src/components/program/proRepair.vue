@@ -6,7 +6,7 @@
       suffix-icon="el-icon-search"
       v-model="value">
     </el-input>
-    <div class="content" style="max-height: 3.1rem; overflow: scroll">
+    <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <div class="proRepairCell" v-for="item in proRepairObj" >
         <p>编号：{{item.CASE_CD}}</p>
         <ul>
@@ -36,70 +36,54 @@ export default {
     return {
       value: '',
       proRepairObj: [],
-
       page: 1,
       pageSize: 5,
-      total: 0,
-      busy: false,
+      busy:false,
       loadall: false
     }
   },
   created () {
-
   },
   methods: {
-    checkDivScroolTop(){
-      let scrollDiv = document.querySelector('.content');
-      let _this = this
-      scrollDiv.addEventListener('scroll', function() {
-        if(_this.busy)
-          return;
-        console.log("...............scroll");
-        _this.busy = true;
-        setTimeout(() => {
-          _this.getEventList(_this.page);
-        }, 500);
-      }, true);
+
+    getEventList(flag){
+
+      let url = "?action=GetRelateCaseOfProject&PROJECT_ID="+this.$route.query.projectId;
+     //url += "&PAGE_NUM="+this.page+"&PAGE_TOTAL="+this.pageSize;
+      let param = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
+
+      fetch.get(url,param).then(res=>{
+        console.log(res.data);
+        if(flag){
+            this.proRepairObj = this.proRepairObj.concat(res.data);
+        }else{
+            this.proRepairObj = res.data;
+        }
+        if(0 == res.data.length || res.data.length<this.pageSize ){
+          this.busy = true;
+          this.loadall = true;
+        }
+        else{
+          this.busy = false;
+          this.page++;
+        }
+      });
     },
-    getEventList (page) {
-      if (!this.loadall) {
-        var url = "?action=GetRelateCaseOfProject&PROJECT_ID="+this.$route.query.projectId;
-        url += "&PAGE_NUM="+this.page+"&PAGE_TOTAL="+this.pageSize;
-        console.log(url);
-        fetch.get(url,{}).then(res=>{
-          console.log(res.data);
-          if(res.data.length==0){
-            return;
-          }
-          this.total = res.data.length
-          if (page == 1) {
-            for (let i = 0; i < 10; i++) {
-              this.proRepairObj = this.proRepairObj.concat(res.data[i])
-            }
-            this.page++
-            console.log(1)
-          }
-          if (page > 1 && this.proRepairObj.length < this.total) {
-            this.proRepairObj = []
-            for (let i = 0; i < 10 * page; i++) {
-              this.proRepairObj = this.proRepairObj.concat(res.data[i])
-            }
-            this.busy = false
-            this.page++
-            console.log(2)
-          }
-        })
-      }
+    loadMore(){
+      this.busy = true;
+      setTimeout(() => {
+        this.getEventList(this.page>1);
+      }, 5000);
     }
   },
   mounted () {
-    this.getEventList(this.page)
-    this.checkDivScroolTop()
+
   }
 }
 </script>
 
 <style scoped>
+  .content{ width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
   .proRepairView{padding: 0 0.15rem;}
   .proRepairView >>> .el-input{padding: 0.1rem 0; border-bottom: 0.01rem solid #e1e1e1}
   .proRepairView >>> .el-input__icon{width: 0.4rem;font-size: 0.2rem}

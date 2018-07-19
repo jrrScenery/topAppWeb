@@ -9,28 +9,28 @@
         :data="tableData"
         style="width: 100%">
         <el-table-column
-          prop="areaname"
-          label="城市"
+          prop="AREANAME"
+          label="地点"
           width="24%">
         </el-table-column>
         <el-table-column label="人员数量">
           <el-table-column
-            prop="c1"
+            prop="C1"
             label="机动人员"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="c2"
+            prop="C2"
             label="驻场人员"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="c3"
+            prop="C3"
             label="个人合作"
             width="19%">
           </el-table-column>
           <el-table-column
-            prop="c4"
+            prop="C4"
             label="公司合作"
             width="19%">
           </el-table-column>
@@ -59,7 +59,7 @@ export default {
   created () {
     this.$axios.get(global_.proxyServer+"?action=GetPersonStat&EMPID="+global_.empId,{}).then(res=>{
       this.tableData = res.data.data;
-      console.log(this.tableData);
+      //console.log(this.tableData);
     });
   },
   methods: {

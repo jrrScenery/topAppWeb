@@ -10,18 +10,11 @@
           <el-row>
             <el-col :span="11">
               <div class="cellTopNum">
-                <span v-if="item.CASELEVEL == 1 || item.CASELEVEL == 2" style="background: #ff0000;">{{item.CASELEVEL}}</span>
-                <span v-if="item.CASELEVEL == 3" style="background: #ff9900;">{{item.CASELEVEL}}</span>
-                <span v-if="item.CASELEVEL == 4" style="background: #ffff00;">{{item.CASELEVEL}}</span>
-                <span v-if="item.CASELEVEL == 5" style="background: #1ca2a5;">{{item.CASELEVEL}}</span>{{item.CODE}}
+                 <span class="speventlevel" :class="'speventlevelcolor'+item.CASELEVEL" >{{item.CASELEVEL}}</span>{{item.CODE}}
               </div>
             </el-col>
             <el-col :span="1">
-              <span v-if="item.CASEHEALTH == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></span>
-              <span v-if="item.CASEHEALTH == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span>
-              <span v-if="item.CASEHEALTH == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></span>
-              <span v-if="item.CASEHEALTH == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></span>
-              <span v-if="item.CASEHEALTH == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span>
+              <span class="spheathcolor" :class="'spheathcolor'+item.CASEHEALTH"  ></span>
             </el-col>
             <el-col :span="12">
               <div class="cellTopTime"><span>{{item.DATE_TIME}}</span><span style="margin-left: 0.05rem;"></span></div>
@@ -137,4 +130,16 @@ export default {
   .eventCell .cellTop .cellTopTime{text-align: right; color: #999999;}
   .eventCell .cellContent .el-col{line-height: 0.25rem; color: #333333;}
   .eventCell .cellContent .el-col .tit{line-height: 0.25rem; color: #999999;}
+  .eventCell .cellTop .spheathcolor{display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;}
+  .eventCell .cellTop .spheathcolor1{background: #009900;}
+  .eventCell .cellTop .spheathcolor2{background: #ffff00;}
+  .eventCell .cellTop .spheathcolor3{background: #ff9900;}
+  .eventCell .cellTop .spheathcolor4{background: #ff0000;}
+
+  .speventlevelcolor1{ background:#ff0000; }
+  .speventlevelcolor2{ background:#ff0000; }
+  .speventlevelcolor3{ background:#ff9900; }
+  .speventlevelcolor4{ background:#ffff00; }
+  .speventlevelcolor5{ background:#1ca2a5; }
+
 </style>

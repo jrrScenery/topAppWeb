@@ -34,9 +34,9 @@
               <template slot-scope="scope">
                 <template v-if="item.prop == 'CASEHEALTH'">
                   <span v-if="scope.row[item.prop] == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></span>
-                  <span v-if="scope.row[item.prop] == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span>
-                  <span v-if="scope.row[item.prop] == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></span>
-                  <span v-if="scope.row[item.prop] == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></span>
+                  <span v-if="scope.row[item.prop] == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></span>
+                  <span v-if="scope.row[item.prop] == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ffff00;"></span>
+                  <span v-if="scope.row[item.prop] == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></span>
                   <span v-if="scope.row[item.prop] == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span>
                 </template>
                 <router-link v-else :to="{name:'eventShow',query:{caseId:scope.row['CASEID']}}">
@@ -102,12 +102,12 @@
         </div>
         <div class="opinionTab">
           <el-tabs v-model="activeName" type="card">
-            <template v-for="item in opinionTab">
-              <el-tab-pane :label="item.label" :name="item.name">
+            <template v-for="itemTab in opinionTab">
+              <el-tab-pane :label="itemTab.label" :name="itemTab.name">
                   <el-table
-                    :data="item.data"
+                    :data="itemTab.data"
                     style="width: 100%; max-height:1.85rem; border: 0.01rem solid #e1e1e1">
-                    <template v-for="item in item.table">
+                    <template v-for="item in itemTab.table">
                       <el-table-column
                         :fixed="item.fixed"
                         :key="item.id"
@@ -115,13 +115,26 @@
                         :label="item.label"
                         :min-width="item.width">
                         <template slot-scope="scope">
-                          <template v-if="item.prop == 'programName'">
-                            <div style="display: flex;">
-                              <i style="display: inline-block; margin: 0.11rem 0.05rem 0; width: 0.08rem; height: 0.08rem; border-radius: 50%; background: #ff0000;"></i>
-                              <span class="table_name">{{ scope.row.programName }}</span>
-                            </div>
+                          <template v-if="itemTab.name == 'first'">
+                            <router-link :to="{name:'mineFeedbackShow',query:{complantId:scope.row['COMPLANT_ID']}}">
+                            <template v-if="item.prop == 'programName'">
+                              <div style="display: flex;">
+                                <i style="display: inline-block; margin: 0.11rem 0.05rem 0; width: 0.08rem; height: 0.08rem; border-radius: 50%; background: #ff0000;"></i>
+                                <span class="table_name">{{scope.row.programName }}</span>
+                              </div>
+                            </template>
+                            <span v-else class="table_name">{{scope.row[item.prop]}}</span>
+                            </router-link>
                           </template>
-                          <span v-else class="table_name">{{scope.row[item.prop]}}</span>
+                          <template v-else>
+                            <template v-if="item.prop == 'programName'">
+                              <div style="display: flex;">
+                                <i style="display: inline-block; margin: 0.11rem 0.05rem 0; width: 0.08rem; height: 0.08rem; border-radius: 50%; background: #ff0000;"></i>
+                                <span class="table_name">{{scope.row.programName }}</span>
+                              </div>
+                            </template>
+                            <span v-else class="table_name">{{scope.row[item.prop]}}</span>
+                          </template>
                         </template>
                       </el-table-column>
                     </template>
@@ -148,11 +161,11 @@ export default {
   data () {
     return {
       imgObj: [
-        {imgSrc: require('@/assets/images/swiper_1.png')},
-        {imgSrc: require('@/assets/images/swiper_2.png')},
-        {imgSrc: require('@/assets/images/swiper_3.png')},
-        {imgSrc: require('@/assets/images/swiper_4.png')},
-        {imgSrc: require('@/assets/images/swiper_5.png')}
+        {imgSrc: require('@/assets/images/swiper_1.jpg')},
+        {imgSrc: require('@/assets/images/swiper_2.jpg')},
+        {imgSrc: require('@/assets/images/swiper_3.jpg')},
+        {imgSrc: require('@/assets/images/swiper_4.jpg')},
+        {imgSrc: require('@/assets/images/swiper_5.jpg')}
       ],
       eventTitle: '需关注事件',
       programTitle: '需关注项目',
@@ -170,7 +183,7 @@ export default {
           prop: 'CODE',
           label: '事件编号',
           fixed: true,
-          width: '25%'
+          width: '30px'
         },
         {
           prop: 'ITEM',
