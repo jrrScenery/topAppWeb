@@ -7,12 +7,12 @@ import router from '@/router'
 import _global from '../components/Global'
 
 // 配置请求头
-let instance = axios.create({
-    //baseURL: 'http://localhost:8081/api/proxy',
-    baseURL: 'http://139.129.207.35:8084/api/proxy',
-    timeout: 5000,
-    withCredentials: true,
-});
+// let instance = axios.create({
+//     //baseURL: 'http://localhost:8081/api/proxy',
+//     baseURL: 'http://139.129.207.35:8084/api/proxy',
+//     timeout: 5000,
+//     withCredentials: true,
+// });
 //let baseURL = "http://localhost:8081/api/proxy";
 //let baseURL = "http://47.104.200.60/api/proxy";
 //let baseURL = "http://47.104.236.209:8084/api/proxy";
@@ -24,7 +24,7 @@ let baseURL = _global.Server + "/api/proxy";
 let loading;
 
 // request 拦截器  在请求或响应被 then 或 catch 处理前拦截它们
-instance.interceptors.request.use(config => {
+// instance.interceptors.request.use(config => {
     // 请求时loading效果
 /*    loading = Loading.service({
         fullscreen: true,
@@ -42,8 +42,8 @@ instance.interceptors.request.use(config => {
     if (config.method === 'post' || config.method === "put" || config.method === "delete") {
         config.data = qs.stringify(config.data)
     }*/
-    return config
-}, error => {
+//     return config
+// }, error => {
     // loading.close();
     // 对错误请求的处理
     // 弹出错误消息
@@ -53,38 +53,34 @@ instance.interceptors.request.use(config => {
         type: 'error'
     })
     return Promise.reject(error);*/
-    alert(error.message);
-})
+//     alert(error.message);
+// })
 // response拦截器  对请求结果做一些处理
-instance.interceptors.response.use(response => {
-    console.log(response);
-    if(response.data.sTATUSCODE=='-1'){
-        router.push({name: 'login'});
-    }
+// instance.interceptors.response.use(response => {
+//     console.log(response);
+//     if(response.data.sTATUSCODE=='-1'){
+//         router.push({name: 'login'});
+//     }
     // 这里根据从后端拿到的数据做一些处理，比如不同的code对应不同的处理方式等
-}, error => {
+// }, error => {
     /*Message({
         message: error.message,
         type: 'error',
         duration: 5 * 1000
     })
     return Promise.reject(error)*/
-    alert(error.message);
-})
+//     alert(error.message);
+// })
 
 /**
  * 封装并导出get方法、post方法。
  */
-export default {
-/*    get(url, params) {
-        return instance.get(url, params).then(function (data) {
-            resolve(data);
-        });
-    },*/
-    get(url, params) {
 
+export default {  
+
+    get(url, params) {
         return new Promise((resolve, reject) => {
-          var token = sessionStorage.getItem("token");
+          var token = localStorage.getItem("token");
           axios.get(baseURL+url, {
             params: params,
             headers: {
@@ -124,7 +120,14 @@ export default {
         })
       }
 
-/*    post(url, params) {
+      /*    get(url, params) {
+        return instance.get(url, params).then(function (data) {
+            resolve(data);
+        });
+    },*/
+
+    /*    post(url, params) {
         return instance.post(url, params)
+    
     }*/
 }

@@ -83,7 +83,8 @@ export default {
               sessionStorage.setItem("mobile", res.data.userInfo[0].MOBILE);
               sessionStorage.setItem("email", res.data.userInfo[0].EMAIL);
               sessionStorage.setItem("userPermission", JSON.stringify(res.data.userPermission));
-              sessionStorage.setItem("token", token);
+              
+              localStorage.setItem("token", token);
 
               if(typeof(android)!="undefined"){
                 var value = "{action:login,token:"+ token + "}";
