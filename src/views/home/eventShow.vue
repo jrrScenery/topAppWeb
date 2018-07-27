@@ -5,10 +5,10 @@
     <div style="height: 0.45rem;"></div>
     <div class="eventShowTabs">
       <el-tabs v-model="activeName">
-        <el-tab-pane label="基本信息" name="first"><event-base-info></event-base-info></el-tab-pane>
-        <el-tab-pane label="进展情况" name="second"><event-progress></event-progress></el-tab-pane>
-        <el-tab-pane label="人员地图" name="third"><event-people></event-people></el-tab-pane>
-        <el-tab-pane label="备件地图" name="fourth"><event-parts></event-parts></el-tab-pane>
+        <el-tab-pane label="基本信息"   name="first"><event-base-info></event-base-info></el-tab-pane>
+        <el-tab-pane label="进展情况"   name="second"><event-progress></event-progress></el-tab-pane>
+        <el-tab-pane label="人员地图"  name="third" lazy><event-people></event-people></el-tab-pane>
+        <el-tab-pane label="备件地图"  name="fourth" lazy><event-parts></event-parts></el-tab-pane>
       </el-tabs>
     </div>
     <div class="eventShowFooter" v-if="activeName!='third'&& activeName!='fourth'" >
@@ -45,7 +45,7 @@
         <router-link :to="{name:'eventPeople',query:{caseId:this.caseId}}">
         <li><img src="../../assets/images/eventBaseInfo_4.png" alt="">相关人员</li>
         </router-link>
-        <router-link :to="{name:'eventRepair',query:{caseId:this.caseId,projectId:this.projectId}}">
+        <router-link :to="{name:'eventRepair',query:{caseId:this.caseId}}">
         <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">相关报修</li>
         </router-link>
       </ul>

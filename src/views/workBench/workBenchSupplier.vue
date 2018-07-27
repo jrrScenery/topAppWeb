@@ -43,6 +43,7 @@
 <script>
 import headerLast from '../header/headerLast'
 import global_ from '../../components/Global'
+import fetch from '../../utils/ajax'
 export default {
   name: 'workBenchSupplier',
 
@@ -58,8 +59,8 @@ export default {
   },
 
   created () {
-    this.$axios.get(global_.proxyServer+"?action=GetSupplierStat&EMPID="+global_.empId,{}).then(res=>{
-      this.tableData = res.data.data
+    fetch.get("?action=GetSupplierStat&EMPID="+global_.empId,{}).then(res=>{
+      this.tableData = res.data
       console.log(this.tableData)
     });
   },

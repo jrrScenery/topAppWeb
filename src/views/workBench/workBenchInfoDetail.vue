@@ -49,12 +49,14 @@ export default {
   data () {
     return {
       workBenchInfoDetailTit: '在保项目情况明细',
-      programListArr: []
+      programListArr: [],
+      business: this.$route.query.business,
+      industry: this.$route.query.industry
     }
   },
   created () {
     let url = "?action=GetProjectStatList";
-    url +=  "&BUSINESS_TYPE=" +  this.$route.query.business + "&INDUSTRY_NAME=" + this.$route.query.industry;
+    url +=  "&BUSINESS_TYPE=" +  this.business + "&INDUSTRY_NAME=" + this.industry;
     fetch.get(url,{}).then(res => {
       console.log(res.data);
       this.programListArr = res.data
@@ -65,8 +67,10 @@ export default {
     // 搜索条件data
     searchProInfo (data) {
       console.log(data)
+      data.industry = data.industry.join(',')
+      data.direction = data.direction.join(',')
       let url = "?action=GetProjectStatList";
-      url +=  "&BUSINESS_TYPE=" +  this.$route.query.business + "&INDUSTRY_NAME=" + this.$route.query.industry + "&BUSINESS_TYPE:'data.direction'&INDUSTRY_NAME:'data.industry'&CUST_NAME:'data.customer'&PROJECT_NAME:'data.proName'";
+      url +=  "&BUSINESS_TYPE=" +  this.business + "&INDUSTRY_NAME=" + this.industry + {BUSINESS_TYPE: data.direction, INDUSTRY_NAME: data.industry, CUST_NAME: data.customer, PROJECT_NAME: data.proName};
       fetch.get(url,{}).then(res => {
         console.log(res)
         this.programListArr = res.data

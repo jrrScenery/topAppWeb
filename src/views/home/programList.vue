@@ -50,6 +50,7 @@
 import global_ from '../../components/Global'
 import headerBaseTwo from '../header/headerBaseTwo'
 import loadingtmp from '@/components/load/loading'
+import fetch from '../../utils/ajax'
 export default {
   name: 'programList',
 
@@ -86,6 +87,7 @@ export default {
   },
 
   methods: {
+
     getEventList(){
       var flag = this.page>1;
       var reqParams = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
@@ -93,13 +95,13 @@ export default {
         var industry = this.searchData.industry.join(',');
         reqParams = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize,INDUSTRY:industry,CUST_NAME:this.searchData.customer,PROJECT_NAME:this.searchData.proName,SALE_NAME:this.searchData.sale,PM_NAME:this.searchData.PM};
       }
-      this.$axios.get(global_.proxyServer+"?action=GetFocusProject",{params:reqParams}).then(res=>{
+      fetch.get("?action=GetFocusProject",reqParams).then(res=>{
         if(flag){
-          this.programListArr = this.programListArr.concat(res.data.data);
+          this.programListArr = this.programListArr.concat(res.data);
         }else{
-          this.programListArr = res.data.data;
+          this.programListArr = res.data;
         }
-        if(0 == res.data.data.length){
+        if(0 == res.data.length){
           this.busy = true;
           this.loadall = true;
         }

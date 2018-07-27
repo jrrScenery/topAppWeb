@@ -2,7 +2,7 @@
 <template>
   <div class="proHealthView">
 
-    <div class="proHealthCell" v-for="groupItem in dataArray">
+    <div class="proHealthCell" v-for="groupItem in dataArray" :key="groupItem[0].GROUP_NAME">
       <div class="proHealthTit">{{groupItem[0].GROUP_NAME}}</div>
       <div class="content">
         <ul class="tableTh">
@@ -12,7 +12,7 @@
             <span>加减分</span></li>
         </ul>
       </div>
-      <div class="content" v-for="item in groupItem">
+      <div class="content" v-for="item in groupItem" :key="item.ITEM_NAME">
         <ul v-if="item.IF_PARENT == 1" class="tableTh"><li>{{item.ITEM_NAME}}</li></ul>
         <ul v-if="item.IF_PARENT != 1" class="tableTd">
           <li>
@@ -29,6 +29,7 @@
 
 <script>
 import global_ from '../../components/Global'
+import fetch from '../../utils/ajax'
 export default {
   name: 'proHealth',
   props:{
@@ -47,21 +48,21 @@ export default {
     }
   },
   created () {
-    this.$axios.get(global_.proxyServer + '?action=GetProjectHealthList&PROJECT_ID=' + this.$route.query.projectId, {}).then(res => {
+    fetch.get( '?action=GetProjectHealthList&PROJECT_ID=' + this.$route.query.projectId, {}).then(res => {
       let k =-1,m=0;
       let groupName = '';
       let groupArray = [];
-      for (let i = 0; i < res.data.data.length; i++) {
-          let item = res.data.data[i];
-          if(groupName!=item.GROUP_NAME){
-            groupName = item.GROUP_NAME;
-            k++;
-            groupArray[k] = [];
-            m = 0;
-          }else{
-            m++;
-          }
-          groupArray[k][m] = item;
+      for (let i = 0; i < res.data.length; i++) {
+        let item = res.data[i];
+        if(groupName!=item.GROUP_NAME){
+          groupName = item.GROUP_NAME;
+          k++;
+          groupArray[k] = [];
+          m = 0;
+        }else{
+          m++;
+        }
+        groupArray[k][m] = item;
       }
       this.dataArray = groupArray;
 

@@ -88,10 +88,6 @@ export default {
         if (valid) {
           let params = "&PROJECT_ID="+ this.projectId +"&TYPE="+this.value4 + "&NAME="+this.formData.name + "&PHONE="+this.formData.phone+  "&CONTENT="+window.encodeURI(this.formData.article);
           fetch.get("?action=UpdateSuggest&CASE_ID="+this.caseId+params,"").then(res=>{
-            // this.$axios.post(global_.proxyServer+"?action=UpdateSuggest",qs.stringify({CASE_ID:this.caseId,PROJECT_ID:this.projectId,TYPE:this.value4,NAME:this.formData.name,EMAIL:this.formData.email,PHONE:this.formData.phone,CONTENT:this.formData.article})).then(res=>{
-            // fetch.post("?action=UpdateSuggest",qs.stringify({CASE_ID:this.caseId,PROJECT_ID:this.projectId,TYPE:this.value4,NAME:this.formData.name,EMAIL:this.formData.email,PHONE:this.formData.phone,CONTENT:this.formData.article})).then(res=>{
-            // this.$axios.get(global_.proxyServer+"?action=UpdateSuggest",{params:{CASE_ID:this.caseId,PROJECT_ID:this.projectId,TYPE:this.value4,NAME:this.formData.name,PHONE:this.formData.phone,CONTENT:this.formData.article}}).then(res=>{
-              // res= res.data;
               if(res.STATUSCODE=="0"){
                 this.$message({
                   message:'提交成功',

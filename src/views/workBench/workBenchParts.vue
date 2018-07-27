@@ -45,6 +45,7 @@
 <script>
 import headerLast from '../header/headerLast'
 import global_ from '../../components/Global'
+import fetch from '../../utils/ajax'
 export default {
   name: 'workBenchParts',
 
@@ -59,8 +60,8 @@ export default {
     }
   },
   created () {
-    this.$axios.get(global_.proxyServer+"?action=GetPartStat&EMPID="+global_.empId,{}).then(res=>{
-      this.tableData = res.data.data;
+    fetch.get("?action=GetPartStat",{}).then(res=>{
+      this.tableData = res.data;
       // console.log(this.tableData);
     });
   },

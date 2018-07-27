@@ -103,6 +103,11 @@ export default new Router({
       component: resolve => require(['@/views/home/programShow'], resolve)
     },
     {
+      path: '/home/tabshowTest',
+      name: 'tabshowTest',
+      component: resolve => require(['@/views/home/tabshowTest'], resolve)
+    },
+    {
       path: '/home/opinion',
       name: 'opinion',
       component: resolve => require(['@/views/home/opinion'], resolve)
@@ -192,16 +197,6 @@ export default new Router({
       name: 'mineFeedbackShow',
       component: resolve => require(['@/views//mine/mineFeedbackShow'], resolve)
     },
-    // {
-    //   path: '/event/eventList',
-    //   name: 'eventList',
-    //   component: resolve => require(['@/views/event/eventList'], resolve)
-    // },
-    // {
-    //   path: '/project/projectList',
-    //   name: 'projectList',
-    //   component: resolve => require(['@/views/project/projectList'], resolve)
-    // },
     {
       path: '/home/caseEvaluateList',
       name: 'caseEvaluateList',

@@ -51,26 +51,28 @@ export default {
       oneData:  [],
       sixDataX:[],
       sixData:[],
-      factoryData:[{value: 335, name: 'IBM'},
+      factoryData:[/**{value: 335, name: 'IBM'},
         {value: 310, name: 'DELL'},
         {value: 234, name: '华为'},
         {value: 135, name: 'HP'},
-        {value: 1548, name: 'CISCO'}],
+        {value: 1548, name: 'CISCO'}*/],
       deviceTypeData:[
+      /**
         {value: 335, name: 'IBM'},
         {value: 310, name: 'DELL'},
         {value: 234, name: '华为'},
         {value: 135, name: 'HP'},
-        {value: 1548, name: 'CISCO'}
+        {value: 1548, name: 'CISCO'}*/
       ],
       deviceModelXData:['HP DL580G7', 'IBM X3650 M4', 'HP VLS12000', 'IBM X3650 M3', 'DELL PER720', '华为S8508', 'CISCO UCS B460 M4', 'CISCO B440 M2'],
       deviceModelYData:[182, 289, 294, 104, 144, 230, 230, 230],
       caseLevelData:[
+      /**
         {value: 335, name: '直接访问'},
         {value: 310, name: '邮件营销'},
         {value: 234, name: '联盟广告'},
         {value: 135, name: '视频广告'},
-        {value: 1548, name: '搜索引擎'}
+        {value: 1548, name: '搜索引擎'}*/
       ]
     }
   },
@@ -90,14 +92,17 @@ export default {
     crtTimeFtt(val) {
       if (val != null) {
         var date = new Date(val);
-        return date.getFullYear() + '-' + (date.getMonth() + 1) ;//+ '-' + date.getDate()
+        var month = date.getMonth() + 1;
+        if(month<10){
+          month = "0" + month;
+        }
+        return date.getFullYear() + '-' + month ;//+ '-' + date.getDate()
       }
     },
     reFetchAll(){
       this.fetchAll(this.crtTimeFtt(this.startMonth),this.crtTimeFtt(this.endMonth));
     },
     fetchAll(startDay,endDay){
-
       var projectId = this.$route.query.projectId;
       
       var url = "?action=GetStatisticsCaseData&dimensionType=date&timeRangeType=month&projectId="+projectId+"&timeStart="+startDay+"&timeEnd="+endDay;
@@ -169,7 +174,7 @@ export default {
         }
       });
 
-      var url = "?action=GetStatisticsCaseData&dimensionType=partUse&timeRangeType=month&ORGID="+projectId+"&timeStart="+startDay+"&timeEnd="+endDay;
+      var url = "?action=GetStatisticsCaseData&dimensionType=partUse&timeRangeType=month&projectId="+projectId+"&timeStart="+startDay+"&timeEnd="+endDay;
       fetch.get(url,{}).then(res=>{
         var reportData = res.DATA;
         //console.log(reportData);
@@ -344,9 +349,6 @@ export default {
             radius: ['50%', '70%'],
             avoidLabelOverlap: false,
             label: {
-              normal: {
-                position: 'inner'
-              },
               emphasis: {
                 show: true,
                 textStyle: {
@@ -369,7 +371,8 @@ export default {
                 },
                 labelLine:{
                   show:true
-                }
+                },
+                position: 'top'
               }
             }
           }

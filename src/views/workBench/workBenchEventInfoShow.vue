@@ -1,20 +1,20 @@
 <!--工作台-事件明细-->
 <template>
   <div class="workBenchEventInfoView">
-    <header-last :title="workBenchEventInfoTit"></header-last>
+    <header-last :title="workBenchEventInfoTit" :backUrl="backUrl" :date1="form.date1" :date2="form.date2"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <div class="searchView">
         <el-form>
           <el-col :span="8">
             <el-form-item prop="date1">
-              <el-date-picker type="date" placeholder="请选择日期" v-model="form.date1" style="width: 90%;" :picker-options="pickerOptions"></el-date-picker>
+              <el-date-picker type="date" placeholder="请选择日期" v-model="form.date1" style="width: 90%;" :picker-options="pickerOptions" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col class="line" :span="2">~</el-col>
           <el-col :span="8">
             <el-form-item prop="date2">
-              <el-date-picker type="date" placeholder="请选择日期" v-model="form.date2" style="width: 90%;" :picker-options="pickerOptions"></el-date-picker>
+              <el-date-picker type="date" placeholder="请选择日期" v-model="form.date2" style="width: 90%;" :picker-options="pickerOptions" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -29,9 +29,10 @@
           :data="tableData"
           :summary-method="getSummaries"
           max-height="440"
+          @cell-click="tdClick"
           show-summary
           style="width: 100%;">
-          <el-table-column :label="this.$route.query.industry">
+          <el-table-column :label="this.$route.query.industryName">
             <template v-for="item in workBenchEventInfoObj">
               <el-table-column
                 :key="item.id"
@@ -50,6 +51,8 @@
 <script>
 import headerLast from '../header/headerLast'
 import global_ from '../../components/Global'
+import fetch from '../../utils/ajax'
+
 export default {
   name: 'workBenchEventInfoShow',
 
@@ -60,6 +63,8 @@ export default {
   data () {
     return {
       workBenchEventInfoTit: '事件信息',
+      backUrl : 'workBenchEventInfo',
+      queryParams : '',
       form: {
         date1: new Date(this.getFormerTime(1)),
         date2: new Date()
@@ -79,17 +84,24 @@ export default {
     }
   },
   created () {
+    if(undefined!=this.$route.query.date1){
+      this.form.date1 = this.$route.query.date1;
+      this.form.date2 = this.$route.query.date2;
+    }
+
+    this.backUrl = "workBenchEventInfo";
+    this.queryParams = {date1:this.form.date1,date2:this.form.date2};
     this.returnList()
   },
   methods: {
     returnList () {
-      this.$axios.get(global_.proxyServer+"?action=GetCaseStatList&EMPID="+ global_.empId, {params: {START_TIME: this.form.date1, END_TIME: this.form.date2, INDUSTRY_NAME: this.$route.query.industry}}).then(res=>{
-        this.tableData = res.data.data
-        // console.log(res)
+      fetch.get("?action=GetCaseStatList",{START_TIME:this.form.date1, END_TIME: this.form.date2, INDUSTRY_NAME: this.$route.query.industry}).then(res=>{
+        this.tableData = res.data
+        console.log(res.data)
         let _this = this
         for (let i = 0; i < this.tableData.length; i++) {
           let totalNum = this.tableData[i].FAULT_NUM + this.tableData[i].NON_FAULT_NUM
-          _this.tableData[i] = {CUST_NAME: _this.tableData[i].CUST_NAME, FAULT_NUM: _this.tableData[i].FAULT_NUM, NON_FAULT_NUM: _this.tableData[i].NON_FAULT_NUM, total: totalNum}
+          _this.tableData[i] = {CUST_NAME: _this.tableData[i].CUST_NAME,CUSTOMER_ID: _this.tableData[i].CUSTOMER_ID, FAULT_NUM: _this.tableData[i].FAULT_NUM, NON_FAULT_NUM: _this.tableData[i].NON_FAULT_NUM, total: totalNum}
         }
       })
     },
@@ -135,6 +147,18 @@ export default {
         yearArr.unshift(nowYear-i+'1231')
       }
       return yearArr
+    },
+    noKeyword () {
+      document.activeElement.blur()
+    },
+    // 点击单元格时
+    tdClick (row, column, cell, event) {
+      let ifFault = 'N'
+      if (column.label == '故障类') {
+        ifFault = 'Y'
+      }
+      console.log(row);
+      this.$router.push({name: 'workBenchMyEventAll', query: {customer: row.CUSTOMER_ID, ifFault: ifFault, activeName: 'fifth',industry:this.$route.query.industry,startDate:this.form.date1,endDate:this.form.date2}})
     }
   }
 }
@@ -142,7 +166,7 @@ export default {
 
 <style scoped>
   .workBenchEventInfoView{width: 100%; text-align: center;}
-  .workBenchEventInfoView .content{margin-top: 0.05rem; background: #ffffff;}
+  .workBenchEventInfoView .content{background: #ffffff;}
   .searchView{padding: 0.15rem 0.25rem;}
   .searchView >>> .el-form{height: 0.4rem;}
   .searchView >>> .el-input__icon{display: none}

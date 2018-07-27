@@ -11,20 +11,21 @@
         <el-form-item class="text">
           <el-input type="textarea" v-model="form.desc" placeholder="补充说明"></el-input>
         </el-form-item>
-        <div class="takePhoto"><img src="../../assets/images/takephoto.png" alt=""></div>
+        <div class="takePhoto" @click="takeP"><img src="../../assets/images/takephoto.png" alt=""></div>
         <el-form-item class="submitBtn">
           <el-button type="primary" @click="onSubmit">提交</el-button>
         </el-form-item>
       </el-form>
+      <img id="showpic" ref="showpic">
     </div>
 
-    <el-upload
+<!--     <el-upload
       list-type="picture-card"
       :action="upaction"
       :http-request="upload"
       :before-upload="beforeAvatarUpload">
       <i class="el-icon-plus"></i>
-    </el-upload>
+    </el-upload> -->
 
   </div>
 </template>
@@ -56,8 +57,8 @@ export default {
         desc: ''
       },
       caseid: this.$route.query.caseId,
-      //upaction: 'http://139.129.207.35:8084/api/upload'
-      upaction: 'http://localhost:8081/api/upload?EMPID=' + sessionStorage.getItem("empId")
+      upaction: 'http://139.129.207.35:8084/api/upload'
+      // upaction: 'http://localhost:8081/api/upload?EMPID=' + sessionStorage.getItem("empId")
     }
   },
 
@@ -65,8 +66,8 @@ export default {
     onSubmit () {
       //alert('submit!');
       var vm = this;
-      this.$axios.get(global_.proxyServer+"?action=GetComplaintsList&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
-        this.opinionTab[0].data = res.data.data;
+      fetch.get("?action=GetComplaintsList&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+        this.opinionTab[0].data = res.data;
       });
 
 
@@ -94,17 +95,86 @@ export default {
           center: true
         });
       }) ;
+    },
+    receiveMsgFromParent: function (msg) {
+      var value = "{action:receiveMsgFromParent}";
+      android.getClient(value);
+      this.form.desc = "receive msg = " + msg;
+    },
+    takeP:function(){
+      var value = "{action:takePhoto}";
+      this.form.desc = "aaaaaaaaaaaaaaaaaaaaa";
+      android.getClient(value);
+    },
+    getPhotoUrl: function(photodata){
+      alert(photodata);
+
+      this.$refs.showpic.url = photodata;
     }
   },
   created:function(){
-    this.$axios.get(global_.proxyServer+"?action=GetCaseInfo&CASE_ID="+this.caseid,{}).then(res=>{
-      var baseInfo = res.data.data;
+    window.getPhotoUrl = this.getPhotoUrl;
+
+    this.$parent.setComponent(this);
+    fetch.get("?action=GetCaseInfo&CASE_ID="+this.caseid,{}).then(res=>{
+      var baseInfo = res.data;
       this.eventReplenishData[0].desc = baseInfo.PROJECT_NO ;
       this.eventReplenishData[1].desc = baseInfo.PROJECT_NAME ;
       this.eventReplenishData[2].desc = baseInfo.CASE_NO ;
     });
   }
 }
+
+/*function getUserMedia(constrains,success,error){
+    if(navigator.mediaDevices.getUserMedia){
+        //最新标准API
+        navigator.mediaDevices.getUserMedia(constrains).then(success).catch(error);
+    } else if (navigator.webkitGetUserMedia){
+        //webkit内核浏览器
+        navigator.webkitGetUserMedia(constrains).then(success).catch(error);
+    } else if (navigator.mozGetUserMedia){
+        //Firefox浏览器
+        navagator.mozGetUserMedia(constrains).then(success).catch(error);
+    } else if (navigator.getUserMedia){
+        //旧版API
+        navigator.getUserMedia(constrains).then(success).catch(error);
+    }
+}*/
+
+/*var video = document.getElementById("video");
+var canvas = document.getElementById("canvas");
+var context = canvas.getContext("2d");*/
+
+//成功的回调函数
+/*function success(stream){
+    //兼容webkit内核浏览器
+    var CompatibleURL = window.URL || window.webkitURL;
+    //将视频流设置为video元素的源
+    video.src = CompatibleURL.createObjectURL(stream);
+    //播放视频
+    video.play();
+}*/
+
+//异常的回调函数
+/*function error(error){
+    console.log("访问用户媒体设备失败：",error.name,error.message);
+}*/
+
+/*if (navigator.mediaDevices.getUserMedia || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia){
+    //调用用户媒体设备，访问摄像头
+    getUserMedia({
+        video:{width:480,height:320}
+    },success,error);
+} else {
+    alert("你的浏览器不支持访问用户媒体设备");
+}*/
+
+//注册拍照按钮的单击事件
+/*document.getElementById("capture").addEventListener("click",function(){
+    //绘制画面
+    context.drawImage(video,0,0,480,320);
+});*/
+
 </script>
 
 <style scoped>

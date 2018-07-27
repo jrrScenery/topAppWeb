@@ -1,7 +1,7 @@
 <!--首页-需关注事件-->
 <template>
   <div class="eventListView">
-    <header-base :title="eventListTit"></header-base>
+    <header-base :title="eventListTit" :searchType="searchType" :queryData="searchData"  @searchPro="searchList"></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <div class="eventCell" v-for="item in eventListArr" :key="item.CASEID">
@@ -28,6 +28,10 @@
             <el-col :span="12"><span class="tit">型号：</span><span>{{item.MODEL_NAME}}</span></el-col>
           </el-row>
           <el-row>
+            <el-col :span="12"><span class="tit">客户：</span><span>{{item.CUSTOM}}</span></el-col>
+            <el-col :span="12"><span class="tit">城市：</span><span>{{item.CITY}}</span></el-col>
+          </el-row>
+          <el-row>
             <el-col :span="12"><span class="tit">状态：</span><span>{{item.CASE_STATUS}}</span></el-col>
             <el-col :span="12"><span class="tit">类型：</span><span>{{item.TYPE}}</span></el-col>
           </el-row>
@@ -44,8 +48,10 @@
 
 <script>
 import global_ from '../../components/Global'
+import fetch from '../../utils/ajax'
 import headerBase from '../header/headerBase'
 import loadingtmp from '@/components/load/loading'
+
 export default {
   name: 'eventList',
 
@@ -57,6 +63,7 @@ export default {
   data () {
     return {
       eventListTit: '需关注事件',
+      searchType: 'focusEvent',
       eventListArr: [
         /**{
           num: 'CS1608260014',
@@ -82,21 +89,41 @@ export default {
       page:1,
       pageSize:10,
       busy:false,
-      loadall: false
+      loadall: false,
+      isSearch:false,
+      searchData:{
+        industry:[]
+      }
     }
   },
 
   methods: {
-    getEventList(flag){
-      this.$axios.get(global_.proxyServer+"?action=GetFocusCase&EMPID="+global_.empId,{params:{PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize}}).then(res=>{
-        //console.log(this.eventListArr);
+
+    getEventList(){
+      var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
+      if(this.isSearch){
+        params.INDUSTRY_NAME = this.searchData.industry.join(",");
+        params.CASE_TYPE = this.searchData.type.join(",");
+        params.CUST_NAME = this.searchData.customer;
+        params.PROJECT_NAME = this.searchData.proName;
+        params.PM_NAME = this.searchData.PM;
+        params.CASE_CD = this.searchData.eventNum;
+        params.KEYWORD = this.searchData.keyWord;
+        params.SALE_NAME = this.searchData.sale;
+        params.START_TIME = this.searchData.startTime;
+        params.END_TIME = this.searchData.endTime;
+      }
+      //console.log(params);
+      var flag = this.page>1;
+      fetch.get("?action=GetFocusCase",params).then(res=>{
+        //console.log(res.data);
         if(flag){
-            this.eventListArr = this.eventListArr.concat(res.data.data);
+            this.eventListArr = this.eventListArr.concat(res.data);
         }else{
-            this.eventListArr = res.data.data;
+            this.eventListArr = res.data;
         }
-        if(0 == res.data.data.length || res.data.length<this.pageSize ){
-          this.busy = true;
+        if(0 == res.data.length || res.data.length<this.pageSize ){
+          this.busy = false;
           this.loadall = true;
         }
         else{
@@ -107,10 +134,21 @@ export default {
       });
     },
     loadMore(){
+      if(this.busy || this.loadall)
+        return;
       this.busy = true;
       setTimeout(() => {
-        this.getEventList(this.page>1);
+        this.getEventList();
       }, 500);
+    },
+
+    searchList(formData){
+      this.searchData = formData;
+      this.eventListArr=[];
+      this.isSearch = true;
+      this.page = 1;
+      this.loadall= false;
+      this.loadMore();
     }
   },
   created(){

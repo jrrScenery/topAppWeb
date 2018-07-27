@@ -8,19 +8,36 @@
     </header>
     <template v-if="popBg">
       <div class="popBg">
-        <search-view @change="updatePopBg" @search="searchData"></search-view>
+        <template v-if="searchType=='opnion1'">
+          <search-complaint-view @change="updatePopBg" @search="searchData"></search-complaint-view>
+        </template>
+        <template v-else-if="searchType=='opnion2'">
+          <search-complaint-view @change="updatePopBg" @search="searchData"></search-complaint-view>
+        </template>
+        <template v-else-if="searchType=='opnion3'">
+          <search-complaint-view @change="updatePopBg" @search="searchData"></search-complaint-view>
+        </template>
+        <template v-else-if="searchType=='focusEvent'">
+          <focus-search-view @change="updatePopBg" @search="searchData" :queryData="queryData"></focus-search-view>
+        </template>
+        <search-view v-else @change="updatePopBg" @search="searchData"></search-view>
       </div>
     </template>
   </div>
 </template>
 
 <script>
+
 import searchView from '@/components/searchView'
+import focusSearchView from '@/components/focusSearchView'
+import searchComplaintView from '@/components/searchCompaintView'
 export default {
   name: 'headerBase',
 
   components: {
-    searchView
+    searchView,
+    focusSearchView,
+    searchComplaintView
   },
 
   data () {
@@ -30,12 +47,13 @@ export default {
     }
   },
 
-  props: ['title'],
+  props: ['title','searchType','queryData'],
 
   watch: {
   },
 
   created () {
+    console.log(this.queryData);
   },
 
   methods: {

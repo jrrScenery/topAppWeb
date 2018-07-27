@@ -1,5 +1,5 @@
 <!--我的-->
-<template>
+<template >
   <div class="mineView">
     <div class="mineBg" v-for="item in userData" :key="item.id">
       <img :src="item.imgSrc" alt="">
@@ -10,6 +10,16 @@
           <template v-if="item.action == 'logout'">
             <img :src="item.imgSrc" alt="">
             <span v-on:click="onLogout">{{item.text}}</span>
+            <i class="el-icon-arrow-right"></i>
+          </template>
+           <template v-else-if="item.action == 'mineNotice'">
+            <img :src="item.imgSrc" alt="">
+            <span v-on:click="mineNotice">{{item.text}}</span>
+            <i class="el-icon-arrow-right"></i>
+          </template>
+          <template v-else-if="item.action == 'Feedback'">
+            <img :src="item.imgSrc" alt="">
+            <span v-on:click="Feedback">{{item.text}}</span>
             <i class="el-icon-arrow-right"></i>
           </template>
           <template v-else>
@@ -36,23 +46,40 @@ export default {
   data () {
     return {
       userData: [
-        {imgSrc: require('@/assets/images/mine_bg.jpg'), userName: '购买时光', phone: '13888888888'}
+        {imgSrc: require('@/assets/images/mine_bg.jpg'), userName:sessionStorage['realName'], phone:sessionStorage['mobile']}
       ],
       liObj: [
-        {imgSrc: require('@/assets/images/mine_1.png'), text: '通知',action:''},
-        {imgSrc: require('@/assets/images/mine_2.png'), text: '我的报修',action:''},
-        {imgSrc: require('@/assets/images/mine_3.png'), text: '我的意见反馈',action:''},
+        {imgSrc: require('@/assets/images/mine_1.png'), text: '通知',action:'mineNotice'},
+        // {imgSrc: require('@/assets/images/mine_2.png'), text: '我的报修',action:''}, 暂时注释
+        {imgSrc: require('@/assets/images/mine_3.png'), text: '我的意见反馈',action:'Feedback'},
         {imgSrc: require('@/assets/images/mine_4.png'), text: '退出当前账户',action:'logout'}
       ]
     }
   },
-
+  mounted () {
+    //this.inofr()
+  },
   methods: {
     onLogout () {
-      let url = "?action=logOut";
-      fetch.get(url,"").then(res=>{
+      this.$confirm('确定退出当前账户吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let url = "?action=logOut";
+        sessionStorage.removeItem("token");
+        // fetch.get(url,"").then(res=>{
+          this.$router.push({name:'login',params:{}});
+        // });
+      }).catch(() => {
 
       });
+    },
+    mineNotice(){
+       this.$router.push({name:'mineNotice',params:{}});
+    },
+    Feedback(){//:to="{name:'mineFeedbackShow',query:{complantId:scope.row['COMPLANT_ID'],myid:1}}"
+       this.$router.push({name:'tabshowTest',query:{TYPE:'my'}});
     }
   }
 }
@@ -70,3 +97,8 @@ export default {
   .ul_mineView .li_mineView img{width: 0.24rem; height: 0.24rem; margin-right: 0.15rem;}
   .ul_mineView .li_mineView span{width: 100%; text-align: left; color: #262626}
 </style>
+
+<style>
+.el-message-box__wrapper .el-message-box{ width: 80%;}
+</style>
+

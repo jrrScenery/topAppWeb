@@ -29,8 +29,9 @@
 </template>
 
 <script>
-  import global_ from '../../components/Global'
-  import headerLast from '../header/headerLast'
+import global_ from '../../components/Global'
+import headerLast from '../header/headerLast'
+import fetch from '../../utils/ajax'
   export default {
     name: 'eventEvaluation',
 
@@ -79,14 +80,14 @@
 
     methods: {
       getEventList(flag){
-        this.$axios.get(global_.proxyServer+"?action=GetCaseEvaluateList",{params:{CASE_ID:this.caseid,PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize}}).then(res=>{
+        fetch.get("?action=GetCaseEvaluateList",{CASE_ID:this.caseid,PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize}).then(res=>{
           //console.log(this.eventListArr);
           if(flag){
-            this.tableData = this.tableData.concat(res.data.data);
+            this.tableData = this.tableData.concat(res.data);
           }else{
-            this.tableData = res.data.data;
+            this.tableData = res.data;
       }
-        if(0 == res.data.data.length || res.data.length<this.pageSize ){
+        if(0 == res.data.length || res.data.length<this.pageSize ){
           this.busy = true;
           this.loadall = true;
         }

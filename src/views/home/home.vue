@@ -1,6 +1,7 @@
 <!--首页-->
 <template>
   <div class="homeView">
+
     <div class="swiper">
       <el-carousel trigger="click" arrow="never" width="100%" height="1.2rem">
         <el-carousel-item v-for="item in imgObj" :key="item.id">
@@ -24,7 +25,6 @@
           :data="caseData"
           style="width: 100%; max-height:1.85rem; border: 0.01rem solid #e1e1e1">
           <template v-for="item in eventTable">
-
             <el-table-column
               :fixed="item.fixed"
               :key="item.id"
@@ -44,7 +44,6 @@
                 </router-link>
               </template>
             </el-table-column>
-
           </template>
         </el-table>
       </div>
@@ -96,17 +95,17 @@
               {{opinionTitle}}
           </div>
             <!--<div class="titleRight" v-on:click="showMore3">{{more}}</div>-->
-          <router-link :to="{name:'opinion'}">
+          <router-link :to="{name:'tabshowTest'}">
             <div class="titleRight">{{more}}</div>
           </router-link>
         </div>
         <div class="opinionTab">
           <el-tabs v-model="activeName" type="card">
             <template v-for="itemTab in opinionTab">
-              <el-tab-pane :label="itemTab.label" :name="itemTab.name">
+              <el-tab-pane :label="itemTab.label" :name="itemTab.name" v-bind:key="itemTab.name">
                   <el-table
                     :data="itemTab.data"
-                    style="width: 100%; max-height:1.85rem; border: 0.01rem solid #e1e1e1">
+                    style="width: 100%; border: 0.01rem solid #e1e1e1">
                     <template v-for="item in itemTab.table">
                       <el-table-column
                         :fixed="item.fixed"
@@ -120,10 +119,10 @@
                             <template v-if="item.prop == 'programName'">
                               <div style="display: flex;">
                                 <i style="display: inline-block; margin: 0.11rem 0.05rem 0; width: 0.08rem; height: 0.08rem; border-radius: 50%; background: #ff0000;"></i>
-                                <span class="table_name">{{scope.row.programName }}</span>
+                                <span class="table_name" v-html="scope.row.programName"></span>
                               </div>
                             </template>
-                            <span v-else class="table_name">{{scope.row[item.prop]}}</span>
+                            <span v-else class="table_name" v-html="scope.row[item.prop]"></span>
                             </router-link>
                           </template>
                           <template v-else>
@@ -183,7 +182,7 @@ export default {
           prop: 'CODE',
           label: '事件编号',
           fixed: true,
-          width: '30px'
+          width: '35px'
         },
         {
           prop: 'ITEM',
@@ -316,40 +315,44 @@ export default {
     //     this.$router.push({name:'caseEvaluateList',params:{}});
     //   }
     // }
+    fetchData:function(){
+
+      fetch.get("?action=GetFocusCase&PAGE_NUM=1&PAGE_TOTAL=3","").then(res=>{
+        //console.log(res.data);
+        this.caseData = res.data;
+      });
+
+      fetch.get("?action=GetFocusProject&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+        this.projData = res.data;
+      });
+
+      fetch.get("?action=GetCaseEvaluate&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+        this.opinionTab[2].data = res.data;
+      });
+
+      fetch.get("?action=GetProjectEvaluate&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+        this.opinionTab[1].data = res.data;
+      });
+
+      fetch.get("?action=GetComplaintsList&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+        this.opinionTab[0].data = res.data;
+        console.log(res.data)
+        var tmpar= res.data;
+        tmpar = tmpar.map(function(item){
+          item.COMPLAINT_COMMENT = item.COMPLAINT_COMMENT.replace(/\n/g, "<br/>");
+          return item;
+        })
+      });
+    }
   },
   created:function(){
 
-    fetch.get("?action=GetFocusCase&PAGE_NUM=1&PAGE_TOTAL=3","").then(res=>{
-      //console.log(res.data);
-      this.caseData = res.data;
+    fetch.get("?action=checkSession",{}).then(res=>{
+          this.fetchData();
     });
-
-    /**
-    fetch.get("?action=GetMapEngineer&CASE_ID=121927","").then(res=>{
-      console.log(res);
-    });
-    */
-
-    this.$axios.get(global_.proxyServer+"?action=GetFocusProject&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
-      this.projData = res.data.data;
-    });
-
-    this.$axios.get(global_.proxyServer+"?action=GetCaseEvaluate&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
-      this.opinionTab[2].data = res.data.data;
-    });
-
-    this.$axios.get(global_.proxyServer+"?action=GetProjectEvaluate&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
-      this.opinionTab[1].data = res.data.data;
-    });
-
-    this.$axios.get(global_.proxyServer+"?action=GetComplaintsList&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
-      this.opinionTab[0].data = res.data.data;
-    });
-
   }
 }
 </script>
-
 
 <style scoped>
   .homeView{width: 100%;}

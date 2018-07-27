@@ -3,13 +3,29 @@
   <div class="workBenchView">
     <ul class="ul_workBench" v-for="items in workBenchObj" :key="items.id">
 
-        <li class="li_workBench" v-for="item in items.arr" :key="item.id">
-          <router-link :to="{name:item.href,params:item.params}" >
-            <img :src="item.imgSrc" alt="">
-          </router-link>
-          <span>{{item.text}}</span>
-        </li>
+        <template v-for="item in items.arr" >
+          <li v-if="item.display" class="li_workBench" :key="item.id">
+            <router-link :to="{name:item.href,params:item.params}" >
+              <img  :src="item.imgSrc" alt=""  >
+            </router-link>
+            <span>{{item.text}}</span>
+          </li>
+          <li v-else class="li_workBench" :key="item.id" style="display:none">
+            <router-link :to="{name:item.href,params:item.params}" >
+              <img  :src="item.imgSrc" alt=""  >
+            </router-link>
+            <span>{{item.text}}</span>
+          </li>
+      </template>
     </ul>
+    <!--<template>-->
+      <!--<mt-datetime-picker-->
+            <!--ref="picker"-->
+            <!--type="date"-->
+            <!--v-model="pickerValue">-->
+          <!--</mt-datetime-picker>-->
+    <!--</template>-->
+    <!-- <input type="button" @click="aaa" value="aaaaa"> -->
   </div>
 </template>
 
@@ -25,30 +41,55 @@ export default {
     return {
       workBenchObj: [
         {arr: [
-          {imgSrc: require('@/assets/images/workBench_1.png'), text: '在保项目信息', href: 'workBenchInfo'},
-          {imgSrc: require('@/assets/images/workBench_2.png'), text: '事件信息', href: 'workBenchEventInfo'},
-          {imgSrc: require('@/assets/images/workBench_3.png'), text: '人员信息', href: 'workBenchPeopleInfo'},
-          {imgSrc: require('@/assets/images/workBench_4.png'), text: '备件库存', href: 'workBenchParts'},
-          {imgSrc: require('@/assets/images/workBench_5.png'), text: '供应商信息', href: 'workBenchSupplier'},
-          {imgSrc: require('@/assets/images/workBench_6.png'), text: 'PO信息', href: 'workBenchPOinfo'}
+          {imgSrc: require('@/assets/images/workBench_1.png'), text: '在保项目信息', href: 'workBenchInfo',display:true},
+          {imgSrc: require('@/assets/images/workBench_2.png'), text: '事件信息', href: 'workBenchEventInfo',display:true},
+          {imgSrc: require('@/assets/images/workBench_3.png'), text: '人员信息', href: 'workBenchPeopleInfo',display:true},
+          {imgSrc: require('@/assets/images/workBench_4.png'), text: '备件库存', href: 'workBenchParts',display:true},
+          {imgSrc: require('@/assets/images/workBench_5.png'), text: '供应商信息', href: 'workBenchSupplier',display:true},
+          {imgSrc: require('@/assets/images/workBench_6.png'), text: 'PO信息', href: 'workBenchPOinfo',display:true}
         ]},
         {arr: [
-          {imgSrc: require('@/assets/images/workBench_7.png'), text: '我的事件', href: 'workBenchMyEvent', params: {type: 'my'}},
-          {imgSrc: require('@/assets/images/workBench_8.png'), text: '所有事件', href: 'workBenchMyEventAll', params: {type: 'all'}},
-          {imgSrc: require('@/assets/images/workBench_9.png'), text: '我的项目', href: 'workBenchMyPro', params: {type: 'my'}},
-          {imgSrc: require('@/assets/images/workBench_10.png') ,text: '所有项目', href: 'workBenchMyProAll', params: {type: 'all'}}
+          {imgSrc: require('@/assets/images/workBench_7.png'), text: '我的事件', href: 'workBenchMyEvent', params: {type: 'my'},display:true},
+          {imgSrc: require('@/assets/images/workBench_8.png'), text: '所有事件', href: 'workBenchMyEventAll', params: {type: 'all'},display:true},
+          {imgSrc: require('@/assets/images/workBench_9.png'), text: '我的项目', href: 'workBenchMyPro', params: {type: 'my'},display:true},
+          {imgSrc: require('@/assets/images/workBench_10.png') ,text: '所有项目', href: 'workBenchMyProAll', params: {type: 'all'},display:true}
         ]},
         {arr: [
-          {imgSrc: require('@/assets/images/workBench_11.png'), text: '我的任务'},
-          {imgSrc: require('@/assets/images/workBench_12.png'), text: '事件申报', href: 'workBenchDeclare'},
-          {imgSrc: require('@/assets/images/workBench_13.png'), text: '单次支持'}
+          {imgSrc: require('@/assets/images/workBench_11.png'), text: '我的任务',display:false},
+          {imgSrc: require('@/assets/images/workBench_12.png'), text: '事件申报', href: 'workBenchDeclare',display:false},
+          {imgSrc: require('@/assets/images/workBench_13.png'), text: '单次支持',display:false}
         ]}
-      ]
+      ],
+      pickerValue:null
     }
   },
-
+  mounted () {
+    let permissions = JSON.parse(sessionStorage.getItem("userPermission"));
+    for(let i=0;i<permissions.length;i++){
+      console.log(permissions[i]);
+      if(permissions[i].PRIVID=='workFlow_business_statistics'){
+        this.workBenchObj[0].arr[0].display = true;
+        this.workBenchObj[0].arr[1].display = true;
+        this.workBenchObj[0].arr[2].display = true;
+        this.workBenchObj[0].arr[3].display = true;
+        this.workBenchObj[0].arr[4].display = true;
+        this.workBenchObj[0].arr[5].display = true;
+      }
+      if(permissions[i].PRIVID=='workFlow_my_task'){
+        this.workBenchObj[2].arr[0].display = true;
+      }
+      if(permissions[i].PRIVID=='topApp_create_case'){
+        this.workBenchObj[2].arr[1].display = true;
+      }
+      if(permissions[i].PRIVID=='workFlow_case_once'){
+        this.workBenchObj[2].arr[2].display = true;
+      }
+    }
+  },
   methods: {
-
+    // aaa(){
+    //   this.$refs.picker.open();
+    // },
   }
 }
 </script>

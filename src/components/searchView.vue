@@ -35,11 +35,11 @@
       </el-form-item>
       <el-form-item label="创建时间" style="margin-bottom: 0.3rem">
         <el-col :span="11">
-          <el-date-picker type="date" placeholder="开始日期" v-model="form.startTime" style="width: 100%;"></el-date-picker>
+          <el-date-picker type="date" placeholder="开始日期" v-model="form.startTime" style="width: 100%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
         </el-col>
         <el-col class="line" :span="2">～</el-col>
         <el-col :span="11">
-          <el-date-picker type="date" placeholder="结束时间" v-model="form.endTime" style="width: 100%;"></el-date-picker>
+          <el-date-picker type="date" placeholder="结束时间" v-model="form.endTime" style="width: 100%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
         </el-col>
       </el-form-item>
       <el-form-item class="searchBtn">
@@ -106,6 +106,9 @@ export default {
         popBg: false
       }
       this.$emit('change', data)
+    },
+    noKeyword () {
+      document.activeElement.blur()
     }
   }
 }

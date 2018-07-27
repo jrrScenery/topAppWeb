@@ -12,6 +12,7 @@ import echarts from 'echarts'
 // import localstorage from './utils/localstorage'
 import commonUtil from './utils/common'
 
+
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 axios.defaults.withCredentials = true

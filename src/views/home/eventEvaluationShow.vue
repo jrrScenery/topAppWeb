@@ -45,6 +45,7 @@
 <script>
 import global_ from '../../components/Global'
 import headerLast from '../header/headerLast'
+import fetch from '../../utils/ajax'
 export default {
   name: 'eventEvaluationShow',
 
@@ -58,16 +59,17 @@ export default {
       signimg:"",
       engineer: '梁瑛',
       evaluateval:[],
-      evaluateid:this.$route.query.evaluateid
+      evaluateid: this.$route.query.evaluateid
     }
   },
   mounted(){
-    this.$axios.get(global_.proxyServer+"?action=GetCaseEvaluateInfo",{params:{EVALUATE_ID:this.evaluateid,PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize}}).then(res=>{
+    console.log(this.evaluateid)
+    fetch.get("?action=GetCaseEvaluateInfo&EVALUATE_ID=" + this.evaluateid).then(res=>{
         //console.log(this.eventListArr);
 
       console.log(res.data)
-      if("0" == res.data.STATUSCODE){
-        let jsonres= res.data;
+      if("0" == res.STATUSCODE){
+        let jsonres= res;
         this.signimg = jsonres.imgObject.imgStr;
         this.engineer = jsonres.imgObject.engineerName;
         let tmpjsonval =[];

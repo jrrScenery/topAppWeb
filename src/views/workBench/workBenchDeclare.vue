@@ -2,7 +2,6 @@
 <template>
   <div class="workBenchDeclareView">
     <header-base-four :title="workBenchDeclareTit"></header-base-four>
-    <div style="height: 0.45rem;"></div>
     <div class="content">
       <el-form :model="formData" label-width="0.9rem" ref="formData">
         <el-form-item label="序列号：">
@@ -15,22 +14,26 @@
           <el-input v-model="formData.firm" placeholder="请输入厂商"></el-input>
         </el-form-item>
         <el-form-item label="所在城市：">
-          <el-input v-model="formData.city" :disabled="true" placeholder="所在城市"></el-input>
+          <el-cascader
+            :options="options"
+            v-model="formData.city"
+            filterable
+            placeholder="请选择所在城市">
+          </el-cascader>
+          <!--<el-input v-model="formData.city" @focus="cityFocus" placeholder="请选择所在城市"></el-input>-->
         </el-form-item>
         <el-form-item label="影响程度：">
           <el-select v-model="formData.degree" placeholder="请选择">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+            <el-option v-for="item in degree" :label="item.name" :value="item.value" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="影响范围：">
           <el-select v-model="formData.range" placeholder="请选择">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+            <el-option v-for="item in range" :label="item.name" :value="item.value" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item class="text">
-          <el-input type="textarea" v-model="formData.desc" placeholder="请输入现场描述"></el-input>
+          <el-input type="textarea" v-model="formData.desc" placeholder="请输入事件描述"></el-input>
         </el-form-item>
         <div class="takePhoto"><span>上传照片（可选）</span><img src="../../assets/images/takephoto.png" alt=""></div>
         <el-form-item class="submitBtn">
@@ -38,11 +41,19 @@
         </el-form-item>
       </el-form>
     </div>
+    <!--<template v-if="popBg">-->
+      <!--<el-collapse-transition>-->
+        <!--<v-distpicker type="mobile" @selected="onSelected"></v-distpicker>-->
+      <!--</el-collapse-transition>-->
+    <!--</template>-->
   </div>
 </template>
 
 <script>
 import headerBaseFour from '../header/headerBaseFour'
+import fetch from '../../utils/ajax'
+// import '../../utils/city.js'
+import '../../utils/1.js'
 export default {
   name: 'workBenchDeclare',
 
@@ -57,46 +68,92 @@ export default {
         num: '',
         type: '',
         firm: '',
-        city: '',
+        city: [],
         degree: '',
         range: '',
         desc: ''
-      }
+      },
+      imgSrc: '',
+      options: areajson,
+      // popBg: false,
+      degree: '',
+      range: ''
+
     }
   },
 
   methods: {
     submitForm (formName) {
+      // console.log(this.formData.city[this.formData.city.length - 1])
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          // console.log(this.formData)
+          let declareForm = {SN_ID: this.formData.num, MODEL_NAME: this.formData.type, FACTORY_NAME: this.formData.firm, SERVICE_SITE: this.formData.city[this.formData.city.length - 1], IMPACT_DEGREE: this.formData.degree, IMPACT_SPHERE: this.formData.range, REMARK: this.formData.desc, DOC_ID: this.imgSrc};
+          // console.log(declareForm)
+          fetch.get("?action=DeclareCase",declareForm).then(res=>{
+            // console.log(res)
+            this.$message({
+              message: '提交成功',
+              type: 'success',
+              center: true
+            });
+            if (res.STATUSCODE == 0) {
+              setTimeout(() => {
+                this.$router.push({name: 'workBench'})
+              }, 1000);
+            } else {
+              console.log(res)
+              this.$message({
+                message: res.MESSAGE,
+                type: 'error',
+                center: true
+              });
+            }
+          })
         } else {
           alert('err')
           return false
         }
       })
-    }
+    },
+    // cityFocus (event) {
+    //   this.popBg = true
+    // },
+    // onSelected (data) {
+    //   this.formData.city = data.area.value
+    //   this.popBg = false
+    // }
   },
-  created:function(){
+  created () {
     if(this.$route.query.result){
-      var array = this.$route.query.result.split(",");
+      let array = this.$route.query.result.split(",");
       this.formData.num = array[2];
       this.formData.type = array[1];
       this.formData.firm = array[0];
       this.formData.city = array[3];
     }
-  }
+    fetch.get("?action=getDict&type=NT_IMPACT_DEGREE","").then(res=>{
+      this.degree = res.data;
+      console.log(this.degree);
+    })
+    fetch.get("?action=getDict&type=NT_IMPACT_SPHERE","").then(res=>{
+      this.range = res.data;
+      console.log(this.range);
+    })
+  },
 }
 </script>
 
 <style scoped>
   .workBenchDeclareView{width: 100%;}
-  .content{margin-top: 0.05rem; background: #ffffff; position: relative; padding-bottom: 0.5rem; margin-bottom: 0.5rem}
+  .content{background: #ffffff; position: relative; padding-bottom: 0.5rem; margin-bottom: 0.5rem; top: 0.5rem;}
   .content >>> .el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
   .content >>> .el-form-item__label{font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.25rem; text-align: left}
   .content >>> .el-input__inner{border: none; color: #333333;}
   .content >>> .el-input__inner::placeholder{font-size: 0.13rem; color: #acacac}
   .content >>> .el-input.is-disabled .el-input__inner{background: #ffffff}
+  .content >>> .el-cascader{width: 85%;}
+  .content >>> .el-select{width: 85%;}
   .text{margin: 0!important;}
   .text >>> .el-form-item__content{margin: 0!important; line-height: 0.3rem;}
   .text >>> .el-textarea__inner{border: none; padding: 0 0.25rem; line-height: 0.3rem;    min-height: 1.8rem!important; color: #333333;}
@@ -105,4 +162,9 @@ export default {
   .takePhoto img{width: 0.3rem; height: 0.3rem; margin: 0.1rem 0 0 0.1rem;}
   .submitBtn >>> .el-form-item__content{margin: 0!important;}
   .submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;}
+</style>
+<style>
+  .el-cascader-menu{width: 110px!important; min-width: 0!important; padding-left: 0.1rem!important;}
+  /*.distpicker-address-wrapper{width: 90%; position: absolute; top: 2.13rem; left: 5%; border: 0.01rem solid #ddd;}*/
+  /*.distpicker-address-wrapper .address-container{max-height: 1.76rem; overflow: scroll}*/
 </style>

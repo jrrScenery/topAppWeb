@@ -1,20 +1,20 @@
 <!--工作台-事件信息-->
 <template>
   <div class="workBenchEventInfoView">
-    <header-last :title="workBenchEventInfoTit"></header-last>
+    <header-last :title="workBenchEventInfoTit" :backUrl="backUrl"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <div class="searchView">
         <el-form>
           <el-col :span="8">
             <el-form-item prop="date1">
-              <el-date-picker type="date" placeholder="请选择日期" v-model="form.date1" style="width: 90%;" :picker-options="pickerOptions"></el-date-picker>
+              <el-date-picker type="date" placeholder="请选择日期" v-model="form.date1" style="width: 90%;" :picker-options="pickerOptions" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col class="line" :span="2">~</el-col>
           <el-col :span="8">
             <el-form-item prop="date2">
-              <el-date-picker type="date" placeholder="请选择日期" v-model="form.date2" style="width: 90%;" :picker-options="pickerOptions"></el-date-picker>
+              <el-date-picker type="date" placeholder="请选择日期" v-model="form.date2" style="width: 90%;" :picker-options="pickerOptions" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -56,13 +56,12 @@ export default {
   components: {
     headerLast
   },
-
   data () {
     return {
       workBenchEventInfoTit: '事件信息',
       form: {
-        date1: new Date(this.getFormerTime(1)),
-        date2: new Date()
+        date1: this.getFormerTime(1)[0],
+        date2: this.getCurrentTime(1)[0]
       },
       tableData: [],
       workBenchEventInfoObj: [
@@ -73,23 +72,32 @@ export default {
       ],
       pickerOptions: {
         disabledDate: (time) => {
-          return time.getTime() < this.value1 || time.getTime() > Date.now();
+          return time.getTime() > Date.now();
         }
-      }
+      },
+      backUrl : 'workBench',
     }
   },
   created () {
+    if(undefined!=this.$route.query.date1){
+      this.form.date1 = this.$route.query.date1;
+      this.form.date2 = this.$route.query.date2;
+    }
+
     this.returnList()
+    //console.log(this.form)
   },
   methods: {
     returnList () {
-      this.$axios.get(global_.proxyServer+"?action=GetCaseStat&EMPID="+global_.empId, {params: {START_TIME: this.form.date1, END_TIME: this.form.date2}}).then(res=>{
-        this.tableData = res.data.data
+      fetch.get("?action=GetCaseStat",{START_TIME: this.form.date1, END_TIME: this.form.date2}).then(res=>{
+        this.tableData = res.data
+        console.log(res.data)
         let _this = this
         for (let i = 0; i < this.tableData.length; i++) {
           let totalNum = this.tableData[i].FAULT_NUM + this.tableData[i].NON_FAULT_NUM
           _this.tableData[i] = {
             INDUSTRY: _this.tableData[i].INDUSTRY,
+            INDUSTRY_ID: _this.tableData[i].INDUSTRY_ID,
             FAULT_NUM: _this.tableData[i].FAULT_NUM,
             NON_FAULT_NUM: _this.tableData[i].NON_FAULT_NUM,
             total: totalNum
@@ -124,7 +132,7 @@ export default {
     },
     // 跳转链接
     rowClick (row) {
-      this.$router.push({name: 'workBenchEventInfoShow', query: {industry: row.INDUSTRY}})
+      this.$router.push({name: 'workBenchEventInfoShow', query: {complantId: row.COMPLANT_ID,industry: row.INDUSTRY_ID,industryName: row.INDUSTRY,date1:this.form.date1,date2:this.form.date2}})
     },
     searchInfo () {
       this.returnList()
@@ -142,7 +150,20 @@ export default {
       for(let i = 1;i<n;i++){
         yearArr.unshift(nowYear-i+'1231')
       }
+      //console.log(yearArr)
       return yearArr
+    },
+    getCurrentTime (n) {
+      let nowYear = new Date().getFullYear(), yearArr = []
+      yearArr.unshift(this.standardDate('', nowYear, new Date().getMonth() + 1, new Date().getDate()))
+      for(let i = 1;i<n;i++){
+        yearArr.unshift(nowYear-i+'1231')
+      }
+      //console.log(yearArr)
+      return yearArr
+    },
+    noKeyword () {
+      document.activeElement.blur()
     }
   }
 }

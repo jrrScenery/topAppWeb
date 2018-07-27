@@ -68,11 +68,11 @@
         </div>
       </div>
       <div class="programTable">
-        <el-tabs v-model="activeName"  @tab-click="chtab">
-          <el-tab-pane label="健康度" name="prohealth"><pro-health :prohealthpage="prohealthpage"></pro-health></el-tab-pane>
-          <el-tab-pane label="设备清单" name="promachine"><pro-machine :promachinepage="promachinepage" ></pro-machine></el-tab-pane>
-          <el-tab-pane label="巡检计划" name="proplan"><pro-plan :proplanpage="proplanpage" ></pro-plan></el-tab-pane>
-          <el-tab-pane label="相关报修" name="prorepair"><pro-repair ></pro-repair></el-tab-pane>
+        <el-tabs v-model="activeName"  @tab-click="chtab" >
+          <el-tab-pane label="健康度" name="prohealth"><pro-health ></pro-health></el-tab-pane>
+          <el-tab-pane label="设备清单" name="promachine"><pro-machine @emitbusy="getEmitPage" @emitparams='getEmitparams' :promachinepage="needpage.promachine.page" ></pro-machine></el-tab-pane>
+          <el-tab-pane label="巡检计划" name="proplan"><pro-plan  ></pro-plan></el-tab-pane>
+          <el-tab-pane label="相关报修" name="prorepair"><pro-repair @emitbusy="getEmitPage" @repairpagechange="repairPageChange" :prorepairpage="needpage.prorepair.page" ></pro-repair></el-tab-pane>
           <el-tab-pane label="分析报表" name="proreport"><pro-report></pro-report></el-tab-pane>
           <el-tab-pane label="文档下载" name="profiledown"><pro-file-down></pro-file-down></el-tab-pane>
           <el-tab-pane label="满意度" name="prosatisfy"><pro-satisfy></pro-satisfy></el-tab-pane>
@@ -94,6 +94,7 @@ import proReport from '../../components/program/proReport'
 import proFileDown from '../../components/program/proFileDown'
 import proSatisfy from '../../components/program/proSatisfy'
 import proFeedback from '../../components/program/proFeedback'
+import fetch from '../../utils/ajax'
 export default {
   name: 'programShow',
 
@@ -123,32 +124,56 @@ export default {
       pageSize:10,
       busy:false,
       loadall: false,
-      proplanpage:0,
-      promachinepage:0,
-      needpage:{ promachine:"promachinepage", proplan:"proplanpage" },
-      prohealthpage:1,
+      needpage:{promachine:{page:0,loadall:false}, prorepair:{page:0,loadall: false}}
 
     }
   },
   created () {
-    this.$axios.get(global_.proxyServer+"?action=GetProjectInfo&EMPID="+global_.empId+"&PROJECT_ID="+this.$route.query.projectId,{}).then(res=>{
-      let baseInfo = res.data.data;
-      this.projectInfo = baseInfo;
-    });
+
   },
 
   mounted () {
+    this.getProgramInfo();
     window.addEventListener('scroll', this.handleScroll,true)
   },
 
   methods: {
     chtab(){
-      this[this.activeName+"page"] = 1;
+      if(this.needpage[this.activeName] && this.needpage[this.activeName]["page"]==0){
+        this["needpage"][this.activeName]["page"] = 1;
+      }
+
+    },
+    getEmitPage(res){
+      this.busy = res.busy;
+      this.needpage[this.activeName]["loadall"] = res.loadall;
+    },
+    getEmitparams(res){
+      this.needpage[this.activeName]["page"]=0;
+      this.needpage[this.activeName]["loadall"]=false
+    },
+    getProgramInfo(){
+      fetch.get("?action=GetProjectInfo&EMPID="+global_.empId+"&PROJECT_ID="+this.$route.query.projectId,{}).then(res=>{
+          let baseInfo = res.data;
+          this.projectInfo = baseInfo;
+        });
+    },
+    loadMore(){
+      // console.log("到底了");
+      console.log(this.busy);
+      if(this.needpage[this.activeName] && !this.needpage[this.activeName]["loadall"]){
+        this.busy = true;
+          setTimeout(() => {
+            this["needpage"][this.activeName]["page"]++;
+        }, 1000);
+      }
+
     },
     handleScroll () {
-      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      let scrollTop = document.querySelector('.programShowView').scrollTop;
       let headerTop = document.querySelector('.el-tabs__header')
       let bijiaoHeight = document.querySelector('.programTable').offsetTop - 45
+      // console.log(scrollTop,'--------------',bijiaoHeight)
       if (scrollTop >= bijiaoHeight) {
         headerTop.classList.add('moveTop')
         headerTop.style.top = (Number(scrollTop) / 100) - (bijiaoHeight / 100) + 'rem'
@@ -157,34 +182,8 @@ export default {
         headerTop.style.top = 0 + 'rem'
       }
     },
-    getEventList(flag){
-        this.$axios.get(global_.proxyServer+"?action=GetFocusCase&EMPID="+global_.empId,{params:{PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize}}).then(res=>{
-            //console.log(this.eventListArr);
-            if(flag){
-              this.eventListArr = this.eventListArr.concat(res.data.data);
-            }else{
-              this.eventListArr = res.data.data;
-        }
-        if(0 == res.data.data.length || res.data.length<this.pageSize ){
-          this.busy = true;
-          this.loadall = true;
-        }
-        else{
-          this.busy = false;
-          this.page++
-        }
-
-      });
-    },
-    loadMore(){
-      console.log("到底了");
-      if(this.needpage[this.activeName]){
-        this.busy = true;
-          setTimeout(() => {
-            this[this.activeName+"page"]++;
-        }, 500);
-      }
-
+    repairPageChange(val){
+      this.needpage["prorepair"] ={page:val,loadall:false}
     }
   },
   destroyed () {
@@ -212,3 +211,7 @@ export default {
   .programTable{background: #ffffff; padding-bottom: 0.2rem;}
   .programShowView >>> .moveTop{z-index: 999; background: #ffffff; -webkit-transform: translateZ(0)}
 </style>
+<style>
+.programShowView .el-tabs__nav-scroll{ overflow:scroll;}
+</style>
+

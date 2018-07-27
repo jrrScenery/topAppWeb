@@ -1,7 +1,7 @@
 <!--工作台-所有项目-->
 <template>
   <div class="workBenchMyProView">
-    <header-base-five :title="workBenchMyProTit" @searchPro="searchProInfo"></header-base-five>
+    <header-base-five :title="workBenchMyProTit" @searchPro="getSearParams"></header-base-five>
     <div style="height: 0.45rem;"></div>
     <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <el-tabs v-model="activeName" @tab-click="tabClick">
@@ -56,9 +56,9 @@
 import headerBaseFive from '../header/headerBaseFive'
 import loadingtmp from '@/components/load/loading'
 import global_ from '../../components/Global'
+import fetch from '../../utils/ajax'
 export default {
   name: 'workBenchMyProAll',
-
   components: {
     headerBaseFive,
     loadingtmp
@@ -86,12 +86,15 @@ export default {
       ],
       activeName: 'first',
       searchpage:1,
+      issearch:0,
       page:1,
       pageSize:10,
       busy:false,
       loadall: false,
-      tab_box: 0,
-      formData: []
+      tab_box: 1,
+      formData: null,
+      objpages:{"first":{page:1,loadall:false,IF_SURANCE:1,idx:0,issearch:0},"second":{page:1,loadall:false,IF_SURANCE:0,idx:1,issearch:0},
+      "third":{page:1,loadall:false,IF_SURANCE:'',idx:2,issearch:0}}
     }
   },
 
@@ -100,93 +103,81 @@ export default {
 
   methods: {
     tabClick (e) {
-      console.log(e)
-      if (e.label === '执行中') {
-        this.tab_box = 0
+      console.log("tabclick");
+      var objnowpage = this.objpages[this.activeName];
+      if(this.issearch != objnowpage.issearch ){
+        objnowpage.page= 1
+        objnowpage.loadall = false
+        objnowpage.programListArr= []
+        objnowpage.issearch = this.issearch;
+        this.loadMore();
+        return ;
       }
-      if (e.label === '已过保') {
-        this.tab_box = 1
+      if(objnowpage.page==1 && !objnowpage.loadall){
+        this.loadMore();
       }
-      if (e.label === '全部') {
-        this.tab_box = 2
-      }
-      this.loadMore()
-      // console.log(this.tab_box)
     },
     returnList (flag, res, obj) {
       if(flag){
-        obj = obj.concat(res.data.data);
+        obj = obj.concat(res.data);
       }else{
-        obj = res.data.data;
+        obj = res.data;
       }
-      if(0 == res.data.data.length){
-        this.busy = true;
+      if(0 == res.data.length||res.data.length<this.pageSize){
+        this.busy = false;
         this.loadall = true;
+        this.objpages[this.activeName]["loadall"] =true;
       }
       else{
         this.busy = false;
-        this.page++
+        this.objpages[this.activeName]["page"]++
       }
       return obj
     },
-    getEventList(flag){
-      for (let i = 0; i < this.workBenchMyProTab.length; i++) {
-        if (this.tab_box === i) {
-          this.page = 1
-          this.loadall = false
-          if (this.tab_box === 2) {
-            this.page = 1
-            this.loadall = false
-            this.$axios.get(global_.proxyServer + "?action=GetProjectList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize}}).then(res => {
-              let obj = this.workBenchMyProTab[2].programListArr
-              this.workBenchMyProTab[2].programListArr = this.returnList(flag, res, obj)
-            });
-          } else {
-            this.$axios.get(global_.proxyServer + "?action=GetProjectList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, IF_SURANCE: i}}).then(res => {
-              let obj = this.workBenchMyProTab[i].programListArr
-              this.workBenchMyProTab[i].programListArr = this.returnList(flag, res, obj)
-            });
-          }
-        }
+    getEventList(){
+      var flag = this.objpages[this.activeName]["page"]>1;
+      let objnowpage = this.objpages[this.activeName];     
+      let strurl = "?action=GetProjectList&TYPE=all";
+      let urlparam = {PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, IF_SURANCE: objnowpage.IF_SURANCE}
+
+      if(this.formData){
+        urlparam.CUST_ID = this.formData["customer"]
+        urlparam.BUSINESS_TYPE = this.formData["business"]
+        urlparam.INDUSTRY_NAME = this.formData["industry"].join(",")
+        urlparam.PROJECT_NAME = this.formData["proName"]
+        urlparam.CUST_NAME = this.formData["customer"]
+        urlparam.PM_NAME = this.formData["PM"]
+        urlparam.SALE_NAME = this.formData["sale"]
       }
+
+      fetch.get(strurl,urlparam).then(res => {
+        let obj = this.workBenchMyProTab[objnowpage.idx].programListArr;
+        this.workBenchMyProTab[objnowpage.idx].programListArr = this.returnList(flag, res, obj)
+      });
+      
     },
     loadMore(){
+      if(this.busy || this.objpages[this.activeName]["loadall"])return false;
       this.busy = true;
-      if (this.tab_box == 3) {
-        this.searchProInfo(this.formData);
-      } else {
-        setTimeout(() => {
-          this.getEventList(this.page>1);
-        }, 500);
-      }
+      
+      console.log("loadMore");
+      setTimeout(() => {
+        this.getEventList();
+      }, 500);
     },
-
-    // 搜索条件data
-    searchProInfo (formData) {
-      if (formData.industry instanceof Object) {
-        formData.industry = formData.industry.join(',')
-        this.formData = formData
-      }
-      console.log(this.formData)
-      this.loadall = false
-      this.activeName = 'third'
-      this.tab_box = 3
-      this.$axios.get(global_.proxyServer + "?action=GetProjectList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.searchpage, PAGE_TOTAL: this.pageSize, BUSINESS_TYPE: formData.business, INDUSTRY: formData.industry, CUST_NAME: formData.customer, PROJECT_NAME: formData.proName, SALE_NAME: formData.sale, PM_NAME: formData.PM}}).then(res => {
-        if(this.searchpage>1){
-          this.workBenchMyProTab[2].programListArr = this.workBenchMyProTab[2].programListArr.concat(res.data.data);
-        }else{
-          this.workBenchMyProTab[2].programListArr = res.data.data;
-        }
-        if(0 == res.data.data.length){
-          this.busy = true;
-          this.loadall = true;
-        }
-        else{
-          this.busy = false;
-          this.searchpage++
-        }
-      })
+    getSearParams (formData) {
+      this.activeName="third";
+      this.objpages["third"]["page"] = 1;
+      this.objpages["third"]["loadall"]= false;
+      this.loadall = false;
+      this.workBenchMyProTab[2].programListArr = [];
+      this.objpages["third"]["issearch"] = 1;
+      this.issearch=1;
+      this.formData = formData;
+      
+      this.loadMore();
     }
+
   }
 }
 </script>

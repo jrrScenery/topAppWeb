@@ -13,10 +13,10 @@ export default {
 
   data () {
     return {
-
+      
     }
   },
-  props: ['title'],
+  props: ['title','backUrl','date1','date2'],
 
   watch: {
   },
@@ -27,9 +27,14 @@ export default {
   methods: {
 
     back: function (event) {
-      this.$router.back(-1)
+      console.log("in back");
+      if(this.backUrl&&this.backUrl.length>0){
+        console.log("route backurl");
+        this.$router.push({name:this.backUrl,query:{date1:this.date1,date2:this.date2}});       
+      }else{
+        this.$router.back(-1);
+      }
     }
-
   }
 }
 </script>

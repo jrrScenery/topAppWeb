@@ -8,8 +8,8 @@
         :data="tableData"
         stripe
         style="width: 100%">
-        <template v-for="item in table_arr">
-          <router-link :to="{name:'eventEvaluationEditor'}">
+        <template v-for="item in table_arr" >
+          <router-link :to="{name:'eventEvaluationEditor'}"  v-bind:key="item.id">
             <el-table-column
               :fixed="item.fixed"
               :key="item.id"
@@ -40,23 +40,23 @@ export default {
       tableData: [],
       table_arr: [
         {
-              prop: 'PROJECT_NAME',
-              label: '项目名称',
-              fixed: true,
-              width: '50%'
-            },
-            {
-              prop: 'CASE_CD',
-              label: '事件编号',
-              fixed: true,
-              width: '36%'
-            },
-            {
-              prop: 'TOTAL_SCORE',
-              label: '分值',
-              fixed: true,
-              width: '14%'
-            }
+          prop: 'PROJECT_NAME',
+          label: '项目名称',
+          fixed: true,
+          width: '50%'
+        },
+        {
+          prop: 'CASE_CD',
+          label: '事件编号',
+          fixed: true,
+          width: '36%'
+        },
+        {
+          prop: 'TOTAL_SCORE',
+          label: '分值',
+          fixed: true,
+          width: '14%'
+        }
       ]
     }
   },
@@ -67,8 +67,8 @@ export default {
   created:function(){
     let url = global_.proxyServer+"?action=GetCaseEvaluate&PAGE_NUM=1&PAGE_TOTAL=10";
     console.log(url);
-    this.$axios.get(url,{}).then(res=>{
-      this.tableData = res.data.data;
+    fetch.get(url,{}).then(res=>{
+      this.tableData = res.data;
       console.log(this.tableData);
     });
   }

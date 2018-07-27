@@ -1,9 +1,12 @@
 <!--一级头部-->
 <template>
   <header v-if="!(title ==='我的')" class="headerHomeView">
-    <div class="headerLeft" @click="onSao">
+    <div class="headerLeft" @click="onSao" v-if="showSao">
       <img src="../../assets/images/header_sao.png" alt="">
       <p>{{headerLeft}}</p>
+    </div>
+    <div v-else class="headerLeft" @click="onSao" >
+      <img src="../../assets/images/header_sao.png" alt="" style="display:none">
     </div>
     <h2>{{title}}</h2>
     <div class="headerRight">
@@ -22,7 +25,8 @@ export default {
   data () {
     return {
       headerLeft: '扫码',
-      title: 'list'
+      title: 'list',
+      showSao : false
     }
   },
 
@@ -32,6 +36,14 @@ export default {
 
   created () {
     this.routerChange(this.$route)
+  },
+  mounted () {
+    let permissions = JSON.parse(sessionStorage.getItem("userPermission"));
+    for(let i=0;i<permissions.length;i++){
+      if(permissions[i].PRIVID=='topApp_create_case'){
+        this.showSao = true;
+      }
+    }
   },
 
   methods: {
@@ -55,7 +67,13 @@ export default {
       }
     },
     onSao(){
-      if(typeof(android)!="undefined"){
+
+      let ua = navigator.userAgent.toLowerCase();
+      let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //判断iPhone|iPad|iPod|iOS
+      if (isiOS) { 
+        var info={action:"sao",empId:sessionStorage.getItem('empId')}
+        window.webkit.messageHandlers.ioshandle.postMessage({body: info});
+      }else if(typeof(android)!="undefined"){
         var value = "{action:sao,empId:"+sessionStorage.getItem('empId')+"}";
         android.getClient(value);
       }

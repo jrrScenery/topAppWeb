@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import global_ from '../../components/Global'
+import fetch from '../../utils/ajax'
 export default {
   name: 'proPlan',
 
@@ -34,30 +34,30 @@ export default {
       tableData: [],
       table_arr: [
         {
-          prop: 'EVALUATE_FROM',
+          prop: 'EVALUATE_FROM_NAME',
           label: '评价人',
           fixed: true,
-          width: '42%'
+          width: '30%'
         },
         {
           prop: 'EVALUATE_TIME',
           label: '评价时间',
           fixed: true,
-          width: '20%'
+          width: '40%'
         },
         {
           prop: 'TOTAL_SCORE',
           label: '得分',
           fixed: true,
-          width: '40%'
+          width: '30%'
         }
       ]
     }
   },
   created () {
-    this.$axios.get(global_.proxyServer+"?action=getProjectEvaluate&EMPID="+global_.empId+"&PROJECT_ID="+this.$route.query.projectId,{}).then(res=>{
-      this.tableData = res.data.data;
-      //console.log(res.data.data);
+    fetch.get("?action=GetProjectEvaluate&PROJECT_ID="+this.$route.query.projectId,{}).then(res=>{
+      this.tableData = res.data;
+      //console.log(res);
     });
   },
   methods: {

@@ -31,84 +31,90 @@
         </template>
       </el-table>
     </div>
+
+    <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
   </div>
 </template>
 
 <script>
-  import global_ from '../../components/Global'
-  import fetch from '../../utils/ajax'
+import global_ from '../../components/Global'
+import fetch from '../../utils/ajax'
+import loadingtmp from '@/components/load/loading'
 
-  export default {
-    name: 'proMachine',
-    props:{
-      promachinepage: Number
-    },
-    components: {
-
-    },
-    data () {
-      return {
-        form: {
-          firm: '',
-          typeNum: '',
-          serialNum: ''
-        },
-        tableData: [
-          {FACTORY_NM: 'HP', type: 'DL380G6', serial: 'CNG944S1VT', startTime: '2017-01-01', endTime: '2017-01-01'}
-        ],
-        proMachineObj: [
-          {prop: 'FACTORY_NM', lable: '厂商', width: '15%'},
-          {prop: 'MODEL_NAME', lable: '型号', width: '15%'},
-          {prop: 'SN', lable: '序列号', width: '22%'},
-          {prop: 'SERVICE_BEGIN', lable: '开始时间', width: '24%'},
-          {prop: 'SERVICE_END', lable: '结束时间', width: '24%'}
-        ],
-        projectId:this.$route.query.projectId,
-        pageSize:5,
-        busy: false,
-        loadall: false
-      }
-    },
-    created () {
+export default {
+  name: 'proMachine',
+  props:{
+    promachinepage: Number
+  },
+  components: {
+    loadingtmp
+  },
+  data () {
+    return {
+      form: {
+        firm: '',
+        typeNum: '',
+        serialNum: ''
+      },
+      tableData: [
+        {FACTORY_NM: 'HP', type: 'DL380G6', serial: 'CNG944S1VT', startTime: '2017-01-01', endTime: '2017-01-01'}
+      ],
+      proMachineObj: [
+        {prop: 'FACTORY_NM', lable: '厂商', width: '15%'},
+        {prop: 'MODEL_NAME', lable: '型号', width: '15%'},
+        {prop: 'SN', lable: '序列号', width: '22%'},
+        {prop: 'SERVICE_BEGIN', lable: '开始时间', width: '24%'},
+        {prop: 'SERVICE_END', lable: '结束时间', width: '24%'}
+      ],
+      projectId:this.$route.query.projectId,
+      pageSize:10,
+      busy: false,
+      loadall: false,
+    }
+  },
+  created () {
 //      fetch.get("?action=GetProjectDeviceList&PROJECT_ID="+this.projectId).then(res=>{
 //        this.tableData = res.data;
 //    });
+  },
+  methods: {
+    onSubmit () {
+      this.$emit('emitparams',this.searparams);
     },
-    methods: {
-      onSubmit () {
-        fetch.get("?action=GetProjectDeviceList&PROJECT_ID="+this.projectId+"&FACTORY_NAME="+this.form.firm+"&MODEL_NAME="+this.form.typeNum+"&SN="+this.form.serialNum,{}).then(res=>{
+    loadmachine(flag){
+      var queryparam = {PROJECT_ID:this.projectId,PAGE_NUM:this.promachinepage,PAGE_TOTAL:this.pageSize}
+      
+      queryparam.FACTORY_NAME=this.form.firm;
+      queryparam.MODEL_NAME=this.form.typeNum;
+      queryparam.SN=this.form.serialNum;
+      
+      fetch.get("?action=GetProjectDeviceList&EMPID="+global_.empId,queryparam).then(res=>{
+        //console.log(this.eventListArr);
+        if(flag){
+          this.tableData = this.tableData.concat(res.data);
+        }else{
           this.tableData = res.data;
-        });
-      },
-      loadmachine(flag){
+        }
+        console.log(res.data);
+        if(0 == res.data.length || res.data.length<this.pageSize ){
+          this.busy = true;
+          this.loadall = true;
+        }
+        else{
+          this.busy = false;
+        }
+        this.$emit('emitbusy', {busy:false,loadall:this.loadall});
 
-        this.$axios.get(global_.proxyServer+"?action=GetProjectDeviceList&EMPID="+global_.empId,{params:{PROJECT_ID:this.projectId,PAGE_NUM:this.promachinepage,PAGE_TOTAL:this.pageSize}}).then(res=>{
-          //console.log(this.eventListArr);
-          if(flag){
-            this.tableData = this.tableData.concat(res.data.data);
-          }else{
-            this.tableData = res.data.data;
-          }
-          console.log(res.data);
-          if(0 == res.data.data.length || res.data.length<this.pageSize ){
-            this.busy = true;
-            this.loadall = true;
-          }
-          else{
-            this.busy = false;
-            this.page++
-          }
-
-        });
-      }
-    },
-    watch:{
-      promachinepage(curVal,oldVal){
-        console.log(curVal+"||"+oldVal);
-        this.loadmachine(this.promachinepage>1);
-      }
+      });
+    }
+  },
+  watch:{
+    promachinepage(curVal,oldVal){
+      console.log(curVal+"||"+oldVal);
+      this.loadmachine(this.promachinepage>1);
     }
   }
+}
 </script>
 
 <style scoped>
@@ -123,4 +129,8 @@
   .proMachineBtm >>> td{padding: 0;}
   .proMachineBtm >>> .cell{padding: 0 0.05rem; text-align: center; height: 0.3rem; line-height: 0.3rem; font-size: 0.13rem;}
   .proMachineBtm >>> td .cell{overflow: hidden; text-overflow: ellipsis; white-space: nowrap}
+</style>
+<style>
+  .proMachineView  .el-form-item__content{ line-height:normal;}
+  .proMachineView .el-input__inner{ line-height:normal;}
 </style>

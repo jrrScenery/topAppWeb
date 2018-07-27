@@ -8,7 +8,7 @@
         <div class="title">{{item.title}}</div>
         <ul>
           <li v-for="info in item.cellObj" :key="info.id">
-            <p>{{info.leftTit}}</p><p>{{info.rightCon}}</p>
+            <p>{{info.leftTit}}</p><p v-html="info.rightCon"></p>
           </li>
         </ul>
       </div>
@@ -32,42 +32,44 @@ export default {
         {
           title: '基本信息',
           cellObj: [
-            {leftTit: '任务编号：', rightCon: 'QM021703230002'},
-            {leftTit: '意见来源：', rightCon: 'QM021703230002'},
-            {leftTit: '意见类型：', rightCon: 'QM021703230002'},
-            {leftTit: '提交人：', rightCon: 'QM021703230002'},
-            {leftTit: '联系电话：', rightCon: 'QM021703230002'},
-            {leftTit: '提交时间：', rightCon: 'QM021703230002'},
-            {leftTit: '项目编号：', rightCon: 'QM021703230002'},
-            {leftTit: '项目名称：', rightCon: 'QM021703230002'},
-            {leftTit: '事件编号：', rightCon: 'QM021703230002'},
-            {leftTit: '意见内容：', rightCon: '今天上午报修，客户要求今天人员现场，目前安排的是明天现场，客户不同意'}
+            {leftTit: '任务编号：', rightCon: ''},
+            {leftTit: '意见来源：', rightCon: ''},
+            {leftTit: '意见类型：', rightCon: ''},
+            {leftTit: '提交人：', rightCon: ''},
+            {leftTit: '联系电话：', rightCon: ''},
+            {leftTit: '提交时间：', rightCon: ''},
+            {leftTit: '项目编号：', rightCon: ''},
+            {leftTit: '项目名称：', rightCon: ''},
+            {leftTit: '事件编号：', rightCon: ''},
+            {leftTit: '意见内容：', rightCon: ''}
           ]
         },
         {
           title: '跟踪处理情况',
           cellObj: [
-            {leftTit: '回访意见：', rightCon: 'QM021703230002QM021703230002QM021703230002QM021703230002QM021703230002QM021703230002'},
-            {leftTit: '受理人意见：', rightCon: 'QM021703230002'},
-            {leftTit: '评估人：', rightCon: 'QM021703230002'},
-            {leftTit: '任务关闭时间：', rightCon: 'QM021703230002'}
+            {leftTit: '回访意见：', rightCon: ''},
+            {leftTit: '受理人意见：', rightCon: ''},
+            {leftTit: '评估人：', rightCon: ''},
+            {leftTit: '任务关闭时间：', rightCon: ''}
           ]
         },
         {
           title: '评估定性',
           cellObj: [
-            {leftTit: '问题定性分类：', rightCon: 'QM021703230002'},
-            {leftTit: '问题根源分类：', rightCon: 'QM021703230002'},
-            {leftTit: '责任人：', rightCon: 'QM021703230002'},
-            {leftTit: '问题定性描述：', rightCon: 'QM021703230002'}
+            {leftTit: '问题定性分类：', rightCon: ''},
+            {leftTit: '问题根源分类：', rightCon: ''},
+            {leftTit: '责任人：', rightCon: ''},
+            {leftTit: '问题定性描述：', rightCon: ''}
           ]
         }
       ]
     }
   },
-
+  mounted () {
+  },
   methods: {
-
+  },
+  mounted () {
   },
   created () {
     let url = "?action=GetComplaintsInfo&COMPLANT_ID="+this.$route.query.complantId;
@@ -82,17 +84,15 @@ export default {
       this.mineFeedbackShowObj[0].cellObj[6].rightCon = res.data.PROJECT_CODE;
       this.mineFeedbackShowObj[0].cellObj[7].rightCon = res.data.PROJECT_NAME;
       this.mineFeedbackShowObj[0].cellObj[8].rightCon = res.data.CASE_CD;
-      this.mineFeedbackShowObj[0].cellObj[9].rightCon = res.data.COMPLAINT_COMMENT;
-
+      this.mineFeedbackShowObj[0].cellObj[9].rightCon = res.data.COMPLAINT_COMMENT.replace(/\n/g, "<br/>");
       this.mineFeedbackShowObj[1].cellObj[0].rightCon = res.data.CONFIRM_COMMENT;
-      this.mineFeedbackShowObj[1].cellObj[1].rightCon = res.data.ACCEPT_OPINION;
+      this.mineFeedbackShowObj[1].cellObj[1].rightCon = res.data.ACCEPT_OPINION.replace(/\n/g, "<br/>");
       this.mineFeedbackShowObj[1].cellObj[2].rightCon = res.data.EVALUATOR;
       this.mineFeedbackShowObj[1].cellObj[3].rightCon = res.data.CLOSE_TIME;
-
       this.mineFeedbackShowObj[2].cellObj[0].rightCon = res.data.QUALITY_RESULT;
       this.mineFeedbackShowObj[2].cellObj[1].rightCon = res.data.QUESTION_TYPE;
       this.mineFeedbackShowObj[2].cellObj[2].rightCon = res.data.RESPONSIBLE_BY;
-      this.mineFeedbackShowObj[2].cellObj[3].rightCon = res.data.QUESTION_REMARK;
+      this.mineFeedbackShowObj[2].cellObj[3].rightCon = res.data.QUESTION_REMARK.replace(/\n/g, "<br/>");
     });
   },
 }
@@ -107,4 +107,5 @@ export default {
   .content ul li{display: flex; line-height: 0.25rem;}
   .content ul li p:nth-child(1){width: 0.91rem;}
   .content ul li p:nth-child(2){width: 66%;word-wrap: break-word;}
+  textarea{width:100%;height:100%; border: 0; outline:none;resize:none; min-height: 0.25rem; max-height: 1rem}
 </style>

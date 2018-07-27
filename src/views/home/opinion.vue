@@ -1,7 +1,7 @@
 <!--首页-意见与反馈列表页-->
 <template>
   <div class="opinionView">
-    <header-base :title="opinionTit"></header-base>
+    <header-base :title="opinionTit" :searchType="opinionSearchType" @searchPro="searchList"></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <el-tabs v-model="activeName">
@@ -11,17 +11,17 @@
               :data="item.tableData"
               style="width: 100%; border: 0.01rem solid #e1e1e1">
               <template v-if="item.label ==='Case评价'" v-for="info in opinionTableOne">
-                <el-table-column
-                  :fixed="info.fixed"
-                  :key="info.id"
-                  :prop="info.prop"
-                  :label="info.label"
-                  :min-width="info.width"
-                  class="caseTable">
-                  <template slot-scope="scope">
-                    <span class="table_name">{{scope.row[info.prop]}}</span>
-                  </template>
-                </el-table-column>
+                  <el-table-column
+                    :fixed="info.fixed"
+                    :key="info.id"
+                    :prop="info.prop"
+                    :label="info.label"
+                    :min-width="info.width"
+                    class="caseTable">
+                    <template slot-scope="scope">
+                      <span class="table_name">{{scope.row[info.prop]}}</span>
+                    </template>
+                  </el-table-column>
               </template>
               <template v-if="item.label ==='项目满意度'" v-for="info in opinionTableTwo">
                 <el-table-column
@@ -44,7 +44,9 @@
                   :min-width="info.width"
                   class="opinion">
                   <template slot-scope="scope">
+                    <router-link :to="{name:'mineFeedbackShow',query:{complantId:scope.row['COMPLANT_ID']}}">
                     <span class="table_name">{{scope.row[info.prop]}}</span>
+                    </router-link>
                   </template>
                 </el-table-column>
               </template>
@@ -59,6 +61,8 @@
 <script>
 import headerBase from '../header/headerBase'
 import global_ from '../../components/Global'
+import fetch from '../../utils/ajax'
+
 export default {
   name: 'opinion',
 
@@ -69,69 +73,22 @@ export default {
   data () {
     return {
       opinionTit: '意见和投诉',
+      opinionSearchType: 'opnion1',
       POinfoTab: [
         {
           name: 'first',
           label: '意见投诉',
-          tableData: [
-            // {
-            //   num: 'QQM021802280001',
-            //   desc: '国家税务总局小型机构维保国家税务总局小型机构维保国家税务总局小型机构维保国家税务总局小型机构维保',
-            //   time: '18-04-26'
-            // }, {
-            //   num: 'QQM021802280001',
-            //   desc: '国家税务总局小型机构维保',
-            //   time: '2018-04-26  20:04'
-            // }, {
-            //   num: 'QQM021802280001',
-            //   desc: '国家税务总局小型机构维保',
-            //   time: '18-04-26'
-            // }
-          ]
+          tableData: []
         },
         {
           name: 'second',
           label: '项目满意度',
-          tableData: [
-            // {
-            //   name: '金税三期身份认证售后服务',
-            //   score: '10',
-            //   people: '梁卓明',
-            //   time: '2018-04-26  20:04'
-            // }, {
-            //   name: '金税三期身份认证售后服务',
-            //   score: '10',
-            //   people: '梁卓明',
-            //   time: '18-04-26'
-            // }, {
-            //   name: '金税三期身份认证售后服务',
-            //   score: '10',
-            //   people: '梁卓明',
-            //   time: '2018-04-26  20:04'
-            // }
-          ]
+          tableData: []
         },
         {
           name: 'third',
           label: 'Case评价',
-          tableData: [
-            // {
-            //   num: 'CS1805110047',
-            //   type: '客户评价故障处理服务',
-            //   score: '5',
-            //   name: '2017中国电信总部IT'
-            // }, {
-            //   num: 'CS1805110047',
-            //   type: '客户评价故障处理服务',
-            //   score: '5',
-            //   name: '2017中国电信总部IT'
-            // }, {
-            //   num: 'CS1805110047',
-            //   type: '客户评价故障处理服务',
-            //   score: '5',
-            //   name: '2017中国电信总部IT'
-            // }
-          ]
+          tableData: []
         }
       ],
       activeName: 'first',
@@ -194,26 +151,89 @@ export default {
           fixed: true,
           width: '22%'
         }
-      ]
+      ],
+      busy:false,
+      loadall: false,
+      page:1,
+      pageSize1:10,
+      pageSize2:15,
+      pageSize3:15,
+      isSearch1:false,
+      isSearch2:false,
+      isSearch3:false,
+      searchData1:{},
+      searchData2:{},
+      searchData3:{}
     }
   },
 
   methods: {
+    getEventList(){
+      var reqParams = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize1};
+      if(this.isSearch1){
+        params.INDUSTRY_NAME = this.searchData.industry.join(",");
+        params.BUSINESS_TYPE = this.searchData.business.join(",");
+        params.CUST_NAME = this.searchData.customer;
+        params.PROJECT_NAME = this.searchData.proName;
+        params.PM_NAME = this.searchData.PM;
+        params.SALE_NAME = this.searchData.sale;
+        params.START_TIME = this.searchData.startTime;
+        params.END_TIME = this.searchData.endTime;
+      }
+      fetch.get("?action=GetComplaintsList",reqParams).then(res=>{
+        this.POinfoTab[0].tableData = res.data
+        var tmpar= res.data;
+        tmpar = tmpar.map(function(item){
+          item.COMPLAINT_COMMENT = item.COMPLAINT_COMMENT.replace(/\n/g, "<br/>");
+          return item;
+        })
+      });
+
+      var reqParams2 = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize2};
+      fetch.get("?action=GetProjectEvaluate",reqParams2).then(res=>{
+        this.POinfoTab[1].tableData = res.data
+      });
+
+      var reqParams3 = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize3};
+      fetch.get("?action=GetCaseEvaluate",reqParams3).then(res=>{
+        this.POinfoTab[2].tableData = res.data
+      });
+    },
+    loadMore(){
+      this.busy = true;
+      setTimeout(() => {
+        this.getEventList();
+      }, 500);
+    },
+    searchList(formdata){
+      console.log(formdata);
+      if(this.opinionSearchType=="opnion1"){
+        this.isSearch1 = true;
+        this.searchData1 = formdata;
+      }else if(this.opinionSearchType=="opnion2"){
+        this.isSearch2 = true;
+        this.searchData2 = formdata;
+      }else if(this.opinionSearchType=="opnion3"){
+        this.isSearch3 = true;
+        this.searchData3 = formdata;
+      }
+    }
   },
 
   created () {
-    this.$axios.get(global_.proxyServer+"?action=GetCaseEvaluate&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
-      console.log(res)
-      this.POinfoTab[2].tableData = res.data.data
-    });
+    this.getEventList();
+  },
 
-    this.$axios.get(global_.proxyServer+"?action=GetProjectEvaluate&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
-      this.POinfoTab[1].tableData = res.data.data
-    });
-
-    this.$axios.get(global_.proxyServer+"?action=GetComplaintsList&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
-      this.POinfoTab[0].tableData = res.data.data
-    });
+  watch : {
+    'activeName':function(val) { //监听切换状态-计划单
+        if(val=="first"){
+          this.opinionSearchType = "opnion1";
+        }else if(val=="second"){
+          this.opinionSearchType = "opnion2";
+        }else if(val=="third"){
+          this.opinionSearchType = "opnion3";
+        }
+    },
   }
 }
 </script>

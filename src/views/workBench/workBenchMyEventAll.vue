@@ -1,30 +1,23 @@
 <!--工作台-所有事件-->
 <template>
   <div class="workBenchMyEventView">
-    <header-base :title="workBenchMyEventTit" @searchPro="searchProInfo"></header-base>
+    <header-base :title="workBenchMyEventTit" :queryData="formData" @searchPro="getSearParams"></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <el-tabs v-model="activeName" @tab-click="tabClick">
         <template v-for="item in opinionTab">
           <el-tab-pane :label="item.label" :name="item.name" :key="item.id">
-            <router-link :to="{name:'eventShow',query:{caseId:item.CASE_ID}}">
             <div class="eventCell" v-for="info in item.eventListArr" :key="info.id">
+              <router-link :to="{name:'eventShow',query:{caseId:info.CASE_ID}}">
               <div class="cellTop">
                 <el-row>
                   <el-col :span="11">
                     <div class="cellTopNum">
-                      <span v-if="info.CASE_LEVEL == 1 || info.CASE_LEVEL == 2" style="background: #ff0000;">{{info.CASE_LEVEL}}</span>
-                      <span v-if="info.CASE_LEVEL == 3" style="background: #ff9900;">{{info.CASE_LEVEL}}</span>
-                      <span v-if="info.CASE_LEVEL == 4" style="background: #ffff00;">{{info.CASE_LEVEL}}</span>
-                      <span v-if="info.CASE_LEVEL == 5" style="background: #1ca2a5;">{{info.CASE_LEVEL}}</span>{{info.CASE_NO}}
+                      <span class="speventlevel" :class="'speventlevelcolor'+info.CASE_LEVEL" >{{info.CASE_LEVEL}}</span>{{info.CASE_NO}}
                     </div>
                   </el-col>
                   <el-col :span="1">
-                    <span v-if="info.CASE_TYPEID == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></span>
-                    <span v-if="info.CASE_TYPEID == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></span>
-                    <span v-if="info.CASE_TYPEID == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ffff00;"></span>
-                    <span v-if="info.CASE_TYPEID == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></span>
-                    <span v-if="info.CASE_TYPEID == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span>
+                    <span class="spheathcolor" :class="'spheathcolor'+info.CASE_HEALTH" ></span>
                   </el-col>
                   <el-col :span="12">
                     <div class="cellTopTime"><span>{{info.CREATE_DATE}}</span></div>
@@ -47,9 +40,9 @@
                   <el-col :span="24"><span class="tit">说明：</span><span>{{info.PROBLEM_DETAIL}}</span></el-col>
                 </el-row>
               </div>
+              </router-link>
             </div>
             <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
-            </router-link>
           </el-tab-pane>
         </template>
       </el-tabs>
@@ -61,6 +54,7 @@
 import headerBase from '../header/headerBase'
 import loadingtmp from '@/components/load/loading'
 import global_ from '../../components/Global'
+import fetch from '../../utils/ajax'
 export default {
   name: 'workBenchMyEventAll',
 
@@ -101,135 +95,99 @@ export default {
       ],
       activeName: 'first',
       searchpage:1,
+      issearch:0,
       page:1,
       pageSize:10,
       busy:false,
       loadall: false,
       tab_box: 1,
-      formData: []
+      formData: null,
+      objpages:{"first":{page:1,loadall:false,caseStep:1,idx:0,issearch:0},"second":{page:1,loadall:false,caseStep:2,idx:1,issearch:0},
+      "third":{page:1,loadall:false,caseStep:4,idx:2,issearch:0},"fourth":{page:1,loadall:false,caseStep:5,idx:3,issearch:0},
+      "fifth":{page:1,loadall:false,caseStep:"",idx:4,issearch:0}}
     }
+  },
+  created () {
+    
   },
   methods: {
     tabClick (e) {
-      console.log(e)
-      if (e.label === '事件处理') {
-        this.tab_box = 1
+      console.log("tabclick");
+      var objnowpage = this.objpages[this.activeName];
+      this.loadall= objnowpage.loadall;
+      if(this.issearch != objnowpage.issearch ){
+        objnowpage.page= 1
+        objnowpage.loadall = false
+        objnowpage.eventListArr= []
+        objnowpage.issearch = this.issearch;
+        this.loadMore();
+        return ;
       }
-      if (e.label === '分析诊断') {
-        this.tab_box = 2
+      if(objnowpage.page==1 && !objnowpage.loadall){
+        this.loadMore();
       }
-      if (e.label === '现场实施') {
-        this.tab_box = 4
-      }
-      if (e.label === '关闭处理') {
-        this.tab_box = 5
-      }
-      if (e.label === '全部') {
-        this.tab_box = 6
-      }
-      this.loadMore()
-      // console.log(this.tab_box)
     },
     returnList (flag, res, obj) {
       if(flag){
-        obj = obj.concat(res.data.data);
+        obj = obj.concat(res.data);
       }else{
-        obj = res.data.data;
+        obj = res.data;
       }
-      if(0 == res.data.data.length){
-        this.busy = true;
+      if(0 == res.data.length||res.data.length<this.pageSize){
+        this.busy = false;
         this.loadall = true;
+        this.objpages[this.activeName]["loadall"] =true;
       }
       else{
         this.busy = false;
-        this.page++
+        this.objpages[this.activeName]["page"]++
       }
       return obj
     },
-    getEventList(flag){
-      if (this.tab_box === 1) {
-        this.page = 1
-        this.loadall = false
-        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, CASE_STEP: 1}}).then(res => {
-          // console.log(0, '-----------------', res)
-          let obj = this.opinionTab[0].eventListArr
-          this.opinionTab[0].eventListArr = this.returnList(flag, res, obj)
-        });
+    getEventList(){
+      var flag = this.objpages[this.activeName]["page"]>1;
+      let objnowpage = this.objpages[this.activeName];     
+      let strurl = "?action=GetCaseList&TYPE=all";
+      let urlparam = {PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, CASE_STEP: objnowpage.caseStep}
+
+      if(this.formData){
+        urlparam.CUST_ID = this.formData["customer"]
+        urlparam.INDUSTRY_NAME = this.formData["industry"].join(",")
+        urlparam.CREATE_DATE_BEGIN = this.formData["startTime"]
+        urlparam.CREATE_DATE_END = this.formData["endTime"]
+        urlparam.CASE_TYPEID = this.formData["type"].join(",");
+        urlparam.SALE_NAME = this.formData["sale"]
+        urlparam.PM_NAME = this.formData["PM"]
       }
-      if (this.tab_box === 2) {
-        this.page = 1
-        this.loadall = false
-        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, CASE_STEP: 2}}).then(res => {
-          // console.log(1, '-----------------', res.data.data)
-          let obj = this.opinionTab[1].eventListArr
-          this.opinionTab[1].eventListArr = this.returnList(flag, res, obj)
-        });
-      }
-      if (this.tab_box === 4) {
-        this.page = 1
-        this.loadall = false
-        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, CASE_STEP: 4}}).then(res => {
-          // console.log(2, '-----------------', res.data.data)
-          let obj = this.opinionTab[2].eventListArr
-          this.opinionTab[2].eventListArr = this.returnList(flag, res, obj)
-        });
-      }
-      if (this.tab_box === 5) {
-        this.page = 1
-        this.loadall = false
-        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize, CASE_STEP: 5}}).then(res => {
-          // console.log(3, '-----------------', res.data.data)
-          let obj = this.opinionTab[3].eventListArr
-          this.opinionTab[3].eventListArr = this.returnList(flag, res, obj)
-        });
-      }
-      if (this.tab_box === 6) {
-        this.page = 1
-        this.loadall = false
-        this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.page, PAGE_TOTAL: this.pageSize}}).then(res => {
-          // console.log(4, '-----------------', res.data.data)
-          let obj = this.opinionTab[4].eventListArr
-          this.opinionTab[4].eventListArr = this.returnList(flag, res, obj)
-        });
-      }
-    },
-    loadMore(){
-      this.busy = true;
-      if (this.tab_box == 7) {
-        this.searchProInfo(this.formData);
-      } else {
-        setTimeout(() => {
-          this.getEventList(this.page>1);
-        }, 500);
-      }
+
+      fetch.get(strurl,urlparam).then(res => {
+        let obj = this.opinionTab[objnowpage.idx].eventListArr;
+        this.opinionTab[objnowpage.idx].eventListArr = this.returnList(flag, res, obj)
+      });
+      
+      
     },
 
-    // 搜索条件data
-    searchProInfo (formData) {
-      if (formData.industry instanceof Object || formData.industry instanceof Object) {
-        formData.industry = formData.industry.join(',')
-        formData.type = formData.type.join(',')
-        this.formData = formData
-      }
-      console.log(this.formData)
-      this.loadall = false
-      this.activeName = 'fifth'
-      this.tab_box = 7
-      this.$axios.get(global_.proxyServer + "?action=GetCaseList&EMPID=1012856&TYPE=all", {params: {PAGE_NUM: this.searchpage, PAGE_TOTAL: this.pageSize, INDUSTRY_NAME: formData.industry, CASE_TYPEID: formData.type, CREATE_DATE_BEGIN: formData.startTime, CREATE_DATE_END: formData.endTime, CUSTOMER_NAME: formData.customer, PROJECT_NAME: formData.proName, SALE_NAME: formData.sale, PM_NAME: formData.PM, CASE_NO: formData.eventNum, KEYWORD: formData.keyWord}}).then(res => {
-        if(this.searchpage>1){
-          this.opinionTab[4].eventListArr = this.opinionTab[4].eventListArr.concat(res.data.data);
-        }else{
-          this.opinionTab[4].eventListArr = res.data.data;
-        }
-        if(0 == res.data.data.length){
-          this.busy = true;
-          this.loadall = true;
-        }
-        else{
-          this.busy = false;
-          this.searchpage++
-        }
-      })
+    loadMore(){
+      if(this.busy || this.objpages[this.activeName]["loadall"])return false;
+      this.busy = true;
+      
+      console.log("loadMore");
+      setTimeout(() => {
+        this.getEventList();
+      }, 500);
+    },
+
+    getSearParams (formData) {
+      this.activeName="fifth";
+      this.objpages["fifth"]["page"] = 1;
+      this.objpages["fifth"]["loadall"]= false;
+      this.loadall = false;
+      this.opinionTab[4].eventListArr = [];
+      this.objpages["fifth"]["issearch"] = 1;
+      this.issearch=1;
+      this.formData = formData;
+      this.loadMore();
     }
   }
 }
@@ -251,4 +209,16 @@ export default {
   .eventCell .cellTop .cellTopTime{text-align: right; color: #999999;}
   .eventCell .cellContent .el-col{line-height: 0.25rem; color: #333333;}
   .eventCell .cellContent .el-col .tit{line-height: 0.25rem; color: #999999;}
+  .speventlevel{}
+  .speventlevelcolor1{ background:#ff0000; }
+  .speventlevelcolor2{ background:#ff0000; }
+  .speventlevelcolor3{ background:#ff9900; }
+  .speventlevelcolor4{ background:#ffff00; }
+  .speventlevelcolor5{ background:#1ca2a5; }
+
+  .eventCell .cellTop .spheathcolor{display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;}
+  .spheathcolor1{background: #009900;}
+  .spheathcolor2{background: #ffff00;}
+  .spheathcolor3{background: #ff9900;}
+  .spheathcolor4{background: #ff0000;}
 </style>

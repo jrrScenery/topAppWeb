@@ -28,7 +28,7 @@
         <span style="color: #2698d6; font-size: 0.14rem">{{companyInfo.name}}</span>
         <h4>{{companyInfo.tit}}</h4>
         <div style="display: flex; justify-content: space-between"><p><span style="color: #999999">设备：</span>{{companyInfo.equipment}}</p><p><span style="color: #999999">SN：</span>{{companyInfo.SN}}</p></div>
-        <p>{{companyInfo.desc}}</p>
+        <p v-html="companyInfo.desc"></p>
         <p>{{companyInfo.size}}</p>
       </div>
       <div class="speed">
@@ -40,7 +40,7 @@
         <p>状态：{{status.state}}</p>
       </div>
       <div class="peopleInfo">
-        <div v-for="item in peopleInfo" :key="item.id" style="display: flex; justify-content: center; width: 50%">
+        <div v-for="(item,i) in peopleInfo" :key="'peo'+i" style="display: flex; justify-content: center; width: 50%">
           <img v-if="item.imgSrc" :src="item.imgSrc" alt="">
           <img v-else src="../../assets/images/photo.png" alt="">
           <div>
@@ -52,7 +52,7 @@
         </div>
       </div>
       <ul class="eventBaseInfoCell">
-        <li v-for="item in baseInfoArr" :key="item.id"><span>{{item.tit}}</span>{{item.desc}}
+        <li v-for="(item,i) in baseInfoArr" :key="'inf'+i"><span>{{item.tit}}</span>{{item.desc}}
           <a  v-bind:href="'tel:'+item.phone"  style="font-size: 0.13em; color: #2698d6;"> {{item.phone}} </a>
         </li>
       </ul>
@@ -113,7 +113,7 @@ export default {
       this.companyInfo.tit = baseInfo.PROJECT_NAME;
       this.companyInfo.equipment = baseInfo.DEVICE;
       this.companyInfo.SN = baseInfo.SN;
-      this.companyInfo.desc = baseInfo.PROBLEM_DETAIL;
+      this.companyInfo.desc = baseInfo.PROBLEM_DETAIL.replace(/\n/g, "<br/>");
       this.status.active = parseInt(baseInfo.CASE_STEP)-1;
       this.status.state = baseInfo.DEAL_STATUS_NAME;
       this.peopleInfo[0].name = baseInfo.MANAGER_REALNAME;

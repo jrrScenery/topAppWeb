@@ -33,6 +33,7 @@
 <script>
 import global_ from '../../components/Global'
 import headerLast from '../header/headerLast'
+import fetch from '../../utils/ajax'
 export default {
   name: 'workBenchPOinfo',
 
@@ -79,11 +80,11 @@ export default {
     }
   },
   created () {
-    this.$axios.get(global_.proxyServer+"?action=GetPoPerson&EMPID="+global_.empId,{}).then(res=>{
-      this.POinfoTab[0].tableData = res.data.data;
+    fetch.get("?action=GetPoPerson",{}).then(res=>{
+      this.POinfoTab[0].tableData = res.data;
     });
-    this.$axios.get(global_.proxyServer+"?action=GetPoParts&EMPID="+global_.empId,{}).then(res=>{
-      this.POinfoTab[1].tableData = res.data.data;
+    fetch.get("?action=GetPoParts",{}).then(res=>{
+      this.POinfoTab[1].tableData = res.data;
     });
   },
   methods: {

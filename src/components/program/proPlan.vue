@@ -5,8 +5,6 @@
       <el-table
         :data="tableData"
         stripe
-        max-height="200"
-        v-loadmore="loadMore"
         style="width: 100%">
         <template v-for="item in table_arr">
           <el-table-column
@@ -29,9 +27,6 @@ import fetch from '../../utils/ajax'
 
 export default {
   name: 'proPlan',
-  props:{
-    proplanpage: Number
-  },
   components: {
     loadingtmp
   },

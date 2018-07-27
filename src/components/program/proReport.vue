@@ -4,10 +4,10 @@
     <div class="proReportTop">
       <el-form :inline="true" :model="form" class="demo-form-inline">
         <el-form-item>
-          <el-date-picker type="month" placeholder="请输入时间段" v-model="form.startTime" style="width: 100%;" :picker-options="pickerOptions"></el-date-picker>
+          <el-date-picker type="month"  @focus="noKeyword"  placeholder="请输入时间段" v-model="form.startTime" style="width: 100%;" :picker-options="pickerOptions" value-format="yyyy-MM-dd"></el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-date-picker type="month" placeholder="请输入时间段" v-model="form.endTime" style="width: 100%;" :picker-options="pickerOptions"></el-date-picker>
+          <el-date-picker type="month" @focus="noKeyword" placeholder="请输入时间段" v-model="form.endTime" style="width: 100%;" :picker-options="pickerOptions" value-format="yyyy-MM-dd"></el-date-picker>
         </el-form-item>
         <el-form-item>
           <el-button @click="onSubmit">查询</el-button>
@@ -47,14 +47,15 @@ export default {
   },
 
   created () {
-    // this.$axios.get(global_.proxyServer + '?action=GetStatisticsCaseData&EMPID=' + global_.empId, {params: {timeStart: this.form.startTime, timeEnd: this.form.endTime}}).then(res => {
-    //   console.log(res)
-    // })
+    
   },
 
   methods: {
     onSubmit () {
       this.$refs.charts.reFetchAll()
+    },
+    noKeyword () {
+      document.activeElement.blur()
     },
     standardDate(join,...num){
       let arr = [];
@@ -84,4 +85,5 @@ export default {
   .proReportTop >>> .el-form--inline .el-form-item .el-input__inner::placeholder{font-size: 0.13rem;}
   .proReportTop >>> .el-input__icon{display: none}
   .proReportTop >>> .el-button{padding: 0 0.1rem; height: 0.25rem; background: #2698d6; color: #ffffff; font-size: 0.13rem;}
+  .proReportTop .el-form-item__content i{ display: block;}
 </style>

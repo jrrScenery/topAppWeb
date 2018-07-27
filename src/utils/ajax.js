@@ -4,6 +4,7 @@
  */
 import axios from 'axios'
 import router from '@/router'
+import _global from '../components/Global'
 
 // 配置请求头
 let instance = axios.create({
@@ -15,7 +16,10 @@ let instance = axios.create({
 //let baseURL = "http://localhost:8081/api/proxy";
 //let baseURL = "http://47.104.200.60/api/proxy";
 //let baseURL = "http://47.104.236.209:8084/api/proxy";
-let baseURL = "http://139.129.207.35:8084/api/proxy";
+//let baseURL = "http://139.129.207.35:8084/api/proxy";
+//let baseURL = "http://192.168.0.100:8081/api/proxy";
+let baseURL = _global.Server + "/api/proxy";
+
 // 这里我声明了一个全局变量loading，来统一控制请求时的等待数据的loading效果。也可以在实际请求的时候写loading，不过我觉得那样太过繁琐，多了许多代码
 let loading;
 
@@ -78,14 +82,18 @@ export default {
         });
     },*/
     get(url, params) {
+
         return new Promise((resolve, reject) => {
-          //console.log(baseURL+url);
+          var token = sessionStorage.getItem("token");
           axios.get(baseURL+url, {
-            params: params
+            params: params,
+            headers: {
+                "token" : token
+            }
           }).then(res => {
-            //console.log(res);
-            if(res.data.sTATUSCODE=='-1'){
+            if(res.data.STATUSCODE==-1||res.data.STATUSCODE=='-1'){
                 router.push({name: 'login'});
+                return;
             }else{
                 resolve(res.data)
             }

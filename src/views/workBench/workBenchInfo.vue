@@ -4,56 +4,17 @@
     <header-last :title="workBenchInfoTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="tableTh"><span>行业</span><span>客户数量</span><span>项目数量</span><span>合同规模</span></div>
-    <div class="tableTd" v-for="items in workBenchInfoObj">
-      <div class="tableTitle">业务方向：{{items.title}}</div>
+    <div class="tableTd" v-for="items in workBenchInfoObj" :key="items.name"  >
+      <div class="tableTitle">{{items.name}}</div>
       <div class="divTable">
-        <router-link v-for="item in items.yunArr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.business,industry:item.industry}}">
-          <span>{{item.industry}}</span>
-          <span>{{item.Cnum}}</span>
-          <span>{{item.Pnum}}</span>
-          <span>{{item.contract}}</span>
+        <router-link v-for="item in items.arr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.BUSINESS_TYPE,industry:item.INDUSTRY}}">
+          <span>{{item.INDUSTRY}}</span>
+          <span>{{item.CUST_NUM}}</span>
+          <span>{{item.PRO_NUM}}</span>
+          <span>{{item.AMOUNT}}</span>
         </router-link>
       </div>
-      <div class="divTable">
-        <router-link v-for="item in items.waiArr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.business,industry:item.industry}}">
-          <span>{{item.industry}}</span>
-          <span>{{item.Cnum}}</span>
-          <span>{{item.Pnum}}</span>
-          <span>{{item.contract}}</span>
-        </router-link>
-      </div>
-      <div class="divTable">
-        <router-link v-for="item in items.zhiArr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.business,industry:item.industry}}">
-          <span>{{item.industry}}</span>
-          <span>{{item.Cnum}}</span>
-          <span>{{item.Pnum}}</span>
-          <span>{{item.contract}}</span>
-        </router-link>
-      </div>
-      <div class="divTable">
-        <router-link v-for="item in items.SDCArr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.business,industry:item.industry}}">
-          <span>{{item.industry}}</span>
-          <span>{{item.Cnum}}</span>
-          <span>{{item.Pnum}}</span>
-          <span>{{item.contract}}</span>
-        </router-link>
-      </div>
-      <div class="divTable">
-        <router-link v-for="item in items.qiArr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.business,industry:item.industry}}">
-          <span>{{item.industry}}</span>
-          <span>{{item.Cnum}}</span>
-          <span>{{item.Pnum}}</span>
-          <span>{{item.contract}}</span>
-        </router-link>
-      </div>
-      <div class="divTable">
-        <router-link v-for="item in items.weiArr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.business,industry:item.industry}}">
-          <span>{{item.industry}}</span>
-          <span>{{item.Cnum}}</span>
-          <span>{{item.Pnum}}</span>
-          <span>{{item.contract}}</span>
-        </router-link>
-      </div>
+      
     </div>
   </div>
 </template>
@@ -77,45 +38,27 @@ export default {
     }
   },
   created () {
+    
+  },
+  mounted(){
     fetch.get('?action=GetProjectStat',{}).then(res => {
-      // console.log(res)
-      let infoJson = {}
-      let yunArr = []
-      let waiArr = []
-      let zhiArr = []
-      let SDCArr = []
-      let qiArr = []
-      let weiArr = []
-      let workBenchInfoObj = []
-      for (let i = 0; i < res.data.length; i++) {
-        infoJson = {business:res.data[i].BUSINESS_TYPE,industry: res.data[i].INDUSTRY, Cnum: res.data[i].CUST_NUM, Pnum: res.data[i].PRO_NUM, contract: res.data[i].AMOUNT}
-        if (res.data[i].BUSINESS_TYPE === '运维') {
-          yunArr.push(infoJson)
-          workBenchInfoObj[0] = {title: '运维', yunArr}
-        }
-        if (res.data[i].BUSINESS_TYPE === '外包') {
-          waiArr.push(infoJson)
-          workBenchInfoObj[1] = {title: '外包', waiArr}
-        }
-        if (res.data[i].BUSINESS_TYPE === '质测') {
-          zhiArr.push(infoJson)
-          workBenchInfoObj[2] = {title: '质测', zhiArr}
-        }
-        if (res.data[i].BUSINESS_TYPE === 'SDC') {
-          SDCArr.push(infoJson)
-          workBenchInfoObj[3] = {title: 'SDC', SDCArr}
-        }
-        if (res.data[i].BUSINESS_TYPE === '其他') {
-          qiArr.push(infoJson)
-          workBenchInfoObj[4] = {title: '其他', qiArr}
-        }
-        if (res.data[i].BUSINESS_TYPE === '未设置') {
-          weiArr.push(infoJson)
-          workBenchInfoObj[5] = {title: '未设置', weiArr}
-        }
+
+      if("0"== res.STATUSCODE){
+
+        let logData = res.data;
+        let temparr= [] ;
+        let tempTypeId = -1;
+        logData.forEach(function(v,i,ar){
+          if(0 == temparr.length || v.BTSORT!= temparr[temparr.length-1]["typeid"] ){
+            temparr.push({"typeid":v.BTSORT,"inx":i,"name":v.BUSINESS_TYPE,arr:[]});
+          }
+          temparr[temparr.length-1]["arr"].push(v);
+        })
+        console.log(temparr);
+        this.workBenchInfoObj= temparr;
+        
       }
-      this.workBenchInfoObj = workBenchInfoObj
-      //console.log(this.workBenchInfoObj)
+
     })
   },
   methods: {
