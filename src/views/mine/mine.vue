@@ -67,7 +67,7 @@ export default {
         type: 'warning'
       }).then(() => {
         let url = "?action=logOut";
-        sessionStorage.removeItem("token");
+        localStorage.removeItem("token");
         // fetch.get(url,"").then(res=>{
           this.$router.push({name:'login',params:{}});
         // });
