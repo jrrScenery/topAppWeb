@@ -86,10 +86,15 @@ export default {
               
               localStorage.setItem("token", token);
 
-              if(typeof(android)!="undefined"){
+              let ua = navigator.userAgent.toLowerCase();
+              if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
+                var info={action:"login",token:token}
+                window.webkit.messageHandlers.ioshandle.postMessage({body: info});
+              }else if(/(Android)/i.test(ua)){
                 var value = "{action:login,token:"+ token + "}";
-                android.getClient(value);
+                // android.getClient(value);
               }
+
 
               var isGps = 0;
               if(res.data.userPermission.length>0){

@@ -5,8 +5,8 @@
     <div style="height: 0.45rem;"></div>
     <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <el-tabs v-model="activeName" @tab-click="tabClick">
-        <template v-for="item in opinionTab">
-          <el-tab-pane :label="item.label" :name="item.name" :key="item.id">
+        <template v-for="(item) in opinionTab">
+          <el-tab-pane :label="item.label+'('+item.num+')'" :name="item.name" :key="item.id">
             <div class="eventCell" v-for="info in item.eventListArr" :key="info.id">
               <router-link :to="{name:'eventShow',query:{caseId:info.CASE_ID}}">
               <div class="cellTop">
@@ -69,28 +69,21 @@ export default {
       opinionTab: [
         {
           name: 'first',
-          label: '事件处理',
-          eventListArr: []
+          label: '执行中',
+          eventListArr: [],
+          num:0
         },
         {
           name: 'second',
-          label: '分析诊断',
-          eventListArr: []
+          label: '已关闭',
+          eventListArr: [],
+          num:0
         },
         {
           name: 'third',
-          label: '现场实施',
-          eventListArr: []
-        },
-        {
-          name: 'fourth',
-          label: '关闭处理',
-          eventListArr: []
-        },
-        {
-          name: 'fifth',
           label: '全部',
-          eventListArr: []
+          eventListArr: [],
+          num:0
         }
       ],
       activeName: 'first',
@@ -102,9 +95,8 @@ export default {
       loadall: false,
       tab_box: 1,
       formData: null,
-      objpages:{"first":{page:1,loadall:false,caseStep:1,idx:0,issearch:0},"second":{page:1,loadall:false,caseStep:2,idx:1,issearch:0},
-      "third":{page:1,loadall:false,caseStep:4,idx:2,issearch:0},"fourth":{page:1,loadall:false,caseStep:5,idx:3,issearch:0},
-      "fifth":{page:1,loadall:false,caseStep:"",idx:4,issearch:0}}
+      objpages:{"first":{page:1,loadall:false, IF_CLOSE:'N',idx:0,issearch:0},"second":{page:1,loadall:false,IF_CLOSE:'Y',idx:1,issearch:0},
+      "third":{page:1,loadall:false,IF_CLOSE:'',idx:2,issearch:0}}
     }
   },
   created () {
@@ -148,7 +140,7 @@ export default {
       var flag = this.objpages[this.activeName]["page"]>1;
       let objnowpage = this.objpages[this.activeName];     
       let strurl = "?action=GetCaseList&TYPE=all";
-      let urlparam = {PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, CASE_STEP: objnowpage.caseStep}
+      let urlparam = {PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, IF_CLOSE: objnowpage.IF_CLOSE}
 
       if(this.formData){
         urlparam.CUST_ID = this.formData["customer"]
@@ -161,8 +153,23 @@ export default {
       }
 
       fetch.get(strurl,urlparam).then(res => {
-        let obj = this.opinionTab[objnowpage.idx].eventListArr;
-        this.opinionTab[objnowpage.idx].eventListArr = this.returnList(flag, res, obj)
+        if('0'== res.STATUSCODE){
+          
+          let obj = this.opinionTab[objnowpage.idx].eventListArr;
+          this.opinionTab[objnowpage.idx].eventListArr = this.returnList(flag, res, obj)
+
+          let totData= res.totalData;
+          let i= 0;
+          if(!this.opinionTab[0]['num']){
+            for(var p in totData){
+              this.opinionTab[i]['num']= totData[p];
+              i++
+            }
+          }
+        }
+        else{
+
+        }
       });
       
       
@@ -199,7 +206,7 @@ export default {
   .content >>> .el-tabs__header{margin: 0; background: #ffffff}
   .content >>> .el-tabs__nav{width: 100%}
   .content >>> .el-tabs__active-bar{background: #2698d6}
-  .content >>> .el-tabs__nav .el-tabs__item{width: 20%; text-align: center; padding: 0; color: #999999}
+  .content >>> .el-tabs__nav .el-tabs__item{width: 33.33333333%; text-align: center; padding: 0; color: #999999}
   .content >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}
   .eventCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-bottom: 0.05rem;}
   .eventCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}

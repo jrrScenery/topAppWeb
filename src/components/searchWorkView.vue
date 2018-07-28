@@ -3,13 +3,13 @@
   <div class="searchView">
     <el-form ref="form" :model="form" label-width="65px">
       <el-form-item label="业务方向">
-        <el-select v-model="form.direction" placeholder="请选择业务方向" multiple>
-          <el-option v-for="item in businessType" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        <el-select v-model="form.business" placeholder="请选择业务方向" multiple>
+          <el-option v-for="item in businessType" :label="item.name" :value="item.name" :key="item.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="行业">
         <el-select v-model="form.industry" placeholder="请选择行业" multiple>
-          <el-option v-for="item in industryType" :label="item.name" :value="item.value" :key="item.id"></el-option>
+          <el-option v-for="item in industryType" :label="item.name" :value="item.name" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="客户">
@@ -34,12 +34,12 @@ export default {
   components: {
 
   },
-
+  props: ['queryData'],
   data () {
     return {
       form: {
-        direction: '',
-        industry: '',
+        business: [],
+        industry: [],
         customer: '',
         proName: ''
       },
@@ -51,6 +51,13 @@ export default {
   watch: {},
 
   created () {
+    if(this.queryData.BUSINESS_TYPE){
+      this.form.business = this.queryData.BUSINESS_TYPE.split(',');
+      this.form.industry = this.queryData.INDUSTRY_NAME.split(',');
+      this.form.customer = this.queryData.CUST_NAME;
+      this.form.proName = this.queryData.PROJECT_NAME;
+    }
+
     fetch.get("?action=getDict&type=PRO_BUSINESS_TYPE","").then(res=>{
       // console.log(res.data);
       this.businessType = res.data;
@@ -70,6 +77,9 @@ export default {
     },
     onSearch () {
       let form = this.form
+      for(let p in form){
+        form[p] = form[p] || ''
+      }
       this.$emit('search', form)
       // console.log(this.form, '------------------')
       let data = {

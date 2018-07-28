@@ -15,7 +15,7 @@
               :min-width="item.width">
               <template slot-scope="scope">
                   <template v-if="item.prop == 'DOC_NAME'">
-                    <a :href="scope.row['href']" :download="scope.row['DOC_NAME']"> {{scope.row['DOC_NAME']}}</a>
+                    <a @click="downFile(scope.row['href'],scope.row['fileext'],scope.row['docname'])" :download="scope.row['DOC_NAME']"> {{scope.row['DOC_NAME']}}</a>
                   </template>
                   <span v-else class="table_name">{{scope.row[item.prop]}}</span>
               </template>
@@ -62,18 +62,37 @@ export default {
       ]
     }
   },
+  beforeCreate(){
+
+  },
   created () {
     var url = "?action=GetProjectDoc&PROJECT_ID="+this.$route.query.projectId;
     fetch.get(url,{}).then(res=>{
-      this.tableData = res.data;
-      for(var i=0;i<this.tableData.length;i++){
-        this.tableData[i].href = global_.Server +"/api/download?fileId="+this.tableData[i].DOC_ID + "&fileName=" + this.tableData[i].DOC_NAME;
-      }
+      let tmpdata= res.data;
+      tmpdata.map(function(item){
+        item.href =global_.Server +"/api/download?fileId="+item.DOC_ID + "&fileName=" + item.DOC_NAME;
+        let artemp = item.DOC_NAME.split('.'); 
+        item.fileext =  artemp[artemp.length-1];
+        item.docname= item.DOC_NAME;
+      })
+
+      this.tableData = tmpdata;
       console.log(this.tableData);
     });
   },
   methods: {
-
+    downFile(url,fileExt,docname){
+        let ua = navigator.userAgent.toLowerCase();
+        console.log(url);
+        console.log(fileExt);
+        if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
+          var info={action:"downFile",downloadurl:url}
+          window.webkit.messageHandlers.ioshandle.postMessage({body: info});
+        }else if(/(Android)/i.test(ua)){
+          var value = "{action:'downFile',downloadurl:'"+url+"',fileExt:'"+fileExt+"',docname:'"+docname+"'}";
+          android.getClient(value);
+        }
+    },
   }
 }
 </script>

@@ -10,7 +10,7 @@
             </router-link>
             <span>{{item.text}}</span>
           </li>
-          <li v-else class="li_workBench" :key="item.id" style="display:none">
+          <li v-else class="li_workBench" :key="item.id" >
             <router-link :to="{name:item.href,params:item.params}" >
               <img  :src="item.imgSrc" alt=""  >
             </router-link>

@@ -26,14 +26,22 @@ export default {
     return {
       headerLeft: '扫码',
       title: 'list',
-      showSao : false
+      showSao : true
     }
   },
 
   watch: {
     '$route': 'routerChange'
   },
-
+  beforeCreate(){
+    
+    window.scanResult = function(str){
+      android.getClient("111"+str);
+      alert(str);
+    }
+      
+    
+  },
   created () {
     this.routerChange(this.$route)
   },
@@ -45,7 +53,6 @@ export default {
       }
     }
   },
-
   methods: {
     routerChange (e) {
       switch (e.name) {
@@ -67,14 +74,12 @@ export default {
       }
     },
     onSao(){
-
       let ua = navigator.userAgent.toLowerCase();
-      let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //判断iPhone|iPad|iPod|iOS
-      if (isiOS) { 
-        var info={action:"sao",empId:sessionStorage.getItem('empId')}
+      if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
+        var info={action:"scan",scantype:'declare',empId:sessionStorage.getItem('empId')}
         window.webkit.messageHandlers.ioshandle.postMessage({body: info});
-      }else if(typeof(android)!="undefined"){
-        var value = "{action:sao,empId:"+sessionStorage.getItem('empId')+"}";
+      }else if(/(Android)/i.test(ua)){
+        var value = "{action:scan,scantype:declare,empId:"+sessionStorage.getItem('empId')+"}";
         android.getClient(value);
       }
     }
