@@ -17,6 +17,7 @@
         </template>
       </el-table>
     </div>
+    <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
   </div>
 </template>
 
@@ -97,6 +98,8 @@ export default {
             this.page++
             console.log(2)
           }
+          this.loadall = true;
+          this.busy = false;
         })
       }
     }

@@ -115,7 +115,7 @@ export default {
                   
                   let ua = navigator.userAgent.toLowerCase();
                   let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //判断iPhone|iPad|iPod|iOS
-                  if (isiOS) {
+                  if (isiOS && window.webkit) {
                     var info={action:"login",empId:sessionStorage.getItem('empId'),interval:this.interval}
                     window.webkit.messageHandlers.ioshandle.postMessage({body: info});
                   }else if(typeof(android)!="undefined"){

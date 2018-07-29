@@ -7,15 +7,15 @@
     <div class="tableTd" v-for="items in workBenchInfoObj" :key="items.name"  >
       <div class="tableTitle">{{items.name}}</div>
       <div class="divTable">
-        <router-link v-for="item in items.arr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.BUSINESS_TYPE,industry:item.INDUSTRY}}">
+        <router-link v-for="item in items.arr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.BUSINESS_TYPE,industry:item.INDUSTRY,isSearch:1}}">
           <span>{{item.INDUSTRY}}</span>
           <span>{{item.CUST_NUM}}</span>
           <span>{{item.PRO_NUM}}</span>
           <span>{{item.AMOUNT}}</span>
         </router-link>
       </div>
-      
     </div>
+    <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
   </div>
 </template>
 
@@ -23,18 +23,21 @@
 import headerLast from '../header/headerLast'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
-
+import loadingtmp from '@/components/load/loading'
 export default {
   name: 'workBenchInfo',
 
   components: {
-    headerLast
+    headerLast,
+    loadingtmp
   },
 
   data () {
     return {
       workBenchInfoTit: '在保项目信息',
-      workBenchInfoObj: []
+      workBenchInfoObj: [],
+      busy:true,
+      loadall: false
     }
   },
   created () {
@@ -57,7 +60,10 @@ export default {
         console.log(temparr);
         this.workBenchInfoObj= temparr;
         
+        
       }
+      this.busy = false;
+      this.loadall = true;
 
     })
   },

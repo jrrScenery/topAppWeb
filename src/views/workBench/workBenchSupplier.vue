@@ -7,6 +7,7 @@
       <el-table
         stripe
         :data="tableData"
+        v-loading="busy && !loadall"
         style="width: 100%">
         <el-table-column
           prop="AREANAME"
@@ -54,13 +55,17 @@ export default {
   data () {
     return {
       workBenchSupplierTit: '供应商信息',
-      tableData: []
+      tableData: [],
+      busy:true,
+      loadall: false
     }
   },
 
   created () {
     fetch.get("?action=GetSupplierStat&EMPID="+global_.empId,{}).then(res=>{
       this.tableData = res.data
+      this.busy= false;
+      this.loadall = true;
       console.log(this.tableData)
     });
   },

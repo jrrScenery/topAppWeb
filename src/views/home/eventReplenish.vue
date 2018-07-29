@@ -74,6 +74,14 @@ export default {
     }
     
   },
+  mounted(){
+    console.log(444);
+    console.log(this.$loading,222);
+  },
+  created (){
+    console.log(3333);
+    console.log(this.$loading,1111111111);
+  },
   methods: {
     onSubmit () {
       //alert('submit!');

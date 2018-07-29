@@ -11,15 +11,17 @@
               <router-link :to="{name:'eventShow',query: {caseId:info.CASE_ID}}">
               <div class="cellTop">
                 <el-row>
-                  <el-col :span="11">
-                    <div class="cellTopNum">
-                      <span class="speventlevel" :class="'speventlevelcolor'+info.CASE_LEVEL" >{{info.CASE_LEVEL}}</span>{{info.CASE_NO}}
-                    </div>
-                  </el-col>
                   <el-col :span="1">
                     <span class="spheathcolor" :class="'spheathcolor'+info.CASE_HEALTH" ></span>
                   </el-col>
-                  <el-col :span="12">
+                  <el-col :span="13">
+                    <div class="cellTopNum">
+                      {{info.CASE_NO}}
+                      <span class="speventlevel" :class="'speventlevelcolor'" >{{info.CASE_LEVEL}}</span>
+                    </div>
+                  </el-col>
+                  
+                  <el-col :span="10">
                     <div class="cellTopTime"><span>{{info.CREATE_DATE}}</span></div>
                   </el-col>
                 </el-row>
@@ -65,7 +67,7 @@ export default {
 
   data () {
     return {
-      workBenchMyEventTit: '所有事件',
+      workBenchMyEventTit: '我的事件',
       opinionTab: [
         {
           name: 'first',
@@ -149,7 +151,7 @@ export default {
       if(this.isSearch){
         console.log(this.searchData);
         params.INDUSTRY_NAME = this.searchData.industry.join(",");
-        params.CASE_TYPE = this.searchData["type"].join(",");
+        params.CASE_TYPEID = this.searchData["type"].join(",");
         params.CUST_NAME = this.searchData.customer;
         params.PROJECT_NAME = this.searchData.proName;
         params.PM_NAME = this.searchData.PM;
@@ -224,7 +226,8 @@ export default {
   .eventCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-bottom: 0.05rem;}
   .eventCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
   .eventCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
-  .eventCell .cellTop .cellTopNum span{display: inline-block; height: 0.19rem; width: 0.19rem; border-radius: 50%; vertical-align: text-top; margin-right: 0.08rem; color: #ffffff; text-align: center; line-height: 0.2rem;}
+  /* .eventCell .cellTop .cellTopNum span{display: inline-block; height: 0.19rem; width: 0.19rem; border-radius: 50%; vertical-align: text-top; margin-right: 0.08rem; color: #ffffff; text-align: center; line-height: 0.2rem;} */
+  .eventCell .cellTop .cellTopNum span{display: inline-block;  height: 0.19rem; vertical-align: text-top; margin-left: 0.05rem;  text-align: center; line-height: 0.2rem; color: #666;}
   .eventCell .cellTop .cellTopColor{width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0.15rem 0; text-align: right}
   .eventCell .cellTop .cellTopTime{text-align: right; color: #999999;}
   .eventCell .cellContent .el-col{line-height: 0.25rem; color: #333333;}

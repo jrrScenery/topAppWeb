@@ -54,7 +54,7 @@ export default {
       let temparr= [] ;
       let tempstep = -1;
       logData.forEach(function(v,i,ar){
-        if(0 == temparr.length || v.CASE_STEP!= temparr[temparr.length-1]["name"] ){
+        if(   0 == temparr.length || (v.CASE_STEP!= temparr[temparr.length-1]["name"] && v.CASE_STEP!=null)  ){
           temparr.push({"title":v.CASE_STEP_NAME,"inx":i,"name":v.CASE_STEP,imgSrc:require('@/assets/images/eventProgress_1.png'),desc:[]});
         }
         temparr[temparr.length-1]["desc"].push({info:v.PROCESSING_LOG,time:v.CREATE_DATE});

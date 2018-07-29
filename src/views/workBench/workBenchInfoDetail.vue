@@ -54,7 +54,7 @@ export default {
         BUSINESS_TYPE: this.$route.query.business,
         INDUSTRY_NAME: this.$route.query.industry
       },
-      isSearch: false
+      isSearch:  this.$route.query.isSearch
     }
   },
   beforeCreate(){

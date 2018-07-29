@@ -30,6 +30,7 @@
           :summary-method="getSummaries"
           show-summary
           max-height="437"
+          v-loading="busy && !loadall"
           @row-click="rowClick"
           style="width: 100%;">
           <template v-for="item in workBenchEventInfoObj">
@@ -76,9 +77,12 @@ export default {
         }
       },
       backUrl : 'workBench',
+      busy:true,
+      loadall: false
     }
   },
   created () {
+    
     if(undefined!=this.$route.query.date1){
       this.form.date1 = this.$route.query.date1;
       this.form.date2 = this.$route.query.date2;
@@ -103,6 +107,9 @@ export default {
             total: totalNum
           }
         }
+
+        this.busy= false;
+        this.loadall = true;
       })
     },
     getSummaries (param) {

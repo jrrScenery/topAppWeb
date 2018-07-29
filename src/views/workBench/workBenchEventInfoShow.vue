@@ -153,12 +153,12 @@ export default {
     },
     // 点击单元格时
     tdClick (row, column, cell, event) {
-      let ifFault = 'N'
+      let type = '3,5'
       if (column.label == '故障类') {
-        ifFault = 'Y'
+        type = '1,2,4'
       }
       console.log(row);
-      this.$router.push({name: 'workBenchMyEventAll', query: {customer: row.CUSTOMER_ID, ifFault: ifFault, activeName: 'fifth',industry:this.$route.query.industry,startDate:this.form.date1,endDate:this.form.date2}})
+      this.$router.push({name: 'workBenchMyEventAll', query: {custid: row.CUSTOMER_ID,isSearch:1, type: type, industry:this.$route.query.industry,startDate:this.form.date1,endDate:this.form.date2}})
     }
   }
 }
