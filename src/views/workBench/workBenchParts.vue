@@ -7,6 +7,7 @@
       <el-table
         stripe
         :data="tableData"
+        v-loading="busy && !loadall"
         style="width: 100%">
         <el-table-column
           prop="PROVINCE_NAME"
@@ -56,12 +57,16 @@ export default {
   data () {
     return {
       workBenchPartsTit: '备件库存',
-      tableData: []
+      tableData: [],
+      busy:true,
+      loadall: false
     }
   },
   created () {
     fetch.get("?action=GetPartStat",{}).then(res=>{
       this.tableData = res.data;
+      this.busy= false;
+      this.loadall = true;
       // console.log(this.tableData);
     });
   },

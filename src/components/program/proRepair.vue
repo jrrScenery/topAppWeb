@@ -103,11 +103,12 @@ export default {
         else{
           this.busy= false;
         }
-         this.$emit('emitbusy', {busy:false,loadall:this.loadall});
+        this.$emit('emitbusy', {busy:false,loadall:this.loadall});
       });
     },
     sear(){
       this.$emit("repairpagechange",1);
+      this.proRepairObj=[];
       this.busy=false
       this.loadall=false
       this.loadrepair(0)

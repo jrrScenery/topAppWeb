@@ -7,13 +7,16 @@
       <el-table
         stripe
         :data="tableData"
+        v-loading="busy && !loadall"
         style="width: 100%">
         <el-table-column
           prop="AREANAME"
           label="地点"
           width="24%">
         </el-table-column>
-        <el-table-column label="人员数量">
+        <el-table-column 
+        width="76%"
+        label="人员数量">
           <el-table-column
             prop="C1"
             label="机动人员"
@@ -54,12 +57,16 @@ export default {
   data () {
     return {
       workBenchPeopleInfoTit: '人员信息',
-      tableData: []
+      tableData: [],
+      busy:true,
+      loadall: false
     }
   },
   created () {
     fetch.get("?action=GetPersonStat",{}).then(res=>{
       this.tableData = res.data;
+      this.busy= false;
+        this.loadall = true;
       //console.log(this.tableData);
     });
   },

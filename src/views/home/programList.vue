@@ -1,7 +1,7 @@
 <!--首页-需关注项目-->
 <template>
   <div class="programListView">
-    <header-base-two :title="programListTit" @searchPro="searchProInfo"></header-base-two>
+    <header-base-five :title="programListTit" :queryData="searchData"  @searchPro="getSearParams"></header-base-five>
     <div style="height: 0.45rem;"></div>
     <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <div class="programCell" v-for="item in programListArr" :key="item.id">
@@ -48,14 +48,14 @@
 
 <script>
 import global_ from '../../components/Global'
-import headerBaseTwo from '../header/headerBaseTwo'
+import headerBaseFive from '../header/headerBaseFive'
 import loadingtmp from '@/components/load/loading'
 import fetch from '../../utils/ajax'
 export default {
   name: 'programList',
 
   components: {
-    headerBaseTwo,
+    headerBaseFive,
     loadingtmp
   },
 
@@ -82,7 +82,9 @@ export default {
       busy:false,
       loadall: false,
       isSearch: false,
-      searchData:{}
+      searchData: {
+        industry:[]
+      }
     }
   },
 
@@ -92,8 +94,12 @@ export default {
       var flag = this.page>1;
       var reqParams = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
       if(this.isSearch){
-        var industry = this.searchData.industry.join(',');
-        reqParams = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize,INDUSTRY:industry,CUST_NAME:this.searchData.customer,PROJECT_NAME:this.searchData.proName,SALE_NAME:this.searchData.sale,PM_NAME:this.searchData.PM};
+        reqParams.BUSINESS_TYPE = this.searchData["business"]
+        reqParams.INDUSTRY_NAME = this.searchData["industry"].join(",")
+        reqParams.PROJECT_NAME = this.searchData["proName"]
+        reqParams.CUST_NAME = this.searchData["customer"]
+        reqParams.PM_NAME = this.searchData["PM"]
+        reqParams.SALE_NAME = this.searchData["sale"]
       }
       fetch.get("?action=GetFocusProject",reqParams).then(res=>{
         if(flag){
@@ -119,9 +125,10 @@ export default {
     },
 
     // 搜索条件data
-    searchProInfo (data) {
+    getSearParams (data) {
       this.page = 1
       this.isSearch = true;
+      this.programListArr = [];
       this.searchData = data;
       this.busy = true;
       setTimeout(() => {

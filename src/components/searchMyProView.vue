@@ -40,12 +40,12 @@ export default {
   components: {
 
   },
-
+  props: ['queryData'],
   data () {
     return {
       form: {
         business: '',
-        industry: '',
+        industry: [],
         customer: '',
         proName: '',
         sale: '',
@@ -60,13 +60,19 @@ export default {
 
   created () {
     fetch.get("?action=getDict&type=PRO_BUSINESS_TYPE","").then(res=>{
-      console.log(res.data);
       this.businessType = res.data;
     });
     fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
-      console.log(res.data);
       this.industryType = res.data;
     });
+
+    this.form.business = this.queryData.business;
+    this.form.industry = this.queryData.industry;
+    this.form.proName = this.queryData.proName;
+    this.form.customer = this.queryData.customer;
+    this.form.sale = this.queryData.sale;
+    this.form.PM = this.queryData.PM;
+
   },
 
   methods: {

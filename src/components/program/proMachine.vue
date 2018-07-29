@@ -73,9 +73,7 @@ export default {
     }
   },
   created () {
-//      fetch.get("?action=GetProjectDeviceList&PROJECT_ID="+this.projectId).then(res=>{
-//        this.tableData = res.data;
-//    });
+    console.log(this.promachinepage);
   },
   methods: {
     onSubmit () {
@@ -107,6 +105,9 @@ export default {
 
       });
     }
+  },
+  mounted(){
+    this.loadmachine(this.promachinepage>1);
   },
   watch:{
     promachinepage(curVal,oldVal){

@@ -1,7 +1,7 @@
 <!--工作台-我的项目-->
 <template>
   <div class="workBenchMyProView">
-    <header-base-five :title="workBenchMyProTit"  :queryData="formData" @searchPro="getSearParams"></header-base-five>
+    <header-base-five :title="workBenchMyProTit"  :queryData="searchData" @searchPro="getSearParams"></header-base-five>
     <div style="height: 0.45rem;"></div>
     <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <el-tabs v-model="activeName" @tab-click="tabClick">
@@ -92,7 +92,9 @@ export default {
       busy:false,
       loadall: false,
       tab_box: 1,
-      formData: null,
+      searchData: {
+        industry:[]
+      },
       objpages:{"first":{page:1,loadall:false,IF_SURANCE:1,idx:0,isSearch:0},"second":{page:1,loadall:false,IF_SURANCE:0,idx:1,isSearch:0},
       "third":{page:1,loadall:false,IF_SURANCE:'',idx:2,isSearch:0}}
     }
@@ -105,7 +107,6 @@ export default {
     tabClick (e) {
       console.log("tabclick");
       var objnowpage = this.objpages[this.activeName];
-      this.loadall= objnowpage.loadall;
       if(this.isSearch != objnowpage.isSearch ){
         objnowpage.page= 1
         objnowpage.loadall = false
@@ -141,14 +142,13 @@ export default {
       let strurl = "?action=GetProjectList&TYPE=my";
       let urlparam = {PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, IF_SURANCE: objnowpage.IF_SURANCE}
 
-      if(this.formData){
-        urlparam.CUST_ID = this.formData["customer"]
-        urlparam.BUSINESS_TYPE = this.formData["business"]
-        urlparam.INDUSTRY_NAME = this.formData["industry"].join(",")
-        urlparam.PROJECT_NAME = this.formData["proName"]
-        urlparam.CUST_NAME = this.formData["customer"]
-        urlparam.PM_NAME = this.formData["PM"]
-        urlparam.SALE_NAME = this.formData["sale"]
+      if(this.searchData){
+        urlparam.BUSINESS_TYPE = this.searchData["business"]
+        urlparam.INDUSTRY_NAME = this.searchData["industry"].join(",")
+        urlparam.PROJECT_NAME = this.searchData["proName"]
+        urlparam.CUST_NAME = this.searchData["customer"]
+        urlparam.PM_NAME = this.searchData["PM"]
+        urlparam.SALE_NAME = this.searchData["sale"]
       }
 
       fetch.get(strurl,urlparam).then(res => {
@@ -158,8 +158,6 @@ export default {
       
     },
     loadMore(){
-      console.log(this.objpages[this.activeName]["loadall"])
-      console.log(this.busy);
       if(this.busy || this.objpages[this.activeName]["loadall"])return false;
       this.busy = true;
       
@@ -168,7 +166,7 @@ export default {
         this.getEventList();
       }, 500);
     },
-    getSearParams (formData) {
+    getSearParams (searchData) {
       this.activeName="third";
       this.objpages["third"]["page"] = 1;
       this.objpages["third"]["loadall"]= false;
@@ -176,8 +174,17 @@ export default {
       this.workBenchMyProTab[2].programListArr = [];
       this.objpages["third"]["isSearch"] = 1;
       this.isSearch=1;
-      this.formData = formData;
+      this.searchData = searchData;
+      
       this.loadMore();
+
+      this.objpages["first"]["isSearch"]=0
+      this.objpages["first"]["loadall"]=false
+      this.workBenchMyProTab[0].programListArr = [];
+
+      this.objpages["second"]["isSearch"]=0
+      this.objpages["second"]["loadall"]=false
+      this.workBenchMyProTab[1].programListArr = [];
     }
 
   }

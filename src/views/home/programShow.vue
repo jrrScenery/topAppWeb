@@ -70,13 +70,13 @@
       <div class="programTable">
         <el-tabs v-model="activeName"  @tab-click="chtab" >
           <el-tab-pane label="健康度" name="prohealth"><pro-health ></pro-health></el-tab-pane>
-          <el-tab-pane label="设备清单" name="promachine"><pro-machine @emitbusy="getEmitPage" @emitparams='getEmitparams' :promachinepage="needpage.promachine.page" lazy ></pro-machine></el-tab-pane>
-          <el-tab-pane label="巡检计划" name="proplan"><pro-plan  lazy></pro-plan></el-tab-pane>
-          <el-tab-pane label="相关报修" name="prorepair"><pro-repair @emitbusy="getEmitPage" @repairpagechange="repairPageChange" :prorepairpage="needpage.prorepair.page" lazy ></pro-repair></el-tab-pane>
-          <el-tab-pane label="分析报表" name="proreport"><pro-report lazy></pro-report></el-tab-pane>
-          <el-tab-pane label="文档下载" name="profiledown"><pro-file-down lazy></pro-file-down></el-tab-pane>
-          <el-tab-pane label="满意度" name="prosatisfy"><pro-satisfy lazy></pro-satisfy></el-tab-pane>
-          <el-tab-pane label="意见反馈" name="profeedback"><pro-feedback lazy></pro-feedback></el-tab-pane>
+          <el-tab-pane label="设备清单" name="promachine" lazy ><pro-machine @emitbusy="getEmitPage" @emitparams='getEmitparams' :seardata='needpage.promachine.seardata' :promachinepage="needpage.promachine.page"></pro-machine></el-tab-pane>
+          <el-tab-pane label="巡检计划" name="proplan" lazy><pro-plan ></pro-plan></el-tab-pane>
+          <el-tab-pane label="相关报修" name="prorepair"><pro-repair @emitbusy="getEmitPage" @repairpagechange="repairPageChange" :seardata='needpage.prorepair.seardata' :prorepairpage="needpage.prorepair.page" lazy ></pro-repair></el-tab-pane>
+          <el-tab-pane label="分析报表" name="proreport" lazy><pro-report></pro-report></el-tab-pane>
+          <el-tab-pane label="文档下载" name="profiledown" lazy><pro-file-down></pro-file-down></el-tab-pane>
+          <el-tab-pane label="满意度" name="prosatisfy" lazy><pro-satisfy></pro-satisfy></el-tab-pane>
+          <el-tab-pane label="意见反馈" name="profeedback" lazy><pro-feedback></pro-feedback></el-tab-pane>
         </el-tabs>
       </div>
     </div>
@@ -124,7 +124,7 @@ export default {
       pageSize:10,
       busy:false,
       loadall: false,
-      needpage:{promachine:{page:0,loadall:false}, prorepair:{page:0,loadall: false}}
+      needpage:{promachine:{page:0,loadall:false,seardata:{}}, prorepair:{page:0,loadall: false,seardata:{}}}
 
     }
   },

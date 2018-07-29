@@ -9,6 +9,7 @@
           <el-tab-pane :label="item.label" :name="item.name" :key="item.id">
             <el-table
               :data="item.tableData"
+              v-loading="busy && !loadall"
               style="width: 100%; border: 0.01rem solid #e1e1e1">
               <template v-for="info in POinfotable">
                 <el-table-column
@@ -76,7 +77,9 @@ export default {
           fixed: true,
           width: '33%'
         }
-      ]
+      ],
+      busy:true,
+      loadall: false
     }
   },
   created () {
@@ -85,6 +88,8 @@ export default {
     });
     fetch.get("?action=GetPoParts",{}).then(res=>{
       this.POinfoTab[1].tableData = res.data;
+      this.busy= false;
+      this.loadall = true;
     });
   },
   methods: {
