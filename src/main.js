@@ -15,7 +15,7 @@ import commonUtil from './utils/common'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
-axios.defaults.withCredentials = true
+axios.defaults.withCredentials = false
 Vue.prototype.$axios = axios
 Vue.prototype.$echarts = echarts
 Vue.use(commonUtil)

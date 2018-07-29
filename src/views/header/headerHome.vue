@@ -46,7 +46,7 @@ export default {
     this.routerChange(this.$route)
   },
   mounted () {
-    let permissions = JSON.parse(sessionStorage.getItem("userPermission"));
+    let permissions = JSON.parse(localStorage.getItem("userPermission"));
     for(let i=0;i<permissions.length;i++){
       if(permissions[i].PRIVID=='topApp_create_case'){
         this.showSao = true;
@@ -76,10 +76,10 @@ export default {
     onSao(){
       let ua = navigator.userAgent.toLowerCase();
       if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
-        var info={action:"scan",scantype:'declare',empId:sessionStorage.getItem('empId')}
+        var info={action:"scan",scantype:'declare',empId:localStorage.getItem('empId')}
         window.webkit.messageHandlers.ioshandle.postMessage({body: info});
       }else if(/(Android)/i.test(ua)){
-        var value = "{action:scan,scantype:declare,empId:"+sessionStorage.getItem('empId')+"}";
+        var value = "{action:scan,scantype:declare,empId:"+localStorage.getItem('empId')+"}";
         android.getClient(value);
       }
     }

@@ -59,7 +59,7 @@ export default {
       caseid: this.$route.query.caseId,
       upaction: 'http://139.129.207.35:8084/api/upload',
       uploadres:''
-      // upaction: 'http://localhost:8081/api/upload?EMPID=' + sessionStorage.getItem("empId")
+      // upaction: 'http://localhost:8081/api/upload?EMPID=' + localStorage.getItem("empId")
     }
   },
   beforeCreate(){

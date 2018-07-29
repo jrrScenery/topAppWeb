@@ -64,7 +64,7 @@ export default {
     }
   },
   mounted () {
-    let permissions = JSON.parse(sessionStorage.getItem("userPermission"));
+    let permissions = JSON.parse(localStorage.getItem("userPermission"));
     for(let i=0;i<permissions.length;i++){
       console.log(permissions[i]);
       if(permissions[i].PRIVID=='workFlow_business_statistics'){

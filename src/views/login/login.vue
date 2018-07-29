@@ -43,7 +43,18 @@ export default {
     // this.ruleForm.userName = this.getCookie('username');
     if(this.ruleForm.checked){
       fetch.get("?action=checkSession","").then(res=>{
-        this.$router.push({name:'home',params:{}});
+
+        var token = localStorage.getItem("token");
+
+        fetch.get("?action=getUserPermission",{}).then(res=>{
+
+          localStorage.setItem("userPermission", JSON.stringify(res.userPermission));
+
+          this.updateUserPermission(res.userPermission);
+
+        });
+
+        //this.$router.push({name:'home',params:{}});
       });
     }
   },
@@ -78,55 +89,28 @@ export default {
               global_.empId = res.data.userInfo[0].EMPID;
 
               let token = res.data.token;
-              sessionStorage.setItem("empId", res.data.userInfo[0].EMPID);
-              sessionStorage.setItem("realName", res.data.userInfo[0].REALNAME);
-              sessionStorage.setItem("mobile", res.data.userInfo[0].MOBILE);
-              sessionStorage.setItem("email", res.data.userInfo[0].EMAIL);
-              sessionStorage.setItem("userPermission", JSON.stringify(res.data.userPermission));
-              
               localStorage.setItem("token", token);
 
+              localStorage.setItem("empId", res.data.userInfo[0].EMPID);
+              localStorage.setItem("realName", res.data.userInfo[0].REALNAME);
+              localStorage.setItem("mobile", res.data.userInfo[0].MOBILE);
+              localStorage.setItem("email", res.data.userInfo[0].EMAIL);
+              localStorage.setItem("userPermission", JSON.stringify(res.data.userPermission));
+              
               let ua = navigator.userAgent.toLowerCase();
               if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
                 var info={action:"login",token:token}
                 window.webkit.messageHandlers.ioshandle.postMessage({body: info});
               }else if(/(Android)/i.test(ua)){
-                var value = "{action:login,token:"+ token + "}";
-                // android.getClient(value);
-              }
-
-
-              var isGps = 0;
-              if(res.data.userPermission.length>0){
-                for(var i=0;i<res.data.userPermission.length;i++){
-                  if(res.data.userPermission[i].PRIVID=="topApp_GPS"){
-                    isGps = 1;
-                    break;
-                  }
+                if(typeof(android)!="undefined"){
+                  var value = "{action:login,token:"+ token + "}";
+                  android.getClient(value);                  
                 }
               }
-              // console.log(isGps);
-              // console.log(global_.userInfo);
 
-              if(isGps==1){
-                fetch.get("?action=getDict&type=GPS_UPDATE_INTERVAL","").then(res=>{
-                  //console.log(res);
-                  this.interval = res.data[0].name;
-                  
-                  let ua = navigator.userAgent.toLowerCase();
-                  let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //判断iPhone|iPad|iPod|iOS
-                  if (isiOS && window.webkit) {
-                    var info={action:"login",empId:sessionStorage.getItem('empId'),interval:this.interval}
-                    window.webkit.messageHandlers.ioshandle.postMessage({body: info});
-                  }else if(typeof(android)!="undefined"){
-                    var value = "{action:location,empId:"+sessionStorage.getItem('empId')+",interval:"+this.interval+"}";
-                    android.getClient(value);
-                  }
-                  this.$router.push({name: 'home'});
-                });
-              }else{
-                this.$router.push({name: 'home'});
-              }
+              let userPermission = res.data.userPermission;
+              this.updateUserPermission(userPermission);
+
               this.loginErr = false
             }else{
               this.loginErr = true
@@ -141,6 +125,39 @@ export default {
           return false;
         }
       })
+    },
+
+    updateUserPermission(userPermission){
+
+      var isGps = 0;
+      if(userPermission.length>0){
+        for(var i=0;i<userPermission.length;i++){
+          if(userPermission[i].PRIVID=="topApp_GPS"){
+            isGps = 1;
+            break;
+          }
+        }
+      }
+
+      if(isGps==1){
+        fetch.get("?action=getDict&type=GPS_UPDATE_INTERVAL","").then(res=>{
+          //console.log(res);
+          this.interval = res.data[0].name;
+          
+          let ua = navigator.userAgent.toLowerCase();
+          let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //判断iPhone|iPad|iPod|iOS
+          if (isiOS) {
+            var info={action:"login",empId:localStorage.getItem('empId'),interval:this.interval}
+            window.webkit.messageHandlers.ioshandle.postMessage({body: info});
+          }else if(typeof(android)!="undefined"){
+            var value = "{action:location,empId:"+localStorage.getItem('empId')+",interval:"+this.interval+"}";
+            android.getClient(value);
+          }
+          this.$router.push({name: 'home'});
+        });
+      }else{
+        this.$router.push({name: 'home'});
+      }
     },
     // 设置cookie
     setCookie (c_name, c_pwd, exdays) {

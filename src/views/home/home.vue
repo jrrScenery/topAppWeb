@@ -348,6 +348,7 @@ export default {
   created:function(){
 
     fetch.get("?action=checkSession",{}).then(res=>{
+          
           this.fetchData();
     });
   }
