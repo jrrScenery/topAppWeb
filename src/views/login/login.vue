@@ -99,11 +99,11 @@ export default {
               
               let ua = navigator.userAgent.toLowerCase();
               if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
-                var info={action:"login",token:token}
+                var info={action:"login",empId:localStorage.getItem('empId'),token:token}
                 window.webkit.messageHandlers.ioshandle.postMessage({body: info});
               }else if(/(Android)/i.test(ua)){
                 if(typeof(android)!="undefined"){
-                  var value = "{action:login,token:"+ token + "}";
+                  var value = "{action:login,empId:"+localStorage.getItem('empId')+"token:"+ token + "}";
                   android.getClient(value);                  
                 }
               }
@@ -145,9 +145,9 @@ export default {
           this.interval = res.data[0].name;
           
           let ua = navigator.userAgent.toLowerCase();
-          let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //判断iPhone|iPad|iPod|iOS
-          if (isiOS) {
-            var info={action:"login",empId:localStorage.getItem('empId'),interval:this.interval}
+          //let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //判断iPhone|iPad|iPod|iOS
+          if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
+            var info={action:"location",empId:localStorage.getItem('empId'),interval:this.interval}
             window.webkit.messageHandlers.ioshandle.postMessage({body: info});
           }else if(typeof(android)!="undefined"){
             var value = "{action:location,empId:"+localStorage.getItem('empId')+",interval:"+this.interval+"}";

@@ -69,8 +69,8 @@ export default {
         let url = "?action=logOut";
         localStorage.removeItem("token");
         let ua = navigator.userAgent.toLowerCase();
-        let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //判断iPhone|iPad|iPod|iOS
-        if (isiOS) {
+        //let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //判断iPhone|iPad|iPod|iOS
+        if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
           var info={action:"logout"}
           window.webkit.messageHandlers.ioshandle.postMessage({body: info});
         }else if(typeof(android)!="undefined"){
