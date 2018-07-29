@@ -1,7 +1,7 @@
 <!--工作台-在保项目信息明细-->
 <template>
   <div class="workBenchInfoDetailView">
-    <header-base-three :title="workBenchInfoDetailTit" @searchPro="searchProInfo"></header-base-three>
+    <header-base-three :title="workBenchInfoDetailTit" :queryData="searchData" @searchPro="getSearParams"></header-base-three>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <div class="programCell" v-for="item in programListArr" :key="item.id">
@@ -50,22 +50,42 @@ export default {
     return {
       workBenchInfoDetailTit: '在保项目情况明细',
       programListArr: [],
-      business: this.$route.query.business,
-      industry: this.$route.query.industry
+      searchData:{
+        BUSINESS_TYPE: this.$route.query.business,
+        INDUSTRY_NAME: this.$route.query.industry
+      },
+      isSearch: false
     }
   },
+  beforeCreate(){
+    
+  },
   created () {
-    let url = "?action=GetProjectStatList";
-    url +=  "&BUSINESS_TYPE=" +  this.business + "&INDUSTRY_NAME=" + this.industry;
-    fetch.get(url,{}).then(res => {
-      console.log(res.data);
-      this.programListArr = res.data
-    })
+    console.log(this.$route.query.business)
+    this.loadList();
   },
 
   methods: {
+    getSearParams (formData) {
+      console.log(formData);
+      this.searchData.BUSINESS_TYPE= formData.business.join(',');
+      this.searchData.INDUSTRY_NAME = formData.industry.join(',');
+      this.searchData.CUST_NAME= formData.customer;
+      this.searchData.PROJECT_NAME= formData.proName;
+      this.loadList();
+    },
+    loadList(){
+      let url = "?action=GetProjectStatList";
+      let tpmpara ={}
+      if(this.isSearch){tpmpara = this.searchData};
+      fetch.get(url,tpmpara).then(res => {
+        console.log(res.data);
+        this.programListArr = res.data
+      })
+    },
     // 搜索条件data
     searchProInfo (data) {
+      this.isSearch = true;
       console.log(data)
       data.industry = data.industry.join(',')
       data.direction = data.direction.join(',')

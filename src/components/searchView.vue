@@ -11,7 +11,7 @@
         <template>
           <div style="position: absolute; top: 0.25rem; left: -0.65rem; color: #999999; font-size: 0.1rem">可多选</div>
           <el-checkbox-group v-model="form.type" size="small">
-            <el-checkbox-button v-for="item in Type" :label="item.value" name="type" :key="item.id">{{item.name}}</el-checkbox-button>
+            <el-checkbox-button v-for="item in Type" :label="item.value"  name="type" :key="item.id">{{item.name}}</el-checkbox-button>
           </el-checkbox-group>
         </template>
       </el-form-item>
@@ -58,7 +58,7 @@ export default {
   components: {
 
   },
-
+  props: ['queryData'],
   data () {
     return {
       form: {
@@ -89,6 +89,20 @@ export default {
       // console.log(res.data);
       this.Type = res.data;
     });
+
+
+    this.form.type = this.queryData['type'];
+    this.form.industry = this.queryData.industry;
+    this.form.customer = this.queryData.customer;
+    this.form.proName = this.queryData.proName;
+    this.form.sale = this.queryData.sale;
+    this.form.PM = this.queryData.PM;
+    this.form.eventNum = this.queryData.eventNum;
+    this.form.keyWord = this.queryData.keyWord;
+    this.form.industry = this.queryData.industry;
+    this.form.startTime = this.queryData.startTime;
+    this.form.endTime = this.queryData.endTime;
+    console.log(this.queryData.type);
   },
 
   methods: {

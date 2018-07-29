@@ -119,9 +119,9 @@ export default {
   },
   created:function(){
 
-    this.formData.name = sessionStorage.getItem("realName");
-    this.formData.phone = sessionStorage.getItem("mobile");
-    this.formData.email = sessionStorage.getItem("email");
+    this.formData.name = localStorage.getItem("realName");
+    this.formData.phone = localStorage.getItem("mobile");
+    this.formData.email = localStorage.getItem("email");
 
   }
 }

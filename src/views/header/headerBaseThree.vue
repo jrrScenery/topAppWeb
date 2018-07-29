@@ -8,7 +8,7 @@
     </header>
     <template v-if="popBg">
       <div class="popBg">
-        <search-work-view @change="updatePopBg" @search="searchData"></search-work-view>
+        <search-work-view @change="updatePopBg" @search="searchData" :queryData="queryData"></search-work-view>
       </div>
     </template>
   </div>
@@ -30,7 +30,7 @@ export default {
     }
   },
 
-  props: ['title'],
+  props: ['title','queryData'],
 
   watch: {
   },

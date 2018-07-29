@@ -20,7 +20,7 @@
         <template v-else-if="searchType=='focusEvent'">
           <focus-search-view @change="updatePopBg" @search="searchData" :queryData="queryData"></focus-search-view>
         </template>
-        <search-view v-else @change="updatePopBg" @search="searchData"></search-view>
+        <search-view v-else @change="updatePopBg" @search="searchData"  :queryData="queryData"></search-view>
       </div>
     </template>
   </div>

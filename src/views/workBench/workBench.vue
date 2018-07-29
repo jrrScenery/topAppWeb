@@ -10,7 +10,7 @@
             </router-link>
             <span>{{item.text}}</span>
           </li>
-          <li v-else class="li_workBench" :key="item.id" style="display:none">
+          <li v-else class="li_workBench" :key="item.id" >
             <router-link :to="{name:item.href,params:item.params}" >
               <img  :src="item.imgSrc" alt=""  >
             </router-link>
@@ -64,7 +64,7 @@ export default {
     }
   },
   mounted () {
-    let permissions = JSON.parse(sessionStorage.getItem("userPermission"));
+    let permissions = JSON.parse(localStorage.getItem("userPermission"));
     for(let i=0;i<permissions.length;i++){
       console.log(permissions[i]);
       if(permissions[i].PRIVID=='workFlow_business_statistics'){

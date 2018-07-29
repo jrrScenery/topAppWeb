@@ -87,3 +87,7 @@ export default {
   .proReportTop >>> .el-button{padding: 0 0.1rem; height: 0.25rem; background: #2698d6; color: #ffffff; font-size: 0.13rem;}
   .proReportTop .el-form-item__content i{ display: block;}
 </style>
+<style>
+  .proReportTop .el-input__inner{ line-height:normal;}
+  .proReportTop .el-form-item__content{ line-height:normal;}
+</style>

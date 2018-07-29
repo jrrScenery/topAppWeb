@@ -93,7 +93,6 @@ export default {
       // console.log(res.data);
       this.Type = res.data;
     });*/
-    this.form.customer = this.queryData.customer;
     this.form.industry = this.queryData.industry;
     this.form.customer = this.queryData.customer;
     this.form.proName = this.queryData.proName;
@@ -102,7 +101,8 @@ export default {
     this.form.eventNum = this.queryData.eventNum;
     this.form.keyWord = this.queryData.keyWord;
     this.form.industry = this.queryData.industry;
-    this.form.startTime = this.queryData.endTime;
+    this.form.startTime = this.queryData.startTime;
+    this.form.endTime = this.queryData.endTime;
   },
 
   methods: {

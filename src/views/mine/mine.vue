@@ -46,7 +46,7 @@ export default {
   data () {
     return {
       userData: [
-        {imgSrc: require('@/assets/images/mine_bg.jpg'), userName:sessionStorage['realName'], phone:sessionStorage['mobile']}
+        {imgSrc: require('@/assets/images/mine_bg.jpg'), userName:localStorage['realName'], phone:localStorage['mobile']}
       ],
       liObj: [
         {imgSrc: require('@/assets/images/mine_1.png'), text: '通知',action:'mineNotice'},
@@ -68,6 +68,16 @@ export default {
       }).then(() => {
         let url = "?action=logOut";
         localStorage.removeItem("token");
+        let ua = navigator.userAgent.toLowerCase();
+        let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //判断iPhone|iPad|iPod|iOS
+        if (isiOS) {
+          var info={action:"logout"}
+          window.webkit.messageHandlers.ioshandle.postMessage({body: info});
+        }else if(typeof(android)!="undefined"){
+          var value = "{action:logout}";
+          android.getClient(value);
+        }
+
         // fetch.get(url,"").then(res=>{
           this.$router.push({name:'login',params:{}});
         // });

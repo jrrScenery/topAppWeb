@@ -86,15 +86,15 @@ export default {
       ],
       activeName: 'first',
       searchpage:1,
-      issearch:0,
+      isSearch:0,
       page:1,
       pageSize:10,
       busy:false,
       loadall: false,
       tab_box: 1,
       formData: null,
-      objpages:{"first":{page:1,loadall:false,IF_SURANCE:1,idx:0,issearch:0},"second":{page:1,loadall:false,IF_SURANCE:0,idx:1,issearch:0},
-      "third":{page:1,loadall:false,IF_SURANCE:'',idx:2,issearch:0}}
+      objpages:{"first":{page:1,loadall:false,IF_SURANCE:1,idx:0,isSearch:0},"second":{page:1,loadall:false,IF_SURANCE:0,idx:1,isSearch:0},
+      "third":{page:1,loadall:false,IF_SURANCE:'',idx:2,isSearch:0}}
     }
   },
 
@@ -106,11 +106,11 @@ export default {
       console.log("tabclick");
       var objnowpage = this.objpages[this.activeName];
       this.loadall= objnowpage.loadall;
-      if(this.issearch != objnowpage.issearch ){
+      if(this.isSearch != objnowpage.isSearch ){
         objnowpage.page= 1
         objnowpage.loadall = false
         objnowpage.programListArr= []
-        objnowpage.issearch = this.issearch;
+        objnowpage.isSearch = this.isSearch;
         this.loadMore();
         return ;
       }
@@ -174,8 +174,8 @@ export default {
       this.objpages["third"]["loadall"]= false;
       this.loadall = false;
       this.workBenchMyProTab[2].programListArr = [];
-      this.objpages["third"]["issearch"] = 1;
-      this.issearch=1;
+      this.objpages["third"]["isSearch"] = 1;
+      this.isSearch=1;
       this.formData = formData;
       this.loadMore();
     }
