@@ -1,12 +1,12 @@
 <!--工作台-所有事件-->
 <template>
   <div class="workBenchMyEventView">
-    <header-base :title="workBenchMyEventTit" :queryData="formData" @searchPro="getSearParams"></header-base>
+    <header-base   :title="workBenchMyEventTit"  :queryData="searchData" @searchPro="getSearParams"></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <el-tabs v-model="activeName" @tab-click="tabClick">
         <template v-for="(item) in opinionTab">
-          <el-tab-pane :label="item.label+'('+item.num+')'" :name="item.name" :key="item.id">
+          <el-tab-pane :label="item.label+'('+totalData[item.numname]+')'" :name="item.name" :key="item.id">
             <div class="eventCell" v-for="info in item.eventListArr" :key="info.id">
               <router-link :to="{name:'eventShow',query:{caseId:info.CASE_ID}}">
               <div class="cellTop">
@@ -71,32 +71,36 @@ export default {
           name: 'first',
           label: '执行中',
           eventListArr: [],
-          num:0
+          numname:"unCloseNum"
         },
         {
           name: 'second',
           label: '已关闭',
           eventListArr: [],
-          num:0
+          numname:"closeNum"
         },
         {
           name: 'third',
           label: '全部',
           eventListArr: [],
-          num:0
+          numname:"allNum"
         }
       ],
       activeName: 'first',
       searchpage:1,
-      issearch:0,
+      isSearch:0,
       page:1,
       pageSize:10,
       busy:false,
       loadall: false,
       tab_box: 1,
-      formData: null,
-      objpages:{"first":{page:1,loadall:false, IF_CLOSE:'N',idx:0,issearch:0},"second":{page:1,loadall:false,IF_CLOSE:'Y',idx:1,issearch:0},
-      "third":{page:1,loadall:false,IF_CLOSE:'',idx:2,issearch:0}}
+      searchData:{
+        industry:[],
+        type:[]
+      },
+      objpages:{"first":{page:1,loadall:false, IF_CLOSE:'N',idx:0,isSearch:0},"second":{page:1,loadall:false,IF_CLOSE:'Y',idx:1,isSearch:0},
+      "third":{page:1,loadall:false,IF_CLOSE:'',idx:2,isSearch:0}},
+      totalData:{"unCloseNum":0,"closeNum":0,"allNum":0}
     }
   },
   created () {
@@ -107,11 +111,11 @@ export default {
       console.log("tabclick");
       var objnowpage = this.objpages[this.activeName];
       this.loadall= objnowpage.loadall;
-      if(this.issearch != objnowpage.issearch ){
+      if(this.isSearch != objnowpage.isSearch ){
         objnowpage.page= 1
         objnowpage.loadall = false
         objnowpage.eventListArr= []
-        objnowpage.issearch = this.issearch;
+        objnowpage.isSearch = this.isSearch;
         this.loadMore();
         return ;
       }
@@ -140,32 +144,32 @@ export default {
       var flag = this.objpages[this.activeName]["page"]>1;
       let objnowpage = this.objpages[this.activeName];     
       let strurl = "?action=GetCaseList&TYPE=all";
-      let urlparam = {PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, IF_CLOSE: objnowpage.IF_CLOSE}
+      let params = {PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, IF_CLOSE: objnowpage.IF_CLOSE}
 
-      if(this.formData){
-        urlparam.CUST_ID = this.formData["customer"]
-        urlparam.INDUSTRY_NAME = this.formData["industry"].join(",")
-        urlparam.CREATE_DATE_BEGIN = this.formData["startTime"]
-        urlparam.CREATE_DATE_END = this.formData["endTime"]
-        urlparam.CASE_TYPEID = this.formData["type"].join(",");
-        urlparam.SALE_NAME = this.formData["sale"]
-        urlparam.PM_NAME = this.formData["PM"]
+      if(this.isSearch){
+        console.log(this.searchData);
+        params.INDUSTRY_NAME = this.searchData.industry.join(",");
+        params.CASE_TYPE = this.searchData["type"].join(",");
+        params.CUST_NAME = this.searchData.customer;
+        params.PROJECT_NAME = this.searchData.proName;
+        params.PM_NAME = this.searchData.PM;
+        params.CASE_CD = this.searchData.eventNum;
+        params.KEYWORD = this.searchData.keyWord;
+        params.SALE_NAME = this.searchData.sale;
+        params.START_TIME = this.searchData.startTime;
+        params.END_TIME = this.searchData.endTime;
       }
+      console.log(params);
 
-      fetch.get(strurl,urlparam).then(res => {
+
+      fetch.get(strurl,params).then(res => {
         if('0'== res.STATUSCODE){
           
           let obj = this.opinionTab[objnowpage.idx].eventListArr;
           this.opinionTab[objnowpage.idx].eventListArr = this.returnList(flag, res, obj)
 
-          let totData= res.totalData;
-          let i= 0;
-          if(!this.opinionTab[0]['num']){
-            for(var p in totData){
-              this.opinionTab[i]['num']= totData[p];
-              i++
-            }
-          }
+          this.totalData= res.totalData;
+          
         }
         else{
 
@@ -185,16 +189,25 @@ export default {
       }, 500);
     },
 
-    getSearParams (formData) {
-      this.activeName="fifth";
-      this.objpages["fifth"]["page"] = 1;
-      this.objpages["fifth"]["loadall"]= false;
+    getSearParams (searchData) {
+      console.log(searchData);
+      this.activeName="third";
+      this.objpages["third"]["page"] = 1;
+      this.objpages["third"]["loadall"]= false;
+      this.opinionTab[2].eventListArr = [];
       this.loadall = false;
-      this.opinionTab[4].eventListArr = [];
-      this.objpages["fifth"]["issearch"] = 1;
-      this.issearch=1;
-      this.formData = formData;
+      this.objpages["third"]["isSearch"] = 1;
+      this.isSearch=1;
+      this.searchData = searchData;
       this.loadMore();
+
+      this.objpages["first"]["isSearch"]=0
+      this.objpages["first"]["loadall"]=false
+      this.opinionTab[0].eventListArr = [];
+
+      this.objpages["second"]["isSearch"]=0
+      this.objpages["second"]["loadall"]=false
+      this.opinionTab[1].eventListArr = [];
     }
   }
 }

@@ -53,7 +53,8 @@ export default {
       searchData:{
         BUSINESS_TYPE: this.$route.query.business,
         INDUSTRY_NAME: this.$route.query.industry
-      }
+      },
+      isSearch: false
     }
   },
   beforeCreate(){
@@ -75,13 +76,16 @@ export default {
     },
     loadList(){
       let url = "?action=GetProjectStatList";
-      fetch.get(url,this.searchData).then(res => {
+      let tpmpara ={}
+      if(this.isSearch){tpmpara = this.searchData};
+      fetch.get(url,tpmpara).then(res => {
         console.log(res.data);
         this.programListArr = res.data
       })
     },
     // 搜索条件data
     searchProInfo (data) {
+      this.isSearch = true;
       console.log(data)
       data.industry = data.industry.join(',')
       data.direction = data.direction.join(',')
