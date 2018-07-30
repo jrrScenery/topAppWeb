@@ -58,11 +58,11 @@ export default {
         {FACTORY_NM: 'HP', type: 'DL380G6', serial: 'CNG944S1VT', startTime: '2017-01-01', endTime: '2017-01-01'}
       ],
       proMachineObj: [
-        {prop: 'FACTORY_NM', lable: '厂商', width: '15%'},
-        {prop: 'MODEL_NAME', lable: '型号', width: '15%'},
-        {prop: 'SN', lable: '序列号', width: '22%'},
-        {prop: 'SERVICE_BEGIN', lable: '开始时间', width: '24%'},
-        {prop: 'SERVICE_END', lable: '结束时间', width: '24%'}
+        {prop: 'FACTORY_NM', lable: '厂商', width: '30%'},
+        {prop: 'MODEL_NAME', lable: '型号', width: '30%'},
+        {prop: 'SN', lable: '序列号', width: '40%'},
+        {prop: 'SERVICE_BEGIN', lable: '开始日期', width: '30px'},
+        {prop: 'SERVICE_END', lable: '结束日期', width: '30px'}
       ],
       projectId:this.$route.query.projectId,
       pageSize:10,
@@ -132,8 +132,11 @@ export default {
   .proMachineTop >>> .el-button{padding: 0 0.05rem; height: 0.25rem; background: #2698d6; color: #ffffff; font-size: 0.13rem;}
   .proMachineBtm >>> th{padding: 0; background: #f5f5f9}
   .proMachineBtm >>> td{padding: 0;}
-  .proMachineBtm >>> .cell{padding: 0 0.05rem; text-align: center; height: 0.3rem; line-height: 0.3rem; font-size: 0.13rem;}
-  .proMachineBtm >>> td .cell{overflow: hidden; text-overflow: ellipsis; white-space: nowrap}
+  .proMachineBtm >>> .cell{padding: 0 0.05rem; text-align: left;max-height:0.58rem; line-height: 0.2rem; font-size: 0.13rem;table-layout:fixed}
+  /* .proMachineBtm >>> td .cell{overflow: hidden; text-overflow: ellipsis; white-space: nowrap} */
+
+  .proMachineBtm >>> td .cell{white-space: pre-wrap;word-wrap: break-word}
+
 </style>
 <style>
   .proMachineView  .el-form-item__content{ line-height:normal;}

@@ -105,7 +105,7 @@ export default {
                 window.webkit.messageHandlers.ioshandle.postMessage({body: info});
               }else if(/(Android)/i.test(ua)){
                 if(typeof(android)!="undefined"){
-                  var value = "{action:login,empId:"+localStorage.getItem('empId')+"token:"+ token + "}";
+                  var value = "{action:login,empId:"+localStorage.getItem('empId')+",token:"+ token + "}";
                   android.getClient(value);                  
                 }
               }
@@ -140,9 +140,8 @@ export default {
           }
         }
       }
-
       if(isGps==1){
-        fetch.get("?action=getDict&type=GPS_UPDATE_INTERVAL","").then(res=>{
+        fetch.get("?action=getDict&type=GPS_UPDATE_INTERVAL",{}).then(res=>{
           //console.log(res);
           this.interval = res.data[0].name;
           
