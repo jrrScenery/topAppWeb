@@ -43,9 +43,7 @@ import loadingtmp from '@/components/load/loading'
 
 export default {
   name: 'proMachine',
-  props:{
-    promachinepage: Number
-  },
+  props:['promachinepage','searData'],
   components: {
     loadingtmp
   },
@@ -110,9 +108,15 @@ export default {
     this.loadmachine(this.promachinepage>1);
   },
   watch:{
+    changehappen(curVal,oldVal){
+      
+    },
     promachinepage(curVal,oldVal){
       console.log(curVal+"||"+oldVal);
       this.loadmachine(this.promachinepage>1);
+    },
+    searData(curVal,oldVal){
+
     }
   }
 }

@@ -3,6 +3,11 @@
   <div class="businessView">
     <div class="businessTop">
       <el-form ref="form" :model="form" label-width="0.6rem">
+        <el-form-item label="行业" >
+          <el-select v-model="form.industry" placeholder="请选择行业">
+            <el-option v-for="item in industryType" :label="item.name" :value="item.name" :key="item.id"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="客户">
           <el-input v-model="form.custom"></el-input>
         </el-form-item>
@@ -11,18 +16,17 @@
         </el-form-item>
         <el-form-item label="时间段">
           <el-col :span="11">
-            <el-date-picker type="date" placeholder="开始日期" v-model="form.startTime" style="width: 100%;" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker type="month"  @focus="noKeyword" placeholder="开始日期" v-model="form.startTime" style="width: 100%;" value-format="yyyy-MM-dd"></el-date-picker>
           </el-col>
           <el-col class="line" :span="2">~</el-col>
           <el-col :span="11">
-            <el-date-picker type="date" placeholder="结束日期" v-model="form.endTime" style="width: 100%;" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker type="month"  @focus="noKeyword" placeholder="结束日期" v-model="form.endTime" style="width: 100%;" value-format="yyyy-MM-dd"></el-date-picker>
           </el-col>
         </el-form-item>
-        <el-form-item label="行业">
-          <el-select v-model="form.industry" placeholder="请选择行业">
-            <el-option v-for="item in industryType" :label="item.name" :value="item.value" :key="item.id"></el-option>
-          </el-select>
+        <el-form-item :inline="true">
+          <el-button  @click="freshCharts">查询</el-button>
         </el-form-item>
+        
       </el-form>
     </div>
     <!-- <div class="businessBtm"><report-echarts></report-echarts></div> -->
@@ -93,15 +97,22 @@ export default {
     fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
       this.industryType = res.data;
     });
-    let params = {timeStart:this.form.startTime,timeEnd:this.form.endTime,PROJECT_NAME:this.form.custom,CUST_NAME:this.form.program,INDUSTRY:this.form.industry}
-    this.fetch1(params);
-    this.fetch2(params);
-    this.fetch3(params);
-    this.fetch4(params);
-    this.fetch5(params);
-    this.fetch6(params);
+    this.freshCharts();
   },
   methods: {
+    
+    freshCharts(){
+      let params = {timeStart:this.form.startTime,timeEnd:this.form.endTime,PROJECT_NAME:this.form.custom,CUST_NAME:this.form.program,INDUSTRY:this.form.industry}
+      this.fetch1(params);
+      this.fetch2(params);
+      this.fetch3(params);
+      this.fetch4(params);
+      this.fetch5(params);
+      this.fetch6(params);
+    },
+    noKeyword () {
+      document.activeElement.blur()
+    },
     crtTimeFtt(val) {
       if (val != null) {
         var date = new Date(val);
@@ -468,9 +479,12 @@ export default {
   .businessView >>> .el-form-item__label{text-align: left}
   .businessView >>> .el-form-item{margin: 0.15rem 0 0 0;}
   .businessView >>> .line{text-align: center}
-  .businessView >>> .el-input__icon{display: none}
+  .businessView >>> .el-input__inner{ }
+  .businessView >>> .el-select{ width: 100%;; }
+  /* .businessView >>> .el-input__icon{display: none} */
   .businessView >>> .el-select .el-input__inner:focus{border-color: #dcdfe6;}
   .businessView >>> .el-input__inner:focus{border-color: #dcdfe6;}
   .businessView >>> .el-input__prefix{display: none;}
   .businessView >>> .el-input--prefix .el-input__inner{padding: 0; text-align: center;}
+  .echartsView{ width: 96%; margin: 0 auto;}
 </style>
