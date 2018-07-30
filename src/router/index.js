@@ -211,6 +211,11 @@ export default new Router({
       path: '/home/projectEvaluateList',
       name: 'projectEvaluateList',
       component: resolve => require(['@/views/home/projectEvaluateList'], resolve)
+    },
+    {
+      path: '/reportform/qualityDetailDept',
+      name: 'qualityDetailDept',
+      component: resolve => require(['@/views/reportform/qualityDetailDept'], resolve)
     }
   ]
 })

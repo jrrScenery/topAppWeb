@@ -8,9 +8,9 @@
           <el-select v-model="form.time" placeholder="时间段">
             <el-option
               v-for="item in optionTime"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.BATCH_ID"
+              :label="item.BATCH_NAME"
+              :value="item.BATCH_ID">
             </el-option>
           </el-select>
         </el-form-item>
@@ -33,6 +33,7 @@
     <div class="qualityTable">
       <el-table
         :data="tableData"
+        @row-click="rowClick"
         border
         style="width: 100%">
         <template v-for="item in qualityTableObj">
@@ -49,6 +50,8 @@
 </template>
 
 <script>
+import fetch from '../../utils/ajax'
+
 export default {
   name: 'quality',
   data () {
@@ -58,30 +61,55 @@ export default {
         industry: ''
       },
       optionTime: [
-        {value: '选项1', label: '全年'},
-        {value: '选项2', label: '2017'},
-        {value: '选项3', label: '2018'}
       ],
+      batch:'',
       optionType: [
         {value: '选项1', label: '部门指标排名'},
-        {value: '选项2', label: '部门指标明细'},
-        {value: '选项3',label: '岗位角色指标排名'}
+        /*{value: '选项2', label: '部门指标明细'},
+        {value: '选项3',label: '岗位角色指标排名'}*/
       ],
       echartsTit: '部门指标排名',
       tableData: [
-        {ranking: '1', department: '总控部门', score: '100'},
-        {ranking: '1', department: '东区服务部', score: '98'},
-        {ranking: '1', department: '南区服务部', score: '92.79'}
       ],
       qualityTableObj: [
         {prop: 'ranking', label: '排名序列', width: '30%'},
         {prop: 'department', label: '部门', width: '40%'},
         {prop: 'score', label: '综合分值', width: '30%'}
-      ]
+      ],
+      data1:[],
+      data1X:[]
     }
   },
   mounted () {
-    this.drawLine()
+    fetch.get("?action=GetQualityReleaseBatch",{}).then(res=>{
+      this.optionTime = res.data;
+      this.form.time = res.data[1].BATCH_ID;
+      this.form.type = '选项1'
+
+      let params = {TARGET_ID:1,BATCH_ID:this.form.time}
+      var url = "?action=GetQualityReleaseData";
+      fetch.get(url,params).then(res=>{
+        console.log(res);
+        var reportData = res.dataSummary;
+        var dataArray = [];
+        var dataArrayX = [];
+        let tempTableData = [];
+        for(var i=0;i<reportData.length;i++){
+          dataArrayX[i] = reportData[i].DEPT_NAME;
+          dataArray[i] = reportData[i].SCORE;
+          tempTableData[i] = {};
+          tempTableData[i].ranking= '1';
+          tempTableData[i].department= reportData[i].DEPT_NAME;
+          tempTableData[i].score= reportData[i].SCORE;
+        }
+        this.tableData=tempTableData;
+        this.data1 = dataArray;
+        this.data1X = dataArrayX;
+        this.drawLine();
+      });
+    }); 
+
+
   },
   methods: {
     drawLine () {
@@ -103,18 +131,33 @@ export default {
         yAxis: {
           type: 'category',
           barWidth: '30%',
-          data: ['总控中心', '东区服务部', '南区服务部', '北区二部服务部', '北区一部服务部', '专业化服务部', '备件']
+          data: this.data1X
         },
         series: [
           {
             name: '2011年',
             type: 'bar',
-            data: [182, 289, 234, 970, 144, 230, 290]
+            data: this.data1,
+            itemStyle: {
+              normal:{
+                label:{
+                  show:true,
+                  formatter: '{c}'
+                },
+                labelLine:{
+                  show:true
+                }
+              }
+            }
           }
         ]
       })
+    },
+    rowClick (row) {
+      this.$router.push({name: 'qualityDetailDept', query: {dept:row.department,batchId:this.form.time}})
     }
-  }
+  },
+
 }
 </script>
 

@@ -95,7 +95,9 @@ export default {
               localStorage.setItem("realName", res.data.userInfo[0].REALNAME);
               localStorage.setItem("mobile", res.data.userInfo[0].MOBILE);
               localStorage.setItem("email", res.data.userInfo[0].EMAIL);
+              console.log(JSON.stringify(res.data.userPermission));
               localStorage.setItem("userPermission", JSON.stringify(res.data.userPermission));
+
               
               let ua = navigator.userAgent.toLowerCase();
               if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {

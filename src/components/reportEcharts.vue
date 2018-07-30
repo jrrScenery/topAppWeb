@@ -51,29 +51,12 @@ export default {
       oneData:  [],
       sixDataX:[],
       sixData:[],
-      factoryData:[/**{value: 335, name: 'IBM'},
-        {value: 310, name: 'DELL'},
-        {value: 234, name: '华为'},
-        {value: 135, name: 'HP'},
-        {value: 1548, name: 'CISCO'}*/],
-      deviceTypeData:[
-      /**
-        {value: 335, name: 'IBM'},
-        {value: 310, name: 'DELL'},
-        {value: 234, name: '华为'},
-        {value: 135, name: 'HP'},
-        {value: 1548, name: 'CISCO'}*/
-      ],
-      deviceModelXData:['HP DL580G7', 'IBM X3650 M4', 'HP VLS12000', 'IBM X3650 M3', 'DELL PER720', '华为S8508', 'CISCO UCS B460 M4', 'CISCO B440 M2'],
-      deviceModelYData:[182, 289, 294, 104, 144, 230, 230, 230],
-      caseLevelData:[
-      /**
-        {value: 335, name: '直接访问'},
-        {value: 310, name: '邮件营销'},
-        {value: 234, name: '联盟广告'},
-        {value: 135, name: '视频广告'},
-        {value: 1548, name: '搜索引擎'}*/
-      ]
+      factoryData:[],
+      factoryDataX:[],
+      deviceTypeData:[],
+      deviceModelXData:[],
+      deviceModelYData:[],
+      caseLevelData:[]
     }
   },
 
@@ -124,12 +107,15 @@ export default {
       fetch.get(url,{}).then(res=>{
         var reportData = res.DATA;
         var dataArray = [];
+        var dataArrayX = [];
         for(var i=0;i<reportData.length;i++){
           dataArray[i] = {};
           dataArray[i].name = reportData[i].DIMENSIONTYPE;
           dataArray[i].value = reportData[i].NUMS;
+          dataArrayX[i] = reportData[i].DIMENSIONTYPE;
         }
         this.factoryData = dataArray;
+        this.factoryDataX = dataArrayX;
         this.drawLineTwo();
       });
 
@@ -188,8 +174,8 @@ export default {
         this.sixDataX = dataArrayX;
         this.drawLineSix();
       });
-
     },
+
     drawLineOne () {
       let myChartBox = document.getElementById('myChartOne')
       myChartBox.style.width = window.innerWidth - 30  + 'px'
@@ -235,12 +221,17 @@ export default {
     },
     drawLineTwo () {
       let myChartBox = document.getElementById('myChartTwo')
-      myChartBox.style.width = window.innerWidth - 30  + 'px'
+      myChartBox.style.width = window.innerWidth - 10  + 'px'
+     //myChartBox.style.height = window.innerWidth/2 +50  + 'px'
       this.myChartTwo = echarts.init(myChartBox)
       this.myChartTwo.setOption({
+        legend: {
+            orient: 'vertical',
+            data: this.factoryDataX
+        },
         series: [
           {
-            name: '访问来源',
+            name: '访问来源1',
             type: 'pie',
             radius: '55%',
             center: ['50%', '60%'],
@@ -352,7 +343,7 @@ export default {
               emphasis: {
                 show: true,
                 textStyle: {
-                  fontSize: '30',
+                  fontSize: '20',
                   fontWeight: 'bold'
                 }
               }

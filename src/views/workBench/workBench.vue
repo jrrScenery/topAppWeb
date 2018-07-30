@@ -10,7 +10,7 @@
             </router-link>
             <span>{{item.text}}</span>
           </li>
-          <li v-else class="li_workBench" :key="item.id" >
+          <li v-else class="li_workBench" :key="item.id" style="display:none">
             <router-link :to="{name:item.href,params:item.params}" >
               <img  :src="item.imgSrc" alt=""  >
             </router-link>
@@ -41,12 +41,12 @@ export default {
     return {
       workBenchObj: [
         {arr: [
-          {imgSrc: require('@/assets/images/workBench_1.png'), text: '在保项目信息', href: 'workBenchInfo',display:true},
-          {imgSrc: require('@/assets/images/workBench_2.png'), text: '事件信息', href: 'workBenchEventInfo',display:true},
-          {imgSrc: require('@/assets/images/workBench_3.png'), text: '人员信息', href: 'workBenchPeopleInfo',display:true},
-          {imgSrc: require('@/assets/images/workBench_4.png'), text: '备件库存', href: 'workBenchParts',display:true},
-          {imgSrc: require('@/assets/images/workBench_5.png'), text: '供应商信息', href: 'workBenchSupplier',display:true},
-          {imgSrc: require('@/assets/images/workBench_6.png'), text: 'PO信息', href: 'workBenchPOinfo',display:true}
+          {imgSrc: require('@/assets/images/workBench_1.png'), text: '在保项目信息', href: 'workBenchInfo',display:false},
+          {imgSrc: require('@/assets/images/workBench_2.png'), text: '事件信息', href: 'workBenchEventInfo',display:false},
+          {imgSrc: require('@/assets/images/workBench_3.png'), text: '人员信息', href: 'workBenchPeopleInfo',display:false},
+          {imgSrc: require('@/assets/images/workBench_4.png'), text: '备件库存', href: 'workBenchParts',display:false},
+          {imgSrc: require('@/assets/images/workBench_5.png'), text: '供应商信息', href: 'workBenchSupplier',display:false},
+          {imgSrc: require('@/assets/images/workBench_6.png'), text: 'PO信息', href: 'workBenchPOinfo',display:false}
         ]},
         {arr: [
           {imgSrc: require('@/assets/images/workBench_7.png'), text: '我的事件', href: 'workBenchMyEvent', params: {type: 'my'},display:true},
@@ -65,8 +65,8 @@ export default {
   },
   mounted () {
     let permissions = JSON.parse(localStorage.getItem("userPermission"));
+    console.log(permissions);
     for(let i=0;i<permissions.length;i++){
-      console.log(permissions[i]);
       if(permissions[i].PRIVID=='workFlow_business_statistics'){
         this.workBenchObj[0].arr[0].display = true;
         this.workBenchObj[0].arr[1].display = true;

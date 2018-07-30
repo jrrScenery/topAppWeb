@@ -20,31 +20,444 @@
         </el-form-item>
         <el-form-item label="行业">
           <el-select v-model="form.industry" placeholder="请选择行业">
-            <el-option label="IT" value=""></el-option>
-            <el-option label="企事业" value=""></el-option>
+            <el-option v-for="item in industryType" :label="item.name" :value="item.value" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
     </div>
-    <div class="businessBtm"><report-echarts></report-echarts></div>
+    <!-- <div class="businessBtm"><report-echarts></report-echarts></div> -->
+
+  <div class="echartsView">
+    <div class="chartOne">
+      <div class="BtmTit">{{chartOneTit}}</div>
+      <div id="myChartOne" :style="{width: '100%', height: '2rem'}"></div>
+    </div>
+    <div class="chartTwo">
+      <div class="BtmTit">{{chartTwoTit}}</div>
+      <div id="myChartTwo" :style="{width: '100%', height: '2rem'}"></div>
+    </div>
+    <div class="chartThree">
+      <div class="BtmTit">{{chartThreeTit}}</div>
+      <div id="myChartThree" :style="{width: '100%', height: '2rem'}"></div>
+    </div>
+    <div class="chartFour">
+      <div class="BtmTit">{{chartFourTit}}</div>
+      <div id="myChartFour" :style="{width: '100%', height: '2rem'}"></div>
+    </div>
+    <div class="chartFive">
+      <div class="BtmTit">{{chartFiveTit}}</div>
+      <div id="myChartFive" :style="{width: '100%', height: '2rem'}"></div>
+    </div>
+    <div class="chartSix">
+      <div class="BtmTit">{{chartSixTit}}</div>
+      <div id="myChartSix" :style="{width: '100%', height: '2rem'}"></div>
+    </div>
+  </div>
+
   </div>
 </template>
 
 <script>
-import ReportEcharts from '../reportEcharts'
+import fetch from '../../utils/ajax'
+
 export default {
   name: 'business',
-  components: {ReportEcharts},
   data () {
     return {
       form: {
         custom: '',
         program: '',
-        startTime: '',
-        endTime: '',
+        startTime: this.getFormerTime(1)[0],
+        endTime: this.getCurrentTime(1)[0],
         industry: ''
-      }
+      },
+      industryType: [],
+      chartOneTit: '月度报修数量统计',
+      chartTwoTit: '厂商报修数统计',
+      chartThreeTit: '技术方向报修数统计',
+      chartFourTit: '设备型号报修数统计',
+      chartFiveTit: '报障级别统计',
+      chartSixTit: '备件更换量统计',
+      oneDataX: [],
+      oneData:  [],
+      sixDataX:[],
+      sixData:[],
+      factoryData:[],
+      deviceTypeData:[],
+      deviceModelXData:[],
+      deviceModelYData:[],
+      caseLevelData:[]
     }
+  },
+  created () {
+    fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
+      this.industryType = res.data;
+    });
+    let params = {timeStart:this.form.startTime,timeEnd:this.form.endTime,PROJECT_NAME:this.form.custom,CUST_NAME:this.form.program,INDUSTRY:this.form.industry}
+    this.fetch1(params);
+    this.fetch2(params);
+    this.fetch3(params);
+    this.fetch4(params);
+    this.fetch5(params);
+    this.fetch6(params);
+  },
+  methods: {
+    crtTimeFtt(val) {
+      if (val != null) {
+        var date = new Date(val);
+        var month = date.getMonth() + 1;
+        if(month<10){
+          month = "0" + month;
+        }
+        return date.getFullYear() + '-' + month ;//+ '-' + date.getDate()
+      }
+    },
+    fetch1(params){
+      var url = "?action=GetStatisticsCaseData&dimensionType=date&timeRangeType=month";
+      fetch.get(url,params).then(res=>{
+        var reportData = res.DATA;
+        var dataArray = [];
+        var dataArrayX = [];
+        for(var i=0;i<reportData.length;i++){
+          dataArrayX[i] = reportData[i].DIMENSIONTYPE;
+          dataArray[i] = reportData[i].NUMS;
+        }
+        this.oneData = dataArray;
+        this.oneDataX = dataArrayX;
+        this.drawLineOne();
+      });
+    },
+    fetch2(params){
+      let url = "?action=GetStatisticsCaseData&dimensionType=factory&timeRangeType=month";
+      fetch.get(url,params).then(res=>{
+        var reportData = res.DATA;
+        var dataArray = [];
+        for(var i=0;i<reportData.length;i++){
+          dataArray[i] = {};
+          dataArray[i].name = reportData[i].DIMENSIONTYPE;
+          dataArray[i].value = reportData[i].NUMS;
+        }
+        this.factoryData = dataArray;
+        this.drawLineTwo();
+      });
+    },
+    fetch3(params){
+      let url = "?action=GetStatisticsCaseData&dimensionType=deviceType&timeRangeType=month";
+      fetch.get(url,params).then(res=>{
+        var reportData = res.DATA;
+        var dataArray = [];
+        for(var i=0;i<reportData.length;i++){
+          dataArray[i] = {};
+          dataArray[i].name = reportData[i].DIMENSIONTYPE;
+          dataArray[i].value = reportData[i].NUMS;
+        }
+        this.deviceTypeData = dataArray;
+        this.drawLineThree();
+      });
+    },
+    fetch4(params){
+      let url = "?action=GetStatisticsCaseData&dimensionType=deviceModel&timeRangeType=month";
+      fetch.get(url,params).then(res=>{
+        var reportData = res.DATA;
+        var xData = [] ,yData = [];
+        for(var i=0;i<reportData.length;i++){
+          xData[i] = reportData[i].DIMENSIONTYPE;
+          yData[i] = reportData[i].NUMS;
+        }
+        this.deviceModelXData = xData;
+        this.deviceModelYData = yData;
+        this.drawLineFour();
+      });
+    },
+    fetch5(params){
+      let url = "?action=GetStatisticsCaseData&dimensionType=caseLevel&timeRangeType=month";
+      fetch.get(url,params).then(res=>{
+        var reportData = res.DATA;
+        var dataArray = [];
+        if(typeof(reportData)!='undefined'){
+          for(var i=0;i<reportData.length;i++){
+            dataArray[i] = {};
+            dataArray[i].name = reportData[i].DIMENSIONTYPE;
+            dataArray[i].value = reportData[i].NUMS;
+          }
+          this.caseLevelData = dataArray;
+          this.drawLineFive();          
+        }
+      });
+    },
+    fetch6(params){
+      var url = "?action=GetStatisticsCaseData&dimensionType=partUse&timeRangeType=month";
+      fetch.get(url,params).then(res=>{
+        var reportData = res.DATA;
+        //console.log(reportData);
+        var dataArray = [];
+        var dataArrayX = [];
+        for(var i=0;i<reportData.length;i++){
+          dataArrayX[i] = reportData[i].DIMENSIONTYPE;
+          dataArray[i] = reportData[i].NUMS;
+        }
+        this.sixData = dataArray;
+        this.sixDataX = dataArrayX;
+        this.drawLineSix();
+      });
+    },
+    drawLineOne () {
+      let myChartBox = document.getElementById('myChartOne')
+      myChartBox.style.width = window.innerWidth - 30  + 'px'
+      this.myChartOne = echarts.init(myChartBox)
+      this.myChartOne.setOption({
+        color: ['#3398DB'],
+        grid: {
+          top: '5%',
+          left: '0',
+          right: '0',
+          bottom: '2%',
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: 'category',
+            data: this.oneDataX,
+            axisTick: {
+              alignWithLabel: true
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        series: [
+          {
+            name: '直接访问',
+            type: 'bar',
+            barWidth: '50%',
+            data: this.oneData,
+            label: {
+              normal: {
+                show: true,
+                position: 'inside'
+              }
+            }
+          }
+        ]
+      })
+    },
+    drawLineTwo () {
+      let myChartBox = document.getElementById('myChartTwo')
+      myChartBox.style.width = window.innerWidth - 30  + 'px'
+      this.myChartTwo = echarts.init(myChartBox)
+      this.myChartTwo.setOption({
+        series: [
+          {
+            name: '访问来源',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            data: this.factoryData,
+            labelLine: {
+              normal: {
+                show: true
+              }
+            },
+            itemStyle: {
+              normal:{
+                label:{
+                  show:true,
+                  formatter: '{b} : {c} \n ({d}%)'
+                },
+                labelLine:{
+                  show:true
+                }
+              }
+            }
+          }
+        ]
+      })
+    },
+    drawLineThree () {
+      let myChartBox = document.getElementById('myChartThree')
+      myChartBox.style.width = window.innerWidth - 30  + 'px'
+      this.myChartThree = echarts.init(myChartBox)
+      this.myChartThree.setOption({
+        series: [
+          {
+            name: '访问来源',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            data: this.deviceTypeData,
+            labelLine: {
+              normal: {
+                show: true
+              }
+            },
+            itemStyle: {
+              normal:{
+                label:{
+                  show:true,
+                  formatter: '{b} : {c} \n ({d}%)'
+                },
+                labelLine:{
+                  show:true
+                }
+              }
+            }
+          }
+        ]
+      })
+    },
+    drawLineFour () {
+      let myChartBox = document.getElementById('myChartFour')
+      myChartBox.style.width = window.innerWidth - 30  + 'px'
+      this.myChartFour = echarts.init(myChartBox)
+      this.myChartFour.setOption({
+        grid: {
+          top: '5%',
+          left: '0',
+          right: '4%',
+          bottom: '2%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'value',
+          boundaryGap: [0, 0.01]
+        },
+        yAxis: {
+          type: 'category',
+          data: this.deviceModelXData
+        },
+        series: [
+          {
+            name: '2011年',
+            type: 'bar',
+            data: this.deviceModelYData,
+            itemStyle: {
+              normal:{
+                label:{
+                  show:true,
+                  formatter: '{c}'
+                },
+                labelLine:{
+                  show:true
+                }
+              }
+            }
+          },
+        ]
+      })
+    },
+    drawLineFive () {
+      let myChartBox = document.getElementById('myChartFive')
+      myChartBox.style.width = window.innerWidth - 30  + 'px'
+      this.myChartFive = echarts.init(myChartBox)
+      this.myChartFive.setOption({
+        series: [
+          {
+            name: '访问来源',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: '30',
+                  fontWeight: 'bold'
+                }
+              }
+            },
+            labelLine: {
+              normal: {
+                show: true
+              }
+            },
+            data: this.caseLevelData,
+            itemStyle: {
+              normal:{
+                label:{
+                  show:true,
+                  formatter: '{b} : {c} \n ({d}%)'
+                },
+                labelLine:{
+                  show:true
+                },
+                position: 'top'
+              }
+            }
+          }
+        ]
+      })
+    },
+    drawLineSix () {
+      let myChartBox = document.getElementById('myChartSix')
+      myChartBox.style.width = window.innerWidth - 30  + 'px'
+      this.myChartSix = echarts.init(myChartBox)
+      this.myChartSix.setOption({
+        color: ['red'],
+        grid: {
+          top: '5%',
+          left: '0',
+          right: '0',
+          bottom: '2%',
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: 'category',
+            data: this.sixDataX,
+            axisTick: {
+              alignWithLabel: true
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        series: [
+          {
+            name: '直接访问',
+            type: 'bar',
+            barWidth: '50%',
+            data: this.sixData,
+            label: {
+              normal: {
+                show: true,
+                position: 'inside'
+              }
+            }
+          }
+        ]
+      })
+    },
+    standardDate(join,...num){
+      let arr = [];
+      num.forEach((item)=>{
+        item.toString().length<2?arr.push('0'+item):arr.push(item);
+      });
+      return arr.join('-')
+    },
+    getFormerTime (n) {
+      let nowYear = new Date().getFullYear() - 1, yearArr = []
+      yearArr.unshift(this.standardDate('', nowYear, new Date().getMonth() + 1, new Date().getDate()))
+      for(let i = 1;i<n;i++){
+        yearArr.unshift(nowYear-i+'1231')
+      }
+      return yearArr
+    },
+    getCurrentTime (n) {
+      let nowYear = new Date().getFullYear(), yearArr = []
+      yearArr.unshift(this.standardDate('', nowYear, new Date().getMonth() + 1, new Date().getDate()))
+      for(let i = 1;i<n;i++){
+        yearArr.unshift(nowYear-i+'1231')
+      }
+      //console.log(yearArr)
+      return yearArr
+    }
+
   }
 }
 </script>

@@ -26,7 +26,7 @@ export default {
     return {
       headerLeft: '扫码',
       title: 'list',
-      showSao : true
+      showSao : false
     }
   },
 
