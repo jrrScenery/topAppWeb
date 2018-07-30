@@ -15,7 +15,9 @@
         <div class="title">
           <div class="titleLeft">
             <img src="../../assets/images/index_1.png" alt="">
-            {{eventTitle}}
+            <router-link :to="{name:'focusEventList'}">
+              {{eventTitle}}
+            </router-link>
           </div>
           <router-link :to="{name:'focusEventList'}">
             <div class="titleRight">{{more}}</div>
@@ -92,7 +94,9 @@
         <div class="title">
           <div class="titleLeft">
             <img src="../../assets/images/index_3.png" alt="">
+            <router-link :to="{name:'tabshowTest'}">
               {{opinionTitle}}
+            </router-link>
           </div>
             <!--<div class="titleRight" v-on:click="showMore3">{{more}}</div>-->
           <router-link :to="{name:'tabshowTest'}">
