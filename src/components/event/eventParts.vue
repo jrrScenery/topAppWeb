@@ -3,18 +3,26 @@
   <div class="eventPartsView" id="content">
     <div id="partsAllMap"></div>
     <div class="partsinfo"  :class="{infoon: infoon}">
-      <div class="infoh" @click="infoon=(partsData.length==0?infoon:(!infoon))">
+      <div class="infoh" @click="infoon=((partsData.length==0||isdetail)?infoon:(!infoon))">
+        <b  @click.stop="backToParts" v-if="isdetail">返回</b>
         备件信息{{partsData.length==0?"：暂无数据":""}}
         <i v-if="partsData.length>0" ></i>
         <a class="ashowcpoint" @click.stop="showcpoint">故障点</a>
       </div>
-      <ul class="ulparts" v-show="!isdetail">
-        <li v-for="(item,i) in partsData" :key="item.CASE_ID" @click="localpart(i)">
-          <div class="imgbox">
+      <div class="delivercon" v-if="isdetail">
+        <dl class="uldetailtree">
+          <dd v-for="item in detailDeliver" :key="item.context">
+            {{item.time}}：{{item.context}}
+          </dd>
+        </dl>
+      </div>
+      <ul class="ulparts" v-else>
+        <li v-for="(item,i) in partsData" :key="item.CASE_ID">
+          <div class="imgbox" @click="showDetail(i)">
             <img src="../../assets/images/mapcar.png"  alt="">
             <div class="name">查看物流</div>
           </div>
-          <div class="txtbox">
+          <div class="txtbox"  @click="localpart(i)">
             <p class="partno"><strong>申请单号：</strong>{{item.APPLY_CODE}}</p>
             <span class="statusname"><strong>备件状态：</strong>{{item.STATUS_NAME}}</span>
             <p class="partinfo"><strong>备件信息：</strong>{{item.PART_INFO}}</p>
@@ -29,9 +37,7 @@
           </div>
         </li>
       </ul>
-      <div class="delivercon" v-show="isdetail">
-
-      </div>
+      
     </div>
   </div>
 </template>
@@ -64,7 +70,42 @@ export default {
       partsheight : 0,
       partsmarks:[],
       actmarker:null,
-      isdetail:false
+      isdetail:false,
+      detailIdx:-1,
+      detailFromMarker:null,
+      detailDeliver:[{
+        "time": "2017-03-20 09:33:56",
+        "ftime": "2017-03-20 09:33:56",
+        "context": "已签收,感谢使用顺丰,期待再次为您服务"
+      }, {
+        "time": "2017-03-20 08:43:39",
+        "ftime": "2017-03-20 08:43:39",
+        "context": "快件交给李世坤，正在派送途中（联系电话：13524067803）"
+      }, {
+        "time": "2017-03-20 08:08:21",
+        "ftime": "2017-03-20 08:08:21",
+        "context": "正在派送途中,请您准备签收(派件人:李世坤,电话:13524067803)"
+      }, {
+        "time": "2017-03-20 06:34:17",
+        "ftime": "2017-03-20 06:34:17",
+        "context": "快件到达 【上海浦东周浦营业部】"
+      }, {
+        "time": "2017-03-20 00:42:40",
+        "ftime": "2017-03-20 00:42:40",
+        "context": "快件在【上海虹桥集散中心2】已装车，准备发往 【上海浦东周浦营业部】"
+      }, {
+        "time": "2017-03-20 00:39:21",
+        "ftime": "2017-03-20 00:39:21",
+        "context": "快件到达 【上海虹桥集散中心2】"
+      }, {
+        "time": "2017-03-19 21:26:49",
+        "ftime": "2017-03-19 21:26:49",
+        "context": "快件在【上海普陀桃工营业点】已装车，准备发往 【上海虹桥集散中心2】"
+      }, {
+        "time": "2017-03-19 19:16:30",
+        "ftime": "2017-03-19 19:16:30",
+        "context": "顺丰速运 已收取快件"
+      }]
     }
   },
   mounted () {
@@ -88,9 +129,6 @@ export default {
       if(this.partsData.length==0){
         this.partsheight=30
       }
-      else if(this.partsData.length==1){
-        this.partsheight=165
-      }
       else{
         this.partsheight=210
       }
@@ -98,7 +136,7 @@ export default {
         let winHeight = document.documentElement.clientHeight
         let mapHeight = document.getElementById('partsAllMap')
         let contentHeight = document.querySelector(".eventPartsView")
-        mapHeight.style.height = winHeight - 95- (this.infoon ?this.partsheight:0) + 'px'
+        mapHeight.style.height = winHeight - 100- (this.infoon ?this.partsheight:0) + 'px'
         contentHeight.style.height = winHeight - 95 + 'px'
         console.log(mapHeight.style.height)
       }
@@ -156,6 +194,9 @@ export default {
       else if("part" == pointtype){
         this.partsmarks.push(marker);
       }
+      else if("detailfrom" == pointtype){
+        this.detailFromMarker = marker;
+      }
       
       this.bmap.addOverlay(marker);
     },
@@ -173,11 +214,59 @@ export default {
         this.actmarker=null;
       }
       else{
-        marker.setIcon(new BMap.Icon(marker.getIcon().imageUrl, new BMap.Size(24, 24),{anchor:new BMap.Size(2,2)}));
+        marker.setIcon(new BMap.Icon(marker.getIcon().imageUrl, new BMap.Size(18, 18),{anchor:new BMap.Size(2,2)}));
         this.actmarker= marker;
         this.bmap.centerAndZoom(marker.getPosition(),this.bmap.getZoom());
         this.nowcenter = marker.getPosition();
       }
+    },
+    showDetail(idx){
+      let nowpart = this.partsData[idx];
+      console.log(nowpart,idx);
+      var vm =this;
+      this.detailIdx = idx;
+      this.isdetail = true;
+      this.partsmarks.forEach(function(v,i,ar){
+        if(idx!=i){vm.partsmarks[i].hide()}
+      })
+
+      var frompoint = new BMap.Point(nowpart.LONGITUDE, nowpart.LATITUDE);
+      this.addMarker(frompoint,require("../../assets/images/maphome.png"),0,'detailfrom')
+      this.detailFromMarker.setLabel(new BMap.Label(""));
+      console.log(this.detailFromMarker.getLabel());
+      this.bmap.zoomTo(6);
+      
+      fetch.get("?action=GetPartsTransports",{SEND_NO: nowpart.SEND_NO,SUPPLIER_TRANSPORT_CD:nowpart.SUPPLIER_TRANSPORT_CD}).then(res=>{
+        console.log(res);
+        if('0' == res.STATUSCODE){
+          // this.detailDeliver = res.data;
+          console.log(res.data)
+        }
+      });
+    },
+    backToParts(){
+      this.isdetail = false
+      this.detailDeliver=[]
+      this.detailFromMarker =null
+      this.detailIdx = -1
+      
+      var allOverlay = this.bmap.getOverlays();
+      for (var i = 0; i < allOverlay.length -1; i++){
+        if(allOverlay[i].toString() == "[object Marker]"){
+          console.log(allOverlay[i].getLabel());
+          if ( allOverlay[i].getLabel() ) {
+              this.bmap.removeOverlay(allOverlay[i]);
+              return false;
+          }
+          else{
+            allOverlay[i].show();
+            this.bmap.centerAndZoom(this.nowcenter, 12)
+          }
+        }
+      } 
+
+      
+      
     }
     
   },
@@ -188,6 +277,13 @@ export default {
       this.drawmap();
       this.drawcpoint();
       this.drawparts();
+    },
+    isdetail(curVal,oldVal){
+      if(curVal){
+        
+      }else{
+
+      }
     }
   }
   
@@ -205,17 +301,19 @@ export default {
   .searchBox >>> .el-button{padding: 0;}
   #partsAllMap{}
 
-  .partsinfo{position: absolute;   left: 0; right: 0; bottom:0;  max-height: 0.3rem; overflow: hidden;  background: #fff; transition: all 0.3s;}
-  .infoon{ max-height:2.1rem; }
+  .partsinfo{position: absolute;   left: 0; right: 0; bottom:0;  height: 0.3rem; overflow: hidden;  background: #fff; transition: all 0.3s;}
+  .infoon{ height:2.1rem; }
   .partsinfo  strong{font-weight: bold;}
   .partsinfo .infoh{ line-height: 0.3rem;text-align: center;background: #2698d6; color: #fff; position: relative; }
-  .partsinfo  .infoh i{ position: relative; display: inline-block; content: " "; background: url(../../assets/images/rightarrwhite.png) no-repeat; 
+  .partsinfo  .infoh i { position: absolute;  content: " "; background: url(../../assets/images/rightarrwhite.png) no-repeat; 
   width: 0.29rem; height: 0.29rem; vertical-align: top; background-position: center; background-size: 16px; transition: all 0.3s;}
+  .partsinfo  .infoh b{ left: 0.1rem;;  position: absolute;}
+   .partsinfo  .infoh i{position: relative;display: inline-block; }
   .infoon .infoh i{ transform: rotate(90deg);}
   .partsinfo ul{max-height: 1.9rem; overflow: scroll;}
   .ashowcpoint{ position: absolute; right:0.1rem; bottom: 0; line-height: 0.3rem;color: #fff;}
   .ulparts{  }
-  .ulparts li{ overflow: hidden; padding:0.1rem 0 0.1rem; color: #666; line-height: 0.18rem;border-bottom: 1px solid #e2e2e2;}
+  .ulparts li{ overflow: hidden; padding:0.1rem 0 0.1rem; color: #666; line-height: 0.18rem;border-bottom: 1px dashed #e2e2e2;}
   .ulparts li .imgbox{ width: 0.6rem; float: right; position: relative;}
   .ulparts li .imgbox img{ width: 0.4rem; display: block; margin: 0.2rem auto 0.05rem;}
   .ulparts li .imgbox i{ position: absolute; left: 6%; top: 0.1rem; font-style: normal;}
@@ -225,4 +323,10 @@ export default {
   .ulparts li .txtbox .workstatus{ position: absolute; right: 0.1rem; top: 0.0rem; }
   .ulparts li .txtbox .workerstatus{ position: absolute; right: 0.1rem; top: 0.18rem; }
   .ulparts li .txtbox .orderid{ color: #2698d6; }
+  .delivercon{ padding: 0.1rem 0.1rem 0.2rem; max-height: 1.6rem; overflow: scroll;}
+  .uldetailtree{ position: relative; padding-left: 0.1rem; }
+  .uldetailtree:before{ position: absolute;content:" "; width: 0.02rem; top: 0; bottom: 0; left: 0; background: #aaa;}
+  .uldetailtree dd{ position: relative; margin-bottom: 0.1rem;}
+  .uldetailtree dd:before{ position: absolute;content:" "; width: 0.08rem;height: 0.08rem; 
+  top:0.05rem;left: -0.13rem; background: #aaa;border-radius: 50%;}
 </style>

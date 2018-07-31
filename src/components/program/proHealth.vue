@@ -23,20 +23,21 @@
         </ul>
       </div>
     </div>
-
+    <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
   </div>
 </template>
 
 <script>
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
+import loadingtmp from '@/components/load/loading'
 export default {
   name: 'proHealth',
   props:{
     prohealthpage:Number
   },
   components: {
-
+    loadingtmp
   },
 
   data () {
@@ -45,6 +46,8 @@ export default {
       situationArr: [],
       evaluateArr: [],
       riskArr: [],
+      busy: true,
+      loadall:false
     }
   },
   created () {
@@ -65,7 +68,8 @@ export default {
         groupArray[k][m] = item;
       }
       this.dataArray = groupArray;
-
+      this.busy= false;
+      this.loadall = true;
     })
   },
 

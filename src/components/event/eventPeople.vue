@@ -109,8 +109,8 @@ export default {
             let winHeight = document.documentElement.clientHeight
             let mapHeight = document.getElementById('peopleAllMap')
             let contentHeight = document.getElementById('content')
-            mapHeight.style.height = winHeight - 100- (this.infoon ?this.peoheight:0) + 'px'
-            contentHeight.style.height = winHeight - 100 + 'px'
+            mapHeight.style.height = winHeight - 95- (this.infoon ?this.peoheight:0) + 'px'
+            contentHeight.style.height = winHeight - 95 + 'px'
             console.log(mapHeight.style.height)
           }
 
