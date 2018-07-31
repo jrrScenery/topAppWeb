@@ -9,14 +9,16 @@
         <div class="cellTop">
           <el-row>
             <el-col :span="11">
-              <div class="cellTopNum">
-                 <span class="speventlevel" :class="'speventlevelcolor'+item.CASELEVEL" >{{item.CASELEVEL}}</span>{{item.CODE}}
-              </div>
+              <span class="spheathcolor" :class="'spheathcolor'+item.CASEHEALTH"  ></span>  {{item.CODE}}
             </el-col>
-            <el-col :span="1">
-              <span class="spheathcolor" :class="'spheathcolor'+item.CASEHEALTH"  ></span>
+            <el-col :span="2">
+              <span class="speventlevel" v-if="item.CASELEVEL==='一级'" :class="'speventlevelcolor'+1">{{item.CASELEVEL}}</span>
+                 <span class="speventlevel" v-if="item.CASELEVEL==='二级'" :class="'speventlevelcolor'+2" >{{item.CASELEVEL}}</span>
+                 <span class="speventlevel" v-if="item.CASELEVEL==='三级'" :class="'speventlevelcolor'+3" >{{item.CASELEVEL}}</span>
+                 <span class="speventlevel" v-if="item.CASELEVEL==='四级'" :class="'speventlevelcolor'+4" >{{item.CASELEVEL}}</span>
+                 <span class="speventlevel" v-if="item.CASELEVEL==='五级'" :class="'speventlevelcolor'+5" >{{item.CASELEVEL}}</span>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="11">
               <div class="cellTopTime"><span>{{item.DATE_TIME}}</span><span style="margin-left: 0.05rem;"></span></div>
             </el-col>
           </el-row>
@@ -37,6 +39,9 @@
           </el-row>
           <el-row>
             <el-col :span="24"><span class="tit">告警项：</span><span>{{item.ITEM}}</span></el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24"><span class="tit">case描述：</span><span>{{item.REASON}}</span></el-col>
           </el-row>
         </div>
         </router-link>
@@ -116,7 +121,7 @@ export default {
       //console.log(params);
       var flag = this.page>1;
       fetch.get("?action=GetFocusCase",params).then(res=>{
-        //console.log(res.data);
+        console.log(res.data);
         if(flag){
             this.eventListArr = this.eventListArr.concat(res.data);
         }else{
@@ -174,10 +179,10 @@ export default {
   .eventCell .cellTop .spheathcolor3{background: #ff9900;}
   .eventCell .cellTop .spheathcolor4{background: #ff0000;}
 
-  .speventlevelcolor1{ background:#ff0000; }
-  .speventlevelcolor2{ background:#ff0000; }
-  .speventlevelcolor3{ background:#ff9900; }
-  .speventlevelcolor4{ background:#ffff00; }
-  .speventlevelcolor5{ background:#1ca2a5; }
+  .speventlevelcolor1{ color:#ff0000; }
+  .speventlevelcolor2{ color:#ff0000; }
+  .speventlevelcolor3{ color:#ff9900; }
+  .speventlevelcolor4{ color:#ffff00; }
+  .speventlevelcolor5{ color:#1ca2a5; }
 
 </style>
