@@ -102,7 +102,7 @@ export default {
     }
   },
   activated(){
-    console.log("metaisUseCache",this.$route.meta.isUseCache)
+    console.log(this.$route.meta.savedPosition)
     if(!this.$route.meta.isUseCache){
       this.eventListArr = [];
       this.busy= false;
@@ -110,7 +110,6 @@ export default {
     }
     this.$route.meta.isUseCache = false;
   },
-  
   methods: {
 
     getEventList(){

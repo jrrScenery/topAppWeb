@@ -120,11 +120,18 @@
                         <template slot-scope="scope">
                           <template v-if="itemTab.name == 'first'">
                             <router-link :to="{name:'mineFeedbackShow',query:{complantId:scope.row['COMPLANT_ID']}}">
+                            
                             <template v-if="item.prop == 'programName'">
                               <div style="display: flex;">
                                 <i style="display: inline-block; margin: 0.11rem 0.05rem 0; width: 0.08rem; height: 0.08rem; border-radius: 50%; background: #ff0000;"></i>
                                 <span class="table_name" v-html="scope.row.programName"></span>
                               </div>
+                            </template>
+                            <template v-else-if="item.prop== 'TASK_TYPE'">
+                              <div style="text-align:center">{{scope.row[item.prop]}}</div>
+                            </template>
+                            <template v-else-if="item.prop== 'CUST_NAME'">
+                              <div style="text-align:left">{{scope.row[item.prop]}}</div>
                             </template>
                             <span v-else class="table_name" v-html="scope.row[item.prop]"></span>
                             </router-link>
@@ -233,11 +240,23 @@ export default {
           name: 'first',
           label: '意见投诉',
           table:[
+            // {
+            //   prop: 'COMPLAINT_COMMENT',
+            //   label: '意见内容',
+            //   fixed: true,
+            //   width: '75%'
+            // },
             {
-              prop: 'COMPLAINT_COMMENT',
-              label: '意见内容',
+              prop: 'TASK_TYPE',
+              label: '类型',
               fixed: true,
-              width: '75%'
+              width: '20%'
+            },
+            {
+              prop: 'CUST_NAME',
+              label: '客户',
+              fixed: true,
+              width: '55%'
             },
             {
               prop: 'CREATE_ON',

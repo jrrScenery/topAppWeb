@@ -87,7 +87,15 @@ export default {
       }
     }
   },
-
+  activated(){
+    console.log(this.$route.meta.scrollTop)
+    if(!this.$route.meta.isUseCache){
+      this.programListArr = [];
+      this.busy= false;
+      this.loadMore();
+    }
+    this.$route.meta.isUseCache = false;
+  },
   methods: {
 
     getEventList(){
