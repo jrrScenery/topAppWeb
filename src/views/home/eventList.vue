@@ -93,7 +93,7 @@ export default {
       ],
       page:1,
       pageSize:10,
-      busy:false,
+      busy:true,
       loadall: false,
       isSearch:false,
       searchData:{
@@ -101,7 +101,16 @@ export default {
       }
     }
   },
-
+  activated(){
+    console.log("metaisUseCache",this.$route.meta.isUseCache)
+    if(!this.$route.meta.isUseCache){
+      this.eventListArr = [];
+      this.busy= false;
+      this.loadMore();
+    }
+    this.$route.meta.isUseCache = false;
+  },
+  
   methods: {
 
     getEventList(){

@@ -214,7 +214,6 @@ export default {
     },
     drawLineOne () {
       let myChartBox = document.getElementById('myChartOne')
-      myChartBox.style.width = window.innerWidth - 30  + 'px'
       this.myChartOne = echarts.init(myChartBox)
       this.myChartOne.setOption({
         color: ['#3398DB'],

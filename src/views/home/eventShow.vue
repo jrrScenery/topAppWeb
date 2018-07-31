@@ -90,6 +90,12 @@ export default {
       this.projectId = baseInfo.PROJECT_ID ;
       console.log(this.projectId);
     });
+  },
+  beforeRouteLeave( to, from,next){
+    if (to.name == 'focusEventList') {
+        to.meta.isUseCache = true;    
+    }        
+    next();
   }
 }
 </script>

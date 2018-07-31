@@ -108,7 +108,6 @@ export default {
     },
     drawLine () {
       let myChartBox = document.getElementById('myChart')
-      myChartBox.style.width = window.innerWidth - 30  + 'px'
       this.myChart = echarts.init(myChartBox)
       this.myChart.setOption({
         grid: {
