@@ -87,6 +87,7 @@ export default {
       sixDataX:[],
       sixData:[],
       factoryData:[],
+      factoryDataX:[],
       deviceTypeData:[],
       deviceModelXData:[],
       deviceModelYData:[],
@@ -143,12 +144,15 @@ export default {
       fetch.get(url,params).then(res=>{
         var reportData = res.DATA;
         var dataArray = [];
+        var dataArrayX = [];
         for(var i=0;i<reportData.length;i++){
           dataArray[i] = {};
           dataArray[i].name = reportData[i].DIMENSIONTYPE;
           dataArray[i].value = reportData[i].NUMS;
+          dataArrayX[i] = reportData[i].DIMENSIONTYPE;
         }
         this.factoryData = dataArray;
+        this.factoryDataX = dataArrayX;
         this.drawLineTwo();
       });
     },
@@ -255,22 +259,75 @@ export default {
       })
     },
     drawLineTwo () {
+      console.log(this.factoryDataX)
       let myChartBox = document.getElementById('myChartTwo')
       myChartBox.style.width = window.innerWidth - 30  + 'px'
       this.myChartTwo = echarts.init(myChartBox)
+
+/*      this.myChartTwo.setOption(
+        {
+            title : {
+                text: '同名数量统计',
+                subtext: '纯属虚构',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                type: 'scroll',
+                orient: 'vertical',
+                right: 10,
+                top: 20,
+                bottom: 20,
+                data: this.factoryDataX,
+
+                //selected: data.selected
+            },
+            series : [
+                {
+                    name: '姓名',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['40%', '50%'],
+                    data: this.factoryData,
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        }
+      )*/
       this.myChartTwo.setOption({
+        legend: {
+            type: 'scroll',
+            orient: 'vertical',
+            right: 10,
+            top: 20,
+            bottom: 20,
+            data: this.factoryDataX
+        },
         series: [
           {
             name: '访问来源',
             type: 'pie',
             radius: '55%',
             center: ['50%', '60%'],
-            data: this.factoryData,
-            labelLine: {
-              normal: {
-                show: true
+            label: {
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: '15',
+                  fontWeight: 'bold'
+                }
               }
             },
+            data: this.factoryData,
             itemStyle: {
               normal:{
                 label:{
@@ -303,6 +360,15 @@ export default {
                 show: true
               }
             },
+            label: {
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: '15',
+                  fontWeight: 'bold'
+                }
+              }
+            },
             itemStyle: {
               normal:{
                 label:{
@@ -321,6 +387,7 @@ export default {
     drawLineFour () {
       let myChartBox = document.getElementById('myChartFour')
       myChartBox.style.width = window.innerWidth - 30  + 'px'
+      myChartBox.style.height = '300px'
       this.myChartFour = echarts.init(myChartBox)
       this.myChartFour.setOption({
         grid: {
@@ -347,7 +414,8 @@ export default {
               normal:{
                 label:{
                   show:true,
-                  formatter: '{c}'
+                  formatter: '{c}',
+                  position:'right'
                 },
                 labelLine:{
                   show:true
@@ -373,11 +441,13 @@ export default {
               emphasis: {
                 show: true,
                 textStyle: {
-                  fontSize: '30',
+                  fontSize: '15',
                   fontWeight: 'bold'
                 }
               }
             },
+            startAngle:0,
+            minAngle:10,
             labelLine: {
               normal: {
                 show: true
@@ -388,7 +458,7 @@ export default {
               normal:{
                 label:{
                   show:true,
-                  formatter: '{b} : {c} \n ({d}%)'
+                  formatter: '{b} : {c}  ({d}%)'
                 },
                 labelLine:{
                   show:true
