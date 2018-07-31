@@ -93,10 +93,11 @@ export default {
         var dataArrayX = [];
         let tempTableData = [];
         for(var i=0;i<reportData.length;i++){
-          dataArrayX[i] = reportData[i].DEPT_NAME;
-          dataArray[i] = reportData[i].SCORE;
+          let reportDataIndex = reportData.length - i -1;
+          dataArrayX[i] = reportData[reportDataIndex].DEPT_NAME;
+          dataArray[i] = reportData[reportDataIndex].SCORE;
           tempTableData[i] = {};
-          tempTableData[i].ranking= '1';
+          tempTableData[i].ranking= reportData[i].ROWNUM;
           tempTableData[i].department= reportData[i].DEPT_NAME;
           tempTableData[i].score= reportData[i].SCORE;
         }
