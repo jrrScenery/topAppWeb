@@ -60,8 +60,9 @@ export default {
         temparr[temparr.length-1]["desc"].push({info:v.PROCESSING_LOG,time:v.CREATE_DATE});
       })
 
-      this.activeName = 1;
+      this.activeName = 0;
       this.eventProgressObj = temparr;
+      console.log(this.eventProgressObj);
     });
   }
 }
@@ -71,7 +72,7 @@ export default {
   .eventProgressView{padding: 0 0.25rem; position: relative; margin-bottom: 0.5rem}
   .eventProgressView:before{position: absolute; top: 0; left: 0.34rem; width: 0.02rem; height: 100%; bottom: 0; background: #999999; content: '';}
   .eventProgressView .titleImg{width: 0.18rem; height: 0.18rem;position: absolute; top: 0.15rem; left: -0.43rem;}
-  .eventProgressView >>> .el-collapse-item__header{color: #666666; font-size: 0.14rem; margin: 0 0 0.1rem 0.43rem; border: none; position: relative}
+  .eventProgressView >>> .el-collapse-item__header{color: #2698d6; font-size: 0.16rem; font-weight: bold; margin: 0 0 0.1rem 0.43rem; border: none; position: relative}
   .eventProgressView >>> .el-collapse-item__arrow{color: #2698d6; font-size: 0.2rem; border: none}
   .eventProgressView >>> .el-collapse-item__wrap{border: none}
   .eventProgressView >>> .el-collapse{border: none}
