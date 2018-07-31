@@ -50,7 +50,11 @@ export default new Router({
     {
       path: '/home/eventList',
       name: 'focusEventList',
-      component: resolve => require(['@/views/home/eventList'], resolve)
+      component: resolve => require(['@/views/home/eventList'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
     },
     {
       path: '/home/eventShow',

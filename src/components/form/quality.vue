@@ -5,7 +5,7 @@
       <span>筛选条件</span>
       <el-form ref="form" :model="form">
         <el-form-item>
-          <el-select v-model="form.time" placeholder="时间段">
+          <el-select v-model="form.time" @change="freshcharts" placeholder="时间段">
             <el-option
               v-for="item in optionTime"
               :key="item.BATCH_ID"
@@ -14,16 +14,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item>
-          <el-select v-model="form.type" placeholder="指标分类">
-            <el-option
-              v-for="item in optionType"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
+        
       </el-form>
     </div>
     <div class="qualityEcharts">
@@ -83,9 +74,16 @@ export default {
   mounted () {
     fetch.get("?action=GetQualityReleaseBatch",{}).then(res=>{
       this.optionTime = res.data;
-      this.form.time = res.data[1].BATCH_ID;
-      this.form.type = '选项1'
+      this.form.time = res.data[0].BATCH_ID;
+      this.freshcharts();
+      
+    }); 
 
+
+  },
+  methods: {
+    
+    freshcharts(){
       let params = {TARGET_ID:1,BATCH_ID:this.form.time}
       var url = "?action=GetQualityReleaseData";
       fetch.get(url,params).then(res=>{
@@ -107,14 +105,9 @@ export default {
         this.data1X = dataArrayX;
         this.drawLine();
       });
-    }); 
-
-
-  },
-  methods: {
+    },
     drawLine () {
       let myChartBox = document.getElementById('myChart')
-      myChartBox.style.width = window.innerWidth - 30  + 'px'
       this.myChart = echarts.init(myChartBox)
       this.myChart.setOption({
         grid: {
@@ -154,7 +147,7 @@ export default {
       })
     },
     rowClick (row) {
-      this.$router.push({name: 'qualityDetailDept', query: {dept:row.department,batchId:this.form.time}})
+      this.$router.push({name: 'qualityDetailDept', query: {dept:row.department,batchId:this.form.time,score:row.score}})
     }
   },
 

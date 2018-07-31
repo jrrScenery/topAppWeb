@@ -2,6 +2,13 @@
 <template>
   <div class="qualityView">
     <header-last :title="echartsTit"></header-last>
+    <div class="headtit">
+      <el-row>
+        <el-col :span=12><strong>部门：</strong><span>{{dept}}</span></el-col>
+        <el-col :span=12><strong>分数：</strong><span>{{score}}</span></el-col>
+      </el-row>
+
+    </div>
     <div class="qualityTable">
       <el-table
         :data="tableData"
@@ -14,6 +21,14 @@
             :label="item.label"
             :min-width="item.width">
           </el-table-column>
+          <template slot-scope="scope">
+              <template v-if="item.prop == 'KFX'">
+                <div>
+                  <i style="display: inline-block; margin: 0.11rem 0.05rem 0; width: 0.08rem; height: 0.08rem; border-radius: 50%; background: #ff0000;"></i>
+                  <span class="table_name">{{scope.row.KFX }}</span>
+                </div>
+              </template>
+          </template>
         </template>
       </el-table>
     </div>
@@ -37,18 +52,22 @@ export default {
       },
       optionTime: [
       ],
+      dept: this.$route.query.dept,
+      score: this.$route.query.score,
       batch:'',
       echartsTit: '部门指标排名',
       tableData: [
       ],
       qualityTableObj: [
-        {prop: 'ZBX', label: '指标项', width: '30%'},
-        {prop: 'FJMBZ', label: '分解目标值', width: '40%'},
-        {prop: 'BMKHQZ', label: '岗位/部门考核权重', width: '30%'},
-        {prop: 'KFX', label: '岗位/部门考核扣分项', width: '30%'},
-        {prop: 'ZBDCQK', label: '指标达成情况', width: '30%'},
-        {prop: 'ZBZHFZ', label: '指标转化分值', width: '30%'},
-        {prop: 'KFX', label: '扣分项(个数)', width: '30%'}
+        {prop: 'ZBX', label: '指标项', width: '32%'},
+        {prop: 'BMKHQZ', label: '权重', width: '15%'},
+        {prop: 'ZBDCQK', label: '达成情况', width: '20%'},
+        {prop: 'ZBZHFZ', label: '转化分值', width: '18%'},
+        {prop: 'KFX', label: '扣分项', width: '15%'},
+
+        // {prop: 'FJMBZ', label: '分解目标值', width: '40%'},
+        // {prop: 'KFX', label: '扣分项', width: '30%'},
+       
       ],
     }
   },
@@ -69,9 +88,13 @@ export default {
 
 <style scoped>
   canvas{width: 100%!important;}
-  .qualityView{padding: 0 0.25rem 0.15rem; color: #999999}
+  .qualityView .headtit{ margin-top:0.45rem; background: #fff; padding: 0.08rem; color: #333;}
+  .qualityView .headtit strong{font-weight:  bold;}
+  .qualityView .headtit span{ margin-right: 0.1rem;}
+  .qualityView .qualityTable{  }
+  .qualityView{ color: #999999; width: 100%;; text-align: left;}
   .qualityView .qualityTop{display: flex; justify-content: space-between;}
-  .qualityView span{display: inline-block; height: 0.4rem; line-height: 0.4rem; margin-top: 0.15rem;}
+  .qualityView .qualityTable  span{display: inline-block; height: 0.4rem; line-height: 0.4rem; margin-top: 0.15rem;}
   .qualityView >>> .el-form{display: flex; width: 80%; font-size: 0.13rem;}
   .qualityView >>> .el-form-item{margin: 0.15rem 0 0 0;}
   .qualityView >>> .el-input--suffix .el-input__inner{border: none;}
@@ -79,5 +102,10 @@ export default {
   .qualityEcharts .qualityTit{line-height: 0.3rem;}
   .qualityTable >>> th{color: #333333; padding: 0; height: 0.3rem; line-height: 0.3rem; background: #f7f7f7}
   .qualityTable >>> td{color: #666666; padding: 0; height: 0.3rem; line-height: 0.3rem;}
-  .qualityTable >>> .cell{font-size: 0.13rem; text-align: center}
+  .qualityTable >>> .cell{font-size: 0.13rem; text-align: center;}
+  
 </style>
+<style>
+.qualityTable .el-table__row td:nth-of-type(1) .cell{ text-align: left;}
+</style>
+

@@ -9,11 +9,12 @@
       <div class="divTable">
         <router-link v-for="item in items.arr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.BUSINESS_TYPE,industry:item.INDUSTRY,isSearch:1}}">
           <span>{{item.INDUSTRY}}</span>
-          <span>{{item.CUST_NUM}}</span>
-          <span>{{item.PRO_NUM}}</span>
-          <span>{{item.AMOUNT}}</span>
+          <span class="bolder">{{item.CUST_NUM}}</span>
+          <span class="bolder">{{item.PRO_NUM}}</span>
+          <span class="bolder">{{item.AMOUNT}}</span>
         </router-link>
       </div>
+      
     </div>
     <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
   </div>
@@ -59,7 +60,7 @@ export default {
         })
         console.log(temparr);
         this.workBenchInfoObj= temparr;
-        
+
         
       }
       this.busy = false;
@@ -86,4 +87,5 @@ export default {
   .tableTd .divTable a:nth-child(2n){text-align: center; background: #ffffff;}
   .tableTd .divTable a span{display: inline-block; width: 23%; overflow: hidden; text-align: center;}
   .tableTd .divTable a span:last-child{width: 31%; text-align: right; padding-right: 0.05rem}
+  .bolder{font-weight: bold} /*新加*/
 </style>

@@ -45,19 +45,19 @@ export default {
           prop: 'DOC_NAME',
           label: '文档名称',
           fixed: true,
-          width: '42%'
+          width: '100%'
         },
         {
           prop: 'UPLOADER',
           label: '上传人',
           fixed: true,
-          width: '20%'
+          width: '45px'
         },
         {
           prop: 'CREATE_ON',
           label: '上传时间',
           fixed: true,
-          width: '40%'
+          width: '55px'
         }
       ]
     }
