@@ -384,7 +384,7 @@ export default {
         this.fetchData();
       });
     }
-    this.$route.meta.isUseCache = true;
+    this.$route.meta.isUseCache = false;
   }
 }
 </script>
