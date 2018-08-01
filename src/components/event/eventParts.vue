@@ -5,8 +5,9 @@
     <div class="partsinfo"  :class="{infoon: infoon}">
       <div class="infoh" @click="infoon=((partsData.length==0||isdetail)?infoon:(!infoon))">
         <b  @click.stop="backToParts" v-if="isdetail">返回</b>
-        备件信息{{partsData.length==0?"：暂无数据":""}}
-        <i v-if="partsData.length>0" ></i>
+        <span v-if="isdetail">备件物流</span>
+        <span v-else>备件信息{{partsData.length==0?"：暂无数据":""}}</span>
+        <i v-if="partsData.length>0 && !isdetail" ></i>
         <a class="ashowcpoint" @click.stop="showcpoint">故障点</a>
       </div>
       <div class="delivercon" v-if="isdetail">
@@ -73,39 +74,7 @@ export default {
       isdetail:false,
       detailIdx:-1,
       detailFromMarker:null,
-      detailDeliver:[{
-        "time": "2017-03-20 09:33:56",
-        "ftime": "2017-03-20 09:33:56",
-        "context": "已签收,感谢使用顺丰,期待再次为您服务"
-      }, {
-        "time": "2017-03-20 08:43:39",
-        "ftime": "2017-03-20 08:43:39",
-        "context": "快件交给李世坤，正在派送途中（联系电话：13524067803）"
-      }, {
-        "time": "2017-03-20 08:08:21",
-        "ftime": "2017-03-20 08:08:21",
-        "context": "正在派送途中,请您准备签收(派件人:李世坤,电话:13524067803)"
-      }, {
-        "time": "2017-03-20 06:34:17",
-        "ftime": "2017-03-20 06:34:17",
-        "context": "快件到达 【上海浦东周浦营业部】"
-      }, {
-        "time": "2017-03-20 00:42:40",
-        "ftime": "2017-03-20 00:42:40",
-        "context": "快件在【上海虹桥集散中心2】已装车，准备发往 【上海浦东周浦营业部】"
-      }, {
-        "time": "2017-03-20 00:39:21",
-        "ftime": "2017-03-20 00:39:21",
-        "context": "快件到达 【上海虹桥集散中心2】"
-      }, {
-        "time": "2017-03-19 21:26:49",
-        "ftime": "2017-03-19 21:26:49",
-        "context": "快件在【上海普陀桃工营业点】已装车，准备发往 【上海虹桥集散中心2】"
-      }, {
-        "time": "2017-03-19 19:16:30",
-        "ftime": "2017-03-19 19:16:30",
-        "context": "顺丰速运 已收取快件"
-      }]
+      detailDeliver:[]
     }
   },
   mounted () {
@@ -236,11 +205,10 @@ export default {
       console.log(this.detailFromMarker.getLabel());
       this.bmap.zoomTo(6);
       
-      fetch.get("?action=GetPartsTransports",{SEND_NO: nowpart.SEND_NO,SUPPLIER_TRANSPORT_CD:nowpart.SUPPLIER_TRANSPORT_CD}).then(res=>{
-        console.log(res);
+      fetch.get("?action=GetPartsTransports",{SEND_NO: nowpart.SEND_NO,SUPPLIER_TRANSPORT_CODE:nowpart.SUPPLIER_TRANSPORT_CD}).then(res=>{
         if('0' == res.STATUSCODE){
-          // this.detailDeliver = res.data;
-          console.log(res.data)
+
+          this.detailDeliver = JSON.parse(res.data);
         }
       });
     },

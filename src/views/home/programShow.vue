@@ -198,7 +198,7 @@ export default {
     window.removeEventListener('scroll', this.handleScroll,true)
   },
   beforeRouteLeave( to, from,next){
-    if (to.name == 'programList') {
+    if (to.name == 'programList' || to.name=='home') {
         to.meta.isUseCache = true;    
     }        
     next();

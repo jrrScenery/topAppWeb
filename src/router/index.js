@@ -18,7 +18,11 @@ export default new Router({
         {
           path: '/home',
           name: 'home',
-          component: resolve => require(['@/views/home/home'], resolve)
+          component: resolve => require(['@/views/home/home'], resolve),
+          meta: {
+            isUseCache: false,
+            keepAlive: true
+          }
         },
         {
           path: '/approve',
@@ -167,22 +171,38 @@ export default new Router({
     {
       path: '/workBench/workBenchMyEvent',
       name: 'workBenchMyEvent',
-      component: resolve => require(['@/views/workBench/workBenchMyEvent'], resolve)
+      component: resolve => require(['@/views/workBench/workBenchMyEvent'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
     },
     {
       path: '/workBench/workBenchMyEventAll',
       name: 'workBenchMyEventAll',
-      component: resolve => require(['@/views/workBench/workBenchMyEventAll'], resolve)
+      component: resolve => require(['@/views/workBench/workBenchMyEventAll'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
     },
     {
       path: '/workBench/workBenchMyPro',
       name: 'workBenchMyPro',
-      component: resolve => require(['@/views/workBench/workBenchMyPro'], resolve)
+      component: resolve => require(['@/views/workBench/workBenchMyPro'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
     },
     {
       path: '/workBench/workBenchMyProAll',
       name: 'workBenchMyProAll',
-      component: resolve => require(['@/views/workBench/workBenchMyProAll'], resolve)
+      component: resolve => require(['@/views/workBench/workBenchMyProAll'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
     },
     {
       path: '/workBench/workBenchDeclare',

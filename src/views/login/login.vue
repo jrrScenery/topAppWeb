@@ -194,6 +194,13 @@ export default {
       let Base64 = require("js-base64").Base64//还是require
       let pw = Base64.encode(this.ruleForm.pass)//还是那些操作
       return pw;
+    },
+    beforeRouteLeave( to, from,next){
+      console.log(1111);
+      if (to.name == 'home') {
+          to.meta.isUseCache = false;    
+      }        
+      next();
     }
   }
 

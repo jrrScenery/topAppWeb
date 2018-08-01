@@ -370,10 +370,21 @@ export default {
   },
   created:function(){
 
-    fetch.get("?action=checkSession",{}).then(res=>{
-          
-          this.fetchData();
-    });
+    
+  },
+  activated(){
+    if(!this.$route.meta.isUseCache){
+      this.caseData = [];
+      this.projData = [];
+      this.opinionTab[0].data=[];
+      this.opinionTab[1].data=[];
+      this.opinionTab[2].data=[];
+
+      fetch.get("?action=checkSession",{}).then(res=>{
+        this.fetchData();
+      });
+    }
+    this.$route.meta.isUseCache = true;
   }
 }
 </script>

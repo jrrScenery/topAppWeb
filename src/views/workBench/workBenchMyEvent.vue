@@ -108,6 +108,14 @@ export default {
   created () {
     
   },
+  activated(){
+    if(!this.$route.meta.isUseCache){
+      // this.eventListArr = [];
+      // this.busy= false;
+      // this.loadMore();
+    }
+    this.$route.meta.isUseCache = false;
+  },
   methods: {
     tabClick (e) {
       console.log("tabclick");

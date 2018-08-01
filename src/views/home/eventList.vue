@@ -166,6 +166,12 @@ export default {
   },
   created(){
 
+  },
+  beforeRouteLeave( to, from,next){
+    if (to.name == 'home') {
+        to.meta.isUseCache = true;    
+    }        
+    next();
   }
 
 }
