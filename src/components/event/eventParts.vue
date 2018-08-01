@@ -27,7 +27,7 @@
             <p class="partno"><strong>申请单号：</strong>{{item.APPLY_CODE}}</p>
             <span class="statusname"><strong>备件状态：</strong>{{item.STATUS_NAME}}</span>
             <p class="partinfo"><strong>备件信息：</strong>{{item.PART_INFO}}</p>
-            <p class="arrtime"><strong>要求到场时间：</strong>{{item.ARRIVED_TIME}}</p>
+            <p class="arrtime"><strong>要求到场时间：</strong>{{item.REQUEST_ARRIVED_TIME}}</p>
             <p class="sendinfo">
               <strong>发货人：</strong>{{item.SENDER_NAME}} 
               <a v-bind:href="'tel:'+item.SENDER_PHONE" style="color: #2698d6;"> {{item.phone}} </a>
