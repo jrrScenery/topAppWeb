@@ -6,13 +6,20 @@
     <div class="tableTh"><span>行业</span><span>客户数量</span><span>项目数量</span><span>合同规模</span></div>
     <div class="tableTd" v-for="items in workBenchInfoObj" :key="items.name"  >
       <div class="tableTitle">{{items.name}}</div>
-      <div class="divTable">
-        <router-link v-for="item in items.arr" :key="item.id" :to="{name:'workBenchInfoDetail',query:{business:item.BUSINESS_TYPE,industry:item.INDUSTRY,isSearch:1}}">
-          <span>{{item.INDUSTRY}}</span>
-          <span class="bolder">{{item.CUST_NUM}}</span>
-          <span class="bolder">{{item.PRO_NUM}}</span>
-          <span class="bolder">{{item.AMOUNT}}</span>
+      <div class="divTable" v-for="item in items.arr" :key="item.id">
+        <router-link v-if="item.INDUSTRY=='合计'" :to="{name:'workBenchInfoDetail',query:{business:item.BUSINESS_TYPE,isSearch:1}}">
+          <span class="bolder">{{item.INDUSTRY}}</span>          
+          <span class="bolder">{{item.CUST_NUM}}</span>        
+          <span class="bolder">{{item.PRO_NUM}}</span>         
+          <span class="bolder">{{item.AMOUNT}}</span>         
         </router-link>
+        <router-link v-else :to="{name:'workBenchInfoDetail',query:{business:item.BUSINESS_TYPE,industry:item.INDUSTRY,isSearch:1}}">
+          <span>{{item.INDUSTRY}}</span>
+          <span>{{item.CUST_NUM}}</span>
+          <span>{{item.PRO_NUM}}</span>
+          <span>{{item.AMOUNT}}</span>         
+        </router-link>
+        
       </div>
       
     </div>
