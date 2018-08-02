@@ -38,10 +38,10 @@
             <el-col :span="12"><span class="tit">类型：</span><span>{{item.TYPE}}</span></el-col>
           </el-row>
           <el-row>
-            <el-col :span="24"><span class="tit">告警项：</span><span>{{item.ITEM}}</span></el-col>
+            <el-col :span="24"><span class="tit">case描述：</span><span>{{item.REASON}}</span></el-col>
           </el-row>
           <el-row>
-            <el-col :span="24"><span class="tit">case描述：</span><span>{{item.REASON}}</span></el-col>
+            <el-col :span="24"><span class="tit">关注原因：</span><span>{{item.ITEM}}</span></el-col>
           </el-row>
         </div>
         </router-link>
