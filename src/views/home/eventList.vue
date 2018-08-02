@@ -93,7 +93,7 @@ export default {
       ],
       page:1,
       pageSize:10,
-      busy:false,
+      busy:true,
       loadall: false,
       isSearch:false,
       searchData:{
@@ -101,7 +101,15 @@ export default {
       }
     }
   },
-
+  activated(){
+    console.log(this.$route.meta.savedPosition)
+    if(!this.$route.meta.isUseCache){
+      this.eventListArr = [];
+      this.busy= false;
+      this.loadMore();
+    }
+    this.$route.meta.isUseCache = false;
+  },
   methods: {
 
     getEventList(){
@@ -158,6 +166,12 @@ export default {
   },
   created(){
 
+  },
+  beforeRouteLeave( to, from,next){
+    if (to.name == 'home') {
+        to.meta.isUseCache = true;    
+    }        
+    next();
   }
 
 }

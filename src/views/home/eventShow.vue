@@ -90,12 +90,18 @@ export default {
       this.projectId = baseInfo.PROJECT_ID ;
       console.log(this.projectId);
     });
+  },
+  beforeRouteLeave( to, from,next){
+    if (to.name == 'focusEventList') {
+        to.meta.isUseCache = true;    
+    }        
+    next();
   }
 }
 </script>
 
 <style scoped>
-  .eventShowTabs{margin: 0.05rem 0; background: #ffffff; position: relative;}
+  .eventShowTabs{margin: 0 0; background: #ffffff; position: relative;}
   .eventShowTabs >>> .el-tabs__header{margin: 0 0 0.1rem;}
   .eventShowTabs >>> .el-tabs__item.is-active{color: #2698d6;}
   .eventShowTabs >>> .el-tabs__active-bar{background: #2698d6;}

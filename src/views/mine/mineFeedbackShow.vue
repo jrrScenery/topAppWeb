@@ -52,16 +52,17 @@ export default {
             {leftTit: '评估人：', rightCon: ''},
             {leftTit: '任务关闭时间：', rightCon: ''}
           ]
-        },
-        {
-          title: '评估定性',
-          cellObj: [
-            {leftTit: '问题定性分类：', rightCon: ''},
-            {leftTit: '问题根源分类：', rightCon: ''},
-            {leftTit: '责任人：', rightCon: ''},
-            {leftTit: '问题定性描述：', rightCon: ''}
-          ]
         }
+        // ,
+        // {
+        //   title: '评估定性',
+        //   cellObj: [
+        //     {leftTit: '问题定性分类：', rightCon: ''},
+        //     {leftTit: '问题根源分类：', rightCon: ''},
+        //     {leftTit: '责任人：', rightCon: ''},
+        //     {leftTit: '问题定性描述：', rightCon: ''}
+        //   ]
+        // }
       ]
     }
   },

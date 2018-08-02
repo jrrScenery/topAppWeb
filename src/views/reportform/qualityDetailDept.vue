@@ -21,15 +21,21 @@
             :label="item.label"
             :min-width="item.width">
           </el-table-column>
-          <template slot-scope="scope">
-              <template v-if="item.prop == 'KFX'">
-                <div>
-                  <i style="display: inline-block; margin: 0.11rem 0.05rem 0; width: 0.08rem; height: 0.08rem; border-radius: 50%; background: #ff0000;"></i>
-                  <span class="table_name">{{scope.row.KFX }}</span>
-                </div>
-              </template>
-          </template>
         </template>
+        
+        <el-table-column label="" width="26" >
+          <template slot-scope="scope">
+            <el-popover trigger="click" placement="bottom" width="100" class="ipop">
+              <div class="pop_box">
+                <strong>权重：</strong><span>{{scope.row["BMKHQZ"]}}</span><br>
+                <strong>转化分值：</strong><span>{{scope.row["ZBZHFZ"]}}</span><br>
+                <strong>扣分项（个）：</strong><span>{{scope.row["KFX"]}}</span>
+              </div>
+              <div slot="reference" class="i"></div>
+            </el-popover>
+          </template>
+        </el-table-column>
+        
       </el-table>
     </div>
   </div>
@@ -59,11 +65,10 @@ export default {
       tableData: [
       ],
       qualityTableObj: [
-        {prop: 'ZBX', label: '指标项', width: '32%'},
-        {prop: 'BMKHQZ', label: '权重', width: '15%'},
+        {prop: 'ZBX', label: '指标项', width: '35%'},
+        {prop: 'FJMBZ', label: '分解目标值', width: '15%'},
         {prop: 'ZBDCQK', label: '达成情况', width: '20%'},
-        {prop: 'ZBZHFZ', label: '转化分值', width: '18%'},
-        {prop: 'KFX', label: '扣分项', width: '15%'},
+        {prop: 'KFX', label: '扣分项', width: '12%'},
 
         // {prop: 'FJMBZ', label: '分解目标值', width: '40%'},
         // {prop: 'KFX', label: '扣分项', width: '30%'},
@@ -103,9 +108,12 @@ export default {
   .qualityTable >>> th{color: #333333; padding: 0; height: 0.3rem; line-height: 0.3rem; background: #f7f7f7}
   .qualityTable >>> td{color: #666666; padding: 0; height: 0.3rem; line-height: 0.3rem;}
   .qualityTable >>> .cell{font-size: 0.13rem; text-align: center;}
-  
+  .qualityView .qualityTable .ipop{ display: inline-block; vertical-align: middle;}
+  .qualityView .qualityTable .ipop .i{ width: 20px; height: 20px; background:url(../../assets/images/infoicon.png) no-repeat;
+    background-size: 20px;}
 </style>
 <style>
-.qualityTable .el-table__row td:nth-of-type(1) .cell{ text-align: left;}
+  .qualityTable .el-table__row td:nth-of-type(1) .cell{ text-align: left;}
+  .qualityTable .el-table__row td:last-of-type .cell{padding:0 3px;}
 </style>
 

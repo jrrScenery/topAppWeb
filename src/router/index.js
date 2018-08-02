@@ -18,7 +18,11 @@ export default new Router({
         {
           path: '/home',
           name: 'home',
-          component: resolve => require(['@/views/home/home'], resolve)
+          component: resolve => require(['@/views/home/home'], resolve),
+          meta: {
+            isUseCache: false,
+            keepAlive: true
+          }
         },
         {
           path: '/approve',
@@ -33,7 +37,11 @@ export default new Router({
         {
           path: '/reportform',
           name: 'reportForm',
-          component: resolve => require(['@/views/reportform/reportForm'], resolve)
+          component: resolve => require(['@/views/reportform/reportForm'], resolve),
+          meta: {
+            isUseCache: false,
+            keepAlive: true
+          }
         },
         {
           path: '/mine',
@@ -50,7 +58,11 @@ export default new Router({
     {
       path: '/home/eventList',
       name: 'focusEventList',
-      component: resolve => require(['@/views/home/eventList'], resolve)
+      component: resolve => require(['@/views/home/eventList'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
     },
     {
       path: '/home/eventShow',
@@ -95,7 +107,11 @@ export default new Router({
     {
       path: '/home/programList',
       name: 'programList',
-      component: resolve => require(['@/views/home/programList'], resolve)
+      component: resolve => require(['@/views/home/programList'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
     },
     {
       path: '/home/programShow',
@@ -155,22 +171,38 @@ export default new Router({
     {
       path: '/workBench/workBenchMyEvent',
       name: 'workBenchMyEvent',
-      component: resolve => require(['@/views/workBench/workBenchMyEvent'], resolve)
+      component: resolve => require(['@/views/workBench/workBenchMyEvent'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
     },
     {
       path: '/workBench/workBenchMyEventAll',
       name: 'workBenchMyEventAll',
-      component: resolve => require(['@/views/workBench/workBenchMyEventAll'], resolve)
+      component: resolve => require(['@/views/workBench/workBenchMyEventAll'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
     },
     {
       path: '/workBench/workBenchMyPro',
       name: 'workBenchMyPro',
-      component: resolve => require(['@/views/workBench/workBenchMyPro'], resolve)
+      component: resolve => require(['@/views/workBench/workBenchMyPro'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
     },
     {
       path: '/workBench/workBenchMyProAll',
       name: 'workBenchMyProAll',
-      component: resolve => require(['@/views/workBench/workBenchMyProAll'], resolve)
+      component: resolve => require(['@/views/workBench/workBenchMyProAll'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
     },
     {
       path: '/workBench/workBenchDeclare',
@@ -217,5 +249,15 @@ export default new Router({
       name: 'qualityDetailDept',
       component: resolve => require(['@/views/reportform/qualityDetailDept'], resolve)
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      if (from.meta.keepAlive) {
+        from.meta.savedPosition = document.body.scrollTop
+      }
+      return { x: 0, y: to.meta.savedPosition || 0 }
+    }
+  }
 })

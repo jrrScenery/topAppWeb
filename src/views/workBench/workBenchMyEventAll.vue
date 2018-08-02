@@ -111,6 +111,12 @@ export default {
   created () {
     
   },
+  activated(){
+    if(!this.$route.meta.isUseCache){
+      
+    }
+    this.$route.meta.isUseCache = false;
+  },
   methods: {
     tabClick (e) {
       console.log("tabclick");

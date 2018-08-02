@@ -75,7 +75,7 @@ export default {
       }
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$axios.post(global_.Server+"/api/login","ACCOUNT="+this.ruleForm.userName+"&PASSWORD="+this.ruleForm.pass).then(res=>{
+          this.$axios.post(global_.Server+"/api/login","ACCOUNT="+this.ruleForm.userName+"&PASSWORD="+this.getBasePass()).then(res=>{
             if(res.status==500){
               alert("连接服务超时或密码错");
               return;
@@ -189,6 +189,18 @@ export default {
     // 清除cookie
     clearCookie: function () {
       this.setCookie('', '', -1)
+    },
+    getBasePass(){
+      let Base64 = require("js-base64").Base64//还是require
+      let pw = Base64.encode(this.ruleForm.pass)//还是那些操作
+      return pw;
+    },
+    beforeRouteLeave( to, from,next){
+      console.log(1111);
+      if (to.name == 'home') {
+          to.meta.isUseCache = false;    
+      }        
+      next();
     }
   }
 

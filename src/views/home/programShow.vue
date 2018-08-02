@@ -27,7 +27,7 @@
             </el-col>
           </el-row>
         </div>
-        <div class="cellContent">
+        <div class="cellContent" >
           <p>{{projectInfo.PROJECT_NAME}}</p>
           <el-row>
             <el-col :span="12"><span class="tit">业务类型：{{projectInfo.BUSINESS_TYPE}}</span></el-col>
@@ -66,6 +66,7 @@
             <el-col :span="24"><span class="tit">责任交付部门：{{projectInfo.AREA_NAME}}</span></el-col>
           </el-row>
         </div>
+
       </div>
       <div class="programTable">
         <el-tabs v-model="activeName"  @tab-click="chtab" >
@@ -196,6 +197,12 @@ export default {
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll,true)
   },
+  beforeRouteLeave( to, from,next){
+    if (to.name == 'programList' || to.name=='home') {
+        to.meta.isUseCache = true;    
+    }        
+    next();
+  }
 }
 </script>
 

@@ -87,7 +87,15 @@ export default {
       }
     }
   },
-
+  activated(){
+    console.log(this.$route.meta.scrollTop)
+    if(!this.$route.meta.isUseCache){
+      this.programListArr = [];
+      this.busy= false;
+      this.loadMore();
+    }
+    this.$route.meta.isUseCache = false;
+  },
   methods: {
 
     getEventList(){
@@ -138,6 +146,12 @@ export default {
 
   },
   created () {
+  },
+  beforeRouteLeave( to, from,next){
+    if (to.name == 'home') {
+        to.meta.isUseCache = true;    
+    }        
+    next();
   }
 }
 </script>

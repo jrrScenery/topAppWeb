@@ -89,7 +89,7 @@ export default {
           var info={action:"downFile",downloadurl:url}
           window.webkit.messageHandlers.ioshandle.postMessage({body: info});
         }else if(/(Android)/i.test(ua)){
-          var value = "{action:'downFile',downloadurl:'"+url+"',fileExt:'"+fileExt+"',docname:'"+docname+"'}";
+          var value = "{action:'downFile',downloadurl:'"+url+"',fileExt:'"+fileExt+"',docname:'"+encodeURI(docname) +"'}";
           android.getClient(value);
         }
     },
