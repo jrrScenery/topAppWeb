@@ -160,4 +160,6 @@ export default {
   .baseInfoBottom .resolvent .desc{color: #999999}
   .eventBaseInfoCell{padding: 0 0.1rem 0.05rem; color: #262626; border-bottom: 0.01rem solid #e1e1e1}
   .eventBaseInfoCell span{width: 0.65rem; color: #999999; display: inline-block;}
+  .baseInfoBottom .speed >>> .el-step__head.is-process{color:#409EFF;border-color:#409EFF;}
+  .baseInfoBottom .speed >>> .el-step__title.is-process{font-weight:800;color:#409EFF;font-size: 16px}
 </style>
