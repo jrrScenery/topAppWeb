@@ -11,10 +11,10 @@
               <router-link :to="{name:'programShow',query:{projectId:info.PROJECT_ID}}">
               <div class="cellTop">
                 <el-row>
-                  <el-col :span="8">
+                  <el-col :span="9">
                     <div class="cellTopNum">{{info.PROJECT_CODE}}</div>
                   </el-col>
-                  <el-col :span="9">
+                  <el-col :span="8">
                     <div class="cellTopColor">
                       <span v-if="info.BASE_COLOR == 0"></span>
                       <span v-if="info.BASE_COLOR == 1" style="background: #ff0000"></span>
@@ -200,7 +200,7 @@ export default {
   .content >>> .el-tabs__nav .el-tabs__item{width: 33%; text-align: center; padding: 0; color: #999999}
   .content >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}
   .programCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-bottom: 0.05rem;}
-  .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
+  .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.2rem;}
   .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6; word-break:break-all;}
   .programCell .cellTop .cellTopColor span{display: inline-block; width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0 0.03rem;}
   .programCell .cellTop .cellTopState{text-align: right; color: #333333;}
