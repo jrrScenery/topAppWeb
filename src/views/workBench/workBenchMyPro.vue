@@ -6,7 +6,7 @@
     <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <el-tabs v-model="activeName" @tab-click="tabClick">
         <template v-for="item in workBenchMyProTab">
-          <el-tab-pane :label="item.label" :name="item.name" :key="item.id">
+          <el-tab-pane :label="item.label+'('+totalData[item.numname]+')'" :name="item.name" :key="item.id">
             <div class="programCell" v-for="info in item.programListArr" :key="info.id">
               <router-link :to="{name:'programShow',query:{projectId:info.PROJECT_ID}}">
               <div class="cellTop">
@@ -71,17 +71,20 @@ export default {
         {
           name: 'first',
           label: '执行中',
-          programListArr: []
+          programListArr: [],
+          numname:"execNum"
         },
         {
           name: 'second',
           label: '已过保',
-          programListArr: []
+          programListArr: [],
+          numname:"closeNum"
         },
         {
           name: 'third',
           label: '全部',
-          programListArr: []
+          programListArr: [],
+          numname:"allNum"
         }
       ],
       activeName: 'first',
@@ -96,7 +99,8 @@ export default {
         industry:[]
       },
       objpages:{"first":{page:1,loadall:false,IF_SURANCE:1,idx:0,isSearch:0},"second":{page:1,loadall:false,IF_SURANCE:0,idx:1,isSearch:0},
-      "third":{page:1,loadall:false,IF_SURANCE:'',idx:2,isSearch:0}}
+      "third":{page:1,loadall:false,IF_SURANCE:'',idx:2,isSearch:0}},
+      totalData:{"execNum":0,"closeNum":0,"allNum":0}
     }
   },
 
@@ -153,6 +157,8 @@ export default {
       }
 
       fetch.get(strurl,urlparam).then(res => {
+        console.log(res);
+        this.totalData= res.totalData;
         let obj = this.workBenchMyProTab[objnowpage.idx].programListArr;
         this.workBenchMyProTab[objnowpage.idx].programListArr = this.returnList(flag, res, obj)
       });
