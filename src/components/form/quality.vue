@@ -33,6 +33,14 @@
             :prop="item.prop"
             :label="item.label"
             :min-width="item.width">
+            <template slot-scope="scope">
+              <span class="fontColor">{{item.ROWNUM}}</span>          
+              <span class="fontColor">{{item.DEPT_NAME}}</span>        
+              <span class="fontColor">{{item.SCORE}}</span>  
+
+              <span v-if="item.prop == 'score'" class="fontColor">{{scope.row[item.prop]}}</span>
+              <span v-else>{{scope.row[item.prop]}}</span>
+            </template>
           </el-table-column>
         </template>
       </el-table>
@@ -168,4 +176,5 @@ export default {
   .qualityTable >>> th{color: #333333; padding: 0; height: 0.3rem; line-height: 0.3rem; background: #f7f7f7}
   .qualityTable >>> td{color: #666666; padding: 0; height: 0.3rem; line-height: 0.3rem;}
   .qualityTable >>> .cell{font-size: 0.13rem; text-align: center}
+  .fontColor{color: #2698d6}
 </style>
