@@ -2,11 +2,11 @@
     <div class="proSLAInfoView">
         <header-last :title="eventSLAInfoTit"></header-last>
         <div style="height: 0.45rem;"></div>
-        <div style="display:flex;margin-top:10px;margin-left:20px">
+        <div class="paramHead">
             <div style="width:50%">交付级别：{{slaLevel}}</div>
             <div style="width:50%">Case级别：{{caseLevel}}</div>
         </div>
-        <div style="display:flex;margin-top:10px;margin-left:20px">事件创建时间：{{createDate}}</div>
+        <div class="paramHead">事件创建时间：{{createDate}}</div>
         <div class="proSLAInfoCell" v-for="item in eventInfoArray" :key="item.SLA_TYPE">
             <div class="proSLAInfoTit">{{item.SLA_TYPE}}</div>
             <div class="content">
@@ -87,6 +87,7 @@ export default {
     .proSLAInfoCell .proSLAInfoTit{position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.14rem; color: #2698d6;}
     .proSLAInfoCell .proSLAInfoTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
     .proSLAInfoCell .proSLAInfoTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
+    .paramHead{display:flex;margin-top:10px;margin-left:20px}
     .tableTd li{display: flex; line-height: 0.3rem; padding: 0 0.2rem; color: #666666;}
     .tableTd span{text-align: center;}
     .tableTd span:nth-child(1){width: 100%; text-align: left;}
