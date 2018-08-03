@@ -49,7 +49,7 @@
         <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">相关报修</li>
         </router-link>
         <router-link :to="{name:'eventSLAInfo',query:{caseId:this.caseId,caseLevel:this.caseLevel,slaLevel:this.slaLevel,createDate:this.createDate}}">
-        <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">SLA信息</li>
+        <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/sla.png" alt="">SLA信息</li>
         </router-link>
       </ul>
     </div>
@@ -125,6 +125,7 @@ export default {
   .popBg{background: rgba(0,0,0,0.5); position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1}
   .popBg ul{background: #f5f5f9; position: absolute; right: 0; bottom: 0.5rem; z-index: 2; line-height: 0.3rem}
   .popBg li{padding: 0 0.15rem}
+  .popBg .slali{padding: 0 0.12rem}
   .popBg li:nth-child(1){border-bottom: 0.01rem solid #e1e1e1;}
   .popBg li img{width: 0.15rem; height: 0.15rem; vertical-align: sub}
 </style>
