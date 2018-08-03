@@ -6,25 +6,31 @@
             <div style="width:50%">交付级别：{{slaLevel}}</div>
             <div style="width:50%">Case级别：{{caseLevel}}</div>
         </div>
-        <div style="display:flex;margin-top:10px;margin-left:20px">时间创建时间：{{createDate}}</div>
+        <div style="display:flex;margin-top:10px;margin-left:20px">事件创建时间：{{createDate}}</div>
         <div class="proSLAInfoCell" v-for="item in eventInfoArray" :key="item.SLA_TYPE">
             <div class="proSLAInfoTit">{{item.SLA_TYPE}}</div>
             <div class="content">
                 <ul class="tableTd">
                     <li>
-                        <span>交付要求：{{item.SLA_REQUEST}}</span>          
+                        <span>交付要求:</span>  
+                        <span>{{item.SLA_REQUEST}}</span>          
                     </li>
                     <li>                
-                        <span>SLA截至时间（含等待）：{{item.END_TIME}}</span>   
+                        <span>SLA截至时间（含等待）：</span>  
+                        <span>{{item.END_TIME}}</span>   
                     </li>
                     <li>                
-                        <span>实际达成时间：{{item.REACH_TIME}}</span>
+                        <span>实际达成时间：</span>
+                        <span>{{item.REACH_TIME}}</span>
                     </li>
                     <li>                
-                        <span>是否达成：{{item.IF_REACH}}</span>
+                        <span>是否达成：</span>
+                        <span v-if="item.IF_REACH=='未达成'" style="color:red">{{item.IF_REACH}}</span>
+                        <span v-else>{{item.IF_REACH}}</span>
                     </li>
                     <li>                
-                        <span v-if="item.IF_REACH=='未达成'">未达成原因：{{item.FAIL_REASON}}</span>
+                        <span v-if="item.IF_REACH=='未达成'&&item.FAIL_REASON">未达成原因：</span>
+                        <span v-if="item.IF_REACH=='未达成'&&item.FAIL_REASON">{{item.FAIL_REASON}}</span>
                     </li>
                 </ul>
             </div>
@@ -84,7 +90,7 @@ export default {
     .tableTd li{display: flex; line-height: 0.3rem; padding: 0 0.2rem; color: #666666;}
     .tableTd span{text-align: center;}
     .tableTd span:nth-child(1){width: 100%; text-align: left;}
-    .tableTd span:nth-child(2){width: 100%;}
+    .tableTd span:nth-child(2){width: 100%;text-align: left}
     .content:nth-child(2n+1){background: #fafafa}
 
 </style>
