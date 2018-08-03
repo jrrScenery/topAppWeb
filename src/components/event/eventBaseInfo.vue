@@ -4,21 +4,20 @@
     <div class="baseInfoTop">
       <el-row>
         <el-col :span="11">
-          <div class="cellTopNum">
-            <span v-if="caseLevel == 1 || caseLevel == 2" style="background: #ff0000;">{{caseLevel}}</span>
-            <span v-if="caseLevel == 3" style="background: #ff9900;">{{caseLevel}}</span>
-            <span v-if="caseLevel == 4" style="background: #ffff00;">{{caseLevel}}</span>
-            <span v-if="caseLevel == 5" style="background: #1ca2a5;">{{caseLevel}}</span>{{eventNum}}
-          </div>
-        </el-col>
-        <el-col :span="1">
           <span v-if="CASEHEALTH == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></span>
           <span v-if="CASEHEALTH == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></span>
           <span v-if="CASEHEALTH == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ffff00;"></span>
           <span v-if="CASEHEALTH == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></span>
-          <span v-if="CASEHEALTH == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span>
+          <span v-if="CASEHEALTH == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span> {{eventNum}}
         </el-col>
-        <el-col :span="12">
+        <el-col :span="2">
+            <span v-if="caseLevel == '一级' || caseLevel == '二级'" style="color: #ff0000;">{{caseLevel}}</span>
+            <span v-if="caseLevel == '三级'" style="color: #ff9900;">{{caseLevel}}</span>
+            <span v-if="caseLevel == '四级'" style="color: #ffff00;">{{caseLevel}}</span>
+            <span v-if="caseLevel == '五级'" style="color: #1ca2a5;">{{caseLevel}}</span>
+        </el-col>
+        
+        <el-col :span="11">
           <div class="cellTopTime"><span>{{eventTime}}</span><span style="margin-left: 0.05rem;"></span></div>
         </el-col>
       </el-row>
@@ -129,19 +128,20 @@ export default {
       this.baseInfoArr[4].desc = baseInfo.CASE_ADDRESS;
       this.resolventObj.time = baseInfo.SOLVING_TIME;
       this.resolventObj.desc = baseInfo.FINAL_SOLUTION;
-      this.caseLevel = parseInt(baseInfo.CASE_LEVEL);
+      this.caseLevel = baseInfo.CASE_LEVEL;
       this.CASEHEALTH = parseInt(baseInfo.CASE_HEALTH);
      });
   }
 
 }
+     console.log(this.caseLevel);
 </script>
 
 <style scoped>
-  .eventBaseInfoView{padding: 0 0.15rem; margin-bottom: 0.5rem}
+  .eventBaseInfoView{padding: 0 0.12rem; margin-bottom: 0.5rem}
   .baseInfoTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
   .baseInfoTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
-  .baseInfoTop .cellTopNum span{display: inline-block; height: 0.19rem; width: 0.19rem; border-radius: 50%; vertical-align: text-top; margin-right: 0.03rem; color: #ffffff; text-align: center; line-height: 0.2rem;}
+  .baseInfoTop .cellTopNum span{display: inline-block; height: 0.19rem; width: 0.19rem; border-radius: 50%; vertical-align: text-top; margin-right: 0.03rem; text-align: center; line-height: 0.2rem;}
   .baseInfoTop .cellTopColor{width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0.15rem 0 0 -0.03rem; text-align: right}
   .baseInfoTop .cellTopTime{text-align: right; color: #999999;}
   .baseInfoBottom{color: #262626; line-height: 0.22rem}

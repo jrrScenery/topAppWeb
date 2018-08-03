@@ -197,7 +197,7 @@ export default {
         },
         {
           prop: 'ITEM',
-          label: '告警项',
+          label: '关注原因',
           fixed: true,
           width: '35%'
         },
