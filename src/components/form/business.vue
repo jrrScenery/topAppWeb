@@ -556,4 +556,8 @@ export default {
   .businessView >>> .el-input__prefix{display: none;}
   .businessView >>> .el-input--prefix .el-input__inner{padding: 0; text-align: center;}
   .echartsView{ width: 96%; margin: 0 auto;}
+  /* .BtmTit{margin-top: 15px;color: #2698d6} */
+  .BtmTit{margin-top: 15px;position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.16rem; color: #2698d6;}
+  .BtmTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
+  .BtmTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
 </style>

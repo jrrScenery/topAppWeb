@@ -428,4 +428,7 @@ export default {
 <style scoped>
   .echartsView{padding: 0 0.15rem;}
   .echartsView .BtmTit{ line-height: 0.3rem;}
+  .BtmTit{margin-top: 15px;position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.16rem; color: #2698d6;}
+  .BtmTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
+  .BtmTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
 </style>
