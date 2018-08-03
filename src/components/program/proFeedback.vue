@@ -57,7 +57,7 @@ export default {
     }
   },
   created () {
-    fetch.get("?action=GetComplaintsList&PROJECT_NAME="+this.$route.query.projectId,{}).then(res=>{
+    fetch.get("?action=GetComplaintsList&PROJECT_ID="+this.$route.query.projectId,{}).then(res=>{
       this.tableData = res.data;
       //console.log(res.data);
     });
