@@ -50,17 +50,29 @@ export default {
       tableData: [],
       table_arr: [
         {
-          prop: 'COMPLAINT_COMMENT',
-          label: '意见内容',
-          fixed: true,
-          width: '78%'
-        },
-        {
-          prop: 'CREATE_ON',
-          label: '提交日期',
-          fixed: true,
-          width: '22%'
-        }
+              prop: 'TASK_TYPE',
+              label: '类型',
+              fixed: true,
+              width: '15%'
+            },
+            {
+              prop: 'CUST_NAME',
+              label: '客户',
+              fixed: true,
+              width: '40%'
+            },
+            {
+              prop: 'CREATE_ON',
+              label: '提交日期',
+              fixed: true,
+              width: '25%'
+            },
+            {
+              prop: 'TASK_STATUS',
+              label: '状态',
+              fixed: true,
+              width: '20%'
+            }
       ],
 
       page: 1,
@@ -71,6 +83,7 @@ export default {
       type: this.$route.query.TYPE
     }
   },
+
   created () {
     this.getEventList()
   },

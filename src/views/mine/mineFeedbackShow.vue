@@ -7,7 +7,7 @@
       <div class="cell" v-for="item in mineFeedbackShowObj" :key="item.id">
         <div class="title">{{item.title}}</div>
         <ul>
-          <li v-for="info in item.cellObj" :key="info.id">
+          <li v-for="info in item.cellObj" :key="info.id"  v-if="info.rightCon!=null">
             <p>{{info.leftTit}}</p><p v-html="info.rightCon"></p>
           </li>
         </ul>
@@ -47,8 +47,9 @@ export default {
         {
           title: '跟踪处理情况',
           cellObj: [
-            {leftTit: '回访意见：', rightCon: ''},
-            {leftTit: '受理人意见：', rightCon: ''},
+            {leftTit: '原因分析：', rightCon: ''},
+            {leftTit: '处理结果：', rightCon: ''},
+            {leftTit: '处罚措施：', rightCon: ''},
             {leftTit: '评估人：', rightCon: ''},
             {leftTit: '任务关闭时间：', rightCon: ''}
           ]
@@ -86,15 +87,17 @@ export default {
       this.mineFeedbackShowObj[0].cellObj[7].rightCon = res.data.PROJECT_NAME;
       this.mineFeedbackShowObj[0].cellObj[8].rightCon = res.data.CASE_CD;
       this.mineFeedbackShowObj[0].cellObj[9].rightCon = res.data.COMPLAINT_COMMENT.replace(/\n/g, "<br/>");
-      this.mineFeedbackShowObj[1].cellObj[0].rightCon = res.data.CONFIRM_COMMENT;
+      this.mineFeedbackShowObj[1].cellObj[0].rightCon = res.data.REASON;
       this.mineFeedbackShowObj[1].cellObj[1].rightCon = res.data.ACCEPT_OPINION.replace(/\n/g, "<br/>");
-      this.mineFeedbackShowObj[1].cellObj[2].rightCon = res.data.EVALUATOR;
-      this.mineFeedbackShowObj[1].cellObj[3].rightCon = res.data.CLOSE_TIME;
-      this.mineFeedbackShowObj[2].cellObj[0].rightCon = res.data.QUALITY_RESULT;
-      this.mineFeedbackShowObj[2].cellObj[1].rightCon = res.data.QUESTION_TYPE;
-      this.mineFeedbackShowObj[2].cellObj[2].rightCon = res.data.RESPONSIBLE_BY;
-      this.mineFeedbackShowObj[2].cellObj[3].rightCon = res.data.QUESTION_REMARK.replace(/\n/g, "<br/>");
+      this.mineFeedbackShowObj[1].cellObj[2].rightCon = res.data.QUESTION_REMARK;
+      this.mineFeedbackShowObj[1].cellObj[3].rightCon = res.data.EVALUATOR;
+      this.mineFeedbackShowObj[1].cellObj[4].rightCon = res.data.CLOSE_TIME;
+      // this.mineFeedbackShowObj[2].cellObj[0].rightCon = res.data.QUALITY_RESULT;
+      // this.mineFeedbackShowObj[2].cellObj[1].rightCon = res.data.QUESTION_TYPE;
+      // this.mineFeedbackShowObj[2].cellObj[2].rightCon = res.data.RESPONSIBLE_BY;
+      // this.mineFeedbackShowObj[2].cellObj[3].rightCon = res.data.QUESTION_REMARK.replace(/\n/g, "<br/>");
     });
+    console.log(this.mineFeedbackShowObj[1]);
   },
 }
 </script>

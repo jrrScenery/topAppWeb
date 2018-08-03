@@ -250,19 +250,25 @@ export default {
               prop: 'TASK_TYPE',
               label: '类型',
               fixed: true,
-              width: '20%'
+              width: '15%'
             },
             {
               prop: 'CUST_NAME',
               label: '客户',
               fixed: true,
-              width: '55%'
+              width: '50%'
             },
             {
               prop: 'CREATE_ON',
               label: '提交日期',
               fixed: true,
-              width: '25%'
+              width: '20%'
+            },
+            {
+              prop: 'TASK_STATUS',
+              label: '状态',
+              fixed: true,
+              width: '15%'
             }
           ],
           data:[]
