@@ -2,11 +2,13 @@
 <template>
   <div class="workBenchMyProView">
     <header-base-five :title="workBenchMyProTit"  :queryData="searchData"  @searchPro="getSearParams"></header-base-five>
-    <div style="height: 0.45rem;"></div>
+    <!-- <div style="height: 0.45rem;"></div> -->
     <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <el-tabs v-model="activeName" @tab-click="tabClick">
         <template v-for="item in workBenchMyProTab">
           <el-tab-pane :label="item.label" :name="item.name" :key="item.id">
+            
+            <div style="overflow:auto">
             <div class="programCell" v-for="info in item.programListArr" :key="info.id">
               <router-link :to="{name:'programShow',query:{projectId:info.PROJECT_ID}}">
               <div class="cellTop">
@@ -43,6 +45,7 @@
                 </el-row>
               </div>
               </router-link>
+            </div>
             </div>
             <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
           </el-tab-pane>
@@ -96,7 +99,8 @@ export default {
         industry:[]
       },
       objpages:{"first":{page:1,loadall:false,IF_SURANCE:1,idx:0,isSearch:0},"second":{page:1,loadall:false,IF_SURANCE:0,idx:1,isSearch:0},
-      "third":{page:1,loadall:false,IF_SURANCE:'',idx:2,isSearch:0}}
+      "third":{page:1,loadall:false,IF_SURANCE:'',idx:2,isSearch:0}},
+      totalData:{"unCloseNum":0,"closeNum":0,"allNum":0}
     }
   },
 
@@ -120,7 +124,7 @@ export default {
       }
     },
     returnList (flag, res, obj) {
-      if(flag){
+      if(flag){ 
         obj = obj.concat(res.data);
       }else{
         obj = res.data;
@@ -152,8 +156,10 @@ export default {
       }
 
       fetch.get(strurl,urlparam).then(res => {
+        console.log(res);
         let obj = this.workBenchMyProTab[objnowpage.idx].programListArr;
         this.workBenchMyProTab[objnowpage.idx].programListArr = this.returnList(flag, res, obj)
+        // this.totalData= res.totalData;
       });
       
     },
@@ -194,8 +200,8 @@ export default {
 <style scoped>
   .workBenchMyProView{width: 100%;}
   .content{width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
-  .content >>> .el-tabs__header{margin: 0; background: #ffffff}
-  .content >>> .el-tabs__nav{width: 100%}
+  .workBenchMyProView >>> .el-tabs__header{margin-bottom: 0.45rem; background: #ffffff;}
+  .content >>> .el-tabs__nav{width: 100%;position: fixed;background:#f8f6f6}
   .content >>> .el-tabs__active-bar{background: #2698d6}
   .content >>> .el-tabs__nav .el-tabs__item{width: 33%; text-align: center; padding: 0; color: #999999}
   .content >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}

@@ -7,6 +7,7 @@
       <el-tabs v-model="activeName" @tab-click="tabClick">
         <template v-for="(item) in opinionTab">
           <el-tab-pane :label="item.label+'('+totalData[item.numname]+')'" :name="item.name" :key="item.id">
+            <div style="overflow:auto">
             <div class="eventCell" v-for="info in item.eventListArr" :key="info.id">
               <router-link :to="{name:'eventShow',query:{caseId:info.CASE_ID}}">
               <div class="cellTop">
@@ -43,6 +44,7 @@
                 </el-row>
               </div>
               </router-link>
+            </div>
             </div>
             <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
           </el-tab-pane>
@@ -228,8 +230,8 @@ export default {
 <style scoped>
   .workBenchMyEventView{width: 100%;}
   .content{width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
-  .content >>> .el-tabs__header{margin: 0; background: #ffffff}
-  .content >>> .el-tabs__nav{width: 100%}
+  .content >>> .el-tabs__header{margin-bottom: 0.45rem; background: #ffffff}
+  .content >>> .el-tabs__nav{width: 100%;position: fixed;background:#ffffff}
   .content >>> .el-tabs__active-bar{background: #2698d6}
   .content >>> .el-tabs__nav .el-tabs__item{width: 33.33333333%; text-align: center; padding: 0; color: #999999}
   .content >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}
