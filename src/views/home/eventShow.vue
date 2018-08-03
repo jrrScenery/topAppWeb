@@ -48,6 +48,9 @@
         <router-link :to="{name:'eventRepair',query:{caseId:this.caseId}}">
         <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">相关报修</li>
         </router-link>
+        <router-link :to="{name:'eventSLAInfo',query:{caseId:this.caseId,caseLevel:this.caseLevel,slaLevel:this.slaLevel,createDate:this.createDate}}">
+        <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">SLA信息</li>
+        </router-link>
       </ul>
     </div>
   </div>
@@ -77,7 +80,10 @@ export default {
       activeName: 'first',
       popBg: false,
       caseId: this.$route.query.caseId,
-      projectId: this.$route.query.projectId
+      projectId: this.$route.query.projectId,
+      slaLevel:'',
+      caseLevel:'',
+      createDate:''
     }
   },
 
@@ -86,8 +92,12 @@ export default {
   },
   created:function(){
     fetch.get("?action=GetCaseInfo&CASE_ID="+this.$route.query.caseId,{}).then(res=>{
+      console.log(res.data);
       let baseInfo = res.data;
       this.projectId = baseInfo.PROJECT_ID ;
+      this.slaLevel = baseInfo.SLA_LEVEL;
+      this.caseLevel = baseInfo.CASE_LEVEL;
+      this.createDate = baseInfo.CREATE_DATE;
       console.log(this.projectId);
     });
   },

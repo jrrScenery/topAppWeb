@@ -85,6 +85,11 @@ export default new Router({
       component: resolve => require(['@/views/home/eventRepair'], resolve)
     },
     {
+      path: '/home/eventSLAInfo',
+      name: 'eventSLAInfo',
+      component: resolve => require(['@/views/home/eventSLAInfo'], resolve)
+    },
+    {
       path: '/home/eventReplenish',
       name: 'eventReplenish',
       component: resolve => require(['@/views/home/eventReplenish'], resolve)
