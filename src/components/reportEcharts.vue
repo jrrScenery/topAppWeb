@@ -43,9 +43,9 @@ export default {
     return {
       chartOneTit: '月度报修数量统计',
       chartTwoTit: '厂商报修数统计',
-      chartThreeTit: '技术方向报修数统计',
+      chartThreeTit: '报障级别统计',
       chartFourTit: '设备型号报修数统计',
-      chartFiveTit: '报障级别统计',
+      chartFiveTit: '技术方向报修数统计',
       chartSixTit: '备件更换量统计',
       oneDataX: [],
       oneData:  [],
@@ -129,7 +129,7 @@ export default {
           dataArray[i].value = reportData[i].NUMS;
         }
         this.deviceTypeData = dataArray;
-        this.drawLineThree();
+        this.drawLineFive();
       });
 
       url = "?action=GetStatisticsCaseData&dimensionType=deviceModel&timeRangeType=month&projectId="+projectId+"&timeStart="+startDay+"&timeEnd="+endDay;
@@ -156,7 +156,7 @@ export default {
             dataArray[i].value = reportData[i].NUMS;
           }
           this.caseLevelData = dataArray;
-          this.drawLineFive();          
+          this.drawLineThree();          
         }
       });
 
@@ -256,11 +256,11 @@ export default {
         ]
       })
     },
-    drawLineThree () {
-      let myChartBox = document.getElementById('myChartThree')
+    drawLineFive () {
+      let myChartBox = document.getElementById('myChartFive')
       myChartBox.style.width = window.innerWidth - 30  + 'px'
-      this.myChartThree = echarts.init(myChartBox)
-      this.myChartThree.setOption({
+      this.myChartFive = echarts.init(myChartBox)
+      this.myChartFive.setOption({
         series: [
           {
             name: '访问来源',
@@ -328,11 +328,11 @@ export default {
         ]
       })
     },
-    drawLineFive () {
-      let myChartBox = document.getElementById('myChartFive')
+    drawLineThree () {
+      let myChartBox = document.getElementById('myChartThree')
       myChartBox.style.width = window.innerWidth - 30  + 'px'
-      this.myChartFive = echarts.init(myChartBox)
-      this.myChartFive.setOption({
+      this.myChartThree = echarts.init(myChartBox)
+      this.myChartThree.setOption({
         series: [
           {
             name: '访问来源',
