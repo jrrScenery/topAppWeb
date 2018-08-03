@@ -1,7 +1,7 @@
 <!--首页-需关注事件-->
 <template>
   <div class="eventListView">
-    <header-base :title="eventListTit" :searchType="searchType" :queryData="searchData"  @searchPro="searchList"></header-base>
+    <header-base :title="eventListTit+'('+totalData+')'" :searchType="searchType" :queryData="searchData"  @searchPro="searchList"></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <div class="eventCell" v-for="item in eventListArr" :key="item.CASEID">
@@ -98,7 +98,8 @@ export default {
       isSearch:false,
       searchData:{
         industry:[]
-      }
+      },
+      totalData:0
     }
   },
   activated(){
@@ -129,7 +130,8 @@ export default {
       //console.log(params);
       var flag = this.page>1;
       fetch.get("?action=GetFocusCase",params).then(res=>{
-        console.log(res.data);
+        console.log(res);
+        this.totalData = res.total;
         if(flag){
             this.eventListArr = this.eventListArr.concat(res.data);
         }else{

@@ -1,7 +1,7 @@
 <!--首页-需关注项目-->
 <template>
   <div class="programListView">
-    <header-base-five :title="programListTit" :queryData="searchData"  @searchPro="getSearParams"></header-base-five>
+    <header-base-five :title="programListTit+'('+totalData+')'" :queryData="searchData"  @searchPro="getSearParams"></header-base-five>
     <div style="height: 0.45rem;"></div>
     <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <div class="programCell" v-for="item in programListArr" :key="item.id">
@@ -84,7 +84,8 @@ export default {
       isSearch: false,
       searchData: {
         industry:[]
-      }
+      },
+      totalData:0
     }
   },
   activated(){
@@ -110,6 +111,7 @@ export default {
         reqParams.SALE_NAME = this.searchData["sale"]
       }
       fetch.get("?action=GetFocusProject",reqParams).then(res=>{
+        this.totalData = res.total;
         if(flag){
           this.programListArr = this.programListArr.concat(res.data);
         }else{
