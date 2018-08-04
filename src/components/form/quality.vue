@@ -29,18 +29,11 @@
         style="width: 100%">
         <template v-for="item in qualityTableObj">
           <el-table-column
+            :fixed="item.fixed"
             :key="item.id"
             :prop="item.prop"
             :label="item.label"
             :min-width="item.width">
-            <template slot-scope="scope">
-              <span class="fontColor">{{item.ROWNUM}}</span>          
-              <span class="fontColor">{{item.DEPT_NAME}}</span>        
-              <span class="fontColor">{{item.SCORE}}</span>  
-
-              <span v-if="item.prop == 'score'" class="fontColor">{{scope.row[item.prop]}}</span>
-              <span v-else>{{scope.row[item.prop]}}</span>
-            </template>
           </el-table-column>
         </template>
       </el-table>
@@ -71,9 +64,9 @@ export default {
       tableData: [
       ],
       qualityTableObj: [
-        {prop: 'ranking', label: '排名序列', width: '30%'},
-        {prop: 'department', label: '部门', width: '40%'},
-        {prop: 'score', label: '综合分值', width: '30%'}
+        {fixed:true, prop: 'ranking', label: '排名序列', width: '30%'},
+        {fixed:true, prop: 'department', label: '部门', width: '40%'},
+        {fixed:true, prop: 'score', label: '综合分值', width: '30%'}
       ],
       data1:[],
       data1X:[]
@@ -173,8 +166,11 @@ export default {
   .qualityView >>> .el-input--suffix .el-input__inner{border: none;}
   .qualityEcharts{margin: 0.1rem 0;}
   .qualityEcharts .qualityTit{line-height: 0.3rem;}
-  .qualityTable >>> th{color: #333333; padding: 0; height: 0.3rem; line-height: 0.3rem; background: #f7f7f7}
-  .qualityTable >>> td{color: #666666; padding: 0; height: 0.3rem; line-height: 0.3rem;}
-  .qualityTable >>> .cell{font-size: 0.13rem; text-align: center}
+  .qualityTable >>> th{color: #333333; padding: 0rem; height: 0.3rem; line-height: 0.3rem; background: #f7f7f7}
+  .qualityTable >>> td{padding: 0rem;height: 0.02rem; line-height: 0.3rem;}
+  .qualityTable >>> td:nth-child(1){color: #666666;}
+  .qualityTable >>> td:nth-child(2){color: #666666;}
+  .qualityTable >>> td:nth-child(3){color:#2698d6}
+  .qualityTable >>> .cell{font-size: 0.13rem; text-align: center;}
   .fontColor{color: #2698d6}
 </style>
