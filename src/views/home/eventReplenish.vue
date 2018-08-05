@@ -65,11 +65,8 @@ export default {
   beforeCreate(){
     var vm = this;
     window.photoResult = function(str){
-
-      vm.form.desc = typeof(str)+ str;
-      // alert(str);
       if(str){
-        vm.uploadres = str;
+        
       }      
     }
     
@@ -83,8 +80,20 @@ export default {
     console.log(this.$loading,1111111111);
   },
   methods: {
+    uptest(){
+      console.log('上传测试');
+      fetch.post("?action=upload",{FILETYPE:'jpg'}).then(res=>{
+        console.log('上传')
+      });
+    },
     onSubmit () {
       //alert('submit!');
+      const loading = this.$loading({
+        lock: true,
+        text: '提交中...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(255, 255, 255, 0.3)'
+      });
       var vm = this;
       fetch.get("?action=GetComplaintsList&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
         this.opinionTab[0].data = res.data;
@@ -96,7 +105,8 @@ export default {
           this.$message({
             message:'提交成功',
             type: 'success',
-            center: true
+            center: true,
+            customClass:'msgdefine'
           });
           var nowcaseid = vm.caseid;
           setTimeout(function(){vm.$router.push({ name: 'eventShow',query:{caseId:nowcaseid}})},1000);
@@ -105,14 +115,17 @@ export default {
           this.$message({
             message:res.MESSAGE,
             type: 'error',
-            center: true
+            center: true,
+            customClass:'msgdefine'
           });
         }
+        loading.close();
       }).catch(function(res){
         this.$message({
           message:res.MESSAGE,
           type: 'error',
-          center: true
+          center: true,
+            customClass:'msgdefine'
         });
       }) ;
     },

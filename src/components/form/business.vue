@@ -261,7 +261,7 @@ export default {
     drawLineTwo () {
       console.log(this.factoryDataX)
       let myChartBox = document.getElementById('myChartTwo')
-      myChartBox.style.width = window.innerWidth - 30  + 'px'
+      // myChartBox.style.width = window.innerWidth - 30  + 'px'
       this.myChartTwo = echarts.init(myChartBox)
 
 /*      this.myChartTwo.setOption(
@@ -345,7 +345,7 @@ export default {
     },
     drawLineFive () {
       let myChartBox = document.getElementById('myChartFive')
-      myChartBox.style.width = window.innerWidth - 30  + 'px'
+      // myChartBox.style.width = window.innerWidth - 30  + 'px'
       this.myChartFive = echarts.init(myChartBox)
       this.myChartFive.setOption({
         series: [
@@ -386,7 +386,7 @@ export default {
     },
     drawLineFour () {
       let myChartBox = document.getElementById('myChartFour')
-      myChartBox.style.width = window.innerWidth - 30  + 'px'
+      // myChartBox.style.width = window.innerWidth - 30  + 'px'
       myChartBox.style.height = '300px'
       this.myChartFour = echarts.init(myChartBox)
       this.myChartFour.setOption({
@@ -428,7 +428,7 @@ export default {
     },
     drawLineThree () {
       let myChartBox = document.getElementById('myChartThree')
-      myChartBox.style.width = window.innerWidth - 30  + 'px'
+      // myChartBox.style.width = window.innerWidth - 30  + 'px'
       this.myChartThree = echarts.init(myChartBox)
       this.myChartThree.setOption({
         series: [
@@ -472,7 +472,7 @@ export default {
     },
     drawLineSix () {
       let myChartBox = document.getElementById('myChartSix')
-      myChartBox.style.width = window.innerWidth - 30  + 'px'
+      // myChartBox.style.width = window.innerWidth - 30  + 'px'
       this.myChartSix = echarts.init(myChartBox)
       this.myChartSix.setOption({
         color: ['red'],

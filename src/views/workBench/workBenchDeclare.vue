@@ -95,7 +95,8 @@ export default {
             this.$message({
               message: '提交成功',
               type: 'success',
-              center: true
+              center: true,
+              customClass:'msgdefine'
             });
             if (res.STATUSCODE == 0) {
               setTimeout(() => {
@@ -106,7 +107,8 @@ export default {
               this.$message({
                 message: res.MESSAGE,
                 type: 'error',
-                center: true
+                center: true,
+                customClass:'msgdefine'
               });
             }
           })

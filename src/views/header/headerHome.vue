@@ -36,8 +36,7 @@ export default {
   beforeCreate(){
     
     window.scanResult = function(str){
-      android.getClient("111"+str);
-      alert(str);
+      
     }
       
     

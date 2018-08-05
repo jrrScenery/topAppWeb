@@ -86,7 +86,7 @@ export default {
         console.log(url);
         console.log(fileExt);
         if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
-          var info={action:"downFile",downloadurl:url}
+          var info={action:"downFile",downloadurl:encodeURI(url)}
           window.webkit.messageHandlers.ioshandle.postMessage({body: info});
         }else if(/(Android)/i.test(ua)){
           var value = "{action:'downFile',downloadurl:'"+url+"',fileExt:'"+fileExt+"',docname:'"+encodeURI(docname) +"'}";

@@ -172,7 +172,8 @@ export default {
         this.$message({
           message:'暂无位置信息',
           type: 'error',
-          center: true
+          center: true,
+          customClass:'msgdefine'
         });
         this.actmarker=null;
       }

@@ -24,7 +24,8 @@
           </router-link>
         </div>
         <el-table
-          :data="caseData"
+          :data="caseData" 
+          v-loading="loadalls['caseData']['busy'] && !loadalls['caseData']['loadall']"
           style="width: 100%; max-height:1.85rem; border: 0.01rem solid #e1e1e1">
           <template v-for="item in eventTable">
             <el-table-column
@@ -64,6 +65,7 @@
         </div>
         <el-table
           :data="projData"
+          v-loading="loadalls['projData']['busy'] && !loadalls['projData']['loadall']"
           style="width: 100%; max-height:1.85rem; border: 0.01rem solid #e1e1e1">
           <template v-for="item in programTable">
             <el-table-column
@@ -105,10 +107,11 @@
         </div>
         <div class="opinionTab">
           <el-tabs v-model="activeName" type="card">
-            <template v-for="itemTab in opinionTab">
+            <template v-for="(itemTab,ti) in opinionTab">
               <el-tab-pane :label="itemTab.label" :name="itemTab.name" v-bind:key="itemTab.name">
                   <el-table
                     :data="itemTab.data"
+                    v-loading="loadalls['casopinionTabe'+ti]['busy'] && !loadalls['casopinionTabe'+ti]['loadall']"
                     style="width: 100%; border: 0.01rem solid #e1e1e1">
                     <template v-for="item in itemTab.table">
                       <el-table-column
@@ -120,7 +123,6 @@
                         <template slot-scope="scope">
                           <template v-if="itemTab.name == 'first'">
                             <router-link :to="{name:'mineFeedbackShow',query:{complantId:scope.row['COMPLANT_ID']}}">
-                            
                             <template v-if="item.prop == 'programName'">
                               <div style="display: flex;">
                                 <i style="display: inline-block; margin: 0.11rem 0.05rem 0; width: 0.08rem; height: 0.08rem; border-radius: 50%; background: #ff0000;"></i>
@@ -181,6 +183,7 @@ export default {
       programTitle: '需关注项目',
       opinionTitle: '意见和投诉',
       more: '更多>',
+      ll:true,
       caseData: [],
       eventTable:[
         {
@@ -330,7 +333,15 @@ export default {
           data:[]
         }
       ],
-      activeName: 'first'
+      activeName: 'first',
+      loadalls:{
+        "caseData":{busy:true,loadall:false},
+        "projData":{busy:true,loadall:false},
+        "casopinionTabe0":{busy:true,loadall:false},
+        "casopinionTabe1":{busy:true,loadall:false},
+        "casopinionTabe2":{busy:true,loadall:false}
+      }
+      
     }
   },
 
@@ -349,18 +360,22 @@ export default {
       fetch.get("?action=GetFocusCase&PAGE_NUM=1&PAGE_TOTAL=3","").then(res=>{
         //console.log(res.data);
         this.caseData = res.data;
+        this.loadalls.caseData = {"busy": false, loadall:true};
       });
 
       fetch.get("?action=GetFocusProject&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
         this.projData = res.data;
+        this.loadalls.projData = {"busy": false, loadall:true};
       });
 
       fetch.get("?action=GetCaseEvaluate&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
         this.opinionTab[2].data = res.data;
+        this.loadalls.casopinionTabe0 = {"busy": false, loadall:true};
       });
 
       fetch.get("?action=GetProjectEvaluate&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
         this.opinionTab[1].data = res.data;
+        this.loadalls.casopinionTabe1 = {"busy": false, loadall:true};
       });
 
       fetch.get("?action=GetComplaintsList&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
@@ -371,26 +386,48 @@ export default {
           item.COMPLAINT_COMMENT = item.COMPLAINT_COMMENT.replace(/\n/g, "<br/>");
           return item;
         })
+        this.loadalls.casopinionTabe2 = {"busy": false, loadall:true};
       });
     }
   },
-  created:function(){
-
+  beforeCreate:function(){
+    this.$router.replace(location);
     
+    history.pushState(null, null, document.url);
+    window.onpopstate = () => {
+      history.go(1)
+    }
+　　
+  },
+  mounted:function(){
+    
+　　
   },
   activated(){
+    console.log(this.$route.meta.isUseCache);
     if(!this.$route.meta.isUseCache){
       this.caseData = [];
       this.projData = [];
       this.opinionTab[0].data=[];
       this.opinionTab[1].data=[];
       this.opinionTab[2].data=[];
+      this.loadalls = {
+        "caseData":{busy:true,loadall:false},
+        "projData":{busy:true,loadall:false},
+        "casopinionTabe0":{busy:true,loadall:false},
+        "casopinionTabe1":{busy:true,loadall:false},
+        "casopinionTabe2":{busy:true,loadall:false}
+      }
 
       fetch.get("?action=checkSession",{}).then(res=>{
         this.fetchData();
       });
     }
     this.$route.meta.isUseCache = false;
+  },
+  deactivated(){
+    console.log('移除');
+    window.onpopstate = null
   }
 }
 </script>
@@ -423,3 +460,4 @@ export default {
   .opinionTab >>> .el-tabs__item{border: none; color: #999999; height: 0.24rem; line-height: 0.24rem;}
   a{color: #666666}
 </style>
+

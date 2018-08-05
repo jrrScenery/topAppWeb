@@ -13,8 +13,8 @@
           <p>{{item.SUPPORTOR_REALNAME}}</p>
           <ul>
             <li><span>角色：</span>{{item.ROLE}}</li>
-            <li><span>电话：</span><a  v-bind:href="'tel:'+item.TEL" >{{item.TEL}}</a></li>
-            <li><span>手机：</span><a  v-bind:href="'tel:'+item.MOBILE" >{{item.MOBILE}}</a></li>
+            <li><span>电话：</span><a  @click="sendCall(item.TEL)" v-bind:href="'tel:'+item.TEL" >{{item.TEL}}</a></li>
+            <li><span>手机：</span><a  @click="sendCall(item.MOBILE)" v-bind:href="'tel:'+item.MOBILE" >{{item.MOBILE}}</a></li>
             <li><span>部门：</span>{{item.ORGNAME}}</li>
             <li><span>邮箱：</span>{{item.EMAIL}}</li>
           </ul>
@@ -23,8 +23,8 @@
     </div>
     <div v-if="popBg" class="popBg" @click="popBg = !popBg">
       <div class="popBox">
-        <a v-show="chkPeople.TEL"  v-bind:href="'tel:'+chkPeople.TEL" ><span>电话</span>{{chkPeople.TEL}}</a>
-        <a v-show="chkPeople.MOBILE" v-bind:href="'tel:'+chkPeople.MOBILE" ><span>手机</span>{{chkPeople.MOBILE}}</a>
+        <a v-show="chkPeople.TEL"  @click="sendCall(chkPeople.TEL)" v-bind:href="'tel:'+chkPeople.TEL" ><span>电话</span>{{chkPeople.TEL}}</a>
+        <a v-show="chkPeople.MOBILE"  @click="sendCall(chkPeople.MOBILE)" v-bind:href="'tel:'+chkPeople.MOBILE" ><span>手机</span>{{chkPeople.MOBILE}}</a>
       </div>
     </div>
   </div>

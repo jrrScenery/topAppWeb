@@ -30,7 +30,7 @@
             <p class="arrtime"><strong>要求到场时间：</strong>{{item.REQUEST_ARRIVED_TIME}}</p>
             <p class="sendinfo">
               <strong>发货人：</strong>{{item.SENDER_NAME}} 
-              <a v-bind:href="'tel:'+item.SENDER_PHONE" style="color: #2698d6;"> {{item.phone}} </a>
+              <a  @click="sendCall(item.SENDER_PHONE)" v-bind:href="'tel:'+item.SENDER_PHONE" style="color: #2698d6;"> {{item.phone}} </a>
             </p>
             <p class="sendtype">
               <strong>发货方式：</strong>{{item.SEND_TYPE_NAME}}{{item.DELIVERY_INFO}}
@@ -178,7 +178,8 @@ export default {
         this.$message({
           message:'暂无位置信息',
           type: 'error',
-          center: true
+          center: true,
+          customClass:'msgdefine'
         });
         this.actmarker=null;
       }

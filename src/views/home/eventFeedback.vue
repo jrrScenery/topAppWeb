@@ -83,16 +83,25 @@ export default {
 
   methods: {
     submitForm (formName) {
+      const loading = this.$loading({
+        lock: true,
+        text: '提交中...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(255, 255, 255, 0.3)'
+      });
       let vm= this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let params = "&PROJECT_ID="+ this.projectId +"&TYPE="+this.value4 + "&NAME="+this.formData.name + "&PHONE="+this.formData.phone+  "&CONTENT="+window.encodeURI(this.formData.article);
           fetch.get("?action=UpdateSuggest&CASE_ID="+this.caseId+params,"").then(res=>{
+
+              loading.close();
               if(res.STATUSCODE=="0"){
                 this.$message({
                   message:'提交成功',
                   type: 'success',
-                  center: true
+                  center: true,
+                  customClass: 'msgdefine'
                 });
 
                   let nowcaseid = vm.caseId;
@@ -102,15 +111,18 @@ export default {
                 this.$message({
                   message:res.MESSAGE+"发生错误",
                   type: 'error',
-                  center: true
+                  center: true,
+                  customClass: 'msgdefine'
                 });
               }
+              
           });
         } else {
           this.$message({
                   message:"请正确填写",
                   type: 'error',
-                  center: true
+                  center: true,
+                  customClass: 'msgdefine'
                 });
           return false
         }

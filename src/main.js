@@ -12,7 +12,6 @@ import echarts from 'echarts'
 // import localstorage from './utils/localstorage'
 import commonUtil from './utils/common'
 
-
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 axios.defaults.withCredentials = false
@@ -32,6 +31,17 @@ Vue.directive('loadmore', {
     })
   }
 })
+
+Vue.prototype.sendCall = function (phoneNum) {
+  let ua = navigator.userAgent.toLowerCase()
+  if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
+    var info = {action: 'sendCall', phonenum: phoneNum}
+    window.webkit.messageHandlers.ioshandle.postMessage({body: info})
+  } else if (/(Android)/i.test(ua)) {
+    console.log('this is android')
+    return true
+  }
+}
 
 /* eslint-disable no-new */
 new Vue({

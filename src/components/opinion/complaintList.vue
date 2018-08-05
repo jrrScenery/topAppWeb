@@ -128,7 +128,9 @@ export default {
           this.$message({
             message:'已加载全部数据',
             type: 'success',
-            center: true
+            center: true,
+            duration:3000,
+            customClass:'msgdefine'
           });
         }
         else{
@@ -152,3 +154,5 @@ export default {
   .proPlanCell >>> .el-table td{padding: 0; text-align: left; color: #666666; font-size: 0.13rem;}
   .proPlanCell >>> .el-table td>.cell{line-height: 0.3rem;}
 </style>
+
+

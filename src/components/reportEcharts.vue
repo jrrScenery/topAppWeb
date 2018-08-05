@@ -222,7 +222,7 @@ export default {
     drawLineTwo () {
       let myChartBox = document.getElementById('myChartTwo')
       myChartBox.style.width = window.innerWidth - 10  + 'px'
-     //myChartBox.style.height = window.innerWidth/2 +50  + 'px'
+      myChartBox.style.height = window.innerWidth/2 +50  + 'px'
       this.myChartTwo = echarts.init(myChartBox)
       this.myChartTwo.setOption({
         legend: {

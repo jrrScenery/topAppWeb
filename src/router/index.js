@@ -37,11 +37,7 @@ export default new Router({
         {
           path: '/reportform',
           name: 'reportForm',
-          component: resolve => require(['@/views/reportform/reportForm'], resolve),
-          meta: {
-            isUseCache: false,
-            keepAlive: true
-          }
+          component: resolve => require(['@/views/reportform/reportForm'], resolve)
         },
         {
           path: '/mine',

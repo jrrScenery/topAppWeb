@@ -63,6 +63,12 @@ export default {
   },
   methods: {
     submitForm (formName) {
+      const loading = this.$loading({
+        lock: true,
+        text: '登录中...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.3)'
+      });
       const self = this;
       // 判断复选框是否被勾选 勾选则调用配置cookie方法
       if (self.ruleForm.checked == true) {
@@ -82,6 +88,8 @@ export default {
             }
             //console.log(res.data);
             if(res.data.STATUSCODE=="0"){
+
+              loading.close();
 
               global_.userInfo = res.data.userInfo;
               global_.userPermission = res.data.userPermission;
