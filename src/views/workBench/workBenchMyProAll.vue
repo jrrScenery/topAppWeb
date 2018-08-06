@@ -203,8 +203,8 @@ export default {
 <style scoped>
   .workBenchMyProView{width: 100%;}
   .content{width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
-  .workBenchMyProView >>> .el-tabs__header{margin-bottom: 0.45rem; background: #ffffff;}
-  .content >>> .el-tabs__nav{width: 100%;position: fixed;background:#f8f6f6}
+  .workBenchMyProView >>> .el-tabs__header{margin-bottom: 0.46rem; background: #ffffff;}
+  .content >>> .el-tabs__nav{width: 100%;position: fixed;background:#fff;top: 0.45rem;}
   .content >>> .el-tabs__active-bar{background: #2698d6}
   .content >>> .el-tabs__nav .el-tabs__item{width: 33%; text-align: center; padding: 0; color: #999999}
   .content >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}

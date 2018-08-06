@@ -82,6 +82,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$axios.post(global_.Server+"/api/login","ACCOUNT="+this.ruleForm.userName+"&PASSWORD="+this.getBasePass()).then(res=>{
+            loading.close();
             if(res.status==500){
               alert("连接服务超时或密码错");
               return;
@@ -89,7 +90,6 @@ export default {
             //console.log(res.data);
             if(res.data.STATUSCODE=="0"){
 
-              loading.close();
 
               global_.userInfo = res.data.userInfo;
               global_.userPermission = res.data.userPermission;
