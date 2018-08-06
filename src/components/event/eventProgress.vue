@@ -9,7 +9,10 @@
         <template>
           <!--<img v-if="items.name === '3'" src="../../assets/images/eventBaseInfo_1.jpg" alt="" width="376" height="92">-->
           <div v-for="item in items.desc" :key="item.id" class="eventProgressDesc">
-            <span>{{item.time}}</span>
+            <div style="display:flex">
+              <span>{{item.realname}}</span>
+              <p style="margin-left:0.2rem">{{item.time}}</p>
+            </div>
             <p>{{item.info}}</p>
           </div>
         </template>
@@ -49,15 +52,15 @@ export default {
   mounted(){
     let url = "?action=GetCaseLogList&CASE_ID="+this.$route.query.caseId;
     fetch.get(url,"").then(res=>{
-      //console.log(res.data)
+      console.log(res.data)
       let logData = res.data;
       let temparr= [] ;
       let tempstep = -1;
       logData.forEach(function(v,i,ar){
         if(   0 == temparr.length || (v.CASE_STEP!= temparr[temparr.length-1]["name"] && v.CASE_STEP!=null)  ){
-          temparr.push({"title":v.CASE_STEP_NAME,"inx":i,"name":v.CASE_STEP,imgSrc:require('@/assets/images/eventProgress_1.png'),desc:[]});
+          temparr.push({"title":v.CASE_STEP_NAME,"realname":v.PROCESSOR_REALNAME,"inx":i,"name":v.CASE_STEP,imgSrc:require('@/assets/images/eventProgress_1.png'),desc:[]});
         }
-        temparr[temparr.length-1]["desc"].push({info:v.PROCESSING_LOG,time:v.CREATE_DATE});
+        temparr[temparr.length-1]["desc"].push({info:v.PROCESSING_LOG,time:v.CREATE_DATE,realname:v.PROCESSOR_REALNAME});
       })
 
       this.activeName = 0;
