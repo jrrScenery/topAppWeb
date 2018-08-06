@@ -11,7 +11,7 @@
           <div v-for="item in items.desc" :key="item.id" class="eventProgressDesc">
             <div style="display:flex">
               <span>{{item.realname}}</span>
-              <p style="margin-left:0.2rem">{{item.time}}</p>
+              <p style="margin-left:0.2rem;font-size: 0.1rem">{{item.time}}</p>
             </div>
             <p>{{item.info}}</p>
           </div>
