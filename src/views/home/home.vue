@@ -16,7 +16,7 @@
           <div class="titleLeft">
             <img src="../../assets/images/index_1.png" alt="">
             <router-link :to="{name:'focusEventList'}">
-              {{eventTitle}}
+              {{eventTitle+'('+eventTitleTotal+')'}}
             </router-link>
           </div>
           <router-link :to="{name:'focusEventList'}">
@@ -56,7 +56,7 @@
           <div class="titleLeft">
             <img src="../../assets/images/index_2.png" alt="">
             <router-link :to="{name:'programList'}">
-            {{programTitle}}
+            {{programTitle+'('+programTitleTotal+')'}}
             </router-link>
           </div>
           <router-link :to="{name:'programList'}">
@@ -184,6 +184,8 @@ export default {
       opinionTitle: '意见和投诉',
       more: '更多>',
       ll:true,
+      eventTitleTotal:0,
+      programTitleTotal:0,
       caseData: [],
       eventTable:[
         {
@@ -358,13 +360,15 @@ export default {
     fetchData:function(){
 
       fetch.get("?action=GetFocusCase&PAGE_NUM=1&PAGE_TOTAL=3","").then(res=>{
-        //console.log(res.data);
+        console.log(res.data);
         this.caseData = res.data;
+        this.eventTitleTotal = res.total;
         this.loadalls.caseData = {"busy": false, loadall:true};
       });
 
       fetch.get("?action=GetFocusProject&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
         this.projData = res.data;
+        this.programTitleTotal = res.total;
         this.loadalls.projData = {"busy": false, loadall:true};
       });
 
