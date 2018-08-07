@@ -10,7 +10,8 @@
         <div class="cellTop">
           <el-row> 
             <el-col :span="11">
-              <span class="spheathcolor" :class="'spheathcolor'+info.CASE_TYPEID" ></span>{{info.CASE_NO}}
+              <span class="spheathcolor"></span>{{info.CASE_NO}}
+              <!-- <span class="spheathcolor" :class="'spheathcolor'+info.CASE_TYPEID" ></span>{{info.CASE_NO}} -->
             </el-col>
             <el-col :span="2">
               <!-- <div class="cellTopNum"> -->
