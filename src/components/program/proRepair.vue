@@ -8,16 +8,20 @@
       <div class="eventCell" v-for="info in proRepairObj" :key="info.CASE_ID">
         <router-link :to="{name:'eventShow',query: {caseId:info.CASE_ID}}">
         <div class="cellTop">
-          <el-row>
+          <el-row> 
             <el-col :span="11">
-              <div class="cellTopNum">
-                <span class="speventlevel" :class="'speventlevelcolor'+info.CASE_LEVEL" >{{info.CASE_LEVEL}}</span>{{info.CASE_NO}}
-              </div>
+              <span class="spheathcolor" :class="'spheathcolor'+info.CASE_TYPEID" ></span>{{info.CASE_NO}}
             </el-col>
-            <el-col :span="1">
-              <span class="spheathcolor" :class="'spheathcolor'+info.CASE_TYPEID" ></span>
+            <el-col :span="2">
+              <!-- <div class="cellTopNum"> -->
+                <span class="speventlevel" v-if="info.CASE_LEVEL=='一级'" :class="'speventlevelcolor'+1" >{{info.CASE_LEVEL}}</span>
+                <span class="speventlevel" v-if="info.CASE_LEVEL=='二级'" :class="'speventlevelcolor'+2" >{{info.CASE_LEVEL}}</span>
+                <span class="speventlevel" v-if="info.CASE_LEVEL=='三级'" :class="'speventlevelcolor'+3" >{{info.CASE_LEVEL}}</span>
+                <span class="speventlevel" v-if="info.CASE_LEVEL=='四级'" :class="'speventlevelcolor'+4" >{{info.CASE_LEVEL}}</span>
+                <span class="speventlevel" v-if="info.CASE_LEVEL=='五级'" :class="'speventlevelcolor'+5" >{{info.CASE_LEVEL}}</span>
+              <!-- </div> -->
             </el-col>
-            <el-col :span="12">
+            <el-col :span="11">
               <div class="cellTopTime"><span>{{info.CREATE_DATE}}</span></div>
             </el-col>
           </el-row>
@@ -135,17 +139,17 @@ export default {
   .eventCell{padding: 0 0rem 0.1rem; background: #ffffff; margin-bottom: 0.05rem;}
   .eventCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
   .eventCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
-  .eventCell .cellTop .cellTopNum span{display: inline-block; height: 0.19rem; width: 0.19rem; border-radius: 50%; vertical-align: text-top; margin-right: 0.08rem; color: #ffffff; text-align: center; line-height: 0.2rem;}
+  .eventCell .cellTop .cellTopNum span{display: inline-block; height: 0.19rem; width: 0.19rem; vertical-align: text-top; margin-right: 0.08rem; color: #ffffff; text-align: center; line-height: 0.2rem;}
   .eventCell .cellTop .cellTopColor{width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0.15rem 0; text-align: right}
   .eventCell .cellTop .cellTopTime{text-align: right; color: #999999;}
   .eventCell .cellContent .el-col{line-height: 0.25rem; color: #333333;}
   .eventCell .cellContent .el-col .tit{line-height: 0.25rem; color: #999999;}
   .speventlevel{}
-  .speventlevelcolor1{ background:#ffffff; }
-  .speventlevelcolor2{ background:#1ca2a5; }
-  .speventlevelcolor3{ background:#ffff00; }
-  .speventlevelcolor4{ background:#ff9900; }
-  .speventlevelcolor5{ background:#ff0000; }
+  .speventlevelcolor1{ color:#ffffff; }
+  .speventlevelcolor2{ color:#1ca2a5; }
+  .speventlevelcolor3{ color:#ffff00; }
+  .speventlevelcolor4{ color:#ff9900; }
+  .speventlevelcolor5{ color:#ff0000; }
   .eventCell .cellTop .spheathcolor{display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;}
   .spheathcolor1{background: #009900;}
   .spheathcolor2{background: #ffff00;}
