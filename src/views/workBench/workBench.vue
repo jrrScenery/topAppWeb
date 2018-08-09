@@ -55,7 +55,7 @@ export default {
           {imgSrc: require('@/assets/images/workBench_10.png') ,text: '所有项目', href: 'workBenchMyProAll', params: {type: 'all'},display:true}
         ]},
         {arr: [
-          {imgSrc: require('@/assets/images/workBench_11.png'), text: '我的任务',display:false},
+          {imgSrc: require('@/assets/images/workBench_11.png'), text: '我的任务',href: 'workBenchMyTask',params: {type: 'my'},display:false},
           {imgSrc: require('@/assets/images/workBench_12.png'), text: '事件申报', href: 'workBenchDeclare',display:false},
           {imgSrc: require('@/assets/images/workBench_13.png'), text: '单次支持',display:false}
         ]}
@@ -65,7 +65,7 @@ export default {
   },
   mounted () {
     let permissions = JSON.parse(localStorage.getItem("userPermission"));
-    console.log(permissions);
+    // console.log(permissions);
     for(let i=0;i<permissions.length;i++){
       if(permissions[i].PRIVID=='workFlow_business_statistics'){
         this.workBenchObj[0].arr[0].display = true;

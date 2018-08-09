@@ -211,6 +211,25 @@ export default new Router({
       component: resolve => require(['@/views/workBench/workBenchDeclare'], resolve)
     },
     {
+      path: '/workBench/workBenchMyTask',
+      name: 'workBenchMyTask',
+      component: resolve => require(['@/views/workBench/workBenchMyTask'], resolve),
+    },
+    {
+      path: '/workBench/workBenchTaskList',
+      name: 'workBenchTaskList',
+      component: resolve => require(['@/views/workBench/workBenchTaskList'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
+    },
+    {
+      path: '/workBench/workBenchTaskDetailInfo', 
+      name: 'workBenchTaskDetailInfo',
+      component: resolve => require(['@/views/workBench/workBenchTaskDetailInfo'], resolve)
+    },
+    {
       path: '/reportform/reportFormShow',
       name: 'reportFormShow',
       component: resolve => require(['@/views/reportform/reportFormShow'], resolve)
