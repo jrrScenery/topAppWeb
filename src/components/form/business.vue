@@ -1,9 +1,10 @@
 <!--业务-->
 <template>
   <div class="businessView">
-    <div class="businessTop">
-      <el-form ref="form" :model="form" label-width="0.6rem">
-        <el-form-item label="行业" >
+    <search-report-form-view  :queryData="searchData" @searchPro="getSearParams"></search-report-form-view>
+    <!-- <div class="businessTop"> -->
+      <!-- <el-form ref="form" :model="form" label-width="0.6rem"> -->
+        <!-- <el-form-item label="行业" >
           <el-select v-model="form.industry" placeholder="请选择行业">
             <el-option v-for="item in industryType" :label="item.name" :value="item.name" :key="item.id"></el-option>
           </el-select>
@@ -14,6 +15,12 @@
         <el-form-item label="项目">
           <el-input v-model="form.program"></el-input>
         </el-form-item>
+        <el-form-item label="销售">
+          <el-input v-model="form.sale"></el-input>
+        </el-form-item>
+        <el-form-item label="PM">
+          <el-input v-model="form.pm"></el-input>
+        </el-form-item>
         <el-form-item label="时间段">
           <el-col :span="11">
             <el-date-picker type="month"  @focus="noKeyword" placeholder="开始日期" v-model="form.startTime" style="width: 100%;" value-format="yyyy-MM-dd"></el-date-picker>
@@ -22,55 +29,73 @@
           <el-col :span="11">
             <el-date-picker type="month"  @focus="noKeyword" placeholder="结束日期" v-model="form.endTime" style="width: 100%;" value-format="yyyy-MM-dd"></el-date-picker>
           </el-col>
-        </el-form-item>
+        </el-form-item> -->
+      <!-- <div class="headerRight" @click.stop="popBg">{{homeRight}}</div> -->
+      <!-- <el-form>
         <el-form-item :inline="true">
-          <el-button  @click="freshCharts">查询</el-button>
+          <el-button  @click.stop="popBg=!popBg">{{homeRight}}</el-button>
         </el-form-item>
-        
-      </el-form>
-    </div>
+      </el-form> -->
+      <!-- </el-form> -->
+      
+
+    <!-- </div> -->
     <!-- <div class="businessBtm"><report-echarts></report-echarts></div> -->
 
-  <div class="echartsView">
-    <div class="chartOne">
-      <div class="BtmTit">{{chartOneTit}}</div>
-      <div id="myChartOne" :style="{width: '100%', height: '2rem'}"></div>
+    <div class="echartsView">
+      <div class="chartOne">
+        <div class="BtmTit">{{chartOneTit}}</div>
+        <div id="myChartOne" :style="{width: '100%', height: '2rem'}"></div>
+      </div>
+      <div class="chartTwo">
+        <div class="BtmTit">{{chartTwoTit}}</div>
+        <div id="myChartTwo" :style="{width: '100%', height: '2rem'}"></div>
+      </div>
+      <div class="chartThree">
+        <div class="BtmTit">{{chartThreeTit}}</div>
+        <div id="myChartThree" :style="{width: '100%', height: '2rem'}"></div>
+      </div>
+      <div class="chartFour">
+        <div class="BtmTit">{{chartFourTit}}</div>
+        <div id="myChartFour" :style="{width: '100%', height: '2rem'}"></div>
+      </div>
+      <div class="chartFive">
+        <div class="BtmTit">{{chartFiveTit}}</div>
+        <div id="myChartFive" :style="{width: '100%', height: '2rem'}"></div>
+      </div>
+      <div class="chartSix">
+        <div class="BtmTit">{{chartSixTit}}</div>
+        <div id="myChartSix" :style="{width: '100%', height: '2rem'}"></div>
+      </div>
+      <div class="chartSeven">
+        <div class="BtmTit">{{chartSevenTit}}</div>
+        <div id="myChartSeven" :style="{width: '100%', height: '2rem'}"></div>
+      </div>
     </div>
-    <div class="chartTwo">
-      <div class="BtmTit">{{chartTwoTit}}</div>
-      <div id="myChartTwo" :style="{width: '100%', height: '2rem'}"></div>
-    </div>
-    <div class="chartThree">
-      <div class="BtmTit">{{chartThreeTit}}</div>
-      <div id="myChartThree" :style="{width: '100%', height: '2rem'}"></div>
-    </div>
-    <div class="chartFour">
-      <div class="BtmTit">{{chartFourTit}}</div>
-      <div id="myChartFour" :style="{width: '100%', height: '2rem'}"></div>
-    </div>
-    <div class="chartFive">
-      <div class="BtmTit">{{chartFiveTit}}</div>
-      <div id="myChartFive" :style="{width: '100%', height: '2rem'}"></div>
-    </div>
-    <div class="chartSix">
-      <div class="BtmTit">{{chartSixTit}}</div>
-      <div id="myChartSix" :style="{width: '100%', height: '2rem'}"></div>
-    </div>
-  </div>
 
   </div>
 </template>
 
 <script>
+import searchReportFormView from '@/components/searchReportFormView'
 import fetch from '../../utils/ajax'
 
 export default {
   name: 'business',
+
+  components: {
+    searchReportFormView,
+  },
+
   data () {
     return {
+      // homeRight: '查询',
+      // popBg: false,
       form: {
         custom: '',
         program: '',
+        sale: '',
+        pm: '',
         startTime: this.getFormerTime(1)[0],
         endTime: this.getCurrentTime(1)[0],
         industry: ''
@@ -82,6 +107,7 @@ export default {
       chartFourTit: '设备型号报修数统计',
       chartFiveTit: '技术方向报修数统计',
       chartSixTit: '备件更换量统计',
+      chartSevenTit: 'SLA达成情况统计',
       oneDataX: [],
       oneData:  [],
       sixDataX:[],
@@ -91,26 +117,84 @@ export default {
       deviceTypeData:[],
       deviceModelXData:[],
       deviceModelYData:[],
-      caseLevelData:[]
+      caseLevelData:[],
+      slaModelXData:[],
+      slaModelYData:[],
+      slaModelXLable:[],
+
+      searchData:{
+        industry:[],
+      },
     }
   },
+
+  props: ['queryData'],
+
   created () {
     fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
       this.industryType = res.data;
+      console.log("KKKKKKKKKKKKKKKKK", this.industryType)
     });
-    this.freshCharts();
+    this.firstFreshCharts();
   },
   methods: {
-    
-    freshCharts(){
-      let params = {timeStart:this.form.startTime,timeEnd:this.form.endTime,PROJECT_NAME:this.form.custom,CUST_NAME:this.form.program,INDUSTRY:this.form.industry}
+
+    // updatePopBg (data) {
+    //   console.log("test133333311111111111", data)
+    //   this.popBg = data.popBg
+    //   // console.log(this.popBg)
+    // },
+
+    // searchData (data) {
+    //   console.log("test111111111111", data)
+    //   this.$emit('searchPro', data)
+    // },
+
+    freshCharts(params){
+      // let params = {timeStart:this.form.startTime,timeEnd:this.form.endTime,PROJECT_NAME:this.form.custom,CUST_NAME:this.form.program,INDUSTRY:this.form.industry}
+      console.log("begin传参____________________________00000000000000000000000", params)
       this.fetch1(params);
       this.fetch2(params);
       this.fetch3(params);
       this.fetch4(params);
       this.fetch5(params);
       this.fetch6(params);
+      this.fetch7(params);
     },
+    
+    firstFreshCharts(){
+      let params = {timeStart:this.form.startTime,timeEnd:this.form.endTime,PROJECT_NAME:this.form.custom,CUST_NAME:this.form.program,INDUSTRY:this.form.industry}
+      console.log("begin____________________________00000000000000000000000", params)
+      this.fetch1(params);
+      this.fetch2(params);
+      this.fetch3(params);
+      this.fetch4(params);
+      this.fetch5(params);
+      this.fetch6(params);
+      this.fetch7(params);
+    },
+
+    getSearParams (searchData) {
+      console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", searchData);
+      this.searchData = searchData;
+      this.getChartData();
+      // let params = {}
+      // PM_NAME:searchData.PM,PROJECT_NAME:searchData.custom,INDUSTRY:searchData.industry,CUST_NAME:searchData.program,SALE_NAME:searchData.sale,timeStart:searchData.startTime,timeEnd:searchData.endTime}
+      // this.freshCharts(params)
+    },
+
+    getChartData(){
+      let params = {};
+      params.PM_NAME = this.searchData.PM;
+      params.PROJECT_NAME = this.searchData.custom;
+      params.INDUSTRY = this.searchData.industry;
+      params.CUST_NAME = this.searchData.program;
+      params.SALE_NAME = this.searchData.sale;
+      params.timeStart = this.searchData.startTime;
+      params.timeEnd = this.searchData.endTime;
+      this.freshCharts(params)
+    },
+
     noKeyword () {
       document.activeElement.blur()
     },
@@ -128,6 +212,7 @@ export default {
       var url = "?action=GetStatisticsCaseData&dimensionType=date&timeRangeType=month";
       fetch.get(url,params).then(res=>{
         var reportData = res.DATA;
+        console.log("begin   _____", reportData)
         var dataArray = [];
         var dataArrayX = [];
         for(var i=0;i<reportData.length;i++){
@@ -136,6 +221,7 @@ export default {
         }
         this.oneData = dataArray;
         this.oneDataX = dataArrayX;
+        console.log("oneData", this.oneData, this.oneDataX)
         this.drawLineOne();
       });
     },
@@ -153,6 +239,7 @@ export default {
         }
         this.factoryData = dataArray;
         this.factoryDataX = dataArrayX;
+        console.log("factoryData", this.factoryData, this.factoryDataX)
         this.drawLineTwo();
       });
     },
@@ -167,11 +254,13 @@ export default {
           dataArray[i].value = reportData[i].NUMS;
         }
         this.deviceTypeData = dataArray;
+        console.log("deviceTypeData", this.deviceTypeData)
         this.drawLineFive();
       });
     },
     fetch4(params){
       let url = "?action=GetStatisticsCaseData&dimensionType=deviceModel&timeRangeType=month";
+      console.log("UUUUUUUUUUUUUUUUUUUUU", url)
       fetch.get(url,params).then(res=>{
         var reportData = res.DATA;
         var xData = [] ,yData = [];
@@ -181,6 +270,7 @@ export default {
         }
         this.deviceModelXData = xData;
         this.deviceModelYData = yData;
+        console.log("deviceModelX_YData", this.deviceModelXData, this.deviceModelYData)
         this.drawLineFour();
       });
     },
@@ -196,7 +286,8 @@ export default {
             dataArray[i].value = reportData[i].NUMS;
           }
           this.caseLevelData = dataArray;
-          this.drawLineThree();          
+          console.log("caseLevelData", this.caseLevelData)
+          this.drawLineThree();         
         }
       });
     },
@@ -213,8 +304,94 @@ export default {
         }
         this.sixData = dataArray;
         this.sixDataX = dataArrayX;
+        console.log("sixData", this.sixData, this.sixDataX)
         this.drawLineSix();
       });
+    },
+    fetch7(params){
+      console.log("ASDFGHASDFG")
+      let url = "?action=/report/GetStatisticsSLA&timeStart=2018-01&timeEnd=2018-08&INDUSTRY=002";
+      fetch.get(url,params).then(res=>{
+        console.log("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR", res.data)
+        var reportData = res.data;
+        var xData = [], xLabel = [], xLabels = [], xConcat = [], yData = [];
+        for(var i=reportData.length-1;i>=0;i--){
+        // for(var i=0;i<reportData.length;i++){
+          xLabel = []
+          xLabel[0] = reportData[i].SLA_TYPE;
+          xLabel[1] = reportData[i].NUMS;
+          xLabel[2] = reportData[i].SLA_RATIO;
+          xLabels[reportData.length-i-1] = xLabel;
+          xData[reportData.length-i-1] = reportData[i].SLA_RATIO;
+          yData[reportData.length-i-1] = reportData[i].SLA_TYPE;
+        }
+        xConcat.push(xData);
+        xConcat.push(xLabels);
+        this.slaModelXConcat = xConcat;
+        // this.slaModelXData = xData;
+        // this.slaModelXLable = xLabel;
+        this.slaModelYData = yData;
+        // console.log("AAAAAAAAAAAAAAAAA", this.slaModelXConcat)
+        // console.log("slaModelX_YData", this.slaModelXConcat, this.slaModelYData)
+        this.drawLineSeven();
+      });
+    },
+
+    drawLineSeven () {
+      let myChartBox = document.getElementById('myChartSeven')
+      // myChartBox.style.width = window.innerWidth - 30  + 'px'
+      myChartBox.style.height = '300px'
+      this.myChartSeven = echarts.init(myChartBox)
+      this.myChartSeven.setOption({
+        grid: {
+          top: '5%',
+          left: '0',
+          right: '4%',
+          bottom: '2%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'value',
+          boundaryGap: [0, 0.01]
+        },
+        yAxis: {
+          type: 'category',
+          data: this.slaModelYData
+        },
+        series: [
+          {
+            name: this.slaModelXConcat[1],
+            type: 'bar',
+            data: this.slaModelXConcat[0],
+            itemStyle: {
+              normal:{
+                label:{
+                  show:true,
+                  formatter: function(params){
+                    var params_list = []
+                    var params_split = params.seriesName.split(",")
+                    for (var i=0; i<params_split.length; i=i+3)
+                    {
+                      params_list.push(params_split.slice(i,i+3))
+                    }
+                    for (var i=0; i<params_list.length; i++)
+                    {
+                      if (params.name == params_list[i][0]) {
+                        // console.log("333", params_list[i][1], params_list[i][2])
+                        return (params_list[i][1].toString()+"\n"+params_list[i][2].toString()+"%")
+                      }
+                    }
+                  },
+                  position:'inside'
+                },
+                labelLine:{
+                  show:true
+                }
+              }
+            }
+          },
+        ]
+      })
     },
     drawLineOne () {
       let myChartBox = document.getElementById('myChartOne')
@@ -544,7 +721,9 @@ export default {
 
 <style scoped>
   .businessView{}
-  .businessView .businessTop{padding: 0 0.25rem; margin-bottom: 0.1rem}
+  /* .businessView{padding: 0 0.25rem; margin-bottom: 0.1rem} */
+  /* .businessView .businessTop{padding: 0 0.25rem; margin-bottom: 0.1rem} */
+  .businessView .businessTop{margin-bottom: 0.1rem}
   .businessView >>> .el-form-item__label{text-align: left}
   .businessView >>> .el-form-item{margin: 0.15rem 0 0 0;}
   .businessView >>> .line{text-align: center}
@@ -560,4 +739,7 @@ export default {
   .BtmTit{margin-top: 15px;position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.16rem; color: #2698d6;}
   .BtmTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
   .BtmTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
+  /* .headerLeft,.headerRight{display: flex; flex-direction: column; justify-content: center; align-items: center; width: 0.45rem; height: 0.45rem; font-size: 0.14rem;}
+  .headerLeft i{font-size: 0.2rem;}
+  .popBg{background: rgba(0,0,0,0.5); position: fixed; top: 0.45rem; bottom: 0; z-index: 999; padding: 0 0.25rem;} */
 </style>

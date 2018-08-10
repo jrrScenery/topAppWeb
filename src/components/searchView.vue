@@ -102,7 +102,7 @@ export default {
     this.form.industry = this.queryData.industry;
     this.form.startTime = this.queryData.startTime;
     this.form.endTime = this.queryData.endTime;
-    console.log(this.queryData.type);
+    console.log("HHHHHHHDDDDDDDDDDDJJJJJJJJJJJJ", this.queryData);
   },
 
   methods: {
@@ -114,6 +114,7 @@ export default {
     },
     onSearch () {
       let form = this.form
+      console.log("DADADADADAADADADD", form)
       this.$emit('search', form)
       // console.log(this.form, '------------------')
       let data = {

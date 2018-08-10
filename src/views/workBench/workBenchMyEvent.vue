@@ -157,7 +157,7 @@ export default {
       let params = {PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, IF_CLOSE: objnowpage.IF_CLOSE}
 
       if(this.isSearch){
-        console.log(this.searchData);
+        console.log("searchData", this.searchData);
         params.INDUSTRY_NAME = this.searchData.industry.join(",");
         params.CASE_TYPEID = this.searchData["type"].join(",");
         params.CUST_NAME = this.searchData.customer;
@@ -169,17 +169,15 @@ export default {
         params.START_TIME = this.searchData.startTime;
         params.END_TIME = this.searchData.endTime;
       }
-      console.log(params);
+      console.log("SSS_params", params);
 
 
       fetch.get(strurl,params).then(res => {
         if('0'== res.STATUSCODE){
-          
           let obj = this.opinionTab[objnowpage.idx].eventListArr;
           this.opinionTab[objnowpage.idx].eventListArr = this.returnList(flag, res, obj)
-
           this.totalData= res.totalData;
-          
+          console.log(this.totalData) 
         }
         else{
 

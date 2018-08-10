@@ -53,13 +53,14 @@ export default {
   },
 
   created () {
-    console.log(this.queryData);
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", this.queryData);
   },
 
   methods: {
     updatePopBg (data) {
+
       this.popBg = data.popBg
-      // console.log(this.popBg)
+      console.log(this.popBg)
     },
 
     searchData (data) {
