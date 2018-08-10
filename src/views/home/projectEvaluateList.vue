@@ -9,7 +9,7 @@
         stripe
         style="width: 100%">
         <template v-for="item in table_arr">
-          <router-link :to="{name:'eventEvaluationEditor'}">
+          <router-link :to="{name:'eventEvaluationEditor'}" :key="item.id">
             <el-table-column
               :fixed="item.fixed"
               :key="item.id"

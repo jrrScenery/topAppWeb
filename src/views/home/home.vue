@@ -77,10 +77,10 @@
               <template slot-scope="scope">
                 <template v-if="item.prop == 'NOW_COLOR'">
                   <div>
-                    <i v-if="scope.row[item.prop] == 0" style="display: inline-block; margin: 0.11rem 0.05rem 0; width: 0.08rem; height: 0.08rem; border-radius: 50%;"></i>
-                    <i v-if="scope.row[item.prop] == 1" style="display: inline-block; margin: 0.11rem 0.05rem 0; width: 0.08rem; height: 0.08rem; border-radius: 50%; background: #ff0000;"></i>
-                    <i v-if="scope.row[item.prop] == 2" style="display: inline-block; margin: 0.11rem 0.05rem 0; width: 0.08rem; height: 0.08rem; border-radius: 50%; background: #ff9900;"></i>
-                    <i v-if="scope.row[item.prop] == 3" style="display: inline-block; margin: 0.11rem 0.05rem 0; width: 0.08rem; height: 0.08rem; border-radius: 50%; background: #009900;"></i>
+                    <i v-if="scope.row[item.prop] == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></i>
+                    <i v-if="scope.row[item.prop] == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></i>
+                    <i v-if="scope.row[item.prop] == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></i>
+                    <i v-if="scope.row[item.prop] == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></i>
                   </div>
                 </template>
                 <router-link v-else :to="{name:'programShow',query:{projectId:scope.row['PROJECT_ID']}}">

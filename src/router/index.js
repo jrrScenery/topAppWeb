@@ -229,10 +229,15 @@ export default new Router({
       name: 'workBenchTaskDetailInfo',
       component: resolve => require(['@/views/workBench/workBenchTaskDetailInfo'], resolve)
     },
+    {
+      path: '/workBench/workBenchSLAfeedback', 
+      name: 'workBenchSLAfeedback',
+      component: resolve => require(['@/views/workBench/workBenchSLAfeedback'], resolve)
+    },
     // {
-    //   path: '/workInfo/casePartEvaluate',
+    //   path: '/home/casePartEvaluate',
     //   name: 'casePartEvaluate',
-    //   component: resolve => require(['@/views/workInfo/casePartEvaluate'], resolve)
+    //   component: resolve => require(['@/views/home/casePartEvaluate'], resolve)
     // },
     {
       path: '/reportform/reportFormShow',

@@ -1,0 +1,217 @@
+<!--SLA反馈-->
+<template>
+  <div class="workBenchSLAfeedback">
+    <header-last :title="SLAfeedbackTit"></header-last>
+    <div style="height: 0.45rem;"></div>
+    <div class="content">
+    <div class="tabheader">
+      <el-row>
+        <el-col :span="6">反馈项</el-col>
+        <el-col :span="8">反馈时间</el-col>
+        <el-col :span="6">说明</el-col>
+        <el-col :span="4">状态</el-col>
+      </el-row>
+    </div>
+    <div class="tabdetail">
+      <el-row v-for="item in SLAObj" :key="item.slaTypeId"><!--这几条数据在一个json数组slaStatus中，workid相同。-->
+        <el-col :span="7"><div>{{item.slaType}}</div></el-col>
+        <el-col :span="8"><div style="font-size:0.13rem;line-height:0.2rem">{{item.operateDate}}</div></el-col>
+        <el-col :span="6"><div style="font-size:0.13rem">{{item.feedbackDescription}}</div></el-col><!--反馈说明-->
+        <el-col :span="3" style="float:right;color:#2698d6" >
+          <!-- <div v-if="item.slaTypeId==8||item.slaTypeId==10&&item.ifFeedback==0" @click="dialogVisible=true">反馈</div>
+          <div v-else-if="item.ifFeedback!=0">已反馈</div>
+          <div v-else @click="dialogVisible=true">反馈</div> -->
+          <div v-if="item.ifFeedback==0" @click="dialogopen(item.slaTypeId)">反馈</div>
+          <div v-if="item.ifFeedback!=0" >已反馈</div>
+        </el-col>
+      </el-row>
+    </div>
+    </div>
+    <div>
+    <el-dialog :visible.sync="dialogVisible0">
+        <el-form class="form1" style="color:#333333">
+          <el-form-item label="反馈时间">
+            <el-input class="input1" :value="date" style="font-size:6px"></el-input>
+          </el-form-item>
+          <!-- <el-form-item :prop="item">
+            <el-input class="input1" :value="item.slaTypeId"></el-input>
+          </el-form-item> -->
+          <el-form-item>
+            <el-input type="textarea" placeholder="请填写说明" v-model="form.des1" style="font-size:6px"></el-input>
+          </el-form-item>
+        </el-form>
+        <div>
+          <el-button @click="dialogVisible0 = false" style="width:0.65rem;height:0.4rem;">取消</el-button>
+          <el-button type="primary" @click="onSubmit" style="width:0.65rem;height:0.4rem;">提交</el-button>
+        </div>
+    </el-dialog>
+    </div>
+    <div>
+    <el-dialog title="任务反馈" :visible.sync="dialogVisible1">
+        <el-form class="form1">
+          <!-- <el-form-item></el-form-item> -->
+          <el-form-item  label="原因">
+            <el-radio-group v-model="form.des2" style="font-size:6px">
+              <el-radio :label="1">故障定位不准确</el-radio><br>
+              <el-radio :label="2">现场备件不可用</el-radio><br>
+              <el-radio :label="3">操作失误</el-radio><br>
+              <el-radio :label="4">客户取消任务</el-radio><br>
+              <el-radio :label="5">实施时间不够</el-radio><br>
+              <el-radio :label="6">其他</el-radio>
+            </el-radio-group>
+          </el-form-item>
+            <el-form-item label="解决不成功原因">
+            <el-input type="textarea" placeholder="请填写说明" v-model="form.des3" style="font-size:6px"></el-input>
+          </el-form-item>
+        </el-form>
+        <div>
+          <el-button @click="dialogVisible1 = false" style="width:0.65rem;height:0.4rem;">取 消</el-button>
+          <el-button type="primary" @click="onSubmit" style="width:0.65rem;height:0.4rem;">提 交</el-button>
+        </div>
+    </el-dialog>
+    </div>
+  </div>
+</template>
+
+<script>
+import headerLast from "../header/headerLast";
+import global_ from "../../components/Global";
+import fetch from "../../utils/ajax";
+import loadingtmp from "@/components/load/loading";
+
+export default {
+  name: "workBenchSLAfeedback",
+  components: {
+    headerLast
+  },
+  data() {
+    return {
+      SLAfeedbackTit: "SLA反馈",
+      dialogVisible0: false,
+      dialogVisible1: false,
+      radio: 0,
+      typeid: "",
+      // params:"",
+      form:{
+        des1:"",
+        des2:"",
+        des3:"",
+        },
+      date:"",
+      status: "",
+
+      SLAObj: [
+      ],
+    };
+  },
+  created: function() {
+    fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res => {
+      console.log(res);
+      let baseInfo = res.DATA[0];
+      this.SLAObj = baseInfo.slaStatus;
+    });
+  },
+  
+  methods: {
+    getTime:function() {
+      var date = new Date();
+      var seperator1 = "-";
+      var seperator2 = ":";
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+      }
+      var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + date.getHours() + seperator2 + date.getMinutes()
+            + seperator2 + date.getSeconds();
+      return currentdate;
+    },
+    dialogopen(slaTypeId) {
+      this.date=this.$options.methods.getTime();
+      this.typeid = slaTypeId;
+      if (slaTypeId == 8 || slaTypeId == 10) {
+        this.dialogVisible1 = true;
+      } else {
+        this.dialogVisible0 = true;
+      }
+    },
+    onSubmit() {
+      const loading = this.$loading({
+        lock: true,
+        text: '提交中...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(255, 255, 255, 0.3)'
+      });
+      var vm = this;
+      let params="&REASON="+this.form.des2+"&EXPLAIN="+this.form.des1+this.form.des3;
+      console.log(params);
+      fetch.get("?action=/work/UpdateWorkSLAStatus&WORK_ID="+vm.$route.query.workId+
+      "&SLA_TYPE="+vm.typeid+"&OPERATE_DATE="+vm.date+params).then(res=>{
+        loading.close();
+              if(res.STATUSCODE=="0"){
+                this.$message({
+                  message:'提交成功',
+                  type: 'success',
+                  center: true,
+                  customClass: 'msgdefine',
+                  TimeRanges:'1000'
+                });
+                this.dialogVisible0=false;
+                this.dialogVisible1=false;
+                location.reload;
+                
+              }else{
+                this.$message({
+                  message:res.MESSAGE+"发生错误",
+                  type: 'error',
+                  center: true,
+                  customClass: 'msgdefine'
+                });
+              }
+              console.log(res);
+      });
+    }
+  }
+
+  
+};
+</script>
+
+<style scoped>
+.workBenchSLAfeedback {
+  width: 100%;
+  line-height: 0.3rem;
+  color: #666666;
+}
+.tabheader {
+  text-align: center;
+  padding-top: 0.15rem;
+  line-height: 0.36rem;
+  /* background: #ffffff; */
+  color: #333333;
+  font-size: 0.14rem;
+  font-weight: bold;
+}
+.tabdetail {
+  text-align: center;
+  padding-left: 0.1rem;
+  padding-right: 0.1rem;
+}
+.tabdetail el-row el-col {
+  height: 0.16rem;
+}
+.el-dailog {
+  margin: 0 10px;
+}
+.el-form .el-form-item {
+  font-size: 0.08rem;
+}
+.el-radio {
+  margin-top: 5px;font-size:6px
+}
+el-button{widows: 0.4rem;height: 0.4rem;}
+</style>
