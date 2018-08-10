@@ -229,11 +229,11 @@ export default new Router({
       name: 'workBenchTaskDetailInfo',
       component: resolve => require(['@/views/workBench/workBenchTaskDetailInfo'], resolve)
     },
-    {
-      path: '/workInfo/casePartEvaluate',
-      name: 'casePartEvaluate',
-      component: resolve => require(['@/views/workInfo/casePartEvaluate'], resolve)
-    },
+    // {
+    //   path: '/workInfo/casePartEvaluate',
+    //   name: 'casePartEvaluate',
+    //   component: resolve => require(['@/views/workInfo/casePartEvaluate'], resolve)
+    // },
     {
       path: '/reportform/reportFormShow',
       name: 'reportFormShow',
