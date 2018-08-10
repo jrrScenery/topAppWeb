@@ -93,7 +93,7 @@ export default {
   created () {
     fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
       this.industryType = res.data;
-      console.log("KKKKKKKKKKKKKKKKK", this.industryType)
+      // console.log(this.industryType)
     });
     this.firstFreshCharts();
   },
@@ -112,7 +112,7 @@ export default {
 
     freshCharts(params){
       // let params = {timeStart:this.form.startTime,timeEnd:this.form.endTime,PROJECT_NAME:this.form.custom,CUST_NAME:this.form.program,INDUSTRY:this.form.industry}
-      console.log("begin传参____________________________00000000000000000000000", params)
+      console.log(params)
       this.fetch1(params);
       this.fetch2(params);
       this.fetch3(params);
@@ -124,7 +124,7 @@ export default {
     
     firstFreshCharts(){
       let params = {timeStart:this.form.startTime,timeEnd:this.form.endTime,PROJECT_NAME:this.form.custom,CUST_NAME:this.form.program,INDUSTRY:this.form.industry}
-      console.log("begin____________________________00000000000000000000000", params)
+      console.log(params)
       this.fetch1(params);
       this.fetch2(params);
       this.fetch3(params);
@@ -135,7 +135,7 @@ export default {
     },
 
     getSearParams (searchData) {
-      console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", searchData);
+      console.log(searchData);
       this.searchData = searchData;
       this.getChartData();
       // let params = {}
@@ -172,7 +172,6 @@ export default {
       var url = "?action=GetStatisticsCaseData&dimensionType=date&timeRangeType=month";
       fetch.get(url,params).then(res=>{
         var reportData = res.DATA;
-        console.log("begin   _____", reportData)
         var dataArray = [];
         var dataArrayX = [];
         for(var i=0;i<reportData.length;i++){
@@ -181,7 +180,6 @@ export default {
         }
         this.oneData = dataArray;
         this.oneDataX = dataArrayX;
-        console.log("oneData", this.oneData, this.oneDataX)
         this.drawLineOne();
       });
     },
@@ -199,7 +197,6 @@ export default {
         }
         this.factoryData = dataArray;
         this.factoryDataX = dataArrayX;
-        console.log("factoryData", this.factoryData, this.factoryDataX)
         this.drawLineTwo();
       });
     },
@@ -214,13 +211,11 @@ export default {
           dataArray[i].value = reportData[i].NUMS;
         }
         this.deviceTypeData = dataArray;
-        console.log("deviceTypeData", this.deviceTypeData)
         this.drawLineFive();
       });
     },
     fetch4(params){
       let url = "?action=GetStatisticsCaseData&dimensionType=deviceModel&timeRangeType=month";
-      console.log("UUUUUUUUUUUUUUUUUUUUU", url)
       fetch.get(url,params).then(res=>{
         var reportData = res.DATA;
         var xData = [] ,yData = [];
@@ -230,7 +225,6 @@ export default {
         }
         this.deviceModelXData = xData;
         this.deviceModelYData = yData;
-        console.log("deviceModelX_YData", this.deviceModelXData, this.deviceModelYData)
         this.drawLineFour();
       });
     },
@@ -246,7 +240,6 @@ export default {
             dataArray[i].value = reportData[i].NUMS;
           }
           this.caseLevelData = dataArray;
-          console.log("caseLevelData", this.caseLevelData)
           this.drawLineThree();         
         }
       });
@@ -264,7 +257,6 @@ export default {
         }
         this.sixData = dataArray;
         this.sixDataX = dataArrayX;
-        console.log("sixData", this.sixData, this.sixDataX)
         this.drawLineSix();
       });
     },
@@ -272,7 +264,6 @@ export default {
       console.log("ASDFGHASDFG")
       let url = "?action=/report/GetStatisticsSLA&timeStart=2018-01&timeEnd=2018-08&INDUSTRY=002";
       fetch.get(url,params).then(res=>{
-        console.log("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR", res.data)
         var reportData = res.data;
         var xData = [], xLabel = [], xLabels = [], xConcat = [], yData = [];
         for(var i=reportData.length-1;i>=0;i--){
