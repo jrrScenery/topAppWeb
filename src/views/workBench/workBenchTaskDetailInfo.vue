@@ -138,7 +138,7 @@
             </router-link>
             </el-col>
             <el-col :span="7">
-            <router-link :to="{}">
+            <router-link :to="{name:'workBenchSLAfeedback',query:{workId:this.workId}}">
             <div>
                 <img src="../../assets/images/eventBaseInfo_2.png" style="width: 0.15rem; height: 0.135rem;" alt="">
                 <span>SLA反馈</span>
@@ -164,7 +164,7 @@
             <router-link :to="{}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">人员评价</li>
             </router-link>
-            <router-link :to="{}">
+            <router-link :to="{name:'casePartEvaluate',query:{caseId:this.caseId,workId:this.workId,templateType:2,bjflg:1,evaluateId:eng2partEvalid}}">
             <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/sla.png" alt="">备件评价</li>
             </router-link>
             <router-link :to="{}">
