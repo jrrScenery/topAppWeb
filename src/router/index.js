@@ -230,6 +230,11 @@ export default new Router({
       component: resolve => require(['@/views/workBench/workBenchTaskDetailInfo'], resolve)
     },
     {
+      path: '/workInfo/casePartEvaluate',
+      name: 'casePartEvaluate',
+      component: resolve => require(['@/views/workInfo/casePartEvaluate'], resolve)
+    },
+    {
       path: '/reportform/reportFormShow',
       name: 'reportFormShow',
       component: resolve => require(['@/views/reportform/reportFormShow'], resolve)

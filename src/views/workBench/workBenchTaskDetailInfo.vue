@@ -78,7 +78,6 @@
                     <li>                
                         <span>派工人电话：</span>
                         <a @click="sendCall(taskDetailInfo.workManagerMobile)" v-bind:href="'tel:'+taskDetailInfo.workManagerMobile" style="font-size: 0.13em; color: #2698d6;"> {{taskDetailInfo.workManagerMobile}} </a>
-                        <!-- <span>{{taskDetailInfo.workManagerMobile}}</span> -->
                     </li>
                     <li>                
                         <span>技术责任人：</span>
@@ -174,15 +173,15 @@
             <router-link :to="{}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件回收</li>
             </router-link>
-            <router-link :to="{}">
+            <router-link :to="{name:'eventReplenish',query:{caseId:this.caseId}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">过程记录</li>
             </router-link>
-            <router-link :to="{}">
+            <router-link :to="{name:'eventSLAInfo',query:{caseId:this.caseId}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">SLA标准查看</li>
             </router-link>
-            <router-link :to="{}">
+            <router-link :to="{name:'eventPeople',query:{caseId:this.caseId}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">参与人员</li>
-            </router-link>
+            </router-link>           
         </ul>
         </div>
         
@@ -203,6 +202,8 @@ export default {
         return{
             workBenchTaskDetailTit:"任务",
             workId:this.$route.query.workId,
+            caseId:this.$route.query.caseId,
+            eng2partEvalid:'',
             popBg: false,
             attention:"实施过程中遇到技术问题反馈技术责任人，非技术问题反馈派工人，非工作时间请联系 400-610-6661",
             taskDetailInfo:{}
@@ -212,6 +213,7 @@ export default {
         fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
             console.log(res);   
           this.taskDetailInfo = res.DATA[0];
+          this.eng2partEvalid = res.DATA[0].eng2partEvalid;
         });
     },
     beforeRouteLeave( to, from,next){

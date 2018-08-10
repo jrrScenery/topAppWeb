@@ -3,7 +3,7 @@
         <header-base-seven :title="workBenchTaskListTit" :queryData="searchData" @searchPro="searchList"></header-base-seven>
         <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
             <div class="taskListCell" v-for="item in workBenchTaskListArr" :key="item.id">
-                <router-link :to="{name:'workBenchTaskDetailInfo',query:{workId:item.workId}}">
+                <router-link :to="{name:'workBenchTaskDetailInfo',query:{workId:item.workId,caseId:item.caseId}}">
                     <ul class="tableTd">
                         <li>
                             <span>派工单号：</span>  
