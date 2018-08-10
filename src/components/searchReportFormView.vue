@@ -2,7 +2,7 @@
 <template>
   <div>
     <!-- <div class="headerRight" @click.stop="popBg=!popBg">{{homeRight}}</div> -->
-    <el-form label-width="3.9rem">
+    <el-form label-width="2.5rem">
         <el-form-item :inline="true">
           <el-button  @click.stop="popBg=!popBg">{{homeRight}}</el-button>
         </el-form-item>
