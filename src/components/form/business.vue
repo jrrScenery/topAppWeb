@@ -2,46 +2,6 @@
 <template>
   <div class="businessView">
     <search-report-form-view  :queryData="searchData" @searchPro="getSearParams"></search-report-form-view>
-    <!-- <div class="businessTop"> -->
-      <!-- <el-form ref="form" :model="form" label-width="0.6rem"> -->
-        <!-- <el-form-item label="行业" >
-          <el-select v-model="form.industry" placeholder="请选择行业">
-            <el-option v-for="item in industryType" :label="item.name" :value="item.name" :key="item.id"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="客户">
-          <el-input v-model="form.custom"></el-input>
-        </el-form-item>
-        <el-form-item label="项目">
-          <el-input v-model="form.program"></el-input>
-        </el-form-item>
-        <el-form-item label="销售">
-          <el-input v-model="form.sale"></el-input>
-        </el-form-item>
-        <el-form-item label="PM">
-          <el-input v-model="form.pm"></el-input>
-        </el-form-item>
-        <el-form-item label="时间段">
-          <el-col :span="11">
-            <el-date-picker type="month"  @focus="noKeyword" placeholder="开始日期" v-model="form.startTime" style="width: 100%;" value-format="yyyy-MM-dd"></el-date-picker>
-          </el-col>
-          <el-col class="line" :span="2">~</el-col>
-          <el-col :span="11">
-            <el-date-picker type="month"  @focus="noKeyword" placeholder="结束日期" v-model="form.endTime" style="width: 100%;" value-format="yyyy-MM-dd"></el-date-picker>
-          </el-col>
-        </el-form-item> -->
-      <!-- <div class="headerRight" @click.stop="popBg">{{homeRight}}</div> -->
-      <!-- <el-form>
-        <el-form-item :inline="true">
-          <el-button  @click.stop="popBg=!popBg">{{homeRight}}</el-button>
-        </el-form-item>
-      </el-form> -->
-      <!-- </el-form> -->
-      
-
-    <!-- </div> -->
-    <!-- <div class="businessBtm"><report-echarts></report-echarts></div> -->
-
     <div class="echartsView">
       <div class="chartOne">
         <div class="BtmTit">{{chartOneTit}}</div>
