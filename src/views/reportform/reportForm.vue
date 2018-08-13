@@ -3,7 +3,7 @@
   <div class="reportFormView">
     <el-tabs v-model="activeName">
       <el-tab-pane label="业务" name="first"><business></business></el-tab-pane>
-      <el-tab-pane label="质量" name="second" lazy><quality></quality></el-tab-pane>
+      <el-tab-pane v-if="display" label="质量" name="second" lazy><quality></quality></el-tab-pane>
       <!-- <el-tab-pane label="效能" name="third"><effect></effect></el-tab-pane> -->
     </el-tabs>
   </div>
@@ -25,8 +25,18 @@ export default {
 
   data () {
     return {
-      activeName: 'first'
+      activeName: 'first',
+      display:false
     }
+  },
+  mounted(){
+    let permissions = JSON.parse(localStorage.getItem("userPermission"));
+    console.log(permissions);
+     for(let i=0;i<permissions.length;i++){
+      if(permissions[i].PRIVID=='topApp_report_quality_view'){
+        this.display = true
+      }
+     }
   },
 
   methods: {
