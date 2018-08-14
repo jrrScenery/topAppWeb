@@ -146,9 +146,9 @@ export default {
     getChartData(){
       let params = {};
       params.PM_NAME = this.searchData.PM;
-      params.PROJECT_NAME = this.searchData.custom;
+      params.PROJECT_NAME = this.searchData.program;
       params.INDUSTRY = this.searchData.industry;
-      params.CUST_NAME = this.searchData.program;
+      params.CUST_NAME = this.searchData.custom;
       params.SALE_NAME = this.searchData.sale;
       params.timeStart = this.searchData.startTime;
       params.timeEnd = this.searchData.endTime;
@@ -262,7 +262,7 @@ export default {
     },
     fetch7(params){
       console.log("ASDFGHASDFG")
-      let url = "?action=/report/GetStatisticsSLA&timeStart=2018-01&timeEnd=2018-08&INDUSTRY=002";
+      let url = "?action=/report/GetStatisticsSLA";
       fetch.get(url,params).then(res=>{
         var reportData = res.data;
         var xData = [], xLabel = [], xLabels = [], xConcat = [], yData = [];
@@ -314,8 +314,10 @@ export default {
             name: this.slaModelXConcat[1],
             type: 'bar',
             data: this.slaModelXConcat[0],
+            barWidth: 20,
             itemStyle: {
               normal:{
+                color: '#66CD00',
                 label:{
                   show:true,
                   formatter: function(params){
@@ -329,11 +331,12 @@ export default {
                     {
                       if (params.name == params_list[i][0]) {
                         // console.log("333", params_list[i][1], params_list[i][2])
-                        return (params_list[i][1].toString()+"\n"+params_list[i][2].toString()+"%")
+                        return (params_list[i][1].toString()+" "+params_list[i][2].toString()+"%")
                       }
                     }
                   },
                   position:'inside'
+                  
                 },
                 labelLine:{
                   show:true
@@ -646,6 +649,7 @@ export default {
       num.forEach((item)=>{
         item.toString().length<2?arr.push('0'+item):arr.push(item);
       });
+      arr.pop()
       return arr.join('-')
     },
     getFormerTime (n) {

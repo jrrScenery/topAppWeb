@@ -3,8 +3,8 @@
   <div class="searchView">
     <el-form ref="form" :model="form" label-width="65px">
       <el-form-item label="行业">
-        <el-select v-model="form.industry" placeholder="请选择行业">
-          <el-option v-for="item in industryType" :label="item.name" :value="item.name" :key="item.id"></el-option>
+        <el-select v-model="form.industry" placeholder="请选择行业" clearable>
+          <el-option v-for="item in industryType" :label="item.name" :value="item.value" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="客户">
@@ -21,11 +21,11 @@
       </el-form-item>
       <el-form-item label="时间段">
         <el-col :span="11">
-          <el-date-picker type="month"  @focus="noKeyword" placeholder="开始日期" v-model="form.startTime" style="width: 100%;" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker type="month"  @focus="noKeyword" placeholder="开始月份" v-model="form.startTime" style="width: 100%;" value-format="yyyy-MM"></el-date-picker>
         </el-col>
         <el-col class="line" :span="2">~</el-col>
         <el-col :span="11">   
-          <el-date-picker type="month"  @focus="noKeyword" placeholder="结束日期" v-model="form.endTime" style="width: 100%;" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker type="month"  @focus="noKeyword" placeholder="结束月份" v-model="form.endTime" style="width: 100%;" value-format="yyyy-MM"></el-date-picker>
         </el-col>
       </el-form-item>
 
@@ -68,7 +68,7 @@ export default {
 
   created () {
     fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
-      // console.log(res.data);
+      // console.log("2222", res.data);
       this.industryType = res.data;
     });
     // fetch.get("?action=getDict&type=NT_CASE_TYPE","").then(res=>{
@@ -84,7 +84,7 @@ export default {
     this.form.program = this.queryData.program;
     this.form.startTime = this.queryData.startTime;
     this.form.endTime = this.queryData.endTime;
-    console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", this.queryData);
+    // console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", this.queryData);
   },
 
   methods: {
