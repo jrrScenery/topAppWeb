@@ -92,6 +92,8 @@ export default {
     console.log(this.$route.meta.scrollTop)
     if(!this.$route.meta.isUseCache){
       this.programListArr = [];
+      this.loadall= false;
+      this.page =1;
       this.busy= false;
       this.loadMore();
     }
