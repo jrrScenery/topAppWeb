@@ -68,7 +68,7 @@ export default {
 
   created () {
     fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
-      console.log("2222", res.data);
+      // console.log("2222", res.data);
       this.industryType = res.data;
     });
     // fetch.get("?action=getDict&type=NT_CASE_TYPE","").then(res=>{
@@ -84,7 +84,7 @@ export default {
     this.form.program = this.queryData.program;
     this.form.startTime = this.queryData.startTime;
     this.form.endTime = this.queryData.endTime;
-    console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", this.queryData);
+    // console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", this.queryData);
   },
 
   methods: {
