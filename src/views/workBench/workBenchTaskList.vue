@@ -82,6 +82,7 @@ export default {
         this.workBenchTaskListArr = [];
         this.busy= false;
         this.loadall= false;
+        this.loadall= false;
         this.loadMore();
         }
         this.$route.meta.isUseCache = false;
