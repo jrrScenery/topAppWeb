@@ -382,7 +382,7 @@ export default {
         this.loadalls.casopinionTabe1 = {"busy": false, loadall:true};
       });
 
-      fetch.get("?action=GetComplaintsList&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+      fetch.get("?action=GetComplaintsList&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
         this.opinionTab[0].data = res.data;
         //console.log(res.data)
         var tmpar= res.data;
