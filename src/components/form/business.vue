@@ -331,7 +331,7 @@ export default {
                     {
                       if (params.name == params_list[i][0]) {
                         // console.log("333", params_list[i][1], params_list[i][2])
-                        return (params_list[i][1].toString()+"\n"+params_list[i][2].toString()+"%")
+                        return (params_list[i][1].toString()+" "+params_list[i][2].toString()+"%")
                       }
                     }
                   },
