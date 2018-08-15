@@ -30,8 +30,8 @@ export default {
   data () {
     return {
       ruleForm: {
-        pass: 'smits123',//
-        userName: 'duxinc',//
+        pass: '',//smits123
+        userName: '',//duxinc
         intervale: 20,
         checked: true
       },
