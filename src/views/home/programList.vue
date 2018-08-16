@@ -23,7 +23,7 @@
                   <span v-if="item.NOW_COLOR == 1" style="background: #ff0000"></span>
                   <span v-if="item.NOW_COLOR == 2" style="background: #ff9900"></span>
                   <span v-if="item.NOW_COLOR == 3" style="background: #ffff00"></span>
-                  <span v-if="item.NOW_COLOR == " st4yle="background: #009900"></span>{{item.HEALTH_CURRENT_VALUE}}
+                  <span v-if="item.NOW_COLOR == 4" st4yle="background: #009900"></span>{{item.HEALTH_CURRENT_VALUE}}
 
                 </div>
               </el-col>
