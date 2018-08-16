@@ -11,10 +11,9 @@
               <el-col :span="8">
                 <div class="cellTopNum">{{item.PROJECT_CODE}}</div>
               </el-col>
-              <el-col :span="9">
+              <el-col :span="9"> 
                 <div class="cellTopColor">
-                 //1 #ff0000 红，2 #ff9900 橙，3 #ffff00 黄，4 #009900 绿
-                  <span v-if="item.BASE_COLOR == 0"></span>
+                 <!-- 1 #ff0000 红，2 #ff9900 橙，3 #ffff00 黄，4 #009900 绿 -->                  <span v-if="item.BASE_COLOR == 0"></span>
                   <span v-if="item.BASE_COLOR == 1" style="background: #ff0000"></span>
                   <span v-if="item.BASE_COLOR == 2" style="background: #ff9900"></span>
                   <span v-if="item.BASE_COLOR == 3" style="background: #ffff00"></span>
