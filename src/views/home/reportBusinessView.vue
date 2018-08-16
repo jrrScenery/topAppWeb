@@ -82,9 +82,9 @@ export default {
     this.form.sale = this.queryData.sale;
     this.form.PM = this.queryData.PM;
     this.form.program = this.queryData.program;
-    this.form.startTime = this.queryData.startTime;
-    this.form.endTime = this.queryData.endTime;
-    // console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", this.queryData);
+    // this.form.startTime = this.queryData.startTime;
+    // this.form.endTime = this.queryData.endTime;
+    // console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", this.queryData, this.form);
   },
 
   methods: {
