@@ -68,7 +68,7 @@ export default {
             workBenchTaskListArr:[],
             page:1,
             pageSize:10,
-            busy:true,
+            busy:false,
             loadall: false,
             isSearch:false,
             searchData:{
