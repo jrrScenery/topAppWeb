@@ -130,15 +130,16 @@
         <div class="eventShowFooter">
         <el-row>
             <el-col :span="7">
-            <router-link :to="{name:'',query:''}">
-                <div>
-                <img src="../../assets/images/eventBaseInfo_1.png" style="width: 0.11rem; height: 0.135rem;" alt="">
-                <span>承接反馈</span>
-                </div>
-            </router-link>
+            <!-- <router-link :to="{name:'',query:''}"> -->
+            <!-- <div @click.stop="popBgUndertake=!popBgUndertake"> -->
+            <div @click="choiseUndertake">
+            <img src="../../assets/images/eventBaseInfo_1.png" style="width: 0.11rem; height: 0.135rem;" alt="">
+            <span>承接反馈</span>
+            </div>
+            <!-- </router-link> -->
             </el-col>
             <el-col :span="7">
-            <router-link :to="{name:'workBenchSLAfeedback',query:{workId:this.workId}}">
+            <router-link :to="{}">
             <div>
                 <img src="../../assets/images/eventBaseInfo_2.png" style="width: 0.15rem; height: 0.135rem;" alt="">
                 <span>SLA反馈</span>
@@ -158,13 +159,13 @@
         </div>
         <div v-if="popBg" class="popBg" @click.stop="popBg=!popBg">
         <ul>
-            <router-link :to="{}">
+            <router-link :to="{name:'declareWorkLoad', query:{caseId:this.taskDetailInfo.caseId,workId:this.taskDetailInfo.workId,creatorRolename:this.taskDetailInfo.creatorRealname,expectStart:this.taskDetailInfo.expectStart,expectEnd:this.taskDetailInfo.expectEnd,standardWorkload:this.taskDetailInfo.standardWorkload}}">
             <li><img src="../../assets/images/eventBaseInfo_4.png" alt="">工作量确认</li>
             </router-link>
             <router-link :to="{}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">人员评价</li>
             </router-link>
-            <router-link :to="{name:'casePartEvaluate',query:{caseId:this.caseId,workId:this.workId,templateType:2,bjflg:1,evaluateId:eng2partEvalid}}">
+            <router-link :to="{}">
             <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/sla.png" alt="">备件评价</li>
             </router-link>
             <router-link :to="{}">
@@ -184,9 +185,74 @@
             </router-link>           
         </ul>
         </div>
-        
+        <div class="dialogUndertake">
+            <el-dialog width="80%" :visible.sync="outerVisibleUndertake" :show-close="false">
+        <!-- <el-form>
+            <ul>
+            <li>
+                <el-button type="text" @click="onUndertake">承接</el-button>
+            </li>
+            <li>
+                <el-button type="text" @click="innerVisibleUndertake = true">拒绝</el-button>
+            </li>
+            <li>
+                <el-button type="text" @click="outerVisibleUndertake = false">取消</el-button>
+            </li>
+            </ul>
+        </el-form> -->
+                <div class="modalUndertake" slot="footer">
+                <ul>
+                    <li>
+                        <el-button type="text" @click="onUndertake">承接</el-button>
+                    </li>
+                    <li>
+                        <el-button type="text" @click="innerVisibleUndertake = true">拒绝</el-button>
+                    </li>
+                    <li>
+                        <el-button type="text" @click="outerVisibleUndertake = false">取消</el-button>
+                    </li>
+                </ul>
+                </div>
+            </el-dialog>
+        </div>
+        <div class="dialogRefuseReason">
+        <el-dialog width="80%" style="margin-top: 15vh" :visible.sync="innerVisibleUndertake" :show-close="false">
+            <div class="dialog-body">
+            <el-form>
+                <el-form-item>
+                    <el-input type="textarea" v-model="taskDetailInfo.refuseReason" placeholder="请填写拒绝理由"></el-input>
+                </el-form-item>
+                <!-- <el-form-item>
+                    <el-button type="text" @click="innerVisibleUndertake = false">取消</el-button>
+                    <el-button type="text" @click="onRefuse">拒绝</el-button>
+                </el-form-item> -->
+            </el-form>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="innerVisibleUndertake = false">取 消</el-button>
+                <el-button type="primary" @click="onRefuse">拒 绝</el-button>
+            </div>
+        </el-dialog>
+        </div>
+        <div class="dialogUndertake">
+            <el-dialog :visible.sync="outerVisibleCool" :show-close="false">
+                <div class="modalUndertake">
+                <ul>
+                    <li>
+                        <el-button type="text" @click="onCool">爽约</el-button>
+                    </li>
+                    <li>
+                        <el-button type="text" @click="outerVisibleCool = false">取消</el-button>
+                    </li>
+                </ul>    
+                </div>
+            </el-dialog>
+        </div>
     </div>
 </template>
+
+
+
 
 <script>
 import headerLast from '../header/headerLast'
@@ -198,31 +264,121 @@ export default {
         headerLast,
         loadingtmp
     }, 
+
+    // inject: ['reload'],
+   
+
     data(){
         return{
             workBenchTaskDetailTit:"任务",
             workId:this.$route.query.workId,
             caseId:this.$route.query.caseId,
+            expectStart:this.$route.query.expectStart,
+            expectEnd:this.$route.query.expectEnd,
             eng2partEvalid:'',
             popBg: false,
+            popBgUndertake: false,
+            popBgRefusal: false,
             attention:"实施过程中遇到技术问题反馈技术责任人，非技术问题反馈派工人，非工作时间请联系 400-610-6661",
-            taskDetailInfo:{}
+            taskDetailInfo:{},
+            // REFUSE_REASON:
+            refuseReason: '',
+            showModal: false,
+            outerVisibleUndertake: false,
+            innerVisibleUndertake: false,
+            outerVisibleCool: false,
         }
+        
     },
     created:function(){
         fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
-            console.log(res);   
-          this.taskDetailInfo = res.DATA[0];
-          this.eng2partEvalid = res.DATA[0].eng2partEvalid;
-        });
+            console.log(res.DATA[0]);   
+            console.log("11", this.$route.query.workId);
+            this.taskDetailInfo = res.DATA[0];
+            this.taskDetailInfo.refuseReason = '';
+            // this.taskDetailInfo.refuseReason = this.refuseReason;
+            // console.log(this.taskDetailInfo);
+            this.eng2partEvalid = res.DATA[0].eng2partEvalid;
+            console.log("SSS", this.taskDetailInfo.workStatusId)
+            // console.log("CCCCCCCCCCCC", this.$route.query.workStatus)
+        },
+        fetch.get("?action=/work/UpdateWorkAcceptStatus?ACCEPT_STATUS=2",{}).then(res=>{
+            console.log("dddddddddddddddddddddddddddddd", res)
+        })
+        );
     },
     beforeRouteLeave( to, from,next){
         if (to.name == 'workBenchTaskList') {
             to.meta.isUseCache = true;    
         }        
         next();
+    },
+
+    methods: {
+        onCancel () {
+            let data = {
+            popBgUndertake: false
+            } 
+            // this.$emit('change', data)
+        },
+        onUndertake () {
+            // month = new Date().getMonth();
+            // date = new Date().getDate();
+            // hour = new Date().getHours();
+            // minute = new Date().getMinutes();
+            // second = new Date().getSeconds();
+            // let currentTime = "2018-08-15 16:15:22"
+            let currentTime = (new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds());
+            console.log("rrr", currentTime);
+            fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=2&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+currentTime,{}).then(res=>{
+                console.log("aaaaaaaaaaaaaaaaaaaaaaa", res);
+            })
+            this.outerVisibleUndertake = false;
+        },
+        onIndependence () {
+            this.$message({
+                dangerouslyUseHTMLString: true,
+                message: '<strong>当前环节不能承接反馈！</strong>'
+            });
+        },
+        onCool () {
+            let currentTime = (new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds());
+            fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=5&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+currentTime,{}).then(res=>{
+                console.log("sssssssssssssssssssssssss", res);
+            });
+            this.outerVisibleCool = false;
+        },
+        onRefuse () {
+            let currentTime = (new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds());
+            fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=3&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+currentTime+"&REFUSE_REASON="+this.taskDetailInfo.refuseReason,{}).then(res=>{
+                console.log(res)
+            });
+            console.log(11111111111111111);
+            this.innerVisibleUndertake = false;
+            this.outerVisibleUndertake = false;
+            console.log(this.taskDetailInfo.refuseReason);
+        },
+        choiseUndertake () {
+            if (this.taskDetailInfo.workStatusId == 0) 
+            {
+                this.outerVisibleUndertake = true;
+            }
+            else if (this.taskDetailInfo.workStatusId == 6)
+            {
+                this.outerVisibleCool = true;
+            }
+            else
+            {
+                this.onIndependence();
+            } 
+        },
+        noKeyword () {
+            document.activeElement.blur()
+        },
+    
     }
 }
+
 </script>
 
 
@@ -253,4 +409,28 @@ export default {
 .popBg .slali{padding: 0 0.12rem}
 .popBg li:nth-child(1){border-bottom: 0.01rem solid #e1e1e1;}
 .popBg li img{width: 0.15rem; height: 0.15rem; vertical-align: sub}
+
+.modalUndertake{background: rgba(0,0,0,0.5); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1}
+.modalUndertake ul{background: #f5f5f9; position: absolute; bottom: 0.5rem; z-index: 2; line-height: 0.3rem; width: 100%;}
+.modalUndertake li{padding: 0 0.15rem; border-bottom: 0.01rem solid #e1e1e1; text-align: center}
+.modalUndertake .slali{padding: 0 0.12rem}
+/* .modalUndertake li:nth-child(2){border-bottom: 0.01rem solid #e1e1e1;} */
+.modalUndertake li img{width: 0.15rem; height: 0.15rem; vertical-align: sub}
+
+
+/* .text >>> .el-form-item__content{margin: 0!important; line-height: 0.3rem;}
+.text >>> .el-textarea__inner{border: none; padding: 0 0.25rem; line-height: 0.3rem;    min-height: 3rem!important; color: #333333;}
+.text >>> .el-textarea__inner::placeholder{font-size: 0.13rem; color: #acacac;} */
+
+
+.dialogUndertake >>> .el-dialog__body{padding: 0px 0px}
+.dialogUndertake >>> .el-dialog__header{padding: 0px 0px 0px}
+.dialogUndertake >>> .el-dialog__footer{padding: 0px 0px 0px}
+
+.dialogRefuseReason >>> .el-dialog__header{padding: 0px 0px 0px}
+.dialogRefuseReason >>> .el-dialog__body{padding: 15px 5px}
+.dialogRefuseReason >>> .el-dialog__footer{padding: 1px 5px 5px; text-align:center}
+
 </style>
+
+

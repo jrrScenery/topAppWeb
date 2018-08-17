@@ -86,6 +86,11 @@ export default new Router({
       component: resolve => require(['@/views/home/eventSLAInfo'], resolve)
     },
     {
+      path: '/home/declareWorkLoad',
+      name: 'declareWorkLoad',
+      component: resolve => require(['@/views/home/declareWorkLoad'], resolve)
+    },
+    {
       path: '/home/eventReplenish',
       name: 'eventReplenish',
       component: resolve => require(['@/views/home/eventReplenish'], resolve)
