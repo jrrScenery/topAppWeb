@@ -31,7 +31,7 @@
               <el-input placeholder="请输入路途工作量" v-model="form.wayWorkload" class="bInput"></el-input>
             </el-form-item>
             <el-form-item class="submitBtn">
-              <el-button type="primary" @click="onSubmit">提交</el-button>
+              <el-button type="primary" @click="onSubmit('form')">提交</el-button>
             </el-form-item>
           </el-form>
         
@@ -74,13 +74,61 @@ export default {
     this.form.workId = this.$route.query.workId;
   },
   methods: {
-    onSubmit () {
-      let form = this.form;
-      fetch.get("?action=/work/DeclareWorkload"+"&START_TIME="+form.expectStart+"&END_TIME="+form.expectEnd+"&CASE_ID="+form.caseId+"&WORK_ID="+form.workId+"&NORMAL_WORKLOAD="+form.standardWorkload+"&EXTRA_WORKLOAD="+form.wayWorkload,{}).then(res=>{
-        console.log("aaaaaaaaaaaaaaaaaaaaaaa", res)
+    onSubmit (formName) {
+      const loading = this.$loading({
+        lock: true,
+        text: '提交中...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(255, 255, 255, 0.3)'
+      });
+      let vm= this;
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let params = "&START_TIME="+this.form.expectStart+"&END_TIME="+this.form.expectEnd+"&CASE_ID="+this.form.caseId+"&WORK_ID="+this.form.workId+"&NORMAL_WORKLOAD="+this.form.standardWorkload+"&EXTRA_WORKLOAD="+this.form.wayWorkload;
+          fetch.get("?action=UpdateSuggest"+params,"").then(res=>{
+
+              loading.close();
+              if(res.STATUSCODE=="0"){
+                this.$message({
+                  message:'提交成功',
+                  type: 'success',
+                  center: true,
+                  customClass: 'msgdefine'
+                });
+
+                  let nowcaseid = vm.caseId;
+                  setTimeout(function(){vm.$router.push({ name: 'eventShow',query:{caseId:nowcaseid}})},1000);
+              }
+              else{
+                this.$message({
+                  message:res.MESSAGE+"发生错误",
+                  type: 'error',
+                  center: true,
+                  customClass: 'msgdefine'
+                });
+              }
+              
+          });
+        } else {
+          this.$message({
+                  message:"请正确填写",
+                  type: 'error',
+                  center: true,
+                  customClass: 'msgdefine'
+                });
+          return false
+        }
       })
-      
     },
+
+
+
+    //   let form = this.form;
+    //   fetch.get("?action=/work/DeclareWorkload"+"&START_TIME="+form.expectStart+"&END_TIME="+form.expectEnd+"&CASE_ID="+form.caseId+"&WORK_ID="+form.workId+"&NORMAL_WORKLOAD="+form.standardWorkload+"&EXTRA_WORKLOAD="+form.wayWorkload,{}).then(res=>{
+    //     console.log("aaaaaaaaaaaaaaaaaaaaaaa", res)
+    //   })
+      
+    // },
     noKeyword () {
       document.activeElement.blur()
     },
