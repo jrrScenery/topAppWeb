@@ -97,7 +97,7 @@ export default {
                 });
 
                   let nowcaseid = vm.caseId;
-                  setTimeout(function(){vm.$router.push({ name: 'eventShow',query:{caseId:nowcaseid}})},1000);
+                  setTimeout(function(){vm.$router.push({ name: "workBenchTaskDetailInfo",query:{caseId:nowcaseid}})},1000);
               }
               else{
                 this.$message({
