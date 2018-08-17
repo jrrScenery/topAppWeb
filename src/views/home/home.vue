@@ -76,11 +76,13 @@
               :min-width="item.width">
               <template slot-scope="scope">
                 <template v-if="item.prop == 'NOW_COLOR'">
-                  <div>
+                <!-- 1 #ff0000 红，2 #ff9900 橙，3 #ffff00 黄，4 #009900 绿 -->                  
+                <div>
                     <i v-if="scope.row[item.prop] == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></i>
                     <i v-if="scope.row[item.prop] == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></i>
                     <i v-if="scope.row[item.prop] == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></i>
-                    <i v-if="scope.row[item.prop] == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></i>
+                    <i v-if="scope.row[item.prop] == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ffff00;"></i>
+                    <i v-if="scope.row[item.prop] == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></i>
                   </div>
                 </template>
                 <router-link v-else :to="{name:'programShow',query:{projectId:scope.row['PROJECT_ID']}}">
@@ -382,7 +384,7 @@ export default {
         this.loadalls.casopinionTabe1 = {"busy": false, loadall:true};
       });
 
-      fetch.get("?action=GetComplaintsList&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+      fetch.get("?action=GetComplaintsList&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
         this.opinionTab[0].data = res.data;
         //console.log(res.data)
         var tmpar= res.data;

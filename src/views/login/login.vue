@@ -30,8 +30,8 @@ export default {
   data () {
     return {
       ruleForm: {
-        pass: 'smits123',//
-        userName: 'duxinc',//
+        pass: '',//smits123
+        userName: '',//duxinc
         intervale: 20,
         checked: true
       },
@@ -162,10 +162,10 @@ export default {
             var value = "{action:location,empId:"+localStorage.getItem('empId')+",interval:"+this.interval+"}";
             android.getClient(value);
           }
-          this.$router.push({name: 'home'});
+          this.$router.push({name: 'home',query: { rancode: (new Date()).valueOf() }});
         });
       }else{
-        this.$router.push({name: 'home'});
+        this.$router.push({name: 'home',query: { rancode: (new Date()).valueOf() }});
       }
     },
     // 设置cookie

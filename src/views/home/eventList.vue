@@ -106,6 +106,8 @@ export default {
     console.log(this.$route.meta.savedPosition)
     if(!this.$route.meta.isUseCache){
       this.eventListArr = [];
+      this.page =1;
+      this.loadall =false;
       this.busy= false;
       this.loadMore();
     }

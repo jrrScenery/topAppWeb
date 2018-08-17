@@ -68,7 +68,7 @@ export default {
             workBenchTaskListArr:[],
             page:1,
             pageSize:10,
-            busy:true,
+            busy:false,
             loadall: false,
             isSearch:false,
             searchData:{
@@ -82,6 +82,7 @@ export default {
         this.workBenchTaskListArr = [];
         this.busy= false;
         this.loadall= false;
+        this.page =1;
         this.loadMore();
         }
         this.$route.meta.isUseCache = false;

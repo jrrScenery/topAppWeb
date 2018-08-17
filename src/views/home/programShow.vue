@@ -12,14 +12,18 @@
             </el-col>
             <el-col :span="9">
               <div class="cellTopColor">
-                <span v-if="projectInfo.BASE_COLOR == 0"></span>
-                <span v-if="projectInfo.BASE_COLOR == 1" style="background: #ff0000"></span>
-                <span v-if="projectInfo.BASE_COLOR == 2" style="background: #ffff00"></span>
-                <span v-if="projectInfo.BASE_COLOR == 3" style="background: #009900"></span>{{projectInfo.HEALTH_BASE_VALUE}}
-                <span v-if="projectInfo.NOW_COLOR == 0"></span>
-                <span v-if="projectInfo.NOW_COLOR == 1" style="background: #ff0000"></span>
-                <span v-if="projectInfo.NOW_COLOR == 2" style="background: #ffff00"></span>
-                <span v-if="projectInfo.NOW_COLOR == 3" style="background: #009900"></span>{{projectInfo.HEALTH_CURRENT_VALUE}}
+                  <span v-if="projectInfo.BASE_COLOR == 0"></span>
+                  <span v-if="projectInfo.BASE_COLOR == 1" style="background: #ff0000"></span>
+                  <span v-if="projectInfo.BASE_COLOR == 2" style="background: #ff9900"></span>
+                  <span v-if="projectInfo.BASE_COLOR == 3" style="background: #ffff00"></span>
+                  <span v-if="projectInfo.BASE_COLOR == 4" style="background: #009900"></span>{{projectInfo.HEALTH_BASE_VALUE}}
+                  <span v-if="projectInfo.NOW_COLOR == 0"></span>
+                  <span v-if="projectInfo.NOW_COLOR == 1" style="background: #ff0000"></span>
+                  <span v-if="projectInfo.NOW_COLOR == 2" style="background: #ff9900"></span>
+                  <span v-if="projectInfo.NOW_COLOR == 3" style="background: #ffff00"></span>
+                  <span v-if="projectInfo.NOW_COLOR == 4" style="background: #009900"></span>{{projectInfo.HEALTH_CURRENT_VALUE}}
+
+                                  
               </div>
             </el-col>
             <el-col :span="7">
