@@ -157,8 +157,7 @@ export default {
       var flag = this.objpages[this.activeName]["page"]>1;
       let objnowpage = this.objpages[this.activeName];     
       let strurl = "?action=GetCaseList&TYPE=all";
-      let params = {PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, IF_CLOSE: objnowpage.IF_CLOSE}
-
+      let params = {CASE_TYPEID:"1,2",PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, IF_CLOSE: objnowpage.IF_CLOSE}
       if(this.isSearch){
         console.log(this.searchData);
         if(this.searchData.custid){params.CUST_ID = this.searchData.custid;}

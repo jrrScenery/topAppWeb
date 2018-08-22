@@ -63,7 +63,7 @@ export default {
     return {
       form: {
         industry: '',
-        type: [],
+        type: [1,2],
         customer: '',
         proName: '',
         sale: '',
