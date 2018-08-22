@@ -85,7 +85,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let params = "&START_TIME="+this.form.expectStart+"&END_TIME="+this.form.expectEnd+"&CASE_ID="+this.form.caseId+"&WORK_ID="+this.form.workId+"&NORMAL_WORKLOAD="+this.form.standardWorkload+"&EXTRA_WORKLOAD="+this.form.wayWorkload;
-          fetch.get("?action=UpdateSuggest"+params,"").then(res=>{
+          fetch.get("?action=/work/DeclareWorkload"+params,"").then(res=>{
 
               loading.close();
               if(res.STATUSCODE=="0"){
@@ -96,8 +96,9 @@ export default {
                   customClass: 'msgdefine'
                 });
 
-                  let nowcaseid = vm.caseId;
-                  setTimeout(function(){vm.$router.push({ name: "workBenchTaskDetailInfo",query:{caseId:nowcaseid}})},1000);
+                  let nowcaseid = vm.form.caseId;
+                  let nowwordid = vm.form.workId;
+                  setTimeout(function(){vm.$router.push({ name: "workBenchTaskDetailInfo",query:{caseId:nowcaseid,workId:nowwordid}})},1000);
               }
               else{
                 this.$message({
@@ -120,9 +121,6 @@ export default {
         }
       })
     },
-
-
-
     //   let form = this.form;
     //   fetch.get("?action=/work/DeclareWorkload"+"&START_TIME="+form.expectStart+"&END_TIME="+form.expectEnd+"&CASE_ID="+form.caseId+"&WORK_ID="+form.workId+"&NORMAL_WORKLOAD="+form.standardWorkload+"&EXTRA_WORKLOAD="+form.wayWorkload,{}).then(res=>{
     //     console.log("aaaaaaaaaaaaaaaaaaaaaaa", res)

@@ -160,7 +160,7 @@
         <div v-if="popBg" class="popBg" @click.stop="popBg=!popBg">
         <ul>
             <router-link :to="{name:'declareWorkLoad', query:{caseId:this.taskDetailInfo.caseId,workId:this.taskDetailInfo.workId,creatorRolename:this.taskDetailInfo.creatorRealname,expectStart:this.taskDetailInfo.expectStart,expectEnd:this.taskDetailInfo.expectEnd,standardWorkload:this.taskDetailInfo.standardWorkload}}">
-            <li><img src="../../assets/images/eventBaseInfo_4.png" alt="">工作量确认</li>
+            <li><img src="../../assets/images/eventBaseInfo_4.png" alt="">工作量申报</li>
             </router-link>
             <router-link :to="{}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">人员评价</li>
@@ -302,9 +302,9 @@ export default {
             console.log("SSS", this.taskDetailInfo.workStatusId)
             // console.log("CCCCCCCCCCCC", this.$route.query.workStatus)
         },
-        fetch.get("?action=/work/UpdateWorkAcceptStatus?ACCEPT_STATUS=2",{}).then(res=>{
-            console.log("dddddddddddddddddddddddddddddd", res)
-        })
+        // fetch.get("?action=/work/UpdateWorkAcceptStatus?ACCEPT_STATUS=2",{}).then(res=>{
+        //     console.log("dddddddddddddddddddddddddddddd", res)
+        // })
         );
     },
     beforeRouteLeave( to, from,next){
@@ -322,12 +322,6 @@ export default {
             // this.$emit('change', data)
         },
         onUndertake () {
-            // month = new Date().getMonth();
-            // date = new Date().getDate();
-            // hour = new Date().getHours();
-            // minute = new Date().getMinutes();
-            // second = new Date().getSeconds();
-            // let currentTime = "2018-08-15 16:15:22"
             let currentTime = (new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds());
             console.log("rrr", currentTime);
             fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=2&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+currentTime,{}).then(res=>{
@@ -353,7 +347,6 @@ export default {
             fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=3&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+currentTime+"&REFUSE_REASON="+this.taskDetailInfo.refuseReason,{}).then(res=>{
                 console.log(res)
             });
-            console.log(11111111111111111);
             this.innerVisibleUndertake = false;
             this.outerVisibleUndertake = false;
             console.log(this.taskDetailInfo.refuseReason);
