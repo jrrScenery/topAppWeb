@@ -63,7 +63,7 @@ export default {
     return {
       form: {
         industry: '',
-        type: [1,2],
+        type: [],
         customer: '',
         proName: '',
         sale: '',
@@ -81,6 +81,8 @@ export default {
   watch: {},
 
   created () {
+    console.log("huxyh");
+    console.log(this.form);
     fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
       // console.log(res.data);
       this.industryType = res.data;

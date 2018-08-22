@@ -101,7 +101,7 @@ export default {
       searchData:{
         industry: this.$route.query.industry? this.$route.query.industry.split(','):[],
         custid:  this.$route.query.custid,
-        type:this.$route.query.type? this.$route.query.type.split(','):[],
+        type:this.$route.query.type? this.$route.query.type.split(','):["1","2"],
         startTime: this.$route.query.startDate,
         endTime: this.$route.query.endDate,
       },
