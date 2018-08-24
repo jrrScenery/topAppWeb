@@ -91,6 +91,16 @@ export default new Router({
       component: resolve => require(['@/views/home/declareWorkLoad'], resolve)
     },
     {
+      path: '/home/sparePartsSortOut',
+      name: 'sparePartsSortOut',
+      component: resolve => require(['@/views/home/sparePartsSortOut'], resolve)
+    },
+    {
+      path: '/home/addParts',
+      name: 'addParts',
+      component: resolve => require(['@/views/home/addParts'], resolve)
+    },
+    {
       path: '/home/eventReplenish',
       name: 'eventReplenish',
       component: resolve => require(['@/views/home/eventReplenish'], resolve)
