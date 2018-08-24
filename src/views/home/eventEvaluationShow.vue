@@ -110,7 +110,7 @@ export default {
   .signature li div{color: #333333; margin-left: 0.6rem;}
   .signature li .sign{ }
   .signature li .sign img{width: 100%; display: block; flex-grow: 1;}
-  label.el-checkbox{overflow: hidden;}
+  label.el-checkbox{white-space:normal}
   .improveCell span{ color: #666;word-wrap: break-word}
   .el-checkbox__input.is-disabled+span.el-checkbox__label{color: #666!important;}
 </style>
