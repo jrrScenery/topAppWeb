@@ -168,7 +168,7 @@
             <router-link :to="{}">
             <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/sla.png" alt="">备件评价</li>
             </router-link>
-            <router-link :to="{}">
+            <router-link :to="{name: 'sparePartsSortOut',query:{caseId:this.caseId}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件整理</li>
             </router-link>
             <router-link :to="{}">
