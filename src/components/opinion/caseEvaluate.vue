@@ -18,6 +18,15 @@
             :prop="item.prop"
             :label="item.label"
             :min-width="item.width">
+            <template slot-scope="scope">
+              <template v-if="item.prop == 'TOTAL_SCORE'">
+                <div>
+                  <i v-if="scope.row[item.prop] <= 3" style="color:#ff0000">{{scope.row[item.prop]}}</i>
+                  <i v-else>{{scope.row[item.prop]}}</i>
+                </div>
+              </template>
+              <span v-else class="table_name">{{scope.row[item.prop]}}</span>
+            </template>
           </el-table-column>
         </template>
         <template>1211</template>
@@ -103,6 +112,7 @@ export default {
       var flag = this.page>1;
       var reqParams = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
       fetch.get("?action=GetCaseEvaluate",reqParams).then(res=>{
+        console.log(res)
         if(flag){
           this.tableData = this.tableData.concat(res.data);
         }else{
