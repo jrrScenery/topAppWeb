@@ -136,7 +136,8 @@ export default {
       })
     },
     rowClick (row) {
-      this.$router.push({name: 'eventEvaluationShow', query: {evaluateid: row.EVALUATE_ID}})
+      console.log(row);
+      this.$router.push({name: 'eventEvaluationShow', query: {evaluateid: row.EVALUATE_ID,serviceId:row.SERVICE_ID,caseId:row.CASE_ID,serviceType:row.SERVICE_TYPE}})
     },
   }
 }
