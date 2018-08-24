@@ -101,7 +101,7 @@ export default {
       searchData:{
         industry: this.$route.query.industry? this.$route.query.industry.split(','):[],
         custid:  this.$route.query.custid,
-        type:this.$route.query.type? this.$route.query.type.split(','):[],
+        type:this.$route.query.type? this.$route.query.type.split(','):["1","2"],
         startTime: this.$route.query.startDate,
         endTime: this.$route.query.endDate,
       },
@@ -157,8 +157,7 @@ export default {
       var flag = this.objpages[this.activeName]["page"]>1;
       let objnowpage = this.objpages[this.activeName];     
       let strurl = "?action=GetCaseList&TYPE=all";
-      let params = {PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, IF_CLOSE: objnowpage.IF_CLOSE}
-
+      let params = {CASE_TYPEID:"1,2",PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, IF_CLOSE: objnowpage.IF_CLOSE}
       if(this.isSearch){
         console.log(this.searchData);
         if(this.searchData.custid){params.CUST_ID = this.searchData.custid;}
