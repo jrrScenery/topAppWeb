@@ -56,19 +56,19 @@ export default {
           prop: 'PROJECT_NAME',
           label: '项目名称',
           fixed: true,
-          width: '50%'
+          width: '45%'
         },
         {
           prop: 'TOTAL_SCORE',
           label: '分值',
           fixed: true,
-          width: '12%'
+          width: '13%'
         },
         {
           prop: 'EVALUATE_FROM_NAME',
           label: '评价人',
           fixed: true,
-          width: '16%'
+          width: '20%'
         },
         {
           prop: 'EVALUATE_TIME',
