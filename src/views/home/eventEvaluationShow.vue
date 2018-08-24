@@ -13,8 +13,8 @@
                   :colors="['#666666', '#999999', '#FF9900']">
           </el-rate>
         </div>
-        <div class="improve">
-          <span>{{item.question.questionComment2}}</span>
+        <div class="improve" v-if="item.scoreval<4">
+          <span>{{item.question.questionComment2}}{{item.scoreval}}</span>
           <div class="improveCell">
             <el-checkbox-group v-model="item.aroptschked">
               <el-checkbox  disabled  v-for="itemoption in item.options" :label="itemoption.optionId" :key="itemoption.optionId">{{itemoption.optionComment}}</el-checkbox>
@@ -111,7 +111,7 @@ export default {
   .signature li .sign{ }
   .signature li .sign img{width: 100%; display: block; flex-grow: 1;}
   label.el-checkbox{overflow: hidden;}
-  .improveCell span{ color: #666;}
+  .improveCell span{ color: #666;word-wrap: break-word}
   .el-checkbox__input.is-disabled+span.el-checkbox__label{color: #666!important;}
 </style>
 <style>
