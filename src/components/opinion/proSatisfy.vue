@@ -62,13 +62,13 @@ export default {
           prop: 'TOTAL_SCORE',
           label: '分值',
           fixed: true,
-          width: '13%'
+          width: '15%'
         },
         {
           prop: 'EVALUATE_FROM_NAME',
           label: '评价人',
           fixed: true,
-          width: '20%'
+          width: '18%'
         },
         {
           prop: 'EVALUATE_TIME',

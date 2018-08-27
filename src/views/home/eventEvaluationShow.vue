@@ -36,7 +36,7 @@
                     <span>工程师名称：</span>
                     <span>{{onsiteService.enginnername}}</span>
                 </li>
-                <li v-if="serviceType==2">                
+                <li v-if="onsiteService.faultDesc&&serviceType==2">                
                     <span>服务类型：</span>
                     <span>{{onsiteService.serviceType}}</span>
                 </li>
@@ -56,11 +56,11 @@
                     <span>遗留问题及建议：</span>
                     <span>{{onsiteService.problemSuggest}}</span>
                 </li>
-                <li v-if="serviceType==2">                
+                <li v-if="onsiteService.workContent&&serviceType==2">                
                     <span>工作内容：</span>
                     <span>{{onsiteService.workContent}}</span>
                 </li>
-                <li v-if="serviceType==2">                
+                <li v-if="onsiteService.workResultContent&&serviceType==2">                
                     <span>工作结果：</span>
                     <span>{{onsiteService.workResultContent}}</span>
                 </li>
@@ -73,7 +73,7 @@
       <div class="content">
         <div class="editorView" v-for="(item,i) in evaluateval" :key="i">
           <div class="star">
-            <span class="starTit">{{item.question.questionComment}}</span>
+            <span class="starTit">{{i+1}}.{{item.question.questionComment}}</span>
             <el-rate
                     v-model="item.scoreval"
                     disabled
@@ -144,14 +144,14 @@ export default {
       })
     }else if(this.serviceType==2){
       fetch.get("?action=/work/GetOnsiteServiceFormInfo&SERVICE_ID=" + this.serviceId+"&CASE_ID="+this.caseId).then(res=>{
-        // console.log(res);
+        console.log(res);
         this.onsiteService = res.DATA[0]
       })
     }
     fetch.get("?action=GetCaseEvaluateInfo&EVALUATE_ID=" + this.evaluateid).then(res=>{
         //console.log(this.eventListArr);
 
-      // console.log(res.data)
+      console.log(res)
       if("0" == res.STATUSCODE){
         let jsonres= res;
         this.signimg = jsonres.imgObject.imgStr;
