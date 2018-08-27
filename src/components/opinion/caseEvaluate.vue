@@ -57,25 +57,25 @@ export default {
           prop: 'PROJECT_NAME',
           label: '项目名称',
           fixed: true,
-          width: '50%'
+          width: '45%'
         },
         {
           prop: 'TOTAL_SCORE',
           label: '分值',
           fixed: true,
-          width: '12%'
+          width: '15%'
         },
         {
           prop: 'EVALUATE_FROM_NAME',
           label: '评价人',
           fixed: true,
-          width: '16%'
+          width: '18%'
         },
         {
           prop: 'EVALUATE_TIME',
           label: '评价时间',
           fixed: true,
-          width: '22%'
+          width: '22%' 
         }
       ],
 
@@ -136,7 +136,8 @@ export default {
       })
     },
     rowClick (row) {
-      this.$router.push({name: 'eventEvaluationShow', query: {evaluateid: row.EVALUATE_ID}})
+      console.log(row);
+      this.$router.push({name: 'eventEvaluationShow', query: {evaluateid: row.EVALUATE_ID,serviceId:row.SERVICE_ID,caseId:row.CASE_ID,serviceType:row.SERVICE_TYPE}})
     },
   }
 }

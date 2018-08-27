@@ -66,7 +66,7 @@
         <el-table
           :data="projData"
           v-loading="loadalls['projData']['busy'] && !loadalls['projData']['loadall']"
-          style="width: 100%; max-height:1.85rem; border: 0.01rem solid #e1e1e1">
+          style="width: 100%; border: 0.01rem solid #e1e1e1">
           <template v-for="item in programTable">
             <el-table-column
               :fixed="item.fixed"
