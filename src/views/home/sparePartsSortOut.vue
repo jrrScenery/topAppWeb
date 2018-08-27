@@ -3,7 +3,7 @@
         <header-base-eight :title="sparePartsSortOutTit"></header-base-eight>
         <!-- <div class="content"> -->
         <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
-            <el-row style="margin-left: 0.15rem">
+            <!-- <el-row style="margin-left: 0.15rem">
                 <el-col :span="2"><div class="grid-content bg-purple-light">选择</div></el-col>
                 <el-col :span="3"><div class="grid-content bg-purple">已整理</div></el-col>
                 <el-col :span="3"><div class="grid-content bg-purple-light">来源</div></el-col>
@@ -16,11 +16,6 @@
                 <el-row>
                     <el-col :span="2">
                         <div class="grid-content bg-purple-light">
-                            <!-- <el-radio-group v-model="radioParts"> -->
-                                            <!-- <el-radio :label="item.partsId" @change="onPartsArrange"></el-radio> -->
-                                    <!-- <el-button slot="reference"><el-radio :label="item.partsId"></el-radio></el-button> -->
-                                <!-- <el-radio :label="item.partsId"><el-button slot="reference"></el-button></el-radio> -->
-                            <!-- </el-radio-group> -->
                             <div class="contentPopover">
                                 <el-popover placement="bottom" width="335" trigger="click">
                                 
@@ -91,7 +86,84 @@
                     <el-col :span="4"><div v-if="item.typeName" class="grid-content bg-purple-light">{{item.typeName}}</div><div v-else class="grid-content bg-purple-light">null</div></el-col>
                     <el-col :span="6"><div v-if="item.sn" class="grid-content bg-purple">{{item.sn}}</div><div v-else class="grid-content bg-purple">null</div></el-col>
                 </el-row>
+            </div> -->
+
+            <div class="SelectListCell">
+            <el-table :data="sparePartsSortOutSelectArr" style="width: 100%">
+                <el-table-column prop="date" label="修改" width="48" class="grid-content bg-purple-light">
+                    <template slot-scope="scope">
+                    <div class="contentPopover">
+                        <el-popover placement="bottom" width="335" trigger="click">
+                        
+                            <el-button  slot="reference" class="el-icon-edit-outline"></el-button>
+                            <div class="contentParts">
+                                <el-form label-width="1rem">
+                                    <el-form-item label="备件来源">
+                                        <el-radio-group v-model="scope.row.partsSource" disabled>
+                                            <el-radio label="1">供货件</el-radio>
+                                            <el-radio label="2">换下件</el-radio>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                    <el-form-item label="PN/FRU">
+                                        <el-input v-model="scope.row.pnFru" placeholder="请输入PN/FRU" class="bInput"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="序列号">
+                                        <el-input v-model="scope.row.sn" placeholder="请输入序列号" class="bInput"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="备件类型">
+                                        <el-select v-model="form.partsType" placeholder="请选择备件类型" clearable>
+                                            <el-option v-for="itemParts in partsTypeList" :label="itemParts.partsTypeName" :value="itemParts.partsTypeId" :key="itemParts.id"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item label="*是否有包装">
+                                        <el-radio-group v-model="scope.row.ifPackage">
+                                            <el-radio label="1">是</el-radio>
+                                            <el-radio label="0">否</el-radio>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                    <el-form-item label="*是否已带走">
+                                        <el-radio-group v-model="scope.row.ifTakeaway">
+                                            <el-radio label="1">是</el-radio>
+                                            <el-radio label="0">否</el-radio>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                    <el-form-item label="*使用情况">
+                                        <el-radio-group v-model="scope.row.useStatus">
+                                            <el-radio label="1">已使用件</el-radio>
+                                            <el-radio label="2">未使用件</el-radio>
+                                            <el-radio label="3">坏件</el-radio>
+                                            <el-radio label="4">DOA不可用</el-radio>
+                                            <el-radio label="5">未到场</el-radio>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                    <el-form-item label="*能否回收">
+                                        <el-radio-group v-model="scope.row.isRecycle">
+                                            <el-radio label="1">是</el-radio>
+                                            <el-radio label="0">否</el-radio>
+                                            <el-radio label="3">暂缓</el-radio>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                    <el-form-item label="回收件说明">
+                                        <el-input placeholder="请输入回收件说明" v-model="scope.row.useStatusRemark" class="bInput"></el-input>
+                                    </el-form-item>
+                                    <el-form-item class="submitBtn">
+                                        <el-button type="primary" @click="onSubmit(scope.row)">提交</el-button>
+                                    </el-form-item>
+                                </el-form>
+                            </div>
+        
+                        </el-popover>
+                    </div>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="ifArrangeName" label="已整理" width="62"></el-table-column>
+                <el-table-column prop="partsSourceName" label="来源" width="62"></el-table-column>
+                <el-table-column prop="pnFru" label="PN/FRU" width="74"></el-table-column>
+                <el-table-column prop="typeName" label="备件类型" width="78"></el-table-column>
+                <el-table-column prop="sn" label="SN" width="60"></el-table-column>
+            </el-table>
             </div>
+
             <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
         </div>
     </div>
@@ -122,18 +194,6 @@ export default {
                 useStatusRemark: "",
                 partsType: "",
             },
-            // item: {
-            //     partsSource: "",
-            //     partsId: "",
-            //     pnFru: "",
-            //     SN: "",
-            //     ifPackage: "",
-            //     ifTakeaway: "",
-            //     useStatus: "",
-            //     isRecycle: "",
-            //     useStatusRemark: "",
-            //     partsType: "",
-            // },
             partsTypeList: [],
             sparePartsSortOutTit:"事件备件列表",
             caseId:this.$route.query.caseId,
@@ -169,17 +229,6 @@ export default {
     // },
     methods:{
         getSparePart(){
-            // var params = {PAGENUM:this.page,PAGETOTAL:this.pageSize};
-            // if(this.isSearch){
-            //     params.PROJECT_NO = this.searchData.projectNo;
-            //     params.PROJECT_NAME = this.searchData.projectName;
-            //     params.CASE_NO = this.searchData.caseNo;
-            //     params.CASE_LEVEL = this.searchData.caseLevel.join(",");
-            //     params.CREATE_REALNAME = this.searchData.creatorRealname;
-            //     params.START_DATA_BEGIN = this.searchData.expectStart;
-            //     params.START_DATA_END = this.searchData.expectEnd;
-            //     params.WORK_REQUIRE = this.searchData.workRequire;
-            // };
             fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId).then(res=>{
                 console.log("SSSSS", res.DATA);
                 this.sparePartsSortOutSelectArr = res.DATA;
@@ -200,11 +249,10 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
-            // let vm= this;
+            let vm= this;
             console.log("1111111111", formUpdateParts)
             // this.$refs.sparePartsSortOutSelectArr.validate((valid) => {
             //     if (valid) {
-            alert(1111111)
             let params = "&PARTS_SOURCE="+formUpdateParts.partsSource+"&PN_FRU="+formUpdateParts.pnFru+"&SN="+formUpdateParts.SN+"&TYPE="+formUpdateParts.partsType+"&USE_STATUS="+formUpdateParts.useStatus+"&USE_STATUS_REMARK="+formUpdateParts.useStatusRemark+"&IF_PACKAGE="+formUpdateParts.ifPackage+"&IF_TAKEAWAY="+formUpdateParts.ifTakeaway+"&IS_RECYCLE="+formUpdateParts.isRecycle+"&UPDATE_DATE="+this.getCurrentTime(1)[0];
             fetch.get("?action=/parts/updatePartsGathering"+params,"").then(res=>{
                 console.log("VVVVVVVVV", res)
