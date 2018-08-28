@@ -128,13 +128,16 @@
                                         </el-radio-group>
                                     </el-form-item>
                                     <el-form-item label="*使用情况">
-                                        <el-radio-group v-model="scope.row.useStatus">
+                                        <!-- <el-radio-group v-model="scope.row.useStatus">
                                             <el-radio label="1">已使用件</el-radio>
                                             <el-radio label="2">未使用件</el-radio>
                                             <el-radio label="3">坏件</el-radio>
                                             <el-radio label="4">DOA不可用</el-radio>
                                             <el-radio label="5">未到场</el-radio>
-                                        </el-radio-group>
+                                        </el-radio-group> -->
+                                        <el-select v-model="scope.row.useStatus" placeholder="选择使用情况" clearable>
+                                            <el-option v-for="use in useStatusList" :label="use.useStatusName" :value="use.useStatusId" :key="use.id"></el-option>
+                                        </el-select>
                                     </el-form-item>
                                     <el-form-item label="*能否回收">
                                         <el-radio-group v-model="scope.row.isRecycle">
@@ -206,6 +209,14 @@ export default {
                 caseLevel:[]
             },
             radioParts: "",
+            useStatus: "",
+            useStatusList: [
+                {"useStatusName": "已使用件", "useStatusId": "1"},
+                {"useStatusName": "未使用件", "useStatusId": "2"},
+                {"useStatusName": "坏件", "useStatusId": "3"},
+                {"useStatusName": "DOA不可用", "useStatusId": "4"},
+                {"useStatusName": "未到场", "useStatusId": "5"},
+                ],
         };
     },
 
