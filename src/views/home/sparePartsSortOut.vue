@@ -159,7 +159,7 @@
                 <el-table-column prop="ifArrangeName" label="已整理" width="62"></el-table-column>
                 <el-table-column prop="partsSourceName" label="来源" width="62"></el-table-column>
                 <el-table-column prop="pnFru" label="PN/FRU" width="74"></el-table-column>
-                <el-table-column prop="typeName" label="备件类型" width="78"></el-table-column>
+                <el-table-column prop="typeName" label="备件类型" width="76"></el-table-column>
                 <el-table-column prop="sn" label="SN" width="60"></el-table-column>
             </el-table>
             </div>
