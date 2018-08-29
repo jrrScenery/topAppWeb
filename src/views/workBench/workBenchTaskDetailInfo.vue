@@ -322,9 +322,9 @@ export default {
             // this.$emit('change', data)
         },
         onUndertake () {
-            let currentTime = (new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds());
-            console.log("rrr", currentTime);
-            fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=2&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+currentTime,{}).then(res=>{
+            let params = "&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+this.getCurrentTime()
+            console.log("rrr", params);
+            fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=2" + params,{}).then(res=>{
                 console.log("aaaaaaaaaaaaaaaaaaaaaaa", res);
             })
             this.outerVisibleUndertake = false;
@@ -336,15 +336,17 @@ export default {
             });
         },
         onCool () {
-            let currentTime = (new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds());
-            fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=5&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+currentTime,{}).then(res=>{
+            let params = "&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+this.getCurrentTime()
+            console.log("cooltime", params)
+            fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=5" + params,{}).then(res=>{
                 console.log("sssssssssssssssssssssssss", res);
             });
             this.outerVisibleCool = false;
         },
         onRefuse () {
-            let currentTime = (new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds());
-            fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=3&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+currentTime+"&REFUSE_REASON="+this.taskDetailInfo.refuseReason,{}).then(res=>{
+            let params = "&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+this.getCurrentTime()+"&REFUSE_REASON="+this.taskDetailInfo.refuseReason;
+            console.log("time", params)
+            fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=3" + params,{}).then(res=>{
                 console.log(res)
             });
             this.innerVisibleUndertake = false;
@@ -364,6 +366,12 @@ export default {
             {
                 this.onIndependence();
             } 
+        },
+        getCurrentTime () {
+            let month = new Date().getMonth() + 1;
+            let currentTime = (new Date().getFullYear() + "-" + month + "-" + new Date().getDate() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds());
+            //console.log(yearArr)
+            return currentTime
         },
         noKeyword () {
             document.activeElement.blur()
