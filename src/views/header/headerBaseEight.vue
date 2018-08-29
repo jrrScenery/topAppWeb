@@ -4,13 +4,11 @@
     <header>
       <div class="headerLeft"  v-on:click="back"><i class="el-icon-arrow-left"></i></div>
       <h2>{{title}}</h2>
-      <div class="el-icon-plus" @click="onAddParts"></div>
+      <div class="el-icon-plus" @click.stop="popBg=!popBg"></div>
     </header>
-    <!-- <template v-if="popBg">
-      <div class="popBg">
-        <add-parts @change="updatePopBg" @search="searchData" :queryData="queryData"></add-parts>
-      </div>
-    </template> -->
+    <div class="popBg" v-if="popBg">
+      <add-parts @change="updatePopBg" @search="searchData"></add-parts>
+    </div>
   </div>
 </template>
 
@@ -25,10 +23,11 @@ export default {
 
   data () {
     return {
+      popBg: false,
     }
   },
 
-  props:['title','queryData'],
+  props:['title'],
 
   watch: {
   },
@@ -43,6 +42,7 @@ export default {
 
     searchData (data) {
       this.$emit('searchPro', data)
+      console.log("11111111111111112222",data)
     },
 
     onAddParts () {

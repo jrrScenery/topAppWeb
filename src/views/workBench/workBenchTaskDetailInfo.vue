@@ -292,14 +292,14 @@ export default {
     },
     created:function(){
         fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
-            console.log(res.DATA[0]);   
-            console.log("11", this.$route.query.workId);
+            // console.log(res.DATA[0]);   
+            // console.log("11", this.$route.query.workId);
             this.taskDetailInfo = res.DATA[0];
             this.taskDetailInfo.refuseReason = '';
             // this.taskDetailInfo.refuseReason = this.refuseReason;
             // console.log(this.taskDetailInfo);
-            this.eng2partEvalid = res.DATA[0].eng2partEvalid;
-            console.log("SSS", this.taskDetailInfo.workStatusId)
+            // this.eng2partEvalid = res.DATA[0].eng2partEvalid;
+            // console.log("SSS", this.taskDetailInfo.workStatusId)
             // console.log("CCCCCCCCCCCC", this.$route.query.workStatus)
         },
         // fetch.get("?action=/work/UpdateWorkAcceptStatus?ACCEPT_STATUS=2",{}).then(res=>{
