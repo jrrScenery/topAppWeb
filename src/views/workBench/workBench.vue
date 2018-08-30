@@ -56,7 +56,7 @@ export default {
         ]},
         {arr: [
           {imgSrc: require('@/assets/images/workBench_11.png'), text: '我的任务',href: 'workBenchMyTask',params: {type: 'my'},display:true},
-          {imgSrc: require('@/assets/images/workBench_12.png'), text: '事件申报', href: 'workBenchDeclare',display:false},
+          {imgSrc: require('@/assets/images/workBench_12.png'), text: '事件申报', href: 'workBenchDeclare',display:true},
           {imgSrc: require('@/assets/images/workBench_13.png'), text: '单次支持',display:false}
         ]}
       ],
