@@ -139,15 +139,15 @@
             <!-- </router-link> -->
             </el-col>
             <el-col :span="7">
-            <router-link :to="{}">
-            <div>
-                <img src="../../assets/images/eventBaseInfo_2.png" style="width: 0.15rem; height: 0.135rem;" alt="">
-                <span>SLA反馈</span>
-            </div>
+            <router-link :to="{name:'workBenchSLAfeedback',query:{workId:this.$route.query.workId}}">
+                <div>
+                    <img src="../../assets/images/eventBaseInfo_2.png" style="width: 0.15rem; height: 0.135rem;" alt="">
+                    <span>SLA反馈</span>
+                </div>
             </router-link>
             </el-col>
             <el-col :span="7">
-            <router-link :to="{}">
+            <router-link :to="{name:'serviceList',query:{caseId:this.$route.query.caseId,workId:this.$route.query.workId}}">
                 <div>
                 <img src="../../assets/images/eventBaseInfo_3.png" style="width: 0.145rem; height: 0.145rem;" alt="">
                 <span>服务单</span>
@@ -291,6 +291,8 @@ export default {
         
     },
     created:function(){
+        console.log(this.$route.query.workId);
+        console.log(this.$route.query.caseId);
         fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
             // console.log(res.DATA[0]);   
             // console.log("11", this.$route.query.workId);

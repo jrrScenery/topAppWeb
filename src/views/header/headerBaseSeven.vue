@@ -40,6 +40,8 @@ export default {
 
   methods: {
     updatePopBg (data) {
+      console.log(data+"==========");
+      console.log(data.popBg);
       this.popBg = data.popBg
     },
 

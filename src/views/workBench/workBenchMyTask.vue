@@ -38,7 +38,8 @@ export default {
  
     },
     created:function(){
-        fetch.get("?action=/work/GetWorkStatusList",{}).then(res=>{        
+        fetch.get("?action=/work/GetWorkStatusList",{}).then(res=>{ 
+            console.log(res);       
           this.liObj = res.DATA;
         });
     },
