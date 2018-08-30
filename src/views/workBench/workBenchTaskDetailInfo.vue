@@ -202,14 +202,14 @@
         </el-form> -->
                 <div class="modalUndertake" slot="footer">
                 <ul>
-                    <li>
-                        <el-button type="text" @click="onUndertake">承接</el-button>
+                    <li @click="onUndertake">
+                        <el-button type="text">承接</el-button>
                     </li>
-                    <li>
-                        <el-button type="text" @click="innerVisibleUndertake = true">拒绝</el-button>
+                    <li @click="innerVisibleUndertake = true">
+                        <el-button type="text">拒绝</el-button>
                     </li>
-                    <li>
-                        <el-button type="text" @click="outerVisibleUndertake = false">取消</el-button>
+                    <li @click="outerVisibleUndertake = false">
+                        <el-button type="text">取消</el-button>
                     </li>
                 </ul>
                 </div>
@@ -238,11 +238,11 @@
             <el-dialog :visible.sync="outerVisibleCool" :show-close="false">
                 <div class="modalUndertake">
                 <ul>
-                    <li>
-                        <el-button type="text" @click="onCool">爽约</el-button>
+                    <li @click="onCool">
+                        <el-button type="text">爽约</el-button>
                     </li>
-                    <li>
-                        <el-button type="text" @click="outerVisibleCool = false">取消</el-button>
+                    <li @click="outerVisibleCool = false">
+                        <el-button type="text">取消</el-button>
                     </li>
                 </ul>    
                 </div>
