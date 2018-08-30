@@ -90,7 +90,7 @@
 
             <div class="SelectListCell">
             <el-table :data="sparePartsSortOutSelectArr" style="width: 100%">
-                <el-table-column prop="date" label="修改" width="48" class="grid-content bg-purple-light">
+                <el-table-column prop="date" label="修改" width="48">
                     <template slot-scope="scope">
                     <div class="contentPopover">
                         <el-popover placement="bottom" width="335" trigger="click">
@@ -220,24 +220,6 @@ export default {
         };
     },
 
-    // created (){
-    //     fetch.get("?action=/parts/GetPartsTypeList",{}).then(res=>{
-    //         this.partsTypeList = res.DATA;
-    //         alert(res)
-    //         console.log("AAA", this.partsTypeList);
-    //     });
-    // },
-    // activated(){
-    //     console.log("222222", this.$route.meta.isUseCache);
-    //     if(!this.$route.meta.isUseCache){
-    //     this.sparePartsSortOutSelectArr = [];
-    //     this.busy= false;
-    //     this.loadall= false;
-    //     this.page =1;
-    //     this.loadMore();
-    //     }
-    //     this.$route.meta.isUseCache = false;
-    // },
     methods:{
         getSparePart(){
             fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId).then(res=>{
@@ -249,7 +231,6 @@ export default {
             });
             fetch.get("?action=/parts/GetPartsTypeList",{}).then(res=>{
                 this.partsTypeList = res.DATA;
-                console.log("AAA", this.partsTypeList);
             });
         },
          
@@ -317,14 +298,7 @@ export default {
                 this.getSparePart();
             }, 500);
         },
-        // searchList(formData){
-        //     this.searchData = formData;
-        //     this.sparePartsSortOutSelectArr=[];
-        //     this.isSearch = true;
-        //     this.page = 1;
-        //     this.loadall= false;
-        //     this.loadMore();
-        // }
+
         standardDate(join,...num){
             let arr = [];
             num.forEach((item)=>{
@@ -359,7 +333,7 @@ export default {
 <style scoped>
 .sparePartsSortOutSelectView{width: 100%}
 .content{width: 100%; position: absolute; top: 0.45rem; bottom: 0;margin-top: 0.05rem; overflow: scroll;}
-.SelectListCell{margin-left: 0.15rem; background: #ffffff}
+.SelectListCell{background: #ffffff}
 .SelectListCell >>> .el-radio__label{font-size: 0px}
 .tableTd li{display: flex; line-height: 0.2rem; padding: 0 0.2rem; color: #666666;}
 .tableTd span{text-align: center;}
