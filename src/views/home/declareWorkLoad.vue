@@ -32,7 +32,10 @@
               </div>
             </el-form-item>
             <el-form-item label="实施工作量">
-              <el-input v-model="form.standardWorkload" class="bInput"></el-input>
+              <el-tooltip class="item" effect="dark" content="已确认实施工作量 (单位小时，如：1.5)" placement="right">
+                <el-input v-model="form.standardWorkload" class="bInput"></el-input>
+                <el-button></el-button>
+              </el-tooltip>
             </el-form-item>
             <el-form-item label="路途工作量">
               <el-input placeholder="请输入路途工作量 (单位小时，如：1.5)" v-model="form.wayWorkload" class="bInput"></el-input>
@@ -75,7 +78,7 @@ export default {
     this.form.expectStart = this.$route.query.expectStart;
     this.form.expectEnd = this.$route.query.expectEnd;
     this.form.creatorRolename = this.$route.query.creatorRolename;
-    this.form.standardWorkload = this.$route.query.standardWorkload + " 小时";
+    this.form.standardWorkload = this.$route.query.standardWorkload;
     this.form.wayWorkload = this.$route.query.wayWorkload;
     this.form.caseId = this.$route.query.caseId;
     this.form.workId = this.$route.query.workId;
@@ -89,8 +92,11 @@ export default {
         background: 'rgba(255, 255, 255, 0.3)'
       });
       let vm= this;
+      this.form.expectStart = this.formatTime(this.form.expectStart);
+      this.form.expectEnd = this.formatTime(this.form.expectEnd);
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          console.log("form", this.form)
           let params = "&START_TIME="+this.form.expectStart+"&END_TIME="+this.form.expectEnd+"&CASE_ID="+this.form.caseId+"&WORK_ID="+this.form.workId+"&NORMAL_WORKLOAD="+this.form.standardWorkload+"&EXTRA_WORKLOAD="+this.form.wayWorkload;
           fetch.get("?action=/work/DeclareWorkload"+params,"").then(res=>{
 
@@ -134,6 +140,11 @@ export default {
     //   })
       
     // },
+    formatTime (chtime){
+      let d = new Date(chtime);
+      let time = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+      return time
+    },
     noKeyword () {
       document.activeElement.blur()
     },
