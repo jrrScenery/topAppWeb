@@ -10,25 +10,32 @@
             </el-form-item>
             <!-- <hr class="secondBoundaries"></hr> -->
             <el-form-item label="开始时间">
-              <el-date-picker type="date" @focus="noKeyword" placeholder="开始时间" v-model="form.expectStart" style="width: 100%;" value-format="yyyy-MM-dd">
-                <!-- <el-input class="bInput" v-model="form.expectStart">
-                </el-input> -->
-              </el-date-picker>
-              <!-- <el-input v-model="form.expectStart" class="bInput"></el-input> -->
-              <!-- </el-input> -->
+              <div class="block">
+                <span class="demonstration"></span>
+                <el-date-picker
+                  v-model="form.expectStart"
+                  type="datetime"
+                  placeholder="选择日期时间"
+                  default-time="12:00:00">
+                </el-date-picker>
+                </div>
             </el-form-item>
             <el-form-item label="结束时间">
-              <!-- <el-input v-model="form.expectEnd" class="bInput"></el-input> -->
-              <el-date-picker type="date" @focus="noKeyword" placeholder="结束时间" v-model="form.expectEnd" style="width: 100%;" value-format="yyyy-MM-dd">
-                <!-- <el-input class="bInput" v-model="form.expectStart">
-                </el-input> -->
-              </el-date-picker>
+                <div class="block">
+                <span class="demonstration"></span>
+                <el-date-picker
+                  v-model="form.expectEnd"
+                  type="datetime"
+                  placeholder="选择日期时间"
+                  default-time="12:00:00">
+                </el-date-picker>
+              </div>
             </el-form-item>
             <el-form-item label="实施工作量">
               <el-input v-model="form.standardWorkload" class="bInput"></el-input>
             </el-form-item>
             <el-form-item label="路途工作量">
-              <el-input placeholder="请输入路途工作量" v-model="form.wayWorkload" class="bInput"></el-input>
+              <el-input placeholder="请输入路途工作量 (单位小时，如：1.5)" v-model="form.wayWorkload" class="bInput"></el-input>
             </el-form-item>
             <el-form-item class="submitBtn">
               <el-button type="primary" @click="onSubmit('form')">提交</el-button>
@@ -68,7 +75,7 @@ export default {
     this.form.expectStart = this.$route.query.expectStart;
     this.form.expectEnd = this.$route.query.expectEnd;
     this.form.creatorRolename = this.$route.query.creatorRolename;
-    this.form.standardWorkload = this.$route.query.standardWorkload;
+    this.form.standardWorkload = this.$route.query.standardWorkload + " 小时";
     this.form.wayWorkload = this.$route.query.wayWorkload;
     this.form.caseId = this.$route.query.caseId;
     this.form.workId = this.$route.query.workId;
