@@ -242,18 +242,32 @@ export default new Router({
     {
       path: '/workBench/workBenchTaskDetailInfo', 
       name: 'workBenchTaskDetailInfo',
-      component: resolve => require(['@/views/workBench/workBenchTaskDetailInfo'], resolve)
+      component: resolve => require(['@/views/workBench/workBenchTaskDetailInfo'], resolve),
     },
     {
       path: '/workBench/workBenchSLAfeedback', 
       name: 'workBenchSLAfeedback',
       component: resolve => require(['@/views/workBench/workBenchSLAfeedback'], resolve)
+    }, 
+    {
+      path: '/home/casePartEvaluate',
+      name: 'casePartEvaluate',
+      component: resolve => require(['@/views/home/casePartEvaluate'], resolve)
     },
-    // {
-    //   path: '/home/casePartEvaluate',
-    //   name: 'casePartEvaluate',
-    //   component: resolve => require(['@/views/home/casePartEvaluate'], resolve)
-    // },
+    {
+      path: '/workBench/serviceList',
+      name: 'serviceList',
+      component: resolve => require(['@/views/workBench/serviceList'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
+    },
+    {
+      path: '/workBench/onsiteServiceInfo',
+      name: 'onsiteServiceInfo',
+      component: resolve => require(['@/views/workBench/onsiteServiceInfo'], resolve)
+    },
     {
       path: '/reportform/reportFormShow',
       name: 'reportFormShow',
