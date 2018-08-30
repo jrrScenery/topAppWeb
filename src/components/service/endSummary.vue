@@ -123,10 +123,10 @@ export default {
             console.log(res);
             this.formData.userAndPrjItem = res.DATA[0];
         })
-        fetch.get("?action=getDict&type=NT_SERVICE_TYPE","").then(res=>{
+        fetch.get("?action=/system/getDict2&DICT_TYPE=NT_SERVICE_TYPE","").then(res=>{
             console.log(res);
         })
-        fetch.get("?action=getDict&type=NT_CASE_WORK_RESULT","").then(res=>{
+        fetch.get("?action=/system/getDict2&DICT_TYPE=NT_CASE_WORK_RESULT","").then(res=>{
             console.log(res);
         })
     },

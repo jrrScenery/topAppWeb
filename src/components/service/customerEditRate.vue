@@ -153,7 +153,7 @@ export default {
                         }
 
                         this.evaluateval.options.forEach(function(item,i,ar){
-
+                            
                         })
                     })
                 }
