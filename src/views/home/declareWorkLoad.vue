@@ -32,7 +32,7 @@
               </div>
             </el-form-item>
             <el-form-item label="实施工作量">
-              <el-tooltip class="item" effect="dark" content="已确认实施工作量 (单位小时，如：1.5)" placement="right">
+              <el-tooltip class="item" effect="light" content="已确认实施工作量 (单位小时，如：1.5)" placement="right">
                 <el-input v-model="form.standardWorkload" class="bInput"></el-input>
                 <el-button></el-button>
               </el-tooltip>
