@@ -33,20 +33,19 @@
                             <span>事件编号</span>
                             <span>{{formData.userAndPrjItem.caseCd}}</span>
                         </li>
-                        <li>
+                        <li v-if="serviceType==2">
                             <span>工程师姓名</span>
                             <span>{{formData.userAndPrjItem.enginnername}}</span>
                         </li>
                     </ul>
-                    <!-- <el-form-item label="服务类型">
-                        <template>
-                            <el-select clearable placeholder="请选择服务类型">
-                            <el-option v-for="item in options" :label="item.label" :value="item.value" :key="item.value">
+                    <el-form-item v-if="serviceType==2" label="服务类型">
+                        <el-col :span="15">
+                            <el-select clearable placeholder="请选择服务类型" v-model="formData.serviceType" style="width:100%">
+                                <el-option v-for="item in serviceTypeArr" :label="item.DICTNAME" :value="item.DICTID" :key="item.value">
                             </el-option>
                             </el-select>
-                        </template>
-
-                    </el-form-item> -->
+                        </el-col>
+                    </el-form-item>
                     <el-form-item label="到场时间">
                         <el-col :span="15">
                             <el-date-picker
@@ -69,23 +68,40 @@
                             </el-date-picker>
                         </el-col>
                     </el-form-item>
-                    <el-form-item label="实际实用工时">
-                        <el-col :span="12">
-                        <el-input v-model="formData.userAndPrjItem.realWork" placeholder="请输入使用工时" style="width:100%"></el-input>
-                        </el-col>
-                    </el-form-item>
-                    <div class="article">{{content}}</div>
-                    <el-form-item >
-                        <el-input type="textarea" v-model="formData.userAndPrjItem.workContent" placeholder="请输入工作内容"></el-input>
-                    </el-form-item>
-                    <div class="article">{{result}}</div>
-                    <el-form-item >
-                        <el-radio label="1">顺利完成</el-radio>
-                        <el-radio label="2">观察/下一步处理</el-radio>
-                    </el-form-item>
-                    <el-form-item >
-                        <el-input type="textarea" v-model="formData.userAndPrjItem.problemPlan" placeholder="若存在问题及下一步计划：若顺利完成，则此项填无"></el-input>
-                    </el-form-item>
+                    <div v-if="serviceType==2">
+                        <el-form-item label="实际实用工时">
+                            <el-col :span="12">
+                            <el-input v-model="formData.userAndPrjItem.realWork" placeholder="请输入使用工时" style="width:100%"></el-input>
+                            </el-col>
+                        </el-form-item>
+                        <div class="article">{{content}}</div>
+                        <el-form-item >
+                            <el-input type="textarea" v-model="formData.userAndPrjItem.workContent" placeholder="请输入工作内容"></el-input>
+                        </el-form-item>
+                        <div class="article">{{result}}</div>
+                        <el-form-item>
+                            <el-radio-group v-for="item in workResultArr" :key="item.id" v-model="formData.workResult">
+                                <el-radio :label="item.DICTID" style="width:100%">{{item.DICTNAME}}</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-input type="textarea" v-model="formData.userAndPrjItem.problemPlan" placeholder="若存在问题及下一步计划：若顺利完成，则此项填无"></el-input>
+                        </el-form-item>
+                    </div>
+                    <div v-else>
+                        <el-form-item label="故障现象">
+                            <el-input v-model="formData.userAndPrjItem.faultDesc" placeholder="请输入故障现象"></el-input>
+                        </el-form-item>
+                        <el-form-item label="分析诊断">
+                            <el-input v-model="formData.userAndPrjItem.analysis" placeholder="请输入分析诊断"></el-input>
+                        </el-form-item>
+                        <el-form-item label="实施结果">
+                            <el-input v-model="formData.userAndPrjItem.implementResult" placeholder="请输入实施结果"></el-input>
+                        </el-form-item>
+                        <el-form-item label="遗留问题及建议">
+                            <el-input v-model="formData.userAndPrjItem.problemSuggest" placeholder="请输入遗留问题及建议"></el-input>
+                        </el-form-item>
+                    </div>
                     <div style="height: 0.6rem;"></div>
                     <el-form-item class="submitBtn">
                         <el-button @click="submitForm('formData')">提交</el-button>
@@ -106,8 +122,12 @@ export default {
     data(){
         return{
             formData:{
-                userAndPrjItem:''
+                userAndPrjItem:'',
+                serviceType:"",
+                workResult:""
             },
+            workResultArr:[],
+            serviceTypeArr:[],
             content:"工作内容",
             result:"工作结果",
             activeName:'second',
@@ -118,27 +138,37 @@ export default {
         }
     },
     created:function(){
-        // console.log(this.serviceType);
-        fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
-            console.log(res);
-            this.formData.userAndPrjItem = res.DATA[0];
-        })
-        fetch.get("?action=/system/getDict2&DICT_TYPE=NT_SERVICE_TYPE","").then(res=>{
-            console.log(res);
-        })
-        fetch.get("?action=/system/getDict2&DICT_TYPE=NT_CASE_WORK_RESULT","").then(res=>{
-            console.log(res);
-        })
+        if(this.serviceType==2){
+            fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
+                console.log(res);
+                this.formData.userAndPrjItem = res.DATA[0];
+            })
+            fetch.get("?action=/system/getDict2&DICT_TYPE=NT_SERVICE_TYPE","").then(res=>{
+                console.log(res);
+                this.serviceTypeArr = res.data;
+            })
+            fetch.get("?action=/system/getDict2&DICT_TYPE=NT_CASE_WORK_RESULT","").then(res=>{
+                console.log(res);
+                this.workResultArr = res.data;
+            })
+        }else{
+            fetch.get("?action=/work/GetCaseroubleShootingServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
+                console.log(res);
+                this.formData.userAndPrjItem = res.DATA[0];
+            })
+        }
     },
     methods:{
-        check(){
-            if(this.formData.userAndPrjItem.serviceType==null){
+        check(loading){
+            console.log(this.formData.serviceType);
+            if(this.formData.serviceType==null&&this.serviceType==2){
                 this.$message({
                     message:'请选择服务类型!',
                     type: 'success',
                     center: true,
                     customClass:'msgdefine'
                 });
+                loading.close();
                 return false
             }
             if(this.formData.userAndPrjItem.arriveTime==null){
@@ -148,6 +178,7 @@ export default {
                     center: true,
                     customClass:'msgdefine'
                 });
+                loading.close();
                 return false
             }
             if(this.formData.userAndPrjItem.leaveTime==null){
@@ -157,35 +188,80 @@ export default {
                     center: true,
                     customClass:'msgdefine'
                 });
+                loading.close();
                 return false
             }
-            if(this.formData.userAndPrjItem.realWork==null){
+            if(this.formData.userAndPrjItem.realWork==null&&this.serviceType==2){
                 this.$message({
                     message:'请填写实际工时!',
                     type: 'success',
                     center: true,
                     customClass:'msgdefine'
                 });
+                loading.close();
                 return false
             }
-            if(this.formData.userAndPrjItem.workContent==null){
+            if(this.formData.userAndPrjItem.workContent==null&&this.serviceType==2){
                 this.$message({
                     message:'请填写工作内容!',
                     type: 'success',
                     center: true,
                     customClass:'msgdefine'
                 });
+                loading.close();
                 return false
             }
-            if(this.formData.userAndPrjItem.problemPlan==null){
+            if(this.formData.userAndPrjItem.problemPlan==null&&this.serviceType==2){
                 this.$message({
                     message:'请填写存在问题!',
                     type: 'success',
                     center: true,
                     customClass:'msgdefine'
                 });
+                loading.close();
                 return false
             }
+            if(this.formData.userAndPrjItem.faultDesc==null&&this.serviceType==1){
+                this.$message({
+                    message:'请填写到场时间!',
+                    type: 'success',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
+            if(this.formData.userAndPrjItem.analysis==null&&this.serviceType==1){
+                this.$message({
+                    message:'请填写分析诊断!',
+                    type: 'success',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
+            if(this.formData.userAndPrjItem.implementResult==null&&this.serviceType==1){
+                this.$message({
+                    message:'请填写实施结果!',
+                    type: 'success',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
+            if(this.formData.userAndPrjItem.problemSuggest==null&&this.serviceType==1){
+                this.$message({
+                    message:'请填写遗留问题及建议!',
+                    type: 'success',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
+            return true;
         },
         submitForm(formName){
             const loading = this.$loading({
@@ -197,6 +273,8 @@ export default {
             let vm= this;
             this.$refs[formName].validate((valid) => {
                 if(valid){
+                    console.log(vm.check(loading))
+                    if(!vm.check(loading)) return;
                     var data={};
                     data.serviceId = this.formData.userAndPrjItem.serviceId;
                     data.opFlg =1;
@@ -205,17 +283,40 @@ export default {
 
                     temp.serviceId = this.formData.userAndPrjItem.serviceId;
                     temp.caseId=this.caseId;
-                    // temp.serviceType = this.formData.userAndPrjItem.serviceType;
+                    if(vm.serviceType==2){
+                        temp.serviceType = this.formData.serviceType;
+                        temp.realWork = this.formData.userAndPrjItem.realWork;
+                        temp.workContent = this.formData.userAndPrjItem.workContent;
+                        temp.workResult = this.formData.workResult;
+                        temp.problemPlan = this.formData.userAndPrjItem.problemPlan;
+                    }else{
+                        temp.faultDesc = this.formData.userAndPrjItem.faultDesc;
+                        temp.analysis = this.formData.userAndPrjItem.analysis;
+                        temp.implementResult = this.formData.userAndPrjItem.implementResult;
+                        temp.problemSuggest = this.formData.userAndPrjItem.problemSuggest;
+                    }
                     temp.arriveTime = this.formData.userAndPrjItem.arriveTime;
                     temp.leaveTime = this.formData.userAndPrjItem.leaveTime;
-                    temp.realWork = this.formData.userAndPrjItem.realWork;
-                    temp.workContent = this.formData.userAndPrjItem.workContent;
-                    // temp.workResult = this.formData.userAndPrjItem.workResult;
-                    temp.problemPlan = this.formData.userAndPrjItem.problemPlan;
                     console.log(temp);
-                    fetch.post("?action=/work/updateSceneServiceFormInfo&serviceType="+this.serviceType,temp).then(res=>{
-                        console.log(res);
-                    })
+                    data.data = temp;
+                    console.log(data);
+                    let nowWorkId = vm.workId;
+                    let nowCaseId = vm.caseId;
+                    let nowtaskId = vm.taskId;
+                    // let param={SERVICE_ID:this.formData.userAndPrjItem.serviceId,OP_FLAG:1,CUSTOMER}
+                    if(vm.serviceType==2){
+                        fetch.post("?action=/work/updateSceneServiceFormInfo",data).then(res=>{
+                            console.log(res);    
+                            loading.close();
+                            setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                        })
+                    }else{
+                        fetch.post("?action=/work/updateCaseTroubleShootingServiceFormInfo",data).then(res=>{
+                            console.log(res);    
+                            loading.close();
+                            setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                        })                     
+                    }
                 }
             })
         }

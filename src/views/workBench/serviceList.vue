@@ -1,6 +1,6 @@
 <template>
     <div class="serviceListView">
-        <header-last :title="serviceListTit"></header-last>
+        <header-base-nine :title="serviceListTit"></header-base-nine>
         <div style="height: 0.45rem;"></div>
         <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
             <div class="taskListCell" v-for="item in serviceList" :key="item.id">
@@ -43,13 +43,13 @@
 </template>
 
 <script>
-import headerLast from '../header/headerLast'
+import headerBaseNine from '../header/headerBaseNine'
 import loadingtmp from '@/components/load/loading'
 import fetch from '../../utils/ajax'
 export default {
     name: 'serviceList',
     components: {
-        headerLast,
+        headerBaseNine,
         loadingtmp
     },
     data(){
@@ -79,8 +79,7 @@ export default {
     },
     methods:{
         getEventList(){
-            // console.log(this.busy+","+this.loadall);
-            // console.log(this.workId+","+this.caseId);
+            console.log(this.workId+","+this.caseId);
             var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
             var flag = this.page>1;
             fetch.get("?action=/work/GetServiceFormList&WORK_ID="+this.workId+"&CASE_ID="+this.caseId,params).then(res=>{  

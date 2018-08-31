@@ -6,17 +6,17 @@
     <div class="content">
     <div class="tabheader">
       <el-row>
-        <el-col :span="6">反馈项</el-col>
+        <el-col :span="7" style="text-align:left"> 反馈项</el-col>
         <el-col :span="8">反馈时间</el-col>
         <el-col :span="6">说明</el-col>
-        <el-col :span="4">状态</el-col>
+        <el-col :span="3">状态</el-col>
       </el-row>
     </div>
     <div class="tabdetail">
       <el-row v-for="item in SLAObj" :key="item.slaTypeId"><!--这几条数据在一个json数组slaStatus中，workid相同。-->
-        <el-col :span="7"><div>{{item.slaType}}</div></el-col>
-        <el-col :span="8"><div style="font-size:0.13rem;line-height:0.2rem">{{item.operateDate}}</div></el-col>
-        <el-col :span="6"><div style="font-size:0.13rem">{{item.feedbackDescription}}</div></el-col><!--反馈说明-->
+        <el-col :span="7"><div style="text-align:left">{{item.slaType}}</div></el-col>
+        <el-col :span="8"><div style="font-size:0.13rem;line-height:0.2rem;">{{item.operateDate}}</div></el-col>
+        <el-col :span="6"><div style="font-size:0.13rem;padding-right:5px;">{{item.feedbackDescription}}</div></el-col><!--反馈说明-->
         <el-col :span="3" style="float:right;color:#2698d6" >
           <!-- <div v-if="item.slaTypeId==8||item.slaTypeId==10&&item.ifFeedback==0" @click="dialogVisible=true">反馈</div>
           <div v-else-if="item.ifFeedback!=0">已反馈</div>
@@ -28,10 +28,10 @@
     </div>
     </div>
     <div>
-    <el-dialog :visible.sync="dialogVisible0">
+    <el-dialog :visible.sync="dialogVisible0" width="70%">
         <el-form class="form1" style="color:#333333">
           <el-form-item label="反馈时间">
-            <el-input class="input1" :value="date" style="font-size:6px"></el-input>
+            <el-input class="input1" :value="date" style="font-size:6px" :disabled="true"></el-input>
           </el-form-item>
           <!-- <el-form-item :prop="item">
             <el-input class="input1" :value="item.slaTypeId"></el-input>
@@ -40,14 +40,14 @@
             <el-input type="textarea" placeholder="请填写说明" v-model="form.des1" style="font-size:6px"></el-input>
           </el-form-item>
         </el-form>
-        <div>
+        <div style="text-align:center">
           <el-button @click="dialogVisible0 = false" style="width:0.65rem;height:0.4rem;">取消</el-button>
           <el-button type="primary" @click="onSubmit" style="width:0.65rem;height:0.4rem;">提交</el-button>
         </div>
     </el-dialog>
     </div>
     <div>
-    <el-dialog title="任务反馈" :visible.sync="dialogVisible1">
+    <el-dialog title="任务反馈" :visible.sync="dialogVisible1" width="70%">
         <el-form class="form1">
           <!-- <el-form-item></el-form-item> -->
           <el-form-item  label="原因">
@@ -64,7 +64,7 @@
             <el-input type="textarea" placeholder="请填写说明" v-model="form.des3" style="font-size:6px"></el-input>
           </el-form-item>
         </el-form>
-        <div>
+        <div style="text-align:center">
           <el-button @click="dialogVisible1 = false" style="width:0.65rem;height:0.4rem;">取 消</el-button>
           <el-button type="primary" @click="onSubmit" style="width:0.65rem;height:0.4rem;">提 交</el-button>
         </div>
@@ -172,8 +172,11 @@ export default {
                   customClass: 'msgdefine'
                 });
               }
+              
               console.log(res);
       });
+      location. reload()
+              // this.$router.go(0)
     }
   }
 
@@ -189,7 +192,7 @@ export default {
 }
 .tabheader {
   text-align: center;
-  padding-top: 0.15rem;
+  padding: 0.15rem 0.1rem 0 0.2rem;
   line-height: 0.36rem;
   /* background: #ffffff; */
   color: #333333;
@@ -198,7 +201,7 @@ export default {
 }
 .tabdetail {
   text-align: center;
-  padding-left: 0.1rem;
+  padding-left: 0.2rem;
   padding-right: 0.1rem;
 }
 .tabdetail el-row el-col {

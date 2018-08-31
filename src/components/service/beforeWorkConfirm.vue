@@ -172,6 +172,7 @@
 <script>
 import fetch from '../../utils/ajax'
 import addSignature from '../../components/addSignature'
+import qs from 'qs'
 
 export default {
     name:"beforeWorkConfirm",
@@ -190,6 +191,7 @@ export default {
             workId:this.$route.query.workId,
             serviceId:this.$route.query.serviceId,
             serviceType:this.$route.query.serviceType,
+            taskId:this.$route.query.taskId,
             popBg: false,
             checked:[
                 {ifY1:false,ifF1:false},
@@ -202,46 +204,97 @@ export default {
         }
     },
     created:function(){
-        fetch.get("?action=/work/getCaseServiceQuestion&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
-            console.log(res)
-            this.formData.caseServiceQuestion = res.dataService[0];
-            if(res.dataService[0].serviceTime == null){
-                this.formData.caseServiceQuestion.serviceTime = new Date();
-            }
-            if(res.dataService[0].numberIf1==1){
-                this.checked[0].ifY1 = true;
-            }else if(res.dataService[0].numberIf1==0){
-                this.checked[0].ifF1 = true;
-            }
-            if(res.dataService[0].numberIf2==1){
-                this.checked[1].ifY2 = true;
-            }else if(res.dataService[0].numberIf2==0){
-                this.checked[1].ifF2 = true;
-            }
-            if(res.dataService[0].numberIf3==1){
-                this.checked[2].ifY3 = true;
-            }else if(res.dataService[0].numberIf3==0){
-                this.checked[2].ifF3 = true;
-            }
-            if(res.dataService[0].numberIf4==1){
-                this.checked[3].ifY4 = true;
-            }else if(res.dataService[0].numberIf4==0){
-                this.checked[3].ifF4 = true;
-            }
-            if(res.dataService[0].numberIf5==1){
-                this.checked[4].ifY5 = true;
-            }else if(res.dataService[0].numberIf5==0){
-                this.checked[4].ifF5 = true;
-            }
-            if(res.dataService[0].numberIf6==1){
-                this.checked[5].ifY6 = true;
-            }else if(res.dataService[0].numberIf6==0){
-                this.checked[5].ifF6 = true;
-            }
-        })
-        
+        // if(!this.serviceId){
+        //     fetch.get("?action=/work/submitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
+        //         console.log(res);
+        //     })
+        // }
+            fetch.get("?action=/work/getCaseServiceQuestion&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
+                console.log(res)
+                if(this.serviceType==2){
+                    this.formData.caseServiceQuestion = res.dataService[0];
+                }else{
+                    this.formData.caseServiceQuestion = res.dataDealService[0];
+                }
+                if(this.formData.caseServiceQuestion.serviceTime == null){
+                    this.formData.caseServiceQuestion.serviceTime = new Date();
+                }
+                if(this.formData.caseServiceQuestion.numberIf1==1){
+                    this.checked[0].ifY1 = true;
+                }else if(this.formData.caseServiceQuestion.numberIf1==0){
+                    this.checked[0].ifF1 = true;
+                }
+                if(this.formData.caseServiceQuestion.numberIf2==1){
+                    this.checked[1].ifY2 = true;
+                }else if(this.formData.caseServiceQuestion.numberIf2==0){
+                    this.checked[1].ifF2 = true;
+                }
+                if(this.formData.caseServiceQuestion.numberIf3==1){
+                    this.checked[2].ifY3 = true;
+                }else if(this.formData.caseServiceQuestion.numberIf3==0){
+                    this.checked[2].ifF3 = true;
+                }
+                if(this.formData.caseServiceQuestion.numberIf4==1){
+                    this.checked[3].ifY4 = true;
+                }else if(this.formData.caseServiceQuestion.numberIf4==0){
+                    this.checked[3].ifF4 = true;
+                }
+                if(this.formData.caseServiceQuestion.numberIf5==1){
+                    this.checked[4].ifY5 = true;
+                }else if(this.formData.caseServiceQuestion.numberIf5==0){
+                    this.checked[4].ifF5 = true;
+                }
+                if(this.formData.caseServiceQuestion.numberIf6==1){
+                    this.checked[5].ifY6 = true;
+                }else if(this.formData.caseServiceQuestion.numberIf6==0){
+                    this.checked[5].ifF6 = true;
+                }
+            })
     },
     methods:{
+        // getFormInfoQuestion(){
+        //     fetch.get("?action=/work/getCaseServiceQuestion&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
+        //         console.log(res)
+        //         if(this.serviceType==2){
+        //             this.formData.caseServiceQuestion = res.dataService[0];
+        //         }else{
+        //             this.formData.caseServiceQuestion = res.dataDealService[0];
+        //         }
+        //         if(this.formData.caseServiceQuestion.serviceTime == null){
+        //             this.formData.caseServiceQuestion.serviceTime = new Date();
+        //         }
+        //         if(this.formData.caseServiceQuestion.numberIf1==1){
+        //             this.checked[0].ifY1 = true;
+        //         }else if(this.formData.caseServiceQuestion.numberIf1==0){
+        //             this.checked[0].ifF1 = true;
+        //         }
+        //         if(this.formData.caseServiceQuestion.numberIf2==1){
+        //             this.checked[1].ifY2 = true;
+        //         }else if(this.formData.caseServiceQuestion.numberIf2==0){
+        //             this.checked[1].ifF2 = true;
+        //         }
+        //         if(this.formData.caseServiceQuestion.numberIf3==1){
+        //             this.checked[2].ifY3 = true;
+        //         }else if(this.formData.caseServiceQuestion.numberIf3==0){
+        //             this.checked[2].ifF3 = true;
+        //         }
+        //         if(this.formData.caseServiceQuestion.numberIf4==1){
+        //             this.checked[3].ifY4 = true;
+        //         }else if(this.formData.caseServiceQuestion.numberIf4==0){
+        //             this.checked[3].ifF4 = true;
+        //         }
+        //         if(this.formData.caseServiceQuestion.numberIf5==1){
+        //             this.checked[4].ifY5 = true;
+        //         }else if(this.formData.caseServiceQuestion.numberIf5==0){
+        //             this.checked[4].ifF5 = true;
+        //         }
+        //         if(this.formData.caseServiceQuestion.numberIf6==1){
+        //             this.checked[5].ifY6 = true;
+        //         }else if(this.formData.caseServiceQuestion.numberIf6==0){
+        //             this.checked[5].ifF6 = true;
+        //         }
+        //     })
+        // },
         signature(imgStrQuestion){
             this.formData.caseServiceQuestion.imgStrQuestion = imgStrQuestion;
         },
@@ -328,6 +381,7 @@ export default {
             this.$refs[formName].validate((valid) => {
                 if(valid){
                     if(this.checked[0].ifY1==true&&this.checked[0].ifF1==true||this.checked[0].ifY1==false&&this.checked[0].ifF1==false){
+                        loading.close();
                         this.$message({
                             message:'序号1请选择是或者否,不能全选或不选!',
                             type: 'success',
@@ -337,6 +391,7 @@ export default {
                         return false
                     }
                     if(this.checked[1].ifY2==true&&this.checked[1].ifF2==true||this.checked[1].ifY2==false&&this.checked[1].ifF2==false){
+                        loading.close();
                         this.$message({
                             message:'序号2请选择是或者否,不能全选或不选!',
                             type: 'success',
@@ -346,6 +401,7 @@ export default {
                         return false
                     }
                     if(this.checked[2].ifY3==true&&this.checked[2].ifF3==true||this.checked[2].ifY3==false&&this.checked[2].ifF3==false){
+                        loading.close();
                         this.$message({
                             message:'序号3请选择是或者否,不能全选或不选!',
                             type: 'success',
@@ -355,6 +411,7 @@ export default {
                         return false
                     }
                     if(this.checked[3].ifY4==true&&this.checked[3].ifF4==true||this.checked[3].ifY4==false&&this.checked[3].ifF4==false){
+                        loading.close();
                         this.$message({
                             message:'序号4请选择是或者否,不能全选或不选!',
                             type: 'success',
@@ -364,6 +421,7 @@ export default {
                         return false
                     }
                     if(this.checked[4].ifY5==true&&this.checked[4].ifF5==true||this.checked[4].ifY5==false&&this.checked[4].ifF5==false){
+                        loading.close();
                         this.$message({
                             message:'序号5请选择是或者否,不能全选或不选!',
                             type: 'success',
@@ -373,6 +431,7 @@ export default {
                         return false
                     }
                     if(this.checked[5].ifY6==true&&this.checked[5].ifF6==true||this.checked[5].ifY6==false&&this.checked[5].ifF6==false){
+                        loading.close();
                         this.$message({
                             message:'序号6请选择是或者否,不能全选或不选!',
                             type: 'success',
@@ -381,7 +440,18 @@ export default {
                         });
                         return false
                     }
-                    var temp = {};
+                    // let temp=new URLSearchParams;
+                    // temp.append('operationStarttime',this.formData.caseServiceQuestion.operationStarttime);
+                    // temp.append('operationEndtime',this.formData.caseServiceQuestion.operationEndtime);
+                    // temp.append('stopStarttime',this.formData.caseServiceQuestion.stopStarttime);
+                    // temp.append('stopEndtime',this.formData.caseServiceQuestion.stopEndtime);
+                    // temp.append('lastbackupTime',this.formData.caseServiceQuestion.lastbackupTime);
+                    // temp.append('beforeLastbackupTime',this.formData.caseServiceQuestion.beforeLastbackupTime);
+                    // temp.append('backuptestTime',this.formData.caseServiceQuestion.backuptestTime);
+                    // temp.append('serviceTime',this.formData.caseServiceQuestion.serviceTime);
+                    // temp.append('imgStrQuestion',this.formData.caseServiceQuestion.imgStrQuestion);
+                    // temp.append('serviceId',this.serviceId);
+                    let temp = {};
                     temp.operationStarttime = this.formData.caseServiceQuestion.operationStarttime;
                     temp.operationEndtime = this.formData.caseServiceQuestion.operationEndtime;
                     temp.stopStarttime = this.formData.caseServiceQuestion.stopStarttime;
@@ -390,9 +460,14 @@ export default {
                     temp.beforeLastbackupTime = this.formData.caseServiceQuestion.beforeLastbackupTime;
                     temp.backuptestTime = this.formData.caseServiceQuestion.backuptestTime;
                     temp.serviceTime = this.formData.caseServiceQuestion.serviceTime;
-                    // temp.imgStrQuestion = this.formData.caseServiceQuestion.imgStrQuestion;
+                    temp.imgStrQuestion = this.formData.caseServiceQuestion.imgStrQuestion;
                     temp.serviceId=this.serviceId;
+                    // var data = new URLSearchParams;
+                    // data.append('serviceType',this.serviceType);
+                    // var data = {};
+                    // data.serviceType = this.serviceType;
                     if((temp.operationStarttime!=null&&this.checked[0].ifY1==false)||(temp.operationEndtime!=null&&this.checked[0].ifY1==false)){
+                        loading.close();
                         this.$message({
                             message:'序号1请选择是,取消否!',
                             type: 'success',
@@ -402,6 +477,7 @@ export default {
                         return false;        
                     }
                     if((temp.stopStarttime!=null&&this.checked[1].ifY2==false)||(temp.stopEndtime!=null&&this.checked[1].ifY2==false)){
+                        loading.close();
                         this.$message({
                             message:'序号2请选择是,取消否!',
                             type: 'success',
@@ -411,6 +487,7 @@ export default {
                         return false;         
                     }
                     if(temp.lastbackupTime!=null&&this.checked[2].ifY3==false){
+                        loading.close();
                         this.$message({
                             message:'序号3请选择是,取消否!',
                             type: 'success',
@@ -420,6 +497,7 @@ export default {
                         return false;                       
                     }
                     if(temp.beforeLastbackupTime!=null&&this.checked[4].ifY5==false){
+                        loading.close();
                         this.$message({
                             message:'序号5请选择是,取消否!',
                             type: 'success',
@@ -429,6 +507,7 @@ export default {
                         return false;                       
                     }
                     if(temp.backuptestTime!=null&&this.checked[5].ifY6==false){
+                        loading.close();
                         this.$message({
                             message:'序号6请选择是,取消否!',
                             type: 'success',
@@ -439,36 +518,51 @@ export default {
                     }
                     if(this.checked[0].ifY1==true){
                         temp.numberIf1=1;
+                        // temp.append('numberIf1',1);
                     }else{
                         temp.numberIf1=0;
+                        // temp.append('numberIf1',0);
                     }
                     if(this.checked[1].ifY2==true){
                         temp.numberIf2="1";
+                        // temp.append('numberIf2',1);
                     }else{
                         temp.numberIf2="0";
+                        // temp.append('numberIf2',0);
                     }
                     if(this.checked[2].ifY3==true){
                         temp.numberIf3="1";
+                        // temp.append('numberIf3',1);
                     }else{
                         temp.numberIf3="0";
+                        // temp.append('numberIf3',0);
                     }
                     if(this.checked[3].ifY4==true){
+                        // temp.append('numberIf4',1);
                         temp.numberIf4="1";
                     }else{
                         temp.numberIf4="0";
+                        // temp.append('numberIf4',0);
                     }
                     if(this.checked[4].ifY5==true){
                         temp.numberIf5="1";
+                        // temp.append('numberIf5',1);
                     }else{
                         temp.numberIf5="0";
+                        // temp.append('numberIf5',0);
                     }
                     if(this.checked[5].ifY6==true){
                         temp.numberIf6="1";
+                        // temp.append('numberIf6',1);
                     }else{
                         temp.numberIf6="0";
+                        // temp.append('numberIf6',0);
                     }
-                   console.log(temp);
-                    fetch.post("?action=/work/submitServiceQuestion&serviceType="+this.serviceType,temp).then(res=>{
+                    console.log("1111111111111");
+                //    data.append('data',temp);
+                //    data.data=temp ;
+                //    console.log(data);
+                    fetch.post("?action=/work/submitServiceQuestion&SERVICE_TYPE="+this.serviceType,temp).then(res=>{
                         console.log("==========");
                         console.log(res);
                         loading.close();

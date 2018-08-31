@@ -1,6 +1,7 @@
 <template>
     <div class="onsiteServiceInfoView">
-        <header-last :title="onsiteServiceInfoTit"></header-last>
+        <header-last v-if="serviceType==2" :title="onsiteServiceInfoTit"></header-last>
+        <header-last v-else :title="onsiteServiceInfoTit1"></header-last>
         <div style="height: 0.45rem;"></div>
         <div class="eventShowTabs">
             <el-tabs v-model="activeName">
@@ -29,11 +30,13 @@ export default {
     data(){
         return{
             onsiteServiceInfoTit:'现场服务单',
+            onsiteServiceInfoTit1:"故障处理服务单",
             activeName:'first',
             caseId:this.$route.query.caseId,
             workId:this.$route.query.workId,
             serviceId:this.$route.query.serviceId,
-            serviceType:this.$route.query.serviceType
+            serviceType:this.$route.query.serviceType,
+            taskId:this.$route.query.taskId
         }
     },
 }

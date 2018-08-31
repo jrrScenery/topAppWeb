@@ -5,6 +5,7 @@
 import axios from 'axios'
 import router from '@/router'
 import _global from '../components/Global'
+import qs from 'qs'
 
 // 配置请求头
 // let instance = axios.create({
@@ -100,10 +101,13 @@ export default {
         })
       },
 
-      post(url, params) {
+      post(url, data) {
         return new Promise((resolve, reject) => {
-          axios.post(baseURL+url, qs.stringify(params), {
+            var token = localStorage.getItem("token");
+            // console.log(data);
+          axios.post(baseURL+url, qs.stringify(data), {
               headers: {
+                "token":token,
                 'Content-Type': 'application/x-www-form-urlencoded',
               }
             }

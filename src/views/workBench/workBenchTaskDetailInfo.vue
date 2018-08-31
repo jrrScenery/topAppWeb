@@ -162,16 +162,16 @@
             <router-link :to="{name:'declareWorkLoad', query:{caseId:this.taskDetailInfo.caseId,workId:this.taskDetailInfo.workId,creatorRolename:this.taskDetailInfo.creatorRealname,expectStart:this.taskDetailInfo.expectStart,expectEnd:this.taskDetailInfo.expectEnd,standardWorkload:this.taskDetailInfo.standardWorkload}}">
             <li><img src="../../assets/images/eventBaseInfo_4.png" alt="">工作量申报</li>
             </router-link>
-            <router-link :to="{}">
+            <router-link :to="{name:'casePartEvaluate',query:{caseId:this.taskDetailInfo.caseId,workId:this.taskDetailInfo.workId,templateType:1,bjflg:0}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">人员评价</li>
             </router-link>
-            <router-link :to="{}">
+            <router-link :to="{name:'casePartEvaluate',query:{caseId:this.taskDetailInfo.caseId,workId:this.taskDetailInfo.workId,templateType:2,bjflg:1}}">
             <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/sla.png" alt="">备件评价</li>
             </router-link>
             <router-link :to="{name: 'sparePartsSortOut',query:{caseId:this.caseId}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件整理</li>
             </router-link>
-            <router-link :to="{}">
+            <router-link :to="{name:'part_recycle'}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件回收</li>
             </router-link>
             <router-link :to="{name:'eventReplenish',query:{caseId:this.caseId}}">
@@ -281,7 +281,7 @@ export default {
         console.log(this.$route.query.workId);
         console.log(this.$route.query.caseId);
         fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
-            // console.log(res.DATA[0]);   
+            console.log(res.DATA[0]);   
             // console.log("11", this.$route.query.workId);
             this.taskDetailInfo = res.DATA[0];
             this.taskDetailInfo.refuseReason = '';
