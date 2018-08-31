@@ -1,8 +1,6 @@
 <!--新增备件填写-->
 <template>
   <div class="addPartsView">
-    <!-- <header-last :title="declareTitle"></header-last> -->
-    <!-- <div style="height: 0.45rem;"></div> -->
       <div class="content">
           <el-form ref="form" :model="form" label-width="1rem">
             <el-form-item label="备件来源">
@@ -35,13 +33,6 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item label="*使用情况">
-              <!-- <el-radio-group v-model="form.useStatus" disabled>
-                <el-radio label="1">已使用件</el-radio>
-                <el-radio label="2">未使用件</el-radio>
-                <el-radio label="3">坏件</el-radio>
-                <el-radio label="4">DOA不可用</el-radio>
-                <el-radio label="5">未到场</el-radio>
-              </el-radio-group> -->
               <el-select v-model="form.useStatus" placeholder="选择使用情况" clearable>
                 <el-option v-for="use in useStatusList" :label="use.useStatusName" :value="use.useStatusId" :key="use.id"></el-option>
               </el-select>
