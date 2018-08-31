@@ -1,7 +1,6 @@
 <template>
     <div class="sparePartsSortOutSelectView">
         <header-base-eight :title="sparePartsSortOutTit"></header-base-eight>
-        <!-- <div class="content"> -->
         <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
             <!-- <el-row style="margin-left: 0.15rem">
                 <el-col :span="2"><div class="grid-content bg-purple-light">选择</div></el-col>
