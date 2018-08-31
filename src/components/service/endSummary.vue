@@ -139,6 +139,7 @@ export default {
         }
     },
     created:function(){
+        console.log(this.serviceId);
         // if(this.serviceType == 2){
         //     if(!this.serviceId){
         //         fetch.get("?action=/work/SubmitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{

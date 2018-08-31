@@ -84,7 +84,6 @@ export default {
         fetch.get("?action=/work/GetWorkEvaluateInfo",{CASE_ID:this.caseId,WORK_ID:this.workId,TEMPLATE_TYPE:this.templateType,BJ_FLG:this.bjflg}).then(res=>{
             console.log(res);
             this.evaluateId=res.EVALUATE_ID_RETURN;
-            console.log('------------------');
             if("0" == res.STATUSCODE){
                 this.questionComment = res.QUESTION[0].questionComment;
                 let jsonres= res;
@@ -96,8 +95,13 @@ export default {
                 tmpobj.chkedopts = tmpobj.options.filter(function(item){return item.checkFlg})
                 tmpobj.aroptschked = tmpobj.chkedopts.map(function(v,i,ar){ return v.optionId});
                 tmpobj.scores = v.scoreOption;
-                // console.log(tmpobj);
-                tmpobj.scoreval= tmpobj.scores.length? tmpobj.scores[0]["questionScore"]:0;
+                let index=0;
+                tmpobj.scores.forEach(function(v,i,ar){
+                    if(v.checkFlg==1){
+                        index=i+1;
+                    }
+                });
+                tmpobj.scoreval=index;
                 tmpjsonval.push(tmpobj);
                 })
                 this.evaluateval = tmpjsonval;
@@ -111,6 +115,16 @@ export default {
     methods:{
         submitForm () {
             let result=new Array;
+            let temp={};
+            temp.evaluateId=this.evaluateId;
+            temp.questionId=this.evaluateval[0].question.questionId;
+            if(this.templateType==2){
+            temp.optionId=this.evaluateval[0].scoreval+12;
+            }else if(this.templateType==1){
+            temp.optionId=this.evaluateval[0].scoreval;   
+            }
+            result.push(temp);
+
             if(this.evaluateval[0].scoreval<4){
             let optionIdList=this.evaluateval[0].aroptschked;
             let evaluateIdet=this.evaluateId;
@@ -129,7 +143,7 @@ export default {
                 result.push(resultdetail);
             });
             }
-        }else{result=[];}
+        }
             result=JSON.stringify(result);
             let params=new URLSearchParams;
             params.append('totalScore',this.evaluateval[0].scoreval);
@@ -144,7 +158,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
-            // console.log(params.get("EvaluateResult"));
+            // console.log(params.get("evaluateId"));
             // console.log(qs.stringify({postData},{arrayFormat: 'brackets'}));
              fetch.post("?action=/work/SubmitWorkEvaluateInfo",params).then(res=>{
                 // var token = localStorage.getItem("token");

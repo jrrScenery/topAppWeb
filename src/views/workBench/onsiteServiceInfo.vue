@@ -39,8 +39,6 @@ export default {
             taskId:this.$route.query.taskId
         }
     },
-    created:function(){
-    }
 }
 </script>
 
