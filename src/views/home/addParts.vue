@@ -5,7 +5,7 @@
           <el-form ref="form" :model="form" label-width="1rem">
             <el-form-item label="备件来源">
               <el-radio-group v-model="form.partsSource" disabled>
-                <el-radio label="1">供货件</el-radio>
+                <!-- <el-radio label="1">供货件</el-radio> -->
                 <el-radio label="2">换下件</el-radio>
               </el-radio-group>
             </el-form-item>
@@ -104,7 +104,47 @@ export default {
     
   },
   methods: {
+    showMsg (msg){
+      this.$message(msg);
+    },
+    DATAParams (){
+      let DATA = {};
+      DATA.PARTS_SOURCE = this.form.partsSource;
+      DATA.PN_FRU = this.form.pnFru;
+      DATA.SN = this.form.SN;
+      DATA.TYPE = this.form.partsType;
+      DATA.USE_STATUS = this.form.useStatus;
+      DATA.USE_STATUS_REMARK = this.form.useStatusRemark;
+      DATA.IF_PACKAGE = this.form.ifPackage;
+      DATA.IF_TAKEAWAY = this.form.ifTakeaway;
+      DATA.IS_RECYCLE = this.form.isRecycle;
+      DATA.CASE_ID = this.$route.query.caseId;
+      if (DATA.IF_PACKAGE==""){
+        this.showMsg('请先选择是否包装');
+      }
+      if (DATA.IF_TAKEAWAY==""){
+        this.showMsg('请先选择是否已带走');
+        return;
+      }
+      if (DATA.USE_STATUS==""){
+        this.showMsg('请先选择使用情况');
+        return;
+      }
+      if (DATA.IS_RECYCLE==""){
+        this.showMsg('请先选择能否回收');
+        return;
+      }
+      return DATA;
+    },
+
     onSubmit (formName) {
+      let params=new URLSearchParams;
+      let array = new Array;
+      array.push(this.DATAParams());
+      array = JSON.stringify(array);
+      params.append('DATA', array);
+      params.append('UPDATE_DATE', this.getCurrentTime());
+      params.append('CASE_ID', this.caseId);
       const loading = this.$loading({
         lock: true,
         text: '提交中...',
@@ -114,8 +154,7 @@ export default {
       let vm= this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let params = "&PARTS_SOURCE="+this.form.partsSource+"&PN_FRU="+this.form.pnFru+"&SN="+this.form.SN+"&TYPE="+this.form.partsType+"&USE_STATUS="+this.form.useStatus+"&USE_STATUS_REMARK="+this.form.useStatusRemark+"&IF_PACKAGE="+this.form.ifPackage+"&IF_TAKEAWAY="+this.form.ifTakeaway+"&IS_RECYCLE="+this.form.isRecycle+"&UPDATE_DATE="+this.getCurrentTime(1)[0];
-          fetch.get("?action=/parts/updatePartsGathering"+params,"").then(res=>{
+          fetch.post("?action=/parts/updatePartsGathering", params).then(res=>{
             console.log("params", params)
             console.log(res)
             loading.close();
@@ -125,14 +164,13 @@ export default {
                 type: 'success',
                 center: true,
                 customClass: 'msgdefine'
-              });
+                });
 
-                let nowcaseid = vm.form.caseId;
-                setTimeout(function(){vm.$router.push({ name: "sparePartsSortOut",query:{caseId:nowcaseid}})},1000);
-                let data = {
-                  popBg: false
-                }
-                this.$emit('change', data)
+              this.$router.go(0);
+              let data = {
+                popBg: false
+              };
+              this.$emit('change', data)
             }
             else{
               this.$message({
@@ -169,30 +207,12 @@ export default {
       document.activeElement.blur()
     },
 
-    standardDate(join,...num){
-      let arr = [];
-      num.forEach((item)=>{
-        item.toString().length<2?arr.push('0'+item):arr.push(item);
-      });
-      return arr.join('-')
-    },
-    getFormerTime (n) {
-      let nowYear = new Date().getFullYear() - 1, yearArr = []
-      yearArr.unshift(this.standardDate('', nowYear, new Date().getMonth() + 1, new Date().getDate()))
-      for(let i = 1;i<n;i++){
-        yearArr.unshift(nowYear-i+'1231')
-      }
-      return yearArr
-    },
-    getCurrentTime (n) {
-      let nowYear = new Date().getFullYear(), yearArr = []
-      yearArr.unshift(this.standardDate('', nowYear, new Date().getMonth() + 1, new Date().getDate()))
-      for(let i = 1;i<n;i++){
-        yearArr.unshift(nowYear-i+'1231')
-      }
+    getCurrentTime () {
+      let month = new Date().getMonth() + 1;
+      let currentTime = (new Date().getFullYear() + "-" + month + "-" + new Date().getDate() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds());
       //console.log(yearArr)
-      return yearArr
-    }
+      return currentTime
+    },
   }
 
 

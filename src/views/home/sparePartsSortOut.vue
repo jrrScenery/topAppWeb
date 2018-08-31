@@ -13,7 +13,7 @@
                             <div class="contentParts">
                                 <el-form label-width="1rem">
                                     <el-form-item label="备件来源">
-                                        <el-radio-group v-model="scope.row.partsSource" disabled>
+                                        <el-radio-group v-model="scope.row.partsSource">
                                             <el-radio label="1">供货件</el-radio>
                                             <el-radio label="2">换下件</el-radio>
                                         </el-radio-group>
@@ -25,7 +25,7 @@
                                         <el-input v-model="scope.row.sn" placeholder="请输入序列号" class="bInput"></el-input>
                                     </el-form-item>
                                     <el-form-item label="备件类型">
-                                        <el-select v-model="form.partsType" placeholder="请选择备件类型" clearable>
+                                        <el-select v-model="scope.row.typeName" placeholder="请选择备件类型" clearable>
                                             <el-option v-for="itemParts in partsTypeList" :label="itemParts.partsTypeName" :value="itemParts.partsTypeId" :key="itemParts.id"></el-option>
                                         </el-select>
                                     </el-form-item>
@@ -102,7 +102,6 @@ export default {
                 useStatus: "3",
                 isRecycle: "",
                 useStatusRemark: "",
-                partsType: "",
             },
             partsTypeList: [],
             sparePartsSortOutTit:"事件备件列表",
@@ -129,8 +128,7 @@ export default {
 
     methods:{
         getSparePart(){
-            fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId).then(res=>{
-                console.log("SSSSS", res.DATA);
+            fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId, {}).then(res=>{
                 this.sparePartsSortOutSelectArr = res.DATA;
                 this.busy = false;
                 this.loadall = true;
@@ -140,21 +138,40 @@ export default {
                 this.partsTypeList = res.DATA;
             });
         },
+
+        showMsg (msg){
+            this.$message(msg);
+        },
+        DATAParams (formUpdateParts){
+            let DATA = {};
+            DATA.PARTS_SOURCE = formUpdateParts.partsSource;
+            DATA.PN_FRU = formUpdateParts.pnFru;
+            DATA.SN = formUpdateParts.sn;
+            DATA.TYPE = formUpdateParts.type;
+            DATA.USE_STATUS = formUpdateParts.useStatus;
+            DATA.USE_STATUS_REMARK = formUpdateParts.useStatusRemark;
+            DATA.IF_PACKAGE = formUpdateParts.ifPackage;
+            DATA.IF_TAKEAWAY = formUpdateParts.ifTakeaway;
+            DATA.IS_RECYCLE = formUpdateParts.isRecycle;
+            DATA.CASE_ID = this.$route.query.caseId;
+            return DATA;
+        },
          
         onSubmit (formUpdateParts) {
+            let params=new URLSearchParams;
+            let array = new Array;
+            array.push(this.DATAParams(formUpdateParts));
+            array = JSON.stringify(array);
+            params.append('DATA', array);
+            params.append('UPDATE_DATE', this.getCurrentTime());
+            params.append('CASE_ID', this.caseId);
             const loading = this.$loading({
                 lock: true,
                 text: '提交中...',
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
-            let vm= this;
-            console.log("1111111111", formUpdateParts)
-            // this.$refs.sparePartsSortOutSelectArr.validate((valid) => {
-            //     if (valid) {
-            let params = "&PARTS_SOURCE="+formUpdateParts.partsSource+"&PN_FRU="+formUpdateParts.pnFru+"&SN="+formUpdateParts.SN+"&TYPE="+formUpdateParts.partsType+"&USE_STATUS="+formUpdateParts.useStatus+"&USE_STATUS_REMARK="+formUpdateParts.useStatusRemark+"&IF_PACKAGE="+formUpdateParts.ifPackage+"&IF_TAKEAWAY="+formUpdateParts.ifTakeaway+"&IS_RECYCLE="+formUpdateParts.isRecycle+"&UPDATE_DATE="+this.getCurrentTime(1)[0];
-            fetch.get("?action=/parts/updatePartsGathering"+params,"").then(res=>{
-                console.log("VVVVVVVVV", res)
+            fetch.post("?action=/parts/updatePartsGathering", params).then(res=>{
                 loading.close();
                 if(res.STATUSCODE=="0"){
                     this.$message({
@@ -164,9 +181,13 @@ export default {
                         customClass: 'msgdefine'
                     });
 
-                        let nowcaseid = formUpdateParts.caseId;
-                        console.log("ZAZAZAZAZA", nowcaseid);
-                        setTimeout(function(){vm.$router.push({ name: "sparePartsSortOut",query:{caseId:nowcaseid}})},1000);
+                    fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId, {}).then(res=>{
+                        this.sparePartsSortOutSelectArr = res.DATA;
+                        this.busy = false;
+                        this.loadall = true;
+
+                    });
+
                 }
                 else{
                     this.$message({
@@ -178,16 +199,6 @@ export default {
                 }
       
             });
-                // } else {
-                //     this.$message({
-                //         message:"请正确填写",
-                //         type: 'error',
-                //         center: true,
-                //         customClass: 'msgdefine'
-                //     });
-                //     return false
-                // }
-            // })
         },
         getSearParams (searchData) {
 
@@ -206,30 +217,12 @@ export default {
             }, 500);
         },
 
-        standardDate(join,...num){
-            let arr = [];
-            num.forEach((item)=>{
-                item.toString().length<2?arr.push('0'+item):arr.push(item);
-            });
-            return arr.join('-')
+        getCurrentTime () {
+            let month = new Date().getMonth() + 1;
+            let currentTime = (new Date().getFullYear() + "-" + month + "-" + new Date().getDate() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds());
+
+            return currentTime
         },
-        getFormerTime (n) {
-            let nowYear = new Date().getFullYear() - 1, yearArr = []
-            yearArr.unshift(this.standardDate('', nowYear, new Date().getMonth() + 1, new Date().getDate()))
-            for(let i = 1;i<n;i++){
-                yearArr.unshift(nowYear-i+'1231')
-            }
-            return yearArr
-        },
-        getCurrentTime (n) {
-            let nowYear = new Date().getFullYear(), yearArr = []
-            yearArr.unshift(this.standardDate('', nowYear, new Date().getMonth() + 1, new Date().getDate()))
-            for(let i = 1;i<n;i++){
-                yearArr.unshift(nowYear-i+'1231')
-            }
-            //console.log(yearArr)
-            return yearArr
-        }
     },
     created:function(){
     },
