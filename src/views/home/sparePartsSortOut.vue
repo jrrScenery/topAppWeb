@@ -90,7 +90,7 @@
 
             <div class="SelectListCell">
             <el-table :data="sparePartsSortOutSelectArr" style="width: 100%">
-                <el-table-column prop="date" label="修改" width="48">
+                <el-table-column prop="date" label="修改" width="10%">
                     <template slot-scope="scope">
                     <div class="contentPopover">
                         <el-popover placement="bottom" width="335" trigger="click">
@@ -159,11 +159,11 @@
                     </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="ifArrangeName" label="已整理" width="62"></el-table-column>
-                <el-table-column prop="partsSourceName" label="来源" width="62"></el-table-column>
-                <el-table-column prop="pnFru" label="PN/FRU" width="74"></el-table-column>
-                <el-table-column prop="typeName" label="备件类型" width="76"></el-table-column>
-                <el-table-column prop="sn" label="SN" width="60"></el-table-column>
+                <el-table-column prop="ifArrangeName" label="已整理" width="20%"></el-table-column>
+                <el-table-column prop="partsSourceName" label="来源" width="20%"></el-table-column>
+                <el-table-column prop="pnFru" label="PN/FRU" width="20%"></el-table-column>
+                <el-table-column prop="typeName" label="备件类型" width="20%"></el-table-column>
+                <el-table-column prop="sn" label="SN" width="10%"></el-table-column>
             </el-table>
             </div>
 
@@ -335,10 +335,19 @@ export default {
 .content{width: 100%; position: absolute; top: 0.45rem; bottom: 0;margin-top: 0.05rem; overflow: scroll;}
 .SelectListCell{background: #ffffff}
 .SelectListCell >>> .el-radio__label{font-size: 0px}
-.tableTd li{display: flex; line-height: 0.2rem; padding: 0 0.2rem; color: #666666;}
+.SelectListCell >>> .el-table__body{width: 100%!important}
+.SelectListCell >>> .el-table__header{width: 100%!important}
+.SelectListCell >>> .el-table{font-size: 0.13rem; text-align: center}
+.SelectListCell >>> .el-table th{text-align: center; background: #f7f7f7}
+.SelectListCell >>> .el-table td{border: none}
+.SelectListCell >>> .el-table td:nth-child(3){text-align: right;}
+.SelectListCell >>> .el-table td:nth-child(5){text-align: right; padding-right: 0.05rem}
+.SelectListCell >>> .el-table .cell{padding: 0;}
+.SelectListCell >>> .el-table__empty-block{position: initial}
+/* .tableTd li{display: flex; line-height: 0.2rem; padding: 0 0.2rem; color: #666666;}
 .tableTd span{text-align: center;}
 .tableTd span:nth-child(1){width: 100%; text-align: left;}
-.tableTd span:nth-child(2){width: 100%;text-align: left}
+.tableTd span:nth-child(2){width: 100%;text-align: left} */
 .content:nth-child(2n+1){background: #fafafa}
 .content >>> .el-col {border-radius: 4px;}
 .content >>> .bg-purple-dark {background: #99a9bf;}
