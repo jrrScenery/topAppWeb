@@ -250,9 +250,14 @@ export default new Router({
       component: resolve => require(['@/views/workBench/workBenchSLAfeedback'], resolve)
     }, 
     {
-      path: '/home/casePartEvaluate',
+      path: '/workBench/casePartEvaluate',
       name: 'casePartEvaluate',
-      component: resolve => require(['@/views/home/casePartEvaluate'], resolve)
+      component: resolve => require(['@/views/workBench/casePartEvaluate'], resolve)
+    },
+    {
+      path: '/workBench/part_recycle',
+      name: 'part_recycle',
+      component: resolve => require(['@/views/workBench/part_recycle'], resolve)
     },
     {
       path: '/workBench/serviceList',

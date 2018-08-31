@@ -7,31 +7,34 @@
                         <el-form-item>
                             <div class="star">
                                 <span class="starTit">{{i+1}}.{{item.question.questionComment}}</span>
-                                <el-rate
+                                <el-rate v-if="item.question.questionComment2"
                                         v-model="item.scoreval">
                                 </el-rate>
                             </div>
                         </el-form-item>
-                        <div class="improve" v-if="item.scoreval<4">
+                        <div class="improve" v-if="item.scoreval<4&&item.question.questionComment2">
                             <span>{{item.question.questionComment2}}</span>
                             <div class="improveCell">
                                 <el-form-item>
-                                    <el-checkbox-group v-model="item.aroptschked">
-                                        <el-checkbox v-for="itemoption in item.options" :label="itemoption.optionId" :key="itemoption.optionId">{{itemoption.optionComment}}</el-checkbox>
+                                    <el-checkbox-group v-for="itemoption in item.options" :key="itemoption.optionId" v-model="formData.aroptschked">
+                                        <el-checkbox :label="itemoption.optionId" >{{itemoption.optionComment}}</el-checkbox>
                                     </el-checkbox-group>
                                 </el-form-item>
                             </div>
                         </div>
+                        <el-form-item v-else-if="item.question.questionComment2==null">
+                            <el-input type="textarea" v-model="formData.otherResult" placeholder="请输入其他想法和建议"></el-input>
+                        </el-form-item>
                     </div>
                     <div>客户签名</div>
-                    <div v-if="formData.data.imgStr">
-                        <img style="height:1.5rem;" v-bind:src="formData.data.imgStr" alt="">
+                    <div v-if="formData.imgStr">
+                        <img style="height:1.5rem;" v-bind:src="formData.imgStr" alt="">
                     </div>
                     <div v-else><img style="height:0.5rem;" src="" alt=""></div>
                     <add-signature :title="addSignatureTit" :queryData="searchData" @searchPro="signature"></add-signature>
                     <ul class="signature">
                         <el-form-item label="工程师">
-                            <div>{{formData.data.enginnername}}</div>
+                            <div>{{formData.enginnername}}</div>
                         </el-form-item>
                     </ul>
                     <div style="height: 0.6rem;"></div>
@@ -61,12 +64,18 @@ export default {
                 optionOption:[],
                 question:[],
                 scoreOption:[],
-                data:''
+                imgStr:'',
+                enginnername:'',
+                aroptschked:[],
+                otherResult:''
             },
             score:[],
             evaluateval:[],
             activeName:'third',
+            workId:this.$route.query.workId,
+            caseId:this.$route.query.caseId,
             evaluateId:this.$route.query.evaluateId,
+            serviceType:this.$route.query.serviceType
         }
     },
     created:function(){
@@ -98,7 +107,7 @@ export default {
     },
     methods:{       
         signature(imgStr){
-            this.formData.data.imgStr = imgStr;
+            this.formData.imgStr = imgStr;
         },
         getScore(scores){
             var score = 0;
@@ -125,40 +134,126 @@ export default {
                     var failFlg = 0;
                     var countScore = 0;
                     var returnFlg = 0;
-                    this.evaluateval.forEach(function(v,i,ar){
-                        if(v.scoreval>0){
-                            totalScore+=v.scoreval;
-                            countScore += 1;
-                            if(v.scoreval<3) failFlg = 1;
-                            this.evaluateval.scores.forEach(function(item,i,ar){
-                                if(item.optionScore = v.scoreval){
-                                    let scoreOptionId = item.optionId;
-                                    var temp1 = {};
-                                    temp1.evaluateId=vm.evaluateId;
-                                    temp1.questionId=item.questionId;
-                                    temp1.optionId=scoreOptionId;
-                                    detailArray.push(temp1);	
+                    
+                    vm.evaluateval.forEach(function(v,i,ar){
+                        let scores = v.scores;
+                        let options = v.options;
+                        if(v.question.questionComment2){
+                            if(v.scoreval>0){
+                                totalScore+=v.scoreval;
+                                countScore += 1;
+                                if(v.scoreval<3) failFlg = 1;
+                                var temp1 = {};
+                                scores.forEach(function(item,i,ar){
+                                    if(item.optionScore = v.scoreval){
+                                        let scoreOptionId = item.optionId;       
+                                        temp1.evaluateId=vm.evaluateId;
+                                        temp1.questionId=item.questionId;
+                                        temp1.optionId=scoreOptionId;
+                                    }
+                                })           
+                                detailArray.push(temp1);	
+                            }else{
+                                returnFlg = 1;
+                                vm.$message({
+                                    message:'请给相关项打分',
+                                    type: 'success',
+                                    center: true,
+                                    customClass:'msgdefine'
+                                });
+                                loading.close();
+                                return false;
+                            }
+                        }                     
+                        vm.formData.aroptschked.forEach(function(item,i,ar){
+                            options.forEach(function(items,i,ar){
+                                if(items.optionId == item){
+                                    let temp2 = {};
+                                    temp2.evaluateId = vm.evaluateId;
+                                    temp2.questionId = items.questionId;
+                                    temp2.optionId = item;
+                                    detailArray.push(temp2);
                                 }
-                            })
-                           
-                        }else{
-                            returnFlg = 1;
-                            this.$message({
-                                message:'请给相关项打分',
-                                type: 'success',
-                                center: true,
-                                customClass:'msgdefine'
-                            });
-                            return false;
+                            }) 
+                        })      
+                        if(vm.formData.otherResult){
+                            if(v.question.questionComment2==null){
+                                var temp3={};
+                                temp3.evaluateId = vm.evaluateId;
+                                temp3.questionId = v.question.questionId;
+                                temp3.otherResult=vm.formData.otherResult;
+                                console.log("1111111111");
+                                detailArray.push(temp3);
+                            }
                         }
-
-                        this.evaluateval.options.forEach(function(item,i,ar){
-                            
-                        })
+                    })
+                    if(returnFlg){
+                        loading.close();
+                        return;
+                    }
+                    if(!vm.formData.imgStr){
+                        vm.$message({
+                            message:'请签名',
+                            type: 'success',
+                            center: true,
+                            customClass:'msgdefine'
+                        });
+                        loading.close();
+                        return;
+                    }
+                    let avgScore = totalScore/countScore;
+                    let postData = {};
+                    postData.workId = vm.workId;
+                    postData.caseId = vm.caseId;
+                    postData.evaluateStatus = 2;
+                    postData.evaluateId = vm.evaluateId;
+                    postData.totalScore = avgScore;
+                    postData.EvaluateResult = detailArray;
+                    postData.failFlg = failFlg;
+                    console.log(postData);
+                    fetch.post("?action=/work/submitClientReview",postData).then(res=>{
+                        loading.close();
+                        vm.updateServiceWithSignature();
+                        console.log(res);
                     })
                 }
             })
-
+        },
+        updateServiceWithSignature(){
+            var data = {};
+            data.opFlg =5;
+            // data.customerId=serviceInfo.customerId;
+            let temp = {};
+            temp.serviceId = this.formData.data.serviceId;
+            temp.caseId=this.caseId;
+            if(this.serviceType==2){
+                temp.serviceType = this.serviceType;
+                temp.realWork = this.formData.data.realWork;
+                temp.workContent = this.formData.data.workContent;
+                temp.workResult = this.formData.data.workResult;
+                temp.problemPlan = this.formData.data.problemPlan;
+            }else{
+                // temp.faultDesc = this.formData.data.faultDesc;
+                // temp.analysis = this.formData.data.analysis;
+                // temp.implementResult = this.formData.data.implementResult;
+                // temp.problemSuggest = this.formData.data.problemSuggest;
+            }
+            temp.arriveTime = this.formData.data.arriveTime;
+            temp.leaveTime = this.formData.data.leaveTime;
+            temp.imgStr=this.formData.imgStr;
+            data.data=temp;
+            if(this.serviceType==2){
+                fetch.post("?action=/work/updateSceneServiceFormInfo",data).then(res=>{
+                    loading.close();
+                    console.log(res);
+                })
+            }else{
+                fetch.post("?action=/work/updateCaseTroubleShootingServiceFormInfo",data).then(res=>{
+                    loading.close();
+                    console.log(res);
+                })
+            }
+            
         }
     }
 
