@@ -187,19 +187,6 @@
         </div>
         <div class="dialogUndertake">
             <el-dialog width="80%" :visible.sync="outerVisibleUndertake" :show-close="false">
-        <!-- <el-form>
-            <ul>
-            <li>
-                <el-button type="text" @click="onUndertake">承接</el-button>
-            </li>
-            <li>
-                <el-button type="text" @click="innerVisibleUndertake = true">拒绝</el-button>
-            </li>
-            <li>
-                <el-button type="text" @click="outerVisibleUndertake = false">取消</el-button>
-            </li>
-            </ul>
-        </el-form> -->
                 <div class="modalUndertake" slot="footer">
                 <ul>
                     <li @click="onUndertake">
@@ -324,11 +311,39 @@ export default {
             // this.$emit('change', data)
         },
         onUndertake () {
+            const loading = this.$loading({
+                lock: true,
+                text: '提交中...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(255, 255, 255, 0.3)'
+            });
+            let vm = this;
             let params = "&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+this.getCurrentTime()
             console.log("rrr", params);
             fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=2" + params,{}).then(res=>{
                 console.log("aaaaaaaaaaaaaaaaaaaaaaa", res);
-            })
+                loading.close();
+                if(res.STATUSCODE=="0"){
+                    this.$message({
+                        message:'提交成功',
+                        type: 'success',
+                        center: true,
+                        customClass: 'msgdefine'
+                    })
+                    let nowcaseid = this.taskDetailInfo.caseId;
+                    let nowwordid = this.taskDetailInfo.workId;
+                    setTimeout(function(){vm.$router.push({ name: "workBenchTaskDetailInfo",query:{caseId:nowcaseid,workId:nowwordid}})},1000);
+                }
+                else{
+                    this.$message({
+                        message:res.MESSAGE+"发生错误",
+                        type: 'error',
+                        center: true,
+                        customClass: 'msgdefine'
+                    });
+                    return false
+                }
+            });
             this.outerVisibleUndertake = false;
         },
         onIndependence () {
@@ -338,18 +353,74 @@ export default {
             });
         },
         onCool () {
+            const loading = this.$loading({
+                lock: true,
+                text: '提交中...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(255, 255, 255, 0.3)'
+            });
+            let vm = this;
             let params = "&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+this.getCurrentTime()
             console.log("cooltime", params)
             fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=5" + params,{}).then(res=>{
                 console.log("sssssssssssssssssssssssss", res);
+                loading.close();
+                if(res.STATUSCODE=="0"){
+                    this.$message({
+                        message:'提交成功',
+                        type: 'success',
+                        center: true,
+                        customClass: 'msgdefine'
+                    })
+                    let nowcaseid = this.taskDetailInfo.caseId;
+                    let nowwordid = this.taskDetailInfo.workId;
+                    setTimeout(function(){vm.$router.push({ name: "workBenchTaskDetailInfo",query:{caseId:nowcaseid,workId:nowwordid}})},1000);
+                }
+                else{
+                    this.$message({
+                        message:res.MESSAGE+"发生错误",
+                        type: 'error',
+                        center: true,
+                        customClass: 'msgdefine'
+                    });
+                    return false
+                }
             });
             this.outerVisibleCool = false;
         },
         onRefuse () {
+            const loading = this.$loading({
+                lock: true,
+                text: '提交中...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(255, 255, 255, 0.3)'
+            });
+            let vm = this;
             let params = "&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+this.getCurrentTime()+"&REFUSE_REASON="+this.taskDetailInfo.refuseReason;
             console.log("time", params)
             fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=3" + params,{}).then(res=>{
                 console.log(res)
+                loading.close();
+                if(res.STATUSCODE=="0"){
+                    this.$message({
+                        message:'提交成功',
+                        type: 'success',
+                        center: true,
+                        customClass: 'msgdefine'
+                    })
+                    let nowcaseid = this.taskDetailInfo.caseId;
+                    let nowwordid = this.taskDetailInfo.workId;
+                    setTimeout(function(){vm.$router.push({ name: "workBenchTaskDetailInfo",query:{caseId:nowcaseid,workId:nowwordid}})},1000);
+                }
+                else{
+                    this.$message({
+                        message:res.MESSAGE+"发生错误",
+                        type: 'error',
+                        center: true,
+                        customClass: 'msgdefine'
+                    });
+                    return false
+                }
             });
             this.innerVisibleUndertake = false;
             this.outerVisibleUndertake = false;
