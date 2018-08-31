@@ -147,7 +147,7 @@
             </router-link>
             </el-col>
             <el-col :span="7">
-            <router-link :to="{name:'serviceList',query:{caseId:this.$route.query.caseId,workId:this.$route.query.workId}}">
+            <router-link :to="{name:'serviceList',query:{caseId:this.$route.query.caseId,workId:this.$route.query.workId,taskId:taskDetailInfo.taskId}}">
                 <div>
                 <img src="../../assets/images/eventBaseInfo_3.png" style="width: 0.145rem; height: 0.145rem;" alt="">
                 <span>服务单</span>

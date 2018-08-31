@@ -57,6 +57,7 @@ export default {
             serviceListTit:"服务单一览表",
             workId:this.$route.query.workId,
             caseId:this.$route.query.caseId,
+            taskId:this.$route.query.taskId,
             page:1,
             pageSize:10,
             busy:true,
@@ -65,9 +66,6 @@ export default {
         }
     },
     activated(){
-        // console.log(this.busy);
-        // console.log(this.loadall);
-        // console.log(this.$route.meta.isUseCache);
         if(!this.$route.meta.isUseCache){
         this.serviceList = [];
         this.busy= false;
@@ -79,7 +77,6 @@ export default {
     },
     methods:{
         getEventList(){
-            console.log(this.workId+","+this.caseId);
             var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
             var flag = this.page>1;
             fetch.get("?action=/work/GetServiceFormList&WORK_ID="+this.workId+"&CASE_ID="+this.caseId,params).then(res=>{  

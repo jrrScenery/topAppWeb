@@ -37,10 +37,7 @@ export default {
 
   methods: {
       newService(serviceType){
-        console.log(serviceType);
-        console.log(this.caseId);
-        console.log(this.workId);
-        // this.$router.push({name: 'onsiteServiceInfo', query: {serviceId:null,caseId:this.caseId,workId:this.workId,taskId:this.taskId}})
+        this.$router.push({name: 'onsiteServiceInfo', query: {serviceId:0,caseId:this.caseId,workId:this.workId,taskId:this.taskId,serviceType:serviceType}})
       },
 
     back: function (event) {

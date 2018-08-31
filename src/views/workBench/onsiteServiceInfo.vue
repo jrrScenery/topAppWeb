@@ -6,7 +6,7 @@
         <div class="eventShowTabs">
             <el-tabs v-model="activeName">
                 <el-tab-pane label="实施前确认" name="first"><before-work-confirm></before-work-confirm></el-tab-pane>
-                <el-tab-pane label="完成后总结" name="second"><end-summary></end-summary> </el-tab-pane>
+                <el-tab-pane label="完成后总结" name="second" lazy><end-summary></end-summary> </el-tab-pane>
                 <el-tab-pane label="客户评价" name="third" lazy><customer-edit-rate></customer-edit-rate> </el-tab-pane>
             </el-tabs>
         </div>
@@ -39,6 +39,8 @@ export default {
             taskId:this.$route.query.taskId
         }
     },
+    created:function(){
+    }
 }
 </script>
 

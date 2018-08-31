@@ -27,9 +27,10 @@
                                 <!-- </div> -->
                             </div>
                         </div>
+                        <!-- <div class="submitBtn"><el-button @click="submitForm">提交</el-button></div> -->
                     </el-form-item>
                 </div>
-                <el-form-item class="submitBtn">
+                <el-form-item class="submitBtn" >
                     <el-button @click="submitForm">提交</el-button>
                 </el-form-item>
             </el-form>
@@ -41,7 +42,7 @@
 import global_ from '../../components/Global'
 import axios from 'axios'
 // axios.defaults.headers.post['Content-Type']='application/json'
-axios.defaults.headers.post['Content-Type']='application/x-www-form-urlencoded'
+//axios.defaults.headers.post['Content-Type']='application/x-www-form-urlencoded'
 import headerLast from '../header/headerLast'
 import fetch from '../../utils/ajax'
 import qs from 'qs'
@@ -59,7 +60,7 @@ export default {
             caseId:this.$route.query.caseId,
             templateType:this.$route.query.templateType,
             bjflg:this.$route.query.bjflg,
-            evaluateId:this.$route.query.evaluateId,
+            evaluateId:"",
             evaluateval:[],
             evaluateStatus:1,
             otherResult:"",
@@ -80,9 +81,10 @@ export default {
         }
     },
     mounted(){
-        fetch.get("?action=/work/GetWorkEvaluateInfo",{CASE_ID:this.caseId,WORK_ID:this.workId,TEMPLATE_TYPE:this.templateType,BJ_FLG:this.bjflg,EVALUATE_ID:this.$route.query.evaluateId}).then(res=>{
+        fetch.get("?action=/work/GetWorkEvaluateInfo",{CASE_ID:this.caseId,WORK_ID:this.workId,TEMPLATE_TYPE:this.templateType,BJ_FLG:this.bjflg}).then(res=>{
             console.log(res);
-
+            this.evaluateId=res.EVALUATE_ID_RETURN;
+            console.log('------------------');
             if("0" == res.STATUSCODE){
                 this.questionComment = res.QUESTION[0].questionComment;
                 let jsonres= res;
@@ -100,9 +102,7 @@ export default {
                 })
                 this.evaluateval = tmpjsonval;
                 console.log(tmpjsonval);
-
             }
-            console.log(this.evaluateval);
             
         })
     },
@@ -111,6 +111,7 @@ export default {
     methods:{
         submitForm () {
             let result=new Array;
+            if(this.evaluateval[0].scoreval<4){
             let optionIdList=this.evaluateval[0].aroptschked;
             let evaluateIdet=this.evaluateId;
             let questionidet=this.evaluateval[0].question.questionId;
@@ -124,83 +125,55 @@ export default {
                 if(v==12){
                     resultdetail.otherResult=otherResultet;
                 }
-                // resultdetail=qs.stringify(resultdetail,{formData: 'brackets'});
+                // resultdetail=qs.stringify(resultdetail);
                 result.push(resultdetail);
             });
             }
-            // result=JSON.stringify({result},{arrayFormat: 'brackets'});
-            // this.EvaluateResult.push(result);
-            // console.log(result)
+        }else{result=[];}
+            result=JSON.stringify(result);
             let params=new URLSearchParams;
-            params.append('EMPID',10002);
-            params.append("SKEY",'aeaf348c19984dc1fa779548ac9b0b3b')
-            params.append('CLIENT_SUBMIT_TIME','2018-08-14 06:25:17')
             params.append('totalScore',this.evaluateval[0].scoreval);
             params.append('failFlg',this.evaluateval[0].scoreval<3?1:0);
-            params.append('EvaluateResult',JSON.stringify(result,{formData: 'brackets'}));
+            params.append('EvaluateResult',result);
             params.append('workId',this.workId);
             params.append('evaluateId',this.evaluateId);
             params.append('evaluateStatus',2);
-            // let params="&totalScore="+this.evaluateval[0].scoreval+"&failFlg="+(this.evaluateval[0].scoreval<3?1:0)+'&EvaluateResult='+result;
-           //console.log(JSON.stringify({result}).toString);
-            //console.log(result.toString);
-           // console.log(params.get('EvaluateResult'));
-        //    let params =JSON.stringify({
-        //        'EMPID':10002,
-        //        'SKEY':'aeaf348c19984dc1fa779548ac9b0b3b',
-        //        'CLIENT_SUBMIT_TIME':'2018-08-14 06:25:17',
-        //     'workId':this.workId,
-		// 	//'caseId':caseId,
-		// 	'evaluateStatus':2,
-		// 	'evaluateId':this.evaluateId,
-		// 	'totalScore':this.evaluateval[0].scoreval,
-		// 	'EvaluateResult':JSON.stringify(result),
-        //     'failFlg':this.evaluateval[0].scoreval<3?1:0
-        //     });
             const loading = this.$loading({
                 lock: true,
                 text: '提交中...',
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
-            // console.log(params);
-            console.log(params.get("EvaluateResult"));
+            // console.log(params.get("EvaluateResult"));
             // console.log(qs.stringify({postData},{arrayFormat: 'brackets'}));
-            //  fetch.get("?action=/work/SubmitWorkEvaluateInfo",params).then(res=>{
-            //fetch.post("?action=/work/SubmitWorkEvaluateInfo&workId="+this.workId+"&evaluateId="+this.evaluateId+
-            //"&evaluateStatus=2"+params).then(res=>{
-                // return new Promise((resolve, reject) => {
-                    var token = localStorage.getItem("token");
-                this.$axios({
-                    method:'post',
-                    url:"http://139.129.207.35:8084/api/proxy?action=/work/SubmitWorkEvaluateInfo",
-                    data:params,
-                     headers:{"token":token}
-                }).then(res=>{
-                    
-            loading.close();
-            console.log(JSON.stringify(res.data)+"-------------------");
-            
-            //   if(res.STATUSCODE=="0"){
-            //     this.$message({
-            //       message:'提交成功',
-            //       type: 'success',
-            //       center: true,
-            //       customClass: 'msgdefine',
-            //       TimeRanges:'1000'
-            //     });
-            //     location.reload;
+             fetch.post("?action=/work/SubmitWorkEvaluateInfo",params).then(res=>{
+                // var token = localStorage.getItem("token");
+                // this.$axios({
+                //     method:'post',
+                //     url:global_.proxyServer+"?action=/work/SubmitWorkEvaluateInfo",
+                //     data:params,
+                //       headers:{"token":token}
+                // }).then(res=>{ 
+            loading.close();           
+              if(res.STATUSCODE=="0"){
+                this.$message({
+                  message:'提交成功',
+                  type: 'success',
+                  center: true,
+                  customClass: 'msgdefine',
+                  TimeRanges:'1000'
+                });
+                location.reload;
                 
-            //   }else{
-            //     this.$message({
-            //       message:res.MESSAGE+"发生错误",
-            //       type: 'error',
-            //       center: true,
-            //       customClass: 'msgdefine'
-            //     })
-            //     }
-            }).catch()
-            // })
+              }else{
+                this.$message({
+                  message:res.MESSAGE+"发生错误",
+                  type: 'error',
+                  center: true,
+                  customClass: 'msgdefine'
+                })
+                }
+            })
         },
     }
 }
@@ -219,7 +192,7 @@ export default {
 .improve >>> .el-checkbox{display: block; margin-left: 10px; font-size: 0.13rem; color: #999999;}
 /* .submitBtn{width:100%;} */
 .submitBtn >>> .el-form-item__content{margin: 0!important;}
-.submitBtn >>> .el-form-item__content .el-button{width:100%;border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff;position: fixed; height: 0.5rem; bottom: 0;}
+.submitBtn >>> .el-button{position:fixed;width:100%;border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff;height: 0.5rem; bottom: 0;}
 /* .improveCell span{ font-size: 0.1rem} */
-.improveCell{margin-left:5px}
+.improveCell{margin-left:5px;height: 3.3rem;overflow: scroll;}
 </style>

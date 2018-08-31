@@ -204,11 +204,38 @@ export default {
         }
     },
     created:function(){
-        // if(!this.serviceId){
-        //     fetch.get("?action=/work/submitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
-        //         console.log(res);
-        //     })
-        // }
+        if(this.serviceType == 2){
+            if(!this.serviceId){
+                fetch.get("?action=/work/SubmitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
+                    console.log(res);
+                    let data = res.TEMP;
+                    var sId = data.serviceId;
+                    this.serviceId = data.serviceId;
+                    if(sId){
+                        this.getFormInfoQuestion();
+                    }
+                })
+            }else{
+                this.getFormInfoQuestion();
+            }
+        }else{
+            if(!this.serviceId){
+                fetch.get("?action=/work/SubmitCaseTroubleShootingServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
+                    console.log(res);
+                    let data = res.TEMP;
+                    var sId = data.serviceId;
+                    this.serviceId = data.serviceId;
+                    if(sId){
+                        this.getFormInfoQuestion();
+                    }
+                })
+            }else{
+                this.getFormInfoQuestion();
+            }
+        }
+    },
+    methods:{
+        getFormInfoQuestion(){
             fetch.get("?action=/work/getCaseServiceQuestion&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
                 console.log(res)
                 if(this.serviceType==2){
@@ -250,51 +277,7 @@ export default {
                     this.checked[5].ifF6 = true;
                 }
             })
-    },
-    methods:{
-        // getFormInfoQuestion(){
-        //     fetch.get("?action=/work/getCaseServiceQuestion&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
-        //         console.log(res)
-        //         if(this.serviceType==2){
-        //             this.formData.caseServiceQuestion = res.dataService[0];
-        //         }else{
-        //             this.formData.caseServiceQuestion = res.dataDealService[0];
-        //         }
-        //         if(this.formData.caseServiceQuestion.serviceTime == null){
-        //             this.formData.caseServiceQuestion.serviceTime = new Date();
-        //         }
-        //         if(this.formData.caseServiceQuestion.numberIf1==1){
-        //             this.checked[0].ifY1 = true;
-        //         }else if(this.formData.caseServiceQuestion.numberIf1==0){
-        //             this.checked[0].ifF1 = true;
-        //         }
-        //         if(this.formData.caseServiceQuestion.numberIf2==1){
-        //             this.checked[1].ifY2 = true;
-        //         }else if(this.formData.caseServiceQuestion.numberIf2==0){
-        //             this.checked[1].ifF2 = true;
-        //         }
-        //         if(this.formData.caseServiceQuestion.numberIf3==1){
-        //             this.checked[2].ifY3 = true;
-        //         }else if(this.formData.caseServiceQuestion.numberIf3==0){
-        //             this.checked[2].ifF3 = true;
-        //         }
-        //         if(this.formData.caseServiceQuestion.numberIf4==1){
-        //             this.checked[3].ifY4 = true;
-        //         }else if(this.formData.caseServiceQuestion.numberIf4==0){
-        //             this.checked[3].ifF4 = true;
-        //         }
-        //         if(this.formData.caseServiceQuestion.numberIf5==1){
-        //             this.checked[4].ifY5 = true;
-        //         }else if(this.formData.caseServiceQuestion.numberIf5==0){
-        //             this.checked[4].ifF5 = true;
-        //         }
-        //         if(this.formData.caseServiceQuestion.numberIf6==1){
-        //             this.checked[5].ifY6 = true;
-        //         }else if(this.formData.caseServiceQuestion.numberIf6==0){
-        //             this.checked[5].ifF6 = true;
-        //         }
-        //     })
-        // },
+        },
         signature(imgStrQuestion){
             this.formData.caseServiceQuestion.imgStrQuestion = imgStrQuestion;
         },
@@ -440,17 +423,6 @@ export default {
                         });
                         return false
                     }
-                    // let temp=new URLSearchParams;
-                    // temp.append('operationStarttime',this.formData.caseServiceQuestion.operationStarttime);
-                    // temp.append('operationEndtime',this.formData.caseServiceQuestion.operationEndtime);
-                    // temp.append('stopStarttime',this.formData.caseServiceQuestion.stopStarttime);
-                    // temp.append('stopEndtime',this.formData.caseServiceQuestion.stopEndtime);
-                    // temp.append('lastbackupTime',this.formData.caseServiceQuestion.lastbackupTime);
-                    // temp.append('beforeLastbackupTime',this.formData.caseServiceQuestion.beforeLastbackupTime);
-                    // temp.append('backuptestTime',this.formData.caseServiceQuestion.backuptestTime);
-                    // temp.append('serviceTime',this.formData.caseServiceQuestion.serviceTime);
-                    // temp.append('imgStrQuestion',this.formData.caseServiceQuestion.imgStrQuestion);
-                    // temp.append('serviceId',this.serviceId);
                     let temp = {};
                     temp.operationStarttime = this.formData.caseServiceQuestion.operationStarttime;
                     temp.operationEndtime = this.formData.caseServiceQuestion.operationEndtime;
@@ -462,10 +434,8 @@ export default {
                     temp.serviceTime = this.formData.caseServiceQuestion.serviceTime;
                     temp.imgStrQuestion = this.formData.caseServiceQuestion.imgStrQuestion;
                     temp.serviceId=this.serviceId;
-                    // var data = new URLSearchParams;
-                    // data.append('serviceType',this.serviceType);
-                    // var data = {};
-                    // data.serviceType = this.serviceType;
+                    var data = new URLSearchParams;
+                    data.append('serviceType',this.serviceType);
                     if((temp.operationStarttime!=null&&this.checked[0].ifY1==false)||(temp.operationEndtime!=null&&this.checked[0].ifY1==false)){
                         loading.close();
                         this.$message({
@@ -518,53 +488,39 @@ export default {
                     }
                     if(this.checked[0].ifY1==true){
                         temp.numberIf1=1;
-                        // temp.append('numberIf1',1);
                     }else{
                         temp.numberIf1=0;
-                        // temp.append('numberIf1',0);
                     }
                     if(this.checked[1].ifY2==true){
                         temp.numberIf2="1";
-                        // temp.append('numberIf2',1);
                     }else{
                         temp.numberIf2="0";
-                        // temp.append('numberIf2',0);
                     }
                     if(this.checked[2].ifY3==true){
                         temp.numberIf3="1";
-                        // temp.append('numberIf3',1);
                     }else{
                         temp.numberIf3="0";
-                        // temp.append('numberIf3',0);
                     }
                     if(this.checked[3].ifY4==true){
-                        // temp.append('numberIf4',1);
                         temp.numberIf4="1";
                     }else{
                         temp.numberIf4="0";
-                        // temp.append('numberIf4',0);
                     }
                     if(this.checked[4].ifY5==true){
                         temp.numberIf5="1";
-                        // temp.append('numberIf5',1);
                     }else{
                         temp.numberIf5="0";
-                        // temp.append('numberIf5',0);
                     }
                     if(this.checked[5].ifY6==true){
                         temp.numberIf6="1";
-                        // temp.append('numberIf6',1);
                     }else{
                         temp.numberIf6="0";
-                        // temp.append('numberIf6',0);
                     }
-                    console.log("1111111111111");
-                //    data.append('data',temp);
-                //    data.data=temp ;
-                //    console.log(data);
-                    fetch.post("?action=/work/submitServiceQuestion&SERVICE_TYPE="+this.serviceType,temp).then(res=>{
-                        console.log("==========");
-                        console.log(res);
+                   data.append('data',JSON.stringify(temp));
+                   console.log(data);
+                    fetch.post("?action=/work/submitServiceQuestion",data).then(res=>{
+                        // console.log("==========");
+                        // console.log(res);
                         loading.close();
                         if(res.STATUSCODE=="0"){
                             this.$message({
@@ -577,8 +533,7 @@ export default {
                             let nowWorkId = vm.workId;
                             let nowCaseId = vm.caseId;
                             setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId}})},1000);
-                        }
-                        else{
+                        }else{
                             this.$message({
                             message:res.MESSAGE+"发生错误",
                             type: 'error',

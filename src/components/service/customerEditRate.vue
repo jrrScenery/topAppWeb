@@ -75,11 +75,46 @@ export default {
             workId:this.$route.query.workId,
             caseId:this.$route.query.caseId,
             evaluateId:this.$route.query.evaluateId,
-            serviceType:this.$route.query.serviceType
+            serviceType:this.$route.query.serviceType,
+            serviceId:this.$route.query.serviceId,
+            taskId:this.$route.query.taskId
         }
     },
     created:function(){
         let vm= this;
+        // if(this.serviceType == 2){
+        //     if(!this.serviceId){
+        //         console.log(this.caseId);
+        //         console.log(this.workId);
+        //         console.log(this.taskId);
+        //         fetch.get("?action=/work/SubmitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
+        //             console.log(res);
+        //             console.log("oooooooooooooooooooo");
+        //             let data = res.TEMP;
+        //             var sId = data.serviceId;
+        //             this.serviceId = data.serviceId;
+        //             if(sId){
+        //                 this.getFormInfo();
+        //             }
+        //         })
+        //     }else{
+        //         this.getFormInfo();
+        //     }
+        // }else{
+        //     if(!this.serviceId){
+        //         fetch.get("?action=/work/SubmitCaseTroubleShootingServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
+        //             console.log(res);
+        //             let data = res.TEMP;
+        //             var sId = data.serviceId;
+        //             this.serviceId = data.serviceId;
+        //             if(sId){
+        //                 this.getFormInfo();
+        //             }
+        //         })
+        //     }else{
+        //         this.getFormInfo();
+        //     }
+        // }
         fetch.get("?action=/work/GetClientReview&evaluateId="+this.evaluateId).then(res=>{
             console.log(res);
             if("0" == res.STATUSCODE){
@@ -105,7 +140,32 @@ export default {
 
         })
     },
-    methods:{       
+    methods:{ 
+        // getFormInfo(){
+        //     fetch.get("?action=/work/GetClientReview&evaluateId="+this.evaluateId).then(res=>{
+        //         console.log(res);
+        //         if("0" == res.STATUSCODE){
+        //             let jsonres= res;
+        //             this.formData.data = res.DATA[0];
+        //             let tmpjsonval =[];
+        //             jsonres.question.forEach(function(v,i,ar){
+        //             let tmpobj = {};
+        //             tmpobj.question= v;
+        //             tmpobj.options = jsonres.optionOption.filter(function(item){return v.questionId == item.questionId})
+        //             tmpobj.chkedopts = tmpobj.options.filter(function(item){return item.checkFlg})
+        //             tmpobj.aroptschked = tmpobj.chkedopts.map(function(v,i,ar){ return v.optionId});
+        //             tmpobj.scores = jsonres.scoreOption.filter(function(item){return v.questionId == item.questionId});
+        //             tmpobj.scoreval = vm.getScore(tmpobj.scores);
+        //             // tmpobj.data = res.DATA[0];
+        //             tmpjsonval.push(tmpobj);
+        //             // tmpjsonval.push(data);
+        //             })
+        //             console.log(tmpjsonval);
+        //             this.evaluateval = tmpjsonval;
+        //             console.log(this.evaluateval);
+        //         }
+        //     })
+        // },      
         signature(imgStr){
             this.formData.imgStr = imgStr;
         },
@@ -182,7 +242,6 @@ export default {
                                 temp3.evaluateId = vm.evaluateId;
                                 temp3.questionId = v.question.questionId;
                                 temp3.otherResult=vm.formData.otherResult;
-                                console.log("1111111111");
                                 detailArray.push(temp3);
                             }
                         }
@@ -202,26 +261,37 @@ export default {
                         return;
                     }
                     let avgScore = totalScore/countScore;
-                    let postData = {};
-                    postData.workId = vm.workId;
-                    postData.caseId = vm.caseId;
-                    postData.evaluateStatus = 2;
-                    postData.evaluateId = vm.evaluateId;
-                    postData.totalScore = avgScore;
-                    postData.EvaluateResult = detailArray;
-                    postData.failFlg = failFlg;
+                    let postData = new URLSearchParams;
+                    postData.append('workId',vm.workId);
+                    postData.append('evaluateStatus',2);
+                    postData.append('evaluateId',vm.evaluateId);
+                    postData.append('totalScore',avgScore);
+                    postData.append('EvaluateResult',JSON.stringify(detailArray));
+                    postData.append('failFlg',failFlg);
+                    postData.append('workId',vm.workId);
                     console.log(postData);
                     fetch.post("?action=/work/submitClientReview",postData).then(res=>{
-                        loading.close();
-                        vm.updateServiceWithSignature();
                         console.log(res);
+                        loading.close();
+                        if(res.STATUSCODE=="0"){
+                            vm.updateServiceWithSignature();
+                        }else{
+                            this.$message({
+                            message:res.MESSAGE+"发生错误",
+                            type: 'error',
+                            center: true,
+                            customClass: 'msgdefine'
+                            });
+                        }
+                        
                     })
                 }
             })
         },
         updateServiceWithSignature(){
-            var data = {};
-            data.opFlg =5;
+            var data = new URLSearchParams;
+            data.append('opFlg',5);
+            // data.opFlg =5;
             // data.customerId=serviceInfo.customerId;
             let temp = {};
             temp.serviceId = this.formData.data.serviceId;
@@ -233,24 +303,59 @@ export default {
                 temp.workResult = this.formData.data.workResult;
                 temp.problemPlan = this.formData.data.problemPlan;
             }else{
-                // temp.faultDesc = this.formData.data.faultDesc;
-                // temp.analysis = this.formData.data.analysis;
-                // temp.implementResult = this.formData.data.implementResult;
-                // temp.problemSuggest = this.formData.data.problemSuggest;
+                temp.faultDesc = this.formData.data.faultDesc;
+                temp.analysis = this.formData.data.analysis;
+                temp.implementResult = this.formData.data.implementResult;
+                temp.problemSuggest = this.formData.data.problemSuggest;
             }
             temp.arriveTime = this.formData.data.arriveTime;
             temp.leaveTime = this.formData.data.leaveTime;
             temp.imgStr=this.formData.imgStr;
-            data.data=temp;
+            data.append('data',JSON.stringify(temp));
+            let nowWorkId = vm.workId;
+            let nowCaseId = vm.caseId;
+            let nowtaskId = vm.taskId;
             if(this.serviceType==2){
                 fetch.post("?action=/work/updateSceneServiceFormInfo",data).then(res=>{
                     loading.close();
                     console.log(res);
+                    if(res.STATUSCODE=="0"){
+                        this.$message({
+                        message:'提交成功',
+                        type: 'success',
+                        center: true,
+                        customClass: 'msgdefine'
+                        });
+                        setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                    }else{
+                        this.$message({
+                        message:res.MESSAGE+"发生错误",
+                        type: 'error',
+                        center: true,
+                        customClass: 'msgdefine'
+                        });
+                    }
                 })
             }else{
-                fetch.post("?action=/work/updateCaseTroubleShootingServiceFormInfo",data).then(res=>{
+                fetch.post("?action=/work/UpdateCaseTroubleShootingServiceFormInfo",data).then(res=>{
                     loading.close();
                     console.log(res);
+                    if(res.STATUSCODE=="0"){
+                        this.$message({
+                        message:'提交成功',
+                        type: 'success',
+                        center: true,
+                        customClass: 'msgdefine'
+                        });
+                        setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                    }else{
+                        this.$message({
+                        message:res.MESSAGE+"发生错误",
+                        type: 'error',
+                        center: true,
+                        customClass: 'msgdefine'
+                        });
+                    }
                 })
             }
             

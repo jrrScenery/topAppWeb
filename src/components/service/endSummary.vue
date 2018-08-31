@@ -134,10 +134,40 @@ export default {
             workId:this.$route.query.workId,
             caseId:this.$route.query.caseId,
             taskId:this.$route.query.taskId,
+            serviceId:this.$route.query.serviceId,
             serviceType:this.$route.query.serviceType
         }
     },
     created:function(){
+        // if(this.serviceType == 2){
+        //     if(!this.serviceId){
+        //         fetch.get("?action=/work/SubmitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
+        //             console.log(res);
+        //             let data = res.TEMP;
+        //             var sId = data.serviceId;
+        //             this.serviceId = data.serviceId;
+        //             if(sId){
+        //                 this.getFormInfo();
+        //             }
+        //         })
+        //     }else{
+        //         this.getFormInfo();
+        //     }
+        // }else{
+        //     if(!this.serviceId){
+        //         fetch.get("?action=/work/SubmitCaseTroubleShootingServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
+        //             console.log(res);
+        //             let data = res.TEMP;
+        //             var sId = data.serviceId;
+        //             this.serviceId = data.serviceId;
+        //             if(sId){
+        //                 this.getFormInfo();
+        //             }
+        //         })
+        //     }else{
+        //         this.getFormInfo();
+        //     }
+        // }
         if(this.serviceType==2){
             fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
                 console.log(res);
@@ -159,6 +189,27 @@ export default {
         }
     },
     methods:{
+        // getFormInfo(){
+        //     if(this.serviceType==2){
+        //         fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.serviceId).then(res=>{
+        //             console.log(res);
+        //             this.formData.userAndPrjItem = res.DATA[0];
+        //         })
+        //         fetch.get("?action=/system/getDict2&DICT_TYPE=NT_SERVICE_TYPE","").then(res=>{
+        //             console.log(res);
+        //             this.serviceTypeArr = res.data;
+        //         })
+        //         fetch.get("?action=/system/getDict2&DICT_TYPE=NT_CASE_WORK_RESULT","").then(res=>{
+        //             console.log(res);
+        //             this.workResultArr = res.data;
+        //         })
+        //     }else{
+        //         fetch.get("?action=/work/GetCaseroubleShootingServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.serviceId).then(res=>{
+        //             console.log(res);
+        //             this.formData.userAndPrjItem = res.DATA[0];
+        //         })
+        //     }
+        // },
         check(loading){
             console.log(this.formData.serviceType);
             if(this.formData.serviceType==null&&this.serviceType==2){
@@ -273,14 +324,12 @@ export default {
             let vm= this;
             this.$refs[formName].validate((valid) => {
                 if(valid){
-                    console.log(vm.check(loading))
                     if(!vm.check(loading)) return;
-                    var data={};
-                    data.serviceId = this.formData.userAndPrjItem.serviceId;
-                    data.opFlg =1;
-                    data.customerId = this.formData.userAndPrjItem.customerId;
+                    var data=new URLSearchParams;
+                    data.append('serviceId',this.formData.userAndPrjItem.serviceId);
+                    data.append('opFlg',1);
+                    data.append('customerId',this.formData.userAndPrjItem.customerId);
                     var temp = {};
-
                     temp.serviceId = this.formData.userAndPrjItem.serviceId;
                     temp.caseId=this.caseId;
                     if(vm.serviceType==2){
@@ -298,23 +347,52 @@ export default {
                     temp.arriveTime = this.formData.userAndPrjItem.arriveTime;
                     temp.leaveTime = this.formData.userAndPrjItem.leaveTime;
                     console.log(temp);
-                    data.data = temp;
+                    data.append('data',JSON.stringify(temp));
                     console.log(data);
                     let nowWorkId = vm.workId;
                     let nowCaseId = vm.caseId;
                     let nowtaskId = vm.taskId;
-                    // let param={SERVICE_ID:this.formData.userAndPrjItem.serviceId,OP_FLAG:1,CUSTOMER}
                     if(vm.serviceType==2){
-                        fetch.post("?action=/work/updateSceneServiceFormInfo",data).then(res=>{
+                        fetch.post("?action=/work/UpdateSceneServiceFormInfo",data).then(res=>{
                             console.log(res);    
                             loading.close();
-                            setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                            if(res.STATUSCODE=="0"){
+                                this.$message({
+                                message:'提交成功',
+                                type: 'success',
+                                center: true,
+                                customClass: 'msgdefine'
+                                });
+                                setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                            }else{
+                                this.$message({
+                                message:res.MESSAGE+"发生错误",
+                                type: 'error',
+                                center: true,
+                                customClass: 'msgdefine'
+                                });
+                            }
                         })
                     }else{
-                        fetch.post("?action=/work/updateCaseTroubleShootingServiceFormInfo",data).then(res=>{
+                        fetch.post("?action=/work/UpdateCaseTroubleShootingServiceFormInfo",data).then(res=>{
                             console.log(res);    
                             loading.close();
-                            setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                            if(res.STATUSCODE=="0"){
+                                this.$message({
+                                message:'提交成功',
+                                type: 'success',
+                                center: true,
+                                customClass: 'msgdefine'
+                                });
+                                setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                            }else{
+                                this.$message({
+                                message:res.MESSAGE+"发生错误",
+                                type: 'error',
+                                center: true,
+                                customClass: 'msgdefine'
+                                });
+                            }       
                         })                     
                     }
                 }
