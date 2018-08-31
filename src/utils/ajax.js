@@ -86,8 +86,10 @@ export default {
             params: params,
             headers: {
                 "token" : token
-            }
-          }).then(res => {
+            },
+          },
+          {emulateJSON: true}).then(res => {
+              console.log(params);
             if(res.data.STATUSCODE==-1||res.data.STATUSCODE=='-1'){
                 router.push({name: 'login'});
                 return;
@@ -101,20 +103,21 @@ export default {
         })
       },
 
-      post(url, data) {
+      post(url, params) {
         return new Promise((resolve, reject) => {
             var token = localStorage.getItem("token");
-            // console.log(data);
-          axios.post(baseURL+url, qs.stringify(data), {
+          axios.post(baseURL+url,params, {
               headers: {
-                "token":token,
                 'Content-Type': 'application/x-www-form-urlencoded',
-              }
+                "token":token,
+              },
+             
             }
           ).then(res => {
-            //console.log(res);
-            if(res.data.sTATUSCODE=='-1'){
+            if(res.data.STATUSCODE=='-1'){
+                // console.log(res.data+"------------------")
                 router.push({name: 'login'});
+                return;
             }else{
                 resolve(res.data)
             }
