@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import fetch from '../../utils/ajax'
 export default {
   name: 'headerLast',
 
@@ -23,21 +24,31 @@ export default {
     return {
       caseId:this.$route.query.caseId,
       workId:this.$route.query.workId,
-      serviceId:this.$route.query.serviceId,
-      taskId:this.$route.query.taskId
+      taskId:this.$route.query.taskId,
     }
   },
   props: ['title','backUrl','date1','date2'],
 
-  watch: {
-  },
-
-  created () {
-  },
-
   methods: {
       newService(serviceType){
-        this.$router.push({name: 'onsiteServiceInfo', query: {serviceId:0,caseId:this.caseId,workId:this.workId,taskId:this.taskId,serviceType:serviceType}})
+        if(serviceType == 2){
+            console.log(this.serviceId);
+            if(!this.serviceId){
+                fetch.get("?action=/work/SubmitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
+                    console.log(res);
+                    let data = res.TEMP;
+                    this.$router.push({name: 'onsiteServiceInfo', query: {serviceId:data.serviceId,caseId:this.caseId,workId:this.workId,taskId:this.taskId,evaluateId:data.evaluateId,serviceType:serviceType}})
+                })
+            }
+        }else{
+            if(!this.serviceId){
+                fetch.get("?action=/work/SubmitCaseTroubleShootingServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
+                    console.log(res);
+                    let data = res.TEMP;     
+                    this.$router.push({name: 'onsiteServiceInfo', query: {serviceId:data.serviceId,evaluateId:data.evaluateId,caseId:this.caseId,workId:this.workId,taskId:this.taskId,serviceType:serviceType}})            
+                })
+            }
+        }
       },
 
     back: function (event) {

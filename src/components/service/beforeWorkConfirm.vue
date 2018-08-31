@@ -204,80 +204,51 @@ export default {
         }
     },
     created:function(){
-        if(this.serviceType == 2){
-            if(!this.serviceId){
-                fetch.get("?action=/work/SubmitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
-                    console.log(res);
-                    let data = res.TEMP;
-                    var sId = data.serviceId;
-                    this.serviceId = data.serviceId;
-                    if(sId){
-                        this.getFormInfoQuestion();
-                    }
-                })
+        console.log(this.serviceType);
+        fetch.get("?action=/work/getCaseServiceQuestion&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
+            console.log(res)
+            if(this.serviceType==2){
+                this.formData.caseServiceQuestion = res.dataService[0];
             }else{
-                this.getFormInfoQuestion();
+                this.formData.caseServiceQuestion = res.dataDealService[0];
             }
-        }else{
-            if(!this.serviceId){
-                fetch.get("?action=/work/SubmitCaseTroubleShootingServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
-                    console.log(res);
-                    let data = res.TEMP;
-                    var sId = data.serviceId;
-                    this.serviceId = data.serviceId;
-                    if(sId){
-                        this.getFormInfoQuestion();
-                    }
-                })
-            }else{
-                this.getFormInfoQuestion();
+            if(this.formData.caseServiceQuestion.serviceTime == null){
+                this.formData.caseServiceQuestion.serviceTime = new Date();
             }
-        }
+            if(this.formData.caseServiceQuestion.numberIf1==1){
+                this.checked[0].ifY1 = true;
+            }else if(this.formData.caseServiceQuestion.numberIf1==0){
+                this.checked[0].ifF1 = true;
+            }
+            if(this.formData.caseServiceQuestion.numberIf2==1){
+                this.checked[1].ifY2 = true;
+            }else if(this.formData.caseServiceQuestion.numberIf2==0){
+                this.checked[1].ifF2 = true;
+            }
+            if(this.formData.caseServiceQuestion.numberIf3==1){
+                this.checked[2].ifY3 = true;
+            }else if(this.formData.caseServiceQuestion.numberIf3==0){
+                this.checked[2].ifF3 = true;
+            }
+            if(this.formData.caseServiceQuestion.numberIf4==1){
+                this.checked[3].ifY4 = true;
+            }else if(this.formData.caseServiceQuestion.numberIf4==0){
+                this.checked[3].ifF4 = true;
+            }
+            if(this.formData.caseServiceQuestion.numberIf5==1){
+                this.checked[4].ifY5 = true;
+            }else if(this.formData.caseServiceQuestion.numberIf5==0){
+                this.checked[4].ifF5 = true;
+            }
+            if(this.formData.caseServiceQuestion.numberIf6==1){
+                this.checked[5].ifY6 = true;
+            }else if(this.formData.caseServiceQuestion.numberIf6==0){
+                this.checked[5].ifF6 = true;
+            }
+        })
     },
     methods:{
-        getFormInfoQuestion(){
-            fetch.get("?action=/work/getCaseServiceQuestion&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
-                console.log(res)
-                if(this.serviceType==2){
-                    this.formData.caseServiceQuestion = res.dataService[0];
-                }else{
-                    this.formData.caseServiceQuestion = res.dataDealService[0];
-                }
-                if(this.formData.caseServiceQuestion.serviceTime == null){
-                    this.formData.caseServiceQuestion.serviceTime = new Date();
-                }
-                if(this.formData.caseServiceQuestion.numberIf1==1){
-                    this.checked[0].ifY1 = true;
-                }else if(this.formData.caseServiceQuestion.numberIf1==0){
-                    this.checked[0].ifF1 = true;
-                }
-                if(this.formData.caseServiceQuestion.numberIf2==1){
-                    this.checked[1].ifY2 = true;
-                }else if(this.formData.caseServiceQuestion.numberIf2==0){
-                    this.checked[1].ifF2 = true;
-                }
-                if(this.formData.caseServiceQuestion.numberIf3==1){
-                    this.checked[2].ifY3 = true;
-                }else if(this.formData.caseServiceQuestion.numberIf3==0){
-                    this.checked[2].ifF3 = true;
-                }
-                if(this.formData.caseServiceQuestion.numberIf4==1){
-                    this.checked[3].ifY4 = true;
-                }else if(this.formData.caseServiceQuestion.numberIf4==0){
-                    this.checked[3].ifF4 = true;
-                }
-                if(this.formData.caseServiceQuestion.numberIf5==1){
-                    this.checked[4].ifY5 = true;
-                }else if(this.formData.caseServiceQuestion.numberIf5==0){
-                    this.checked[4].ifF5 = true;
-                }
-                if(this.formData.caseServiceQuestion.numberIf6==1){
-                    this.checked[5].ifY6 = true;
-                }else if(this.formData.caseServiceQuestion.numberIf6==0){
-                    this.checked[5].ifF6 = true;
-                }
-            })
-        },
+        
         signature(imgStrQuestion){
             this.formData.caseServiceQuestion.imgStrQuestion = imgStrQuestion;
         },

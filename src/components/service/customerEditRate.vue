@@ -27,14 +27,14 @@
                         </el-form-item>
                     </div>
                     <div>客户签名</div>
-                    <div v-if="formData.imgStr">
-                        <img style="height:1.5rem;" v-bind:src="formData.imgStr" alt="">
+                    <div v-if="formData.data.imgStr">
+                        <img style="height:1.5rem;" v-bind:src="formData.data.imgStr" alt="">
                     </div>
                     <div v-else><img style="height:0.5rem;" src="" alt=""></div>
                     <add-signature :title="addSignatureTit" :queryData="searchData" @searchPro="signature"></add-signature>
                     <ul class="signature">
                         <el-form-item label="工程师">
-                            <div>{{formData.enginnername}}</div>
+                            <div>{{formData.data.enginnername}}</div>
                         </el-form-item>
                     </ul>
                     <div style="height: 0.6rem;"></div>
@@ -64,8 +64,7 @@ export default {
                 optionOption:[],
                 question:[],
                 scoreOption:[],
-                imgStr:'',
-                enginnername:'',
+                data:'',
                 aroptschked:[],
                 otherResult:''
             },
@@ -82,40 +81,8 @@ export default {
     },
     created:function(){
         let vm= this;
-        // if(this.serviceType == 2){
-        //     if(!this.serviceId){
-        //         console.log(this.caseId);
-        //         console.log(this.workId);
-        //         console.log(this.taskId);
-        //         fetch.get("?action=/work/SubmitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
-        //             console.log(res);
-        //             console.log("oooooooooooooooooooo");
-        //             let data = res.TEMP;
-        //             var sId = data.serviceId;
-        //             this.serviceId = data.serviceId;
-        //             if(sId){
-        //                 this.getFormInfo();
-        //             }
-        //         })
-        //     }else{
-        //         this.getFormInfo();
-        //     }
-        // }else{
-        //     if(!this.serviceId){
-        //         fetch.get("?action=/work/SubmitCaseTroubleShootingServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
-        //             console.log(res);
-        //             let data = res.TEMP;
-        //             var sId = data.serviceId;
-        //             this.serviceId = data.serviceId;
-        //             if(sId){
-        //                 this.getFormInfo();
-        //             }
-        //         })
-        //     }else{
-        //         this.getFormInfo();
-        //     }
-        // }
-        fetch.get("?action=/work/GetClientReview&evaluateId="+this.evaluateId).then(res=>{
+        console.log(this.evaluateId);
+        fetch.get("?action=/work/GetClientReview&evaluateId="+this.evaluateId+"&serviceType="+this.serviceType).then(res=>{
             console.log(res);
             if("0" == res.STATUSCODE){
                 let jsonres= res;
@@ -129,45 +96,19 @@ export default {
                 tmpobj.aroptschked = tmpobj.chkedopts.map(function(v,i,ar){ return v.optionId});
                 tmpobj.scores = jsonres.scoreOption.filter(function(item){return v.questionId == item.questionId});
                 tmpobj.scoreval = vm.getScore(tmpobj.scores);
-                // tmpobj.data = res.DATA[0];
                 tmpjsonval.push(tmpobj);
-                // tmpjsonval.push(data);
                 })
                 console.log(tmpjsonval);
                 this.evaluateval = tmpjsonval;
                 console.log(this.evaluateval);
             }
-
         })
     },
-    methods:{ 
-        // getFormInfo(){
-        //     fetch.get("?action=/work/GetClientReview&evaluateId="+this.evaluateId).then(res=>{
-        //         console.log(res);
-        //         if("0" == res.STATUSCODE){
-        //             let jsonres= res;
-        //             this.formData.data = res.DATA[0];
-        //             let tmpjsonval =[];
-        //             jsonres.question.forEach(function(v,i,ar){
-        //             let tmpobj = {};
-        //             tmpobj.question= v;
-        //             tmpobj.options = jsonres.optionOption.filter(function(item){return v.questionId == item.questionId})
-        //             tmpobj.chkedopts = tmpobj.options.filter(function(item){return item.checkFlg})
-        //             tmpobj.aroptschked = tmpobj.chkedopts.map(function(v,i,ar){ return v.optionId});
-        //             tmpobj.scores = jsonres.scoreOption.filter(function(item){return v.questionId == item.questionId});
-        //             tmpobj.scoreval = vm.getScore(tmpobj.scores);
-        //             // tmpobj.data = res.DATA[0];
-        //             tmpjsonval.push(tmpobj);
-        //             // tmpjsonval.push(data);
-        //             })
-        //             console.log(tmpjsonval);
-        //             this.evaluateval = tmpjsonval;
-        //             console.log(this.evaluateval);
-        //         }
-        //     })
-        // },      
+    methods:{          
         signature(imgStr){
-            this.formData.imgStr = imgStr;
+            console.log("mmmmmmmmmmmmmm");
+            console.log(imgStr);
+            this.formData.data.imgStr = imgStr;
         },
         getScore(scores){
             var score = 0;
@@ -250,7 +191,7 @@ export default {
                         loading.close();
                         return;
                     }
-                    if(!vm.formData.imgStr){
+                    if(!vm.formData.data.imgStr){
                         vm.$message({
                             message:'请签名',
                             type: 'success',
@@ -270,11 +211,11 @@ export default {
                     postData.append('failFlg',failFlg);
                     postData.append('workId',vm.workId);
                     console.log(postData);
-                    fetch.post("?action=/work/submitClientReview",postData).then(res=>{
+                    fetch.post("?action=/work/SubmitClientReview",postData).then(res=>{
                         console.log(res);
                         loading.close();
                         if(res.STATUSCODE=="0"){
-                            vm.updateServiceWithSignature();
+                            vm.updateServiceWithSignature(loading);
                         }else{
                             this.$message({
                             message:res.MESSAGE+"发生错误",
@@ -288,11 +229,11 @@ export default {
                 }
             })
         },
-        updateServiceWithSignature(){
+        updateServiceWithSignature(loading){
+            let vm= this;
             var data = new URLSearchParams;
             data.append('opFlg',5);
-            // data.opFlg =5;
-            // data.customerId=serviceInfo.customerId;
+            data.append('customerId',this.formData.data.customerId);
             let temp = {};
             temp.serviceId = this.formData.data.serviceId;
             temp.caseId=this.caseId;
@@ -310,13 +251,14 @@ export default {
             }
             temp.arriveTime = this.formData.data.arriveTime;
             temp.leaveTime = this.formData.data.leaveTime;
-            temp.imgStr=this.formData.imgStr;
+            temp.imgStr=this.formData.data.imgStr;
+            temp.engineer = localStorage.getItem('empId');
             data.append('data',JSON.stringify(temp));
-            let nowWorkId = vm.workId;
-            let nowCaseId = vm.caseId;
-            let nowtaskId = vm.taskId;
+            let nowWorkId = this.workId;
+            let nowCaseId = this.caseId;
+            let nowtaskId = this.taskId;
             if(this.serviceType==2){
-                fetch.post("?action=/work/updateSceneServiceFormInfo",data).then(res=>{
+                fetch.post("?action=/work/UpdateSceneServiceFormInfo",data).then(res=>{
                     loading.close();
                     console.log(res);
                     if(res.STATUSCODE=="0"){
@@ -368,16 +310,16 @@ export default {
 
 <style scoped>
 .customerEditRateView{width: 100%; position: relative;background-color: #ffffff;margin-top:0.1rem}
-.serviceInfoCell{white-space:normal}
-.serviceInfoCell .serviceInfoTit{position: relative; line-height: 0.05rem; margin-left: 0.15rem; font-size: 0.14rem; color: #2698d6;}
-.serviceInfoCell .serviceInfoTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.1rem; content: ''; background: #2698d6;}
-.serviceInfoCell .serviceInfoTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
-.content{background: #ffffff; color: #999999; padding: 0.1rem 0.2rem 0.15rem;}
+/* .serviceInfoCell{} */
+/* .serviceInfoCell .serviceInfoTit{position: relative; line-height: 0.05rem; margin-left: 0.15rem; font-size: 0.14rem; color: #2698d6;}
+.serviceInfoCell .serviceInfoTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
+.serviceInfoCell .serviceInfoTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;} */
+.content{background: #ffffff; color: #999999; padding: 0.05rem 0.2rem 0.1rem;}
 
-.editorView .star{display: flex;}
+.editorView .star{display: flex;line-height: 0.1rem}
 .editorView .star .starTit{ display: inline-block; width: 1.5rem;font-size: 0.14rem}
-.editorView .improve span{line-height: 0.05rem;font-size: 0.13rem}
-.editorView .improve >>> .el-checkbox{display: block; margin: 0; font-size: 0.13rem; color: #999999;}
+.editorView .improve span{line-height: 0.02rem;font-size: 0.13rem}
+.editorView .improve >>> .el-checkbox{display: block; margin: 0;line-height: 0.1rem; font-size: 0.13rem; color: #999999;}
 
 .improveCell span{ color: #666;word-wrap: break-word}
 .el-checkbox__input.is-disabled+span.el-checkbox__label{color: #666!important;}
