@@ -130,13 +130,10 @@
         <div class="eventShowFooter">
         <el-row>
             <el-col :span="7">
-            <!-- <router-link :to="{name:'',query:''}"> -->
-            <!-- <div @click.stop="popBgUndertake=!popBgUndertake"> -->
             <div @click="choiseUndertake">
             <img src="../../assets/images/eventBaseInfo_1.png" style="width: 0.11rem; height: 0.135rem;" alt="">
             <span>承接反馈</span>
             </div>
-            <!-- </router-link> -->
             </el-col>
             <el-col :span="7">
             <router-link :to="{name:'workBenchSLAfeedback',query:{workId:this.$route.query.workId}}">
@@ -282,19 +279,9 @@ export default {
         console.log(this.$route.query.caseId);
         fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
             console.log(res.DATA[0]);   
-            // console.log("11", this.$route.query.workId);
             this.taskDetailInfo = res.DATA[0];
             this.taskDetailInfo.refuseReason = '';
-            // this.taskDetailInfo.refuseReason = this.refuseReason;
-            // console.log(this.taskDetailInfo);
-            // this.eng2partEvalid = res.DATA[0].eng2partEvalid;
-            // console.log("SSS", this.taskDetailInfo.workStatusId)
-            // console.log("CCCCCCCCCCCC", this.$route.query.workStatus)
-        },
-        // fetch.get("?action=/work/UpdateWorkAcceptStatus?ACCEPT_STATUS=2",{}).then(res=>{
-        //     console.log("dddddddddddddddddddddddddddddd", res)
-        // })
-        );
+        });
     },
     beforeRouteLeave( to, from,next){
         if (to.name == 'workBenchTaskList') {
@@ -330,9 +317,9 @@ export default {
                         center: true,
                         customClass: 'msgdefine'
                     })
-                    let nowcaseid = this.taskDetailInfo.caseId;
-                    let nowwordid = this.taskDetailInfo.workId;
-                    setTimeout(function(){vm.$router.push({ name: "workBenchTaskDetailInfo",query:{caseId:nowcaseid,workId:nowwordid}})},1000);
+                    fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
+                        this.taskDetailInfo.workStatus = res.DATA[0].workStatus;
+                    });
                 }
                 else{
                     this.$message({
@@ -372,9 +359,9 @@ export default {
                         center: true,
                         customClass: 'msgdefine'
                     })
-                    let nowcaseid = this.taskDetailInfo.caseId;
-                    let nowwordid = this.taskDetailInfo.workId;
-                    setTimeout(function(){vm.$router.push({ name: "workBenchTaskDetailInfo",query:{caseId:nowcaseid,workId:nowwordid}})},1000);
+                    fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
+                        this.taskDetailInfo.workStatus = res.DATA[0].workStatus;
+                    });
                 }
                 else{
                     this.$message({
@@ -408,9 +395,9 @@ export default {
                         center: true,
                         customClass: 'msgdefine'
                     })
-                    let nowcaseid = this.taskDetailInfo.caseId;
-                    let nowwordid = this.taskDetailInfo.workId;
-                    setTimeout(function(){vm.$router.push({ name: "workBenchTaskDetailInfo",query:{caseId:nowcaseid,workId:nowwordid}})},1000);
+                    fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
+                        this.taskDetailInfo.workStatus = res.DATA[0].workStatus;
+                    });
                 }
                 else{
                     this.$message({
