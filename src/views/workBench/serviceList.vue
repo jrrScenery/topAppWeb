@@ -79,7 +79,7 @@ export default {
         getEventList(){
             var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
             var flag = this.page>1;
-            fetch.get("?action=/work/GetServiceFormList&WORK_ID="+this.workId+"&CASE_ID="+this.caseId,params).then(res=>{  
+            fetch.get("?action=/work/GetServiceFormList&WORK_ID="+this.$route.query.workId+"&CASE_ID="+this.caseId,params).then(res=>{  
                 console.log(res);
                 if(flag){
                     this.serviceList = this.serviceList.concat(res.DATA);
