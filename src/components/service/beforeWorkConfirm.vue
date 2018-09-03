@@ -11,7 +11,29 @@
                         <el-checkbox v-model="checked[0].ifY1" @change="changeIfY1"></el-checkbox>
                         <div>操作时间</div>
                     </div>
-                    <div>
+                    <el-form-item label="从：" style="margin-bottom:0.05rem">
+                        <el-col :span="15">
+                                <el-date-picker
+                                v-model="formData.caseServiceQuestion.operationStarttime"
+                                type="datetime"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="选择开始时间"
+                                style="width:100%">
+                                </el-date-picker>
+                        </el-col>
+                    </el-form-item>
+                    <el-form-item label="至：">
+                        <el-col :span="15">
+                                <el-date-picker
+                                v-model="formData.caseServiceQuestion.operationEndtime"
+                                type="datetime"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="选择结束时间"
+                                style="width:100%">
+                                </el-date-picker>
+                        </el-col>
+                    </el-form-item>
+                    <!-- <div>
                         从：
                         <div class="block">
                                 <el-date-picker
@@ -30,7 +52,7 @@
                                 placeholder="选择结束时间">
                                 </el-date-picker>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="selectBox">
                         <div>否：</div>
                         <el-checkbox v-model="checked[0].ifF1" @change="changeIfF1"></el-checkbox>
@@ -43,7 +65,29 @@
                         <el-checkbox v-model="checked[1].ifY2" @change="changeIfY2"></el-checkbox>
                         <div>停机时间</div>
                     </div>
-                    <div>
+                    <el-form-item label="从：" style="margin-bottom:0.05rem">
+                        <el-col :span="15">
+                                <el-date-picker
+                                v-model="formData.caseServiceQuestion.stopStarttime"
+                                type="datetime"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="选择开始时间"
+                                style="width:100%">
+                                </el-date-picker>
+                        </el-col>
+                    </el-form-item>
+                    <el-form-item label="至：">
+                        <el-col :span="15">
+                                <el-date-picker
+                                v-model="formData.caseServiceQuestion.stopEndtime"
+                                type="datetime"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="选择结束时间"
+                                style="width:100%">
+                                </el-date-picker>
+                        </el-col>
+                    </el-form-item>
+                    <!-- <div>
                         从：
                         <div class="block">
                                 <el-date-picker
@@ -62,7 +106,7 @@
                                 placeholder="选择结束时间">
                                 </el-date-picker>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="selectBox">
                         <div>否：</div>
                         <el-checkbox v-model="checked[1].ifF2" @change="changeIfF2"></el-checkbox>
@@ -92,14 +136,20 @@
                 <el-form-item>
                     <div>4.服务开始前，用户保留了相关配置信息和文档</div>
                     <div>用于可能必要的恢复</div>
-                    <div class="selectBox">
+                        <el-form-item label="是：">
+                            <el-checkbox v-model="checked[3].ifY4" @change="changeIfY4"></el-checkbox>
+                        </el-form-item>
+                        <el-form-item label="否：">
+                            <el-checkbox v-model="checked[3].ifF4" @change="changeIfF4"></el-checkbox>
+                        </el-form-item>
+                    <!-- <div class="selectBox">
                         <div>是：</div>
                         <el-checkbox v-model="checked[3].ifY4" @change="changeIfY4"></el-checkbox>
                     </div>       
                     <div class="selectBox">
                         <div>否：</div>
                         <el-checkbox v-model="checked[3].ifF4" @change="changeIfF4"></el-checkbox>
-                    </div>               
+                    </div>                -->
                 </el-form-item>
                 <el-form-item>
                     <div>5.用户在服务开始前完成了业务相关数据备份</div>

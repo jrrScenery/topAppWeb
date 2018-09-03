@@ -1,16 +1,13 @@
 <template>
-  <div class="hello">
+  <div class="helloView">
 <!--touchstart,touchmove,touchend,touchcancel 这-->
-    <el-form ref="form" :model="form" style="display:flex">
-        <el-form-item>
-            <el-button type=""  @click="clear">清除</el-button>
-        </el-form-item>
-        <el-form-item>
-            <el-button @click="save">保存</el-button>
+    <el-form ref="form" :model="form" label-width="65px" >
+        <canvas id="canvas" style="width:100%; border:1px solid black">Canvas画板</canvas>
+        <el-form-item class="searchBtn">
+            <el-button @click="clear">取消</el-button>
+            <el-button class="searchBtnCell" @click="save">保存</el-button>
         </el-form-item>
     </el-form>
-    <!-- <button v-on:click="save">保存</button> -->
-    <canvas id="canvas" width="300" height="600" style="border:1px solid black">Canvas画板</canvas>
   </div>
 </template>
 
@@ -125,13 +122,20 @@ export default {
       document.activeElement.blur()
     },
 
-} } </script> <!-- Add "scoped" attribute to limit CSS to this component only --> 
+} } </script> 
 <style scoped> 
+  .helloView{width: 90%; background: #ffffff; padding: 0.15rem 0.2rem 0.5rem; position: relative;}
+  .helloView >>> .el-form-item{margin-bottom: 0.1rem;}
+  .helloView >>> .searchBtn{position: absolute; bottom: -0.15rem; left: 0; right: 0; height: 0.4rem;}
+  .helloView >>> .searchBtn .el-button{width: 50%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
+  .helloView >>> .searchBtn .el-button:hover{background: #ffffff;}
+  .helloView >>> .searchBtn .searchBtnCell:hover{background: #2698d6;}
+  .helloView >>> .searchBtn .el-form-item__content{margin: 0!important; display: flex;}
+  .helloView >>> .searchBtn .searchBtnCell{background: #2698d6; color: #ffffff;}
     h1, h2 { font-weight: normal; } 
     ul { list-style-type: none; padding: 0; } 
     li { display: inline-block; margin: 0 10px; } 
     a { color: #42b983; } 
-    #canvas { background: #ffffff; cursor: default; } 
+    #canvas { background: #ffffff; cursor: default; margin-right:0} 
     #keyword-box { margin: 10px 0; } 
-    .hello{display: inline-block}
 </style>

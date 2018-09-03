@@ -106,8 +106,6 @@ export default {
     },
     methods:{          
         signature(imgStr){
-            console.log("mmmmmmmmmmmmmm");
-            console.log(imgStr);
             this.formData.data.imgStr = imgStr;
         },
         getScore(scores){
@@ -230,6 +228,9 @@ export default {
             })
         },
         updateServiceWithSignature(loading){
+            if(this.serviceType==2){
+                if(!this.check(loading))return;
+            }
             let vm= this;
             var data = new URLSearchParams;
             data.append('opFlg',5);
@@ -299,9 +300,81 @@ export default {
                         });
                     }
                 })
+            }           
+        },
+        check(loading){
+            if(this.formData.data.serviceType==null){
+                this.$message({
+                    message:'请选择服务类型!',
+                    type: 'success',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
             }
-            
-        }
+            if(this.formData.data.arriveTime==null){
+                this.$message({
+                    message:'请填写到场时间!',
+                    type: 'success',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
+            if(this.formData.data.leaveTime==null){
+                this.$message({
+                    message:'请填写离场时间!',
+                    type: 'success',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
+            if(this.formData.data.realWork==null){
+                this.$message({
+                    message:'请填写实际工时!',
+                    type: 'success',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
+            if(this.formData.data.workContent==null){
+                this.$message({
+                    message:'请填写工作内容!',
+                    type: 'success',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
+            if(this.formData.data.workResult==null){
+                this.$message({
+                    message:'请选择工作结果!',
+                    type: 'success',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
+            if(this.formData.data.problemPlan==null){
+                this.$message({
+                    message:'请填写存在问题!',
+                    type: 'success',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }        
+            return true;
+        },
     }
 
     

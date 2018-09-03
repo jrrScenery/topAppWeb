@@ -75,13 +75,13 @@
                             </el-col>
                         </el-form-item>
                         <div class="article">{{content}}</div>
-                        <el-form-item >
+                        <el-form-item>
                             <el-input type="textarea" v-model="formData.userAndPrjItem.workContent" placeholder="请输入工作内容"></el-input>
                         </el-form-item>
                         <div class="article">{{result}}</div>
                         <el-form-item>
                             <el-radio-group v-for="item in workResultArr" :key="item.id" v-model="formData.workResult">
-                                <el-radio :label="item.DICTID" style="width:100%">{{item.DICTNAME}}</el-radio>
+                                <el-radio :label="item.DICTID" style="width:100%;margin-left:0.25rem">{{item.DICTNAME}}</el-radio>
                             </el-radio-group>
                         </el-form-item>
                         <el-form-item>
@@ -139,36 +139,6 @@ export default {
         }
     },
     created:function(){
-        console.log(this.serviceId);
-        // if(this.serviceType == 2){
-        //     if(!this.serviceId){
-        //         fetch.get("?action=/work/SubmitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
-        //             console.log(res);
-        //             let data = res.TEMP;
-        //             var sId = data.serviceId;
-        //             this.serviceId = data.serviceId;
-        //             if(sId){
-        //                 this.getFormInfo();
-        //             }
-        //         })
-        //     }else{
-        //         this.getFormInfo();
-        //     }
-        // }else{
-        //     if(!this.serviceId){
-        //         fetch.get("?action=/work/SubmitCaseTroubleShootingServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
-        //             console.log(res);
-        //             let data = res.TEMP;
-        //             var sId = data.serviceId;
-        //             this.serviceId = data.serviceId;
-        //             if(sId){
-        //                 this.getFormInfo();
-        //             }
-        //         })
-        //     }else{
-        //         this.getFormInfo();
-        //     }
-        // }
         if(this.serviceType==2){
             fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
                 console.log(res);
@@ -189,28 +159,7 @@ export default {
             })
         }
     },
-    methods:{
-        // getFormInfo(){
-        //     if(this.serviceType==2){
-        //         fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.serviceId).then(res=>{
-        //             console.log(res);
-        //             this.formData.userAndPrjItem = res.DATA[0];
-        //         })
-        //         fetch.get("?action=/system/getDict2&DICT_TYPE=NT_SERVICE_TYPE","").then(res=>{
-        //             console.log(res);
-        //             this.serviceTypeArr = res.data;
-        //         })
-        //         fetch.get("?action=/system/getDict2&DICT_TYPE=NT_CASE_WORK_RESULT","").then(res=>{
-        //             console.log(res);
-        //             this.workResultArr = res.data;
-        //         })
-        //     }else{
-        //         fetch.get("?action=/work/GetCaseroubleShootingServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.serviceId).then(res=>{
-        //             console.log(res);
-        //             this.formData.userAndPrjItem = res.DATA[0];
-        //         })
-        //     }
-        // },
+    methods:{      
         check(loading){
             console.log(this.formData.serviceType);
             if(this.formData.serviceType==null&&this.serviceType==2){
@@ -253,6 +202,17 @@ export default {
                 loading.close();
                 return false
             }
+            if(this.formData.workResult==null&&this.serviceType==2){
+                this.$message({
+                    message:'请填写工作结果!',
+                    type: 'success',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
+            
             if(this.formData.userAndPrjItem.workContent==null&&this.serviceType==2){
                 this.$message({
                     message:'请填写工作内容!',
@@ -275,7 +235,7 @@ export default {
             }
             if(this.formData.userAndPrjItem.faultDesc==null&&this.serviceType==1){
                 this.$message({
-                    message:'请填写到场时间!',
+                    message:'请选择工作结果!',
                     type: 'success',
                     center: true,
                     customClass:'msgdefine'
@@ -412,7 +372,7 @@ export default {
     .serviceInfoCell .serviceInfoTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
     .serviceInfoCell .serviceInfoTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
     /* .summaryView{margin:0.1rem;line-height: 0.2rem} */
-    .content{background: #ffffff; color: #999999; padding: 0.1rem 0.25rem 0.15rem;}
+    .content{background: #ffffff; color: #999999; padding: 0.1rem 0.05rem 0.15rem;}
     .content >>> .el-form-item{border-bottom: 0.01rem; margin: 0.03rem 0;}
     .content >>> .el-form-item__label{font-size: 0.13rem; padding: 0 0.2rem 0 0.2rem; text-align: left}
     .article{line-height: 0.3rem; padding: 0 0.2rem 0 0.2rem;}
