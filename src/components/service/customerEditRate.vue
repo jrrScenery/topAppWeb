@@ -16,8 +16,8 @@
                             <span>{{item.question.questionComment2}}</span>
                             <div class="improveCell">
                                 <el-form-item>
-                                    <el-checkbox-group v-for="itemoption in item.options" :key="itemoption.optionId" v-model="formData.aroptschked">
-                                        <el-checkbox :label="itemoption.optionId" >{{itemoption.optionComment}}</el-checkbox>
+                                    <el-checkbox-group v-model="item.aroptschked">
+                                        <el-checkbox v-for="itemoption in item.options" :key="itemoption.optionId" :label="itemoption.optionId" >{{itemoption.optionComment}}</el-checkbox>
                                     </el-checkbox-group>
                                 </el-form-item>
                             </div>
@@ -70,6 +70,7 @@ export default {
             },
             score:[],
             evaluateval:[],
+            scoreOption:[],
             activeName:'third',
             workId:this.$route.query.workId,
             caseId:this.$route.query.caseId,
@@ -84,7 +85,9 @@ export default {
         console.log(this.evaluateId);
         fetch.get("?action=/work/GetClientReview&evaluateId="+this.evaluateId+"&serviceType="+this.serviceType).then(res=>{
             console.log(res);
+            console.log("aaaaa");
             if("0" == res.STATUSCODE){
+                this.scoreOption = res.scoreOption;
                 let jsonres= res;
                 this.formData.data = res.DATA[0];
                 let tmpjsonval =[];
@@ -94,12 +97,13 @@ export default {
                 tmpobj.options = jsonres.optionOption.filter(function(item){return v.questionId == item.questionId})
                 tmpobj.chkedopts = tmpobj.options.filter(function(item){return item.checkFlg})
                 tmpobj.aroptschked = tmpobj.chkedopts.map(function(v,i,ar){ return v.optionId});
-                tmpobj.scores = jsonres.scoreOption.filter(function(item){return v.questionId == item.questionId});
-                tmpobj.scoreval = vm.getScore(tmpobj.scores);
+                // tmpobj.scores = jsonres.scoreOption.filter(function(item){return v.questionId == item.questionId});
+                // tmpobj.scoreval = vm.getScore(tmpobj.scores);
+                tmpobj.scoreval = vm.getScore(jsonres.scoreOption,v.questionId);
                 tmpjsonval.push(tmpobj);
                 })
-                console.log(tmpjsonval);
                 this.evaluateval = tmpjsonval;
+                console.log("1111111");
                 console.log(this.evaluateval);
             }
         })
@@ -108,15 +112,27 @@ export default {
         signature(imgStr){
             this.formData.data.imgStr = imgStr;
         },
-        getScore(scores){
+        getScore(scoreOption,questionId){
             var score = 0;
-            scores.forEach(function(v,i,ar){
-                if(v.checkFlg==1){
-                    if(score<v.optionScore)
-					score = v.optionScore;
+            scoreOption.forEach(function(v,i,ar){
+                if(v.questionId == questionId){
+                    if(v.checkFlg==1){
+                        if(score<v.optionScore)
+                        score = v.optionScore;
+                    }
                 }
             })
             return score;
+        },
+        getScoreOpinionId(scoreOption,questionId,scoreval){
+            let optionId;
+            scoreOption.forEach(function(v,i,ar){
+                if(v.questionId == questionId&&v.optionScore==scoreval){
+                    optionId = v.optionId;
+                    return false;
+                }
+            })
+            return optionId;
         },
         submitForm(formName){
             const loading = this.$loading({
@@ -133,25 +149,30 @@ export default {
                     var failFlg = 0;
                     var countScore = 0;
                     var returnFlg = 0;
-                    
+                    console.log("222222222");
+                    console.log(vm.evaluateval);
                     vm.evaluateval.forEach(function(v,i,ar){
-                        let scores = v.scores;
+                        // let scores = v.scores;
                         let options = v.options;
+                        
                         if(v.question.questionComment2){
                             if(v.scoreval>0){
                                 totalScore+=v.scoreval;
                                 countScore += 1;
                                 if(v.scoreval<3) failFlg = 1;
-                                var temp1 = {};
-                                scores.forEach(function(item,i,ar){
-                                    if(item.optionScore = v.scoreval){
-                                        let scoreOptionId = item.optionId;       
+                                var scoreOptionId = vm.getScoreOpinionId(vm.scoreOption,v.question.questionId,v.scoreval);
+                                // scores.forEach(function(item,i,ar){
+                                    var temp1 = {};
+                                    // if(item.optionScore = v.scoreval){
+                                        // let scoreOptionId = item.optionId;       
                                         temp1.evaluateId=vm.evaluateId;
-                                        temp1.questionId=item.questionId;
-                                        temp1.optionId=scoreOptionId;
-                                    }
-                                })           
-                                detailArray.push(temp1);	
+                                        temp1.questionId=v.question.questionId;
+                                        temp1.optionId=scoreOptionId;   
+                                        detailArray.push(temp1);
+                                        // console.log("fsdafsasa");	
+                                        // console.log(detailArray);
+                                    // }
+                                // })   
                             }else{
                                 returnFlg = 1;
                                 vm.$message({
@@ -163,8 +184,8 @@ export default {
                                 loading.close();
                                 return false;
                             }
-                        }                     
-                        vm.formData.aroptschked.forEach(function(item,i,ar){
+                        }                
+                        v.aroptschked.forEach(function(item,i,ar){
                             options.forEach(function(items,i,ar){
                                 if(items.optionId == item){
                                     let temp2 = {};
@@ -172,6 +193,8 @@ export default {
                                     temp2.questionId = items.questionId;
                                     temp2.optionId = item;
                                     detailArray.push(temp2);
+                                    console.log("bbbbbbbbbbb");
+                                    console.log(detailArray);
                                 }
                             }) 
                         })      
@@ -199,6 +222,8 @@ export default {
                         loading.close();
                         return;
                     }
+                    console.log("==========");
+                    console.log(detailArray);
                     let avgScore = totalScore/countScore;
                     let postData = new URLSearchParams;
                     postData.append('workId',vm.workId);
