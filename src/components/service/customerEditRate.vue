@@ -38,7 +38,7 @@
                         </el-form-item>
                     </ul>
                     <div style="height: 0.6rem;"></div>
-                    <el-form-item class="submitBtn">
+                    <el-form-item class="submitBtn" v-if="!signImg">
                         <el-button @click="submitForm('formData')">提交</el-button>
                     </el-form-item>
                 </el-form>
@@ -71,6 +71,7 @@ export default {
             score:[],
             evaluateval:[],
             scoreOption:[],
+            signImg:"",
             activeName:'third',
             workId:this.$route.query.workId,
             caseId:this.$route.query.caseId,
@@ -90,6 +91,7 @@ export default {
                 this.scoreOption = res.scoreOption;
                 let jsonres= res;
                 this.formData.data = res.DATA[0];
+                this.signImg = res.DATA[0].imgStr;
                 let tmpjsonval =[];
                 jsonres.question.forEach(function(v,i,ar){
                 let tmpobj = {};
@@ -144,6 +146,9 @@ export default {
             let vm= this;
             this.$refs[formName].validate((valid) => {
                 if(valid){
+                    if(vm.serviceType==2){
+                        if(!vm.check(loading)) return;
+                    }
                     let detailArray = new Array();
                     var totalScore = 0;
                     var failFlg = 0;
@@ -248,9 +253,6 @@ export default {
             })
         },
         updateServiceWithSignature(loading){
-            if(this.serviceType==2){
-                if(!this.check(loading))return;
-            }
             let vm= this;
             var data = new URLSearchParams;
             data.append('opFlg',5);

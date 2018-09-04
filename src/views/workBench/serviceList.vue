@@ -66,6 +66,8 @@ export default {
         }
     },
     activated(){
+        console.log(this.loadall+"===============");
+        console.log(this.$route.meta.isUseCache);
         if(!this.$route.meta.isUseCache){
         this.serviceList = [];
         this.busy= false;
@@ -77,6 +79,7 @@ export default {
     },
     methods:{
         getEventList(){
+            console.log(this.$route.query.workId+","+this.caseId);
             var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
             var flag = this.page>1;
             fetch.get("?action=/work/GetServiceFormList&WORK_ID="+this.$route.query.workId+"&CASE_ID="+this.caseId,params).then(res=>{  
