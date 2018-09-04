@@ -149,6 +149,7 @@ export default {
         },
         changePartsParams (formUpdateParts){
             let changeParts = {};
+            changeParts.PARTS_ID = formUpdateParts.partsId;
             changeParts.PARTS_SOURCE = formUpdateParts.partsSource;
             changeParts.PN_FRU = formUpdateParts.pnFru;
             changeParts.SN = formUpdateParts.sn;
@@ -170,13 +171,38 @@ export default {
             let takedown = {};
             takedown.PARTS_ID = "";
             takedown.PARTS_SOURCE = 2;
-            takedown.sn = formUpdateParts.takeDownSN;
+            takedown.SN = formUpdateParts.takeDownSN;
             takedown.IS_RECYCLE = 1;
             takedown.USE_STATUS_REMARK = "";
-            takedown.MODEL_NAME = formUpdateParts.modelName;
+            takedown.MODEL_NAE = formUpdateParts.modelName;
             takedown.COMEFROM_SN = formUpdateParts.sn;
             takedown.COMEFROM_PARTS_ID = formUpdateParts.partsId;
+            takedown.CASE_ID = formUpdateParts.caseId;
+            takedown.PN_FRU = formUpdateParts.pnFru;
+            takedown.TYPE = formUpdateParts.type;
+            takedown.IF_PACKAGE = formUpdateParts.ifPackage;
+            takedown.IF_TAKEAWAY = formUpdateParts.ifTakeaway;
             return takedown;
+        },
+        
+        ifOperation (formUpdateParts) {
+            if (formUpdateParts.ifPackage==null) {
+                this.warning("请选择是否包装")
+                return;
+            };
+            if (formUpdateParts.ifTakeaway==null) {
+                this.warning("请选择是否带走")
+                return;
+            };
+            if (formUpdateParts.useStatus==null) {
+                this.warning("请确认选择使用情况")
+                return;
+            };
+            if (formUpdateParts.isRecycle==null) {
+                this.warning("请选择是否回收")
+                return;
+            };
+            return true;
         },
 
         onArray (formUpdateParts){
@@ -184,82 +210,108 @@ export default {
             let array = new Array;
             let list = [];
             let params_dict = {};
-            console.log("wewewe", formUpdateParts.takeDownSN)
-            if (formUpdateParts.takeDownSN!=undefined&&formUpdateParts.useStatus=="1") {
-                let chageArray = this.changePartsParams(formUpdateParts);
-                let takeArray = this.takeDownParts(formUpdateParts);
-                // array.push(chageArray);
-                // array.push(takeArray);
-                // list.push(chageArray);
-                // list.push(takeArray);
+            let ifJudge = this.ifOperation(formUpdateParts);
+            console.log(formUpdateParts)
+            if (ifJudge==true){
+                console.log("wewewe", formUpdateParts.takeDownSN);
+                if (formUpdateParts.takeDownSN!=undefined&&formUpdateParts.partsSource=="1"&&formUpdateParts.useStatus=="1") {
+                    let chageArray = this.changePartsParams(formUpdateParts);
+                    let takeArray = this.takeDownParts(formUpdateParts);
+                    array.push(chageArray);
+                    array.push(takeArray);
+                }
+                else if (formUpdateParts.takeDownSN==undefined&&formUpdateParts.partsSource=="1"&&formUpdateParts.useStatus=="1") {
+                    // console.log("kkkk")
+                    array = "";
+                }
+                else if (formUpdateParts.takeDownSN==undefined&&formUpdateParts.partsSource=="2") {
+                    let chageArray = this.changePartsParams(formUpdateParts)
+                    // console.log("DDDDD", chageArray)
+                    array.push(chageArray);
+                }
+                else{
+                    let chageArray = this.changePartsParams(formUpdateParts)
+                    // console.log("DDDDD", chageArray)
+                    array.push(chageArray);
+                }
+                array = JSON.stringify(array);
+                params.append('DATA', array);
+                params.append('UPDATE_DATE', this.getCurrentTime());
+                params.append('CASE_ID', this.caseId);
+                console.log("qweasd", params, eval(params.get('DATA')).length, eval(params.get('DATA')))
+                // params_dict.DATA = list;
+                return params
             }
-            else if (formUpdateParts.takeDownSN==undefined&&formUpdateParts.useStatus=="1") {
-                array = "";
-                // list.push("");
-            }
-            else{
-                let chageArray = this.changePartsParams(formUpdateParts)
-                array.push(chageArray);
-                // list.push(chageArray);
-            }
+            array = "judge_no";
             array = JSON.stringify(array);
-            params.append('DATA', array);
-            params.append('UPDATE_DATE', this.getCurrentTime());
-            params.append('CASE_ID', this.caseId);
-            console.log("qweasd", params, eval(params.get('DATA')).length, eval(params.get('DATA')))
-            // params_dict.DATA = list;
+            params.append("DATA", array);
             return params
         },
-
+        
+        warning (msg){
+            this.$message({
+                message: msg,
+                type: 'warning',
+                center: true,
+                customClass:'msgdefine'
+                });
+        },
          
         onSubmit (formUpdateParts) {
             let params = this.onArray(formUpdateParts);
             let params_DATA = eval(params.get('DATA'));
-            const loading = this.$loading({
-                lock: true,
-                text: '提交中...',
-                spinner: 'el-icon-loading',
-                background: 'rgba(255, 255, 255, 0.3)'
-            });
-            if (params_DATA.length==1&&params_DATA=="") {
-                loading.close();
-                this.$message({
-                    message:'请输入：换下件SN',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
+            if (params_DATA=="judge_no") {
+                console.log(params_DATA);
+            }
+            else{
+                // console.log("FFFF", typeof(params_DATA), params_DATA)
+                const loading = this.$loading({
+                    lock: true,
+                    text: '提交中...',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(255, 255, 255, 0.3)'
                 });
-            }else{
-                fetch.post("?action=/parts/updatePartsGathering", params).then(res=>{
-                    console.log("update", res)
+                if (params_DATA.length==0&&params_DATA=="") {
                     loading.close();
-                    if(res.STATUSCODE=="0"){
-                        this.$message({
-                            message:'提交成功',
-                            type: 'success',
-                            center: true,
-                            customClass: 'msgdefine'
-                        });
-                     
-                        fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId, {}).then(res=>{
-                            this.sparePartsSortOutSelectArr = res.DATA;
-                            this.busy = false;
-                            this.loadall = true;
+                    this.$message({
+                        message:'请输入：换下件SN',
+                        type: 'warning',
+                        center: true,
+                        customClass:'msgdefine'
+                    });
+                    this.isShow = true;
+                }else{
+                    fetch.post("?action=/parts/updatePartsGathering", params).then(res=>{
+                        // console.log("update", res)
+                        loading.close();
+                        if(res.STATUSCODE=="0"){
+                            this.$message({
+                                message:'提交成功',
+                                type: 'success',
+                                center: true,
+                                customClass: 'msgdefine'
+                            });
+                         
+                            fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId, {}).then(res=>{
+                                this.sparePartsSortOutSelectArr = res.DATA;
+                                this.busy = false;
+                                this.loadall = true;
+        
+                            });
+                            this.isShow = false;
+        
+                        }
+                        else{
+                            this.$message({
+                                message:res.MESSAGE+"发生错误",
+                                type: 'error',
+                                center: true,
+                                customClass: 'msgdefine'
+                            });
+                        }
+                    });
     
-                        });
-                        this.isShow = false;
-    
-                    }
-                    else{
-                        this.$message({
-                            message:res.MESSAGE+"发生错误",
-                            type: 'error',
-                            center: true,
-                            customClass: 'msgdefine'
-                        });
-                    }
-                });
-
+                }
             }
         },
         getSearParams (searchData) {
