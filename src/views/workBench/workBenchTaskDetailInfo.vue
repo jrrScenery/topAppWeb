@@ -279,15 +279,14 @@ export default {
         
     },
     created:function(){
-        console.log(this.$route.query.workId);
-        console.log(this.$route.query.caseId);
         fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
-            console.log(res.DATA[0]);   
+            // console.log(res.DATA[0]);   
             this.taskDetailInfo = res.DATA[0];
             this.taskDetailInfo.refuseReason = '';
         });
     },
     beforeRouteLeave( to, from,next){
+        console.log(to);
         if (to.name == 'workBenchTaskList') {
             to.meta.isUseCache = true;    
         }        
