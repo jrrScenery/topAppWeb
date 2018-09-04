@@ -39,6 +39,12 @@ export default {
             taskId:this.$route.query.taskId
         }
     },
+    beforeRouteLeave( to, from,next){
+        if (to.name == 'serviceList') {
+            to.meta.isUseCache = true;    
+        }        
+        next();
+    },
 }
 </script>
 
