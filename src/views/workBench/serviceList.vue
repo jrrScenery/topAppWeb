@@ -66,8 +66,6 @@ export default {
         }
     },
     activated(){
-        console.log(this.loadall+"===============");
-        console.log(this.$route.meta.isUseCache);
         if(!this.$route.meta.isUseCache){
         this.serviceList = [];
         this.busy= false;
@@ -79,10 +77,9 @@ export default {
     },
     methods:{
         getEventList(){
-            console.log(this.$route.query.workId+","+this.caseId);
             var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
             var flag = this.page>1;
-            fetch.get("?action=/work/GetServiceFormList&WORK_ID="+this.$route.query.workId+"&CASE_ID="+this.caseId,params).then(res=>{  
+            fetch.get("?action=/work/GetServiceFormList&WORK_ID="+this.$route.query.workId+"&CASE_ID="+this.$route.query.caseId,params).then(res=>{  
                 console.log(res);
                 if(flag){
                     this.serviceList = this.serviceList.concat(res.DATA);
@@ -101,17 +98,15 @@ export default {
         },
         
         loadMore(){
-            console.log(this.busy);
-            console.log(this.loadall);
             if(this.busy || this.loadall)
                 return;
             this.busy = true;
             setTimeout(() => {
-                console.log("getEventList");
                 this.getEventList();
             }, 500);
         },
         beforeRouteLeave( to, from,next){
+            console.log(to);
             if (to.name == 'workBenchTaskDetailInfo') {
                 to.meta.isUseCache = true;    
             }        

@@ -22,14 +22,14 @@
           <div v-else-if="item.ifFeedback!=0">已反馈</div>
           <div v-else @click="dialogVisible=true">反馈</div> -->
           <div v-if="item.ifFeedback==0" @click="dialogopen(item.slaTypeId)">反馈</div>
-          <div v-if="item.ifFeedback!=0" >已反馈</div>
+          <div v-if="item.ifFeedback!=0" style="color:#666666" >已反馈</div>
         </el-col>
       </el-row>
     </div>
     </div>
     <div>
-    <el-dialog :visible.sync="dialogVisible0" width="70%">
-        <el-form class="form1" style="color:#333333">
+    <el-dialog :visible.sync="dialogVisible0" width="70%" :show-close=false class="dialog">
+              <el-form class="form1" style="color:#333333">
           <el-form-item label="反馈时间">
             <el-input class="input1" :value="date" style="font-size:6px" :disabled="true"></el-input>
           </el-form-item>
@@ -208,8 +208,13 @@ export default {
   height: 0.16rem;
 }
 .el-dailog {
-  margin: 0 10px;
+  margin:10px;
+  /* padding-top: 10px */
 }
+.dialog >>> .el-dialog__header{padding-bottom: 0}
+/* .dialog >>> .el-dialog__header .el-dialog__title{line-height: 10px} */
+.dialog >>>.el-dialog__body{padding:0 20px 20px;color:#606266;font-size:14px;}
+/* #el-title .el-dialog__title {color: red!important;} */
 .el-form .el-form-item {
   font-size: 0.08rem;
 }
