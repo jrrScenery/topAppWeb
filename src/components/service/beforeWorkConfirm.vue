@@ -211,7 +211,7 @@
                     </div>
                 </div>
                 <div style="height: 0.6rem;"></div>
-                <el-form-item class="submitBtn">
+                <el-form-item class="submitBtn" v-if="!imgStrQuestion">
                     <el-button @click="submitForm('formData')">提交</el-button>
                 </el-form-item>
             </el-form>
@@ -236,6 +236,7 @@ export default {
                 caseServiceQuestion:{
                 },
             },
+            imgStrQuestion:'',
             searchData:[],
             caseId:this.$route.query.caseId,
             workId:this.$route.query.workId,
@@ -259,8 +260,10 @@ export default {
             console.log(res)
             if(this.serviceType==2){
                 this.formData.caseServiceQuestion = res.dataService[0];
+                this.imgStrQuestion = res.dataService[0].imgStrQuestion;
             }else{
                 this.formData.caseServiceQuestion = res.dataDealService[0];
+                this.imgStrQuestion = res.dataDealService[0].imgStrQuestion;
             }
             if(this.formData.caseServiceQuestion.serviceTime == null){
                 this.formData.caseServiceQuestion.serviceTime = new Date();

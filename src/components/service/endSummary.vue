@@ -103,7 +103,7 @@
                         </el-form-item>
                     </div>
                     <div style="height: 0.6rem;"></div>
-                    <el-form-item class="submitBtn">
+                    <el-form-item class="submitBtn" v-if="!workResultInfo">
                         <el-button @click="submitForm('formData')">提交</el-button>
                     </el-form-item>
                 </el-form>
@@ -126,6 +126,7 @@ export default {
                 serviceType:"",
                 workResult:""
             },
+            workResultInfo:'',
             workResultArr:[],
             serviceTypeArr:[],
             content:"工作内容",
@@ -143,6 +144,7 @@ export default {
             fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
                 console.log(res);
                 this.formData.userAndPrjItem = res.DATA[0];
+                this.workResultInfo = res.DATA[0].workResult;
             })
             fetch.get("?action=/system/getDict2&DICT_TYPE=NT_SERVICE_TYPE","").then(res=>{
                 console.log(res);
@@ -156,6 +158,7 @@ export default {
             fetch.get("?action=/work/GetCaseroubleShootingServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
                 console.log(res);
                 this.formData.userAndPrjItem = res.DATA[0];
+                this.workResultInfo = res.DATA[0].implementResult;
             })
         }
     },
