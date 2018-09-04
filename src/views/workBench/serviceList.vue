@@ -77,7 +77,6 @@ export default {
     },
     methods:{
         getEventList(){
-            console.log("workId:"+this.$route.query.workId+",caseId:"+this.$route.query.caseId);
             var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
             var flag = this.page>1;
             fetch.get("?action=/work/GetServiceFormList&WORK_ID="+this.$route.query.workId+"&CASE_ID="+this.$route.query.caseId,params).then(res=>{  
