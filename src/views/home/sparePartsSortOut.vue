@@ -13,7 +13,7 @@
                             <div class="contentParts">
                                 <el-form label-width="1rem">
                                     <el-form-item label="备件来源">
-                                        <el-radio-group v-model="scope.row.partsSource">
+                                        <el-radio-group v-model="scope.row.partsSource" disabled>
                                             <el-radio label="1">供货件</el-radio>
                                             <el-radio label="2">换下件</el-radio>
                                         </el-radio-group>
@@ -26,27 +26,30 @@
                                     </el-form-item>
                                     <el-form-item label="备件类型">
                                         <el-select v-model="scope.row.typeName" placeholder="请选择备件类型" clearable>
-                                            <el-option v-for="itemParts in partsTypeList" :label="itemParts.partsTypeName" :value="itemParts.partsTypeId" :key="itemParts.id"></el-option>
+                                            <el-option v-for="itemParts in partsTypeList" :label="itemParts.partsTypeName" :value="itemParts.partsTypeId" :key="itemParts.id" @c></el-option>
                                         </el-select>
                                     </el-form-item>
-                                    <el-form-item label="*是否有包装">
+                                    <el-form-item label="是否有包装">
                                         <el-radio-group v-model="scope.row.ifPackage">
                                             <el-radio label="1">是</el-radio>
                                             <el-radio label="0">否</el-radio>
                                         </el-radio-group>
                                     </el-form-item>
-                                    <el-form-item label="*是否已带走">
+                                    <el-form-item label="是否已带走">
                                         <el-radio-group v-model="scope.row.ifTakeaway">
                                             <el-radio label="1">是</el-radio>
                                             <el-radio label="0">否</el-radio>
                                         </el-radio-group>
                                     </el-form-item>
-                                    <el-form-item label="*使用情况">
-                                        <el-select v-model="scope.row.useStatus" placeholder="选择使用情况" clearable>
+                                    <el-form-item label="使用情况">
+                                        <el-select v-model="scope.row.useStatus" placeholder="选择使用情况" @change="ifChoiseUsed(scope.row)" clearable>
                                             <el-option v-for="use in useStatusList" :label="use.useStatusName" :value="use.useStatusId" :key="use.id"></el-option>
                                         </el-select>
                                     </el-form-item>
-                                    <el-form-item label="*能否回收">
+                                    <el-form-item label="换下件SN" v-show="isShow">
+                                        <el-input placeholder="请输入换下件SN" v-model="scope.row.takeDownSN" class="bInput"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="能否回收">
                                         <el-radio-group v-model="scope.row.isRecycle">
                                             <el-radio label="1">是</el-radio>
                                             <el-radio label="0">否</el-radio>
@@ -92,17 +95,18 @@ export default {
     }, 
     data(){
         return{
-            form: {
-                partsSource: "2",
-                partsId: "",
-                pnFru: "",
-                SN: "",
-                ifPackage: "",
-                ifTakeaway: "",
-                useStatus: "3",
-                isRecycle: "",
-                useStatusRemark: "",
-            },
+            // form: {
+            //     partsSource: "2",
+            //     partsId: "",
+            //     pnFru: "",
+            //     SN: "",
+            //     ifPackage: "",
+            //     ifTakeaway: "",
+            //     useStatus: "3",
+            //     isRecycle: "",
+            //     useStatusRemark: "",
+            // },
+            isShow: false,
             partsTypeList: [],
             sparePartsSortOutTit:"事件备件列表",
             caseId:this.$route.query.caseId,
@@ -130,6 +134,7 @@ export default {
         getSparePart(){
             fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId, {}).then(res=>{
                 this.sparePartsSortOutSelectArr = res.DATA;
+                this.sparePartsSortOutSelectArr.takeDownSN = "";
                 this.busy = false;
                 this.loadall = true;
 
@@ -142,63 +147,120 @@ export default {
         showMsg (msg){
             this.$message(msg);
         },
-        DATAParams (formUpdateParts){
-            let DATA = {};
-            DATA.PARTS_SOURCE = formUpdateParts.partsSource;
-            DATA.PN_FRU = formUpdateParts.pnFru;
-            DATA.SN = formUpdateParts.sn;
-            DATA.TYPE = formUpdateParts.type;
-            DATA.USE_STATUS = formUpdateParts.useStatus;
-            DATA.USE_STATUS_REMARK = formUpdateParts.useStatusRemark;
-            DATA.IF_PACKAGE = formUpdateParts.ifPackage;
-            DATA.IF_TAKEAWAY = formUpdateParts.ifTakeaway;
-            DATA.IS_RECYCLE = formUpdateParts.isRecycle;
-            DATA.CASE_ID = this.$route.query.caseId;
-            return DATA;
+        changePartsParams (formUpdateParts){
+            let changeParts = {};
+            changeParts.PARTS_SOURCE = formUpdateParts.partsSource;
+            changeParts.PN_FRU = formUpdateParts.pnFru;
+            changeParts.SN = formUpdateParts.sn;
+            changeParts.TYPE = formUpdateParts.type;
+            changeParts.USE_STATUS = formUpdateParts.useStatus;
+            changeParts.USE_STATUS_REMARK = formUpdateParts.useStatusRemark;
+            changeParts.IF_PACKAGE = formUpdateParts.ifPackage;
+            changeParts.IF_TAKEAWAY = formUpdateParts.ifTakeaway;
+            changeParts.IS_RECYCLE = formUpdateParts.isRecycle;
+            changeParts.CASE_ID = this.$route.query.caseId;
+            return changeParts;
         },
-         
-        onSubmit (formUpdateParts) {
-            let params=new URLSearchParams;
+
+        supplyPartsParams (){
+            
+        },
+
+        takeDownParts(formUpdateParts) {
+            let takedown = {};
+            takedown.PARTS_ID = "";
+            takedown.PARTS_SOURCE = 2;
+            takedown.sn = formUpdateParts.takeDownSN;
+            takedown.IS_RECYCLE = 1;
+            takedown.USE_STATUS_REMARK = "";
+            takedown.MODEL_NAME = formUpdateParts.modelName;
+            takedown.COMEFROM_SN = formUpdateParts.sn;
+            takedown.COMEFROM_PARTS_ID = formUpdateParts.partsId;
+            return takedown;
+        },
+
+        onArray (formUpdateParts){
+            let params = new URLSearchParams;
             let array = new Array;
-            array.push(this.DATAParams(formUpdateParts));
+            let list = [];
+            let params_dict = {};
+            console.log("wewewe", formUpdateParts.takeDownSN)
+            if (formUpdateParts.takeDownSN!=undefined&&formUpdateParts.useStatus=="1") {
+                let chageArray = this.changePartsParams(formUpdateParts);
+                let takeArray = this.takeDownParts(formUpdateParts);
+                // array.push(chageArray);
+                // array.push(takeArray);
+                // list.push(chageArray);
+                // list.push(takeArray);
+            }
+            else if (formUpdateParts.takeDownSN==undefined&&formUpdateParts.useStatus=="1") {
+                array = "";
+                // list.push("");
+            }
+            else{
+                let chageArray = this.changePartsParams(formUpdateParts)
+                array.push(chageArray);
+                // list.push(chageArray);
+            }
             array = JSON.stringify(array);
             params.append('DATA', array);
             params.append('UPDATE_DATE', this.getCurrentTime());
             params.append('CASE_ID', this.caseId);
+            console.log("qweasd", params, eval(params.get('DATA')).length, eval(params.get('DATA')))
+            // params_dict.DATA = list;
+            return params
+        },
+
+         
+        onSubmit (formUpdateParts) {
+            let params = this.onArray(formUpdateParts);
+            let params_DATA = eval(params.get('DATA'));
             const loading = this.$loading({
                 lock: true,
                 text: '提交中...',
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
-            fetch.post("?action=/parts/updatePartsGathering", params).then(res=>{
+            if (params_DATA.length==1&&params_DATA=="") {
                 loading.close();
-                if(res.STATUSCODE=="0"){
-                    this.$message({
-                        message:'提交成功',
-                        type: 'success',
-                        center: true,
-                        customClass: 'msgdefine'
-                    });
+                this.$message({
+                    message:'请输入：换下件SN',
+                    type: 'warning',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+            }else{
+                fetch.post("?action=/parts/updatePartsGathering", params).then(res=>{
+                    console.log("update", res)
+                    loading.close();
+                    if(res.STATUSCODE=="0"){
+                        this.$message({
+                            message:'提交成功',
+                            type: 'success',
+                            center: true,
+                            customClass: 'msgdefine'
+                        });
+                     
+                        fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId, {}).then(res=>{
+                            this.sparePartsSortOutSelectArr = res.DATA;
+                            this.busy = false;
+                            this.loadall = true;
+    
+                        });
+                        this.isShow = false;
+    
+                    }
+                    else{
+                        this.$message({
+                            message:res.MESSAGE+"发生错误",
+                            type: 'error',
+                            center: true,
+                            customClass: 'msgdefine'
+                        });
+                    }
+                });
 
-                    fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId, {}).then(res=>{
-                        this.sparePartsSortOutSelectArr = res.DATA;
-                        this.busy = false;
-                        this.loadall = true;
-
-                    });
-
-                }
-                else{
-                    this.$message({
-                        message:res.MESSAGE+"发生错误",
-                        type: 'error',
-                        center: true,
-                        customClass: 'msgdefine'
-                    });
-                }
-      
-            });
+            }
         },
         getSearParams (searchData) {
 
@@ -223,6 +285,15 @@ export default {
 
             return currentTime
         },
+
+        ifChoiseUsed (choiseForm){
+            if (choiseForm.useStatus=="1"&&choiseForm.partsSource=="1"){
+                this.isShow = true;
+            }
+            else{
+                this.isShow = false;
+            }
+        }
     },
     created:function(){
     },
@@ -251,6 +322,7 @@ export default {
 .content >>> .bg-purple-light {background: #e5e9f2;}
 .content >>> .grid-content {border-radius: 4px;min-height: 24px; text-align: center; line-height: 2}
 .content >>> .row-bg {padding: 10px 0;background-color: #f9fafc;}
+.content >>> .el-message-box{width: 70%}
 
   /* .content{margin-top: 0.05rem;background: #ffffff;} */
 .contentParts >>> .el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}

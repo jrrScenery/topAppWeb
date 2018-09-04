@@ -2,7 +2,7 @@
 <template>
   <div class="addPartsView">
       <div class="content">
-          <el-form ref="form" :model="form" label-width="1rem">
+          <el-form ref="form" :rules="rules" :model="form" label-width="1rem">
             <el-form-item label="备件来源">
               <el-radio-group v-model="form.partsSource" disabled>
                 <!-- <el-radio label="1">供货件</el-radio> -->
@@ -20,24 +20,24 @@
                 <el-option v-for="item in partsTypeList" :label="item.partsTypeName" :value="item.partsTypeId" :key="item.id"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="*是否有包装">
+            <el-form-item label="是否有包装" prop="ifPackage">
               <el-radio-group v-model="form.ifPackage">
                 <el-radio label="1">是</el-radio>
                 <el-radio label="0">否</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="*是否已带走">
+            <el-form-item label="是否已带走" prop="ifTakeaway">
               <el-radio-group v-model="form.ifTakeaway">
                 <el-radio label="1">是</el-radio>
                 <el-radio label="0">否</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="*使用情况">
+            <el-form-item label="使用情况" prop="useStatus">
               <el-select v-model="form.useStatus" placeholder="选择使用情况" clearable>
                 <el-option v-for="use in useStatusList" :label="use.useStatusName" :value="use.useStatusId" :key="use.id"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="*能否回收">
+            <el-form-item label="能否回收" prop="isRecycle">
               <el-radio-group v-model="form.isRecycle">
                 <el-radio label="1">是</el-radio>
                 <el-radio label="0">否</el-radio>
@@ -84,6 +84,20 @@ export default {
         partsType: "",
         caseId: this.$route.query.caseId,
       },
+      rules: {
+        ifPackage: [
+          { required: true, message: '请先选择是否包装', trigger: 'change' }
+        ],
+        ifTakeaway: [
+          { required: true, message: '请先选择是否已带走', trigger: 'change' }
+        ],
+        useStatus: [
+          { required: true, message: '请先选择使用情况', trigger: 'change' }
+        ],
+        isRecycle: [
+          { required: true, message: '请先选择能否回收', trigger: 'change' }
+        ],
+      },
       partsTypeList: [],
       useStatus: "",
       useStatusList: [
@@ -105,7 +119,11 @@ export default {
   },
   methods: {
     showMsg (msg){
-      this.$message(msg);
+      this.$notify({
+        title: '警示信息',
+        dangerouslyUseHTMLString: true,
+        message: '<strong>'+msg+'</strong>',
+      });
     },
     DATAParams (){
       let DATA = {};
@@ -119,27 +137,13 @@ export default {
       DATA.IF_TAKEAWAY = this.form.ifTakeaway;
       DATA.IS_RECYCLE = this.form.isRecycle;
       DATA.CASE_ID = this.$route.query.caseId;
-      if (DATA.IF_PACKAGE==""){
-        this.showMsg('请先选择是否包装');
-      }
-      if (DATA.IF_TAKEAWAY==""){
-        this.showMsg('请先选择是否已带走');
-        return;
-      }
-      if (DATA.USE_STATUS==""){
-        this.showMsg('请先选择使用情况');
-        return;
-      }
-      if (DATA.IS_RECYCLE==""){
-        this.showMsg('请先选择能否回收');
-        return;
-      }
       return DATA;
     },
 
     onSubmit (formName) {
       let params=new URLSearchParams;
       let array = new Array;
+      // console.log(this.ifData())
       array.push(this.DATAParams());
       array = JSON.stringify(array);
       params.append('DATA', array);
@@ -187,13 +191,14 @@ export default {
               
           });
         } else {
+          loading.close();
           this.$message({
                   message:"请正确填写",
                   type: 'error',
                   center: true,
                   customClass: 'msgdefine'
                 });
-          return false
+          return false;
         }
       })
     },
@@ -224,6 +229,7 @@ export default {
   .content{width:100%; margin-top: 0.5rem;background: #ffffff;}
   .content >>> .el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
   .content >>> .el-form-item__label{font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.15rem; text-align: left}
+  .content >>> .el-form-item__error{position: relative}
   .content >>> .el-input__inner{border: none; color: #333333; padding: 0px 0px}
   .content >>> .el-input__inner::placeholder{font-size: 0.13rem; color: #acacac}
   .content >>> .el-input.is-disabled .el-input__inner{background: #ffffff}
