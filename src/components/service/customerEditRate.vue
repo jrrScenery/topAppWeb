@@ -149,10 +149,7 @@ export default {
                     var failFlg = 0;
                     var countScore = 0;
                     var returnFlg = 0;
-                    console.log("222222222");
-                    console.log(vm.evaluateval);
                     vm.evaluateval.forEach(function(v,i,ar){
-                        // let scores = v.scores;
                         let options = v.options;
                         
                         if(v.question.questionComment2){
@@ -169,8 +166,6 @@ export default {
                                         temp1.questionId=v.question.questionId;
                                         temp1.optionId=scoreOptionId;   
                                         detailArray.push(temp1);
-                                        // console.log("fsdafsasa");	
-                                        // console.log(detailArray);
                                     // }
                                 // })   
                             }else{

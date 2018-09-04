@@ -143,13 +143,17 @@
                 </div>
             </router-link>
             </el-col>
-            <el-col :span="7">
-            <router-link :to="{name:'serviceList',query:{caseId:this.$route.query.caseId,workId:this.$route.query.workId,taskId:taskDetailInfo.taskId}}">
+            <el-col :span="7" >
+            <router-link v-if="this.taskDetailInfo.workStatusId!=5" :to="{name:'serviceList',query:{caseId:this.$route.query.caseId,workId:this.$route.query.workId,taskId:taskDetailInfo.taskId}}">
                 <div>
                 <img src="../../assets/images/eventBaseInfo_3.png" style="width: 0.145rem; height: 0.145rem;" alt="">
                 <span>服务单</span>
                 </div>
             </router-link>
+            <div v-else @click="clickService">
+                <img src="../../assets/images/eventBaseInfo_3.png" style="width: 0.145rem; height: 0.145rem;" alt="">
+                <span>服务单</span>
+            </div>
             </el-col>
             <el-col :span="3"><div class="el-icon-more" @click.stop="popBg=!popBg"></div></el-col>
         </el-row>
@@ -291,6 +295,14 @@ export default {
     },
 
     methods: {
+        clickService(){
+            this.$message({
+                message:'已爽约状态没有服务单！',
+                type: 'success',
+                center: true,
+                customClass: 'msgdefine'
+            });
+        },
         onCancel () {
             let data = {
             popBgUndertake: false
