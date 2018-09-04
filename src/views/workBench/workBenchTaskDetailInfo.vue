@@ -335,8 +335,10 @@ export default {
         },
         onIndependence () {
             this.$message({
-                dangerouslyUseHTMLString: true,
-                message: '<strong>当前环节不能承接反馈！</strong>'
+                message:'当前环节不能承接反馈！',
+                type: 'warning',
+                center: true,
+                customClass:'msgdefine'
             });
         },
         onCool () {
