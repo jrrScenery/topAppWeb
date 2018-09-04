@@ -31,7 +31,8 @@
                     </el-form-item>
                 </div>
                 <el-form-item class="submitBtn" >
-                    <el-button @click="submitForm">提交</el-button>
+                    <el-button v-if="this.submitFlg==1" @click="submitForm">提交</el-button>
+                    <div v-if="submitFlg==0" style="margin-left:20px"><p>当前评价已提交或不可提交！</p></div>
                 </el-form-item>
             </el-form>
         </div>
@@ -83,6 +84,7 @@ export default {
     mounted(){
         fetch.get("?action=/work/GetWorkEvaluateInfo",{CASE_ID:this.caseId,WORK_ID:this.workId,TEMPLATE_TYPE:this.templateType,BJ_FLG:this.bjflg}).then(res=>{
             console.log(res);
+            this.submitFlg=res.SUBMIT_FLG;
             this.evaluateId=res.EVALUATE_ID_RETURN;
             if("0" == res.STATUSCODE){
                 this.questionComment = res.QUESTION[0].questionComment;
@@ -144,6 +146,7 @@ export default {
             });
             }
         }
+        // console.log("{{{{{{{{{{{{"+result)
             result=JSON.stringify(result);
             let params=new URLSearchParams;
             params.append('totalScore',this.evaluateval[0].scoreval);
@@ -208,5 +211,5 @@ export default {
 .submitBtn >>> .el-form-item__content{margin: 0!important;}
 .submitBtn >>> .el-button{position:fixed;width:100%;border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff;height: 0.5rem; bottom: 0;}
 /* .improveCell span{ font-size: 0.1rem} */
-.improveCell{margin-left:5px;height: 3.3rem;overflow: scroll;}
+.improveCell{margin-left:5px;height: 2.8rem;overflow: scroll;}
 </style>
