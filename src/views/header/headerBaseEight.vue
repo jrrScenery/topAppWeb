@@ -63,5 +63,5 @@ export default {
   .headerLeft,.headerRight{display: flex; flex-direction: column; justify-content: center; align-items: center; width: 0.45rem; height: 0.45rem; font-size: 0.2rem;}
   .headerLeft i{font-size: 0.2rem;}
   .el-icon-plus{font-weight: 900; line-height: 0.48rem;}
-  .popBg{background: rgba(0,0,0,0.5); position: fixed; top: 0.45rem; bottom: 0; z-index: 999; padding: 0 0.5rem;}
+  .popBg{background: rgba(0,0,0,0.5); position: relative; bottom: 0; z-index: 5000; padding: 1.6rem 0.5rem;}
 </style>
