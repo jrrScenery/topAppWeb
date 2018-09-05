@@ -5,7 +5,7 @@
 // const Server='http://139.129.207.35:8084'
 // const Server='http://192.168.0.100:8081'
 // const Server='http://172.16.3.61:8082'
-const Server='http://111.203.122.61:8082'
+const Server='http://111.203.122.61:8084'
 const proxyServer=Server+'/api/proxy';
 let empId = "";
 let userInfo = [];
