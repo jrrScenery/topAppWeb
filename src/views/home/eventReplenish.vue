@@ -7,7 +7,7 @@
       <ul>
         <li v-for="item in eventReplenishData" :key="item.id"><span>{{item.type}}</span>{{item.desc}}</li>
       </ul>
-      <el-form ref="form" :model="form">
+      <el-form ref="form" :model="form"> 
         <el-form-item class="text">
           <el-input type="textarea" v-model="form.desc" placeholder="补充说明"></el-input>
         </el-form-item>
@@ -109,7 +109,14 @@ export default {
             customClass:'msgdefine'
           });
           var nowcaseid = vm.caseid;
-          setTimeout(function(){vm.$router.push({ name: 'eventShow',query:{caseId:nowcaseid}})},1000);
+          // var nowworkId = vm.$route.query.workId;
+          // console.log(vm.$route.query.type);
+          // if(vm.$route.query.type=='process'){
+          //   console.log(vm.$route.query.workId);
+          //   setTimeout(function(){vm.$router.push({ name: 'workBenchTaskDetailInfo',query:{workId:nowworkId}})},1000);
+          // }else{
+            setTimeout(function(){vm.$router.push({ name: 'eventShow',query:{caseId:nowcaseid}})},1000);
+          // }
         }
         else{
           this.$message({

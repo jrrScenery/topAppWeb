@@ -251,16 +251,15 @@ export default {
                 {ifY4:false,ifF4:false},
                 {ifY5:false,ifF5:false},
                 {ifY6:false,ifF6:false}
-            ],           
+            ],    
         }
     },
     created:function(){
-        console.log(this.serviceType);
         fetch.get("?action=/work/getCaseServiceQuestion&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
             console.log(res)
             if(this.serviceType==2){
                 this.formData.caseServiceQuestion = res.dataService[0];
-                this.imgStrQuestion = res.dataService[0].imgStrQuestion;
+                this.imgStrQuestion = res.dataService[0].imgStrQuestion;           
             }else{
                 this.formData.caseServiceQuestion = res.dataDealService[0];
                 this.imgStrQuestion = res.dataDealService[0].imgStrQuestion;

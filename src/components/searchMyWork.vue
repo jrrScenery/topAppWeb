@@ -21,13 +21,13 @@
         <el-input v-model="form.creatorRealname" class="bInput"></el-input>
       </el-form-item>
 
-      <el-form-item label="任务起始日期">
+      <el-form-item label="起始日期">
         <el-date-picker type="date" placeholder="开始日期" v-model="form.expectStart" style="width: 100%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
       </el-form-item>
-      <el-form-item label="任务结束日期">
+      <el-form-item label="结束日期">
         <el-date-picker type="date" placeholder="开始日期" v-model="form.expectEnd" style="width: 100%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
       </el-form-item>
-      <el-form-item label="任务内容要求">
+      <el-form-item label="内容要求">
         <el-input v-model="form.workRequire" class="bInput"></el-input>
       </el-form-item>
       
@@ -108,7 +108,7 @@ export default {
 </script>
 
 <style scoped>
-  .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0.5rem; position: relative;}
+  .searchView{width:80%;background: #ffffff; padding: 0.15rem 0.2rem 0.5rem;position: relative;}
   .searchView >>> .el-form-item{margin-bottom: 0.1rem;}
   .searchView >>> .el-select{width: 80%;}
   .searchView >>> .el-input__inner{padding: 0 0.05rem}
