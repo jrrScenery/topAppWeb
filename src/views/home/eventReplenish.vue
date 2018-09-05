@@ -96,6 +96,8 @@ export default {
       });
       var vm = this;
       fetch.get("?action=GetComplaintsList&EMPID="+global_.empId+"&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+        console.log("============");
+        console.log(res.data);
         this.opinionTab[0].data = res.data;
       });
 
@@ -109,14 +111,15 @@ export default {
             customClass:'msgdefine'
           });
           var nowcaseid = vm.caseid;
-          // var nowworkId = vm.$route.query.workId;
-          // console.log(vm.$route.query.type);
-          // if(vm.$route.query.type=='process'){
-          //   console.log(vm.$route.query.workId);
-          //   setTimeout(function(){vm.$router.push({ name: 'workBenchTaskDetailInfo',query:{workId:nowworkId}})},1000);
-          // }else{
+          console.log(vm.$route.query.workId+"---"+vm.$route.query.type+"==="+vm.caseid);
+          var nowworkId = vm.$route.query.workId;
+          console.log(vm.$route.query.type);
+          if(vm.$route.query.type=='process'){
+            console.log(vm.$route.query.workId);
+            setTimeout(function(){vm.$router.push({ name: 'workBenchTaskDetailInfo',query:{workId:nowworkId}})},1000);
+          }else{
             setTimeout(function(){vm.$router.push({ name: 'eventShow',query:{caseId:nowcaseid}})},1000);
-          // }
+          }
         }
         else{
           this.$message({

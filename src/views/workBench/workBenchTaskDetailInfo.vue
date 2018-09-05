@@ -57,7 +57,7 @@
             <router-link :to="{name:'part_recycle'}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件回收</li>
             </router-link>
-            <router-link :to="{name:'eventReplenish',query:{caseId:this.caseId,type:'process',workId:this.$route.query.workId}}">
+            <router-link :to="{name:'eventReplenish',query:{caseId:this.$route.query.caseId,type:'process',workId:this.$route.query.workId}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">过程记录</li>
             </router-link>
             <router-link :to="{name:'eventSLAInfo',query:{caseId:this.caseId}}">
