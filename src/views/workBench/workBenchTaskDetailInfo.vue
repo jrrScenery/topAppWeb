@@ -2,131 +2,13 @@
     <div class="workBenchTaskDetailView">
         <header-last :title="workBenchTaskDetailTit"></header-last>
         <div style="height:0.45rem"></div>
-        <div class="attention">{{attention}}</div>
-        <div class="taskDetailCell">
-            <div class="taskDetailTit">任务信息</div>
-            <div class="content">
-                <ul class="tableTd">
-                    <li>
-                        <span>派工单号：</span>  
-                        <span>{{taskDetailInfo.workNo}}</span>          
-                    </li>
-                    <li>                
-                        <span>执行状态：</span>  
-                        <span>{{taskDetailInfo.workStatus}}</span>   
-                    </li>
-                    <li>                
-                        <span>工作类型：</span>
-                        <span>{{taskDetailInfo.workType}}</span>
-                    </li>
-                    <li>                
-                        <span>客户联系人：</span>
-                        <span>{{taskDetailInfo.customerContactor}}</span>
-                    </li>
-                    <li>                
-                        <span>座机：</span>
-                        <a @click="sendCall(taskDetailInfo.customerCellnumber)" v-bind:href="'tel:'+taskDetailInfo.customerCellnumber" style="font-size: 0.13em; color: #2698d6;"> {{taskDetailInfo.customerCellnumber}} </a>
-                    </li>
-                    <li>                
-                        <span>手机：</span>
-                        <a @click="sendCall(taskDetailInfo.customerCellnumber)" v-bind:href="'tel:'+taskDetailInfo.customerCellnumber" style="font-size: 0.13em; color: #2698d6;"> {{taskDetailInfo.customerCellnumber}} </a>
-                    </li>
-                    <li>                
-                        <span>客户地址：</span>
-                        <span>{{taskDetailInfo.customerAddress}}</span>
-                    </li>
-                    <li>                
-                        <span>预计开始时间：</span>
-                        <span>{{taskDetailInfo.expectStart}}</span>
-                    </li>
-                    <li>                
-                        <span>预计结束时间：</span>
-                        <span>{{taskDetailInfo.expectEnd}}</span>
-                    </li>
-                    <li>                
-                        <span>标准工作量：</span>
-                        <span>{{taskDetailInfo.standardWorkload}}</span>
-                    </li>
-                    <li>                
-                        <span>路途工作量：</span>
-                        <span>{{taskDetailInfo.wayWorkload}}</span>
-                    </li>
-                    <li>                
-                        <span>要求到场时间：</span>
-                        <span>{{taskDetailInfo.requireArriveTime}}</span>
-                    </li>
-                    <li>                
-                        <span>设备型号：</span>
-                        <span>{{taskDetailInfo.modelName}}</span>
-                    </li>
-                    <li>                
-                        <span>序列号：</span>
-                        <span>{{taskDetailInfo.sn}}</span>
-                    </li>
-                    <li>                
-                        <span>工作要求：</span>
-                        <span>{{taskDetailInfo.workRequire}}</span>
-                    </li>
-                    <li>                
-                        <span>创建人：</span>
-                        <span>{{taskDetailInfo.creatorRealname}}</span>
-                    </li>
-                    <li>                
-                        <span>派工人：</span>   
-                        <span>{{taskDetailInfo.creatorRealname}}</span>
-                    </li>
-                    <li>                
-                        <span>派工人电话：</span>
-                        <a @click="sendCall(taskDetailInfo.workManagerMobile)" v-bind:href="'tel:'+taskDetailInfo.workManagerMobile" style="font-size: 0.13em; color: #2698d6;"> {{taskDetailInfo.workManagerMobile}} </a>
-                    </li>
-                    <li>                
-                        <span>技术责任人：</span>
-                        <span>{{taskDetailInfo.techManager}}</span>
-                    </li>
-                    <li>                
-                        <span>技术责任人电话：</span>
-                        <a @click="sendCall(taskDetailInfo.techManagerMobile)" v-bind:href="'tel:'+taskDetailInfo.techManagerMobile" style="font-size: 0.13em; color: #2698d6;"> {{taskDetailInfo.techManagerMobile}} </a>
-                    </li>
-                    <li>                
-                        <span>事件编号：</span>
-                        <span>{{taskDetailInfo.caseNo}}</span>
-                    </li>
-                    <li>                
-                        <span>创建时间：</span>
-                        <span>{{taskDetailInfo.createDate}}</span>
-                    </li>
-                    <li>                
-                        <span>事件级别：</span>
-                        <span>{{taskDetailInfo.caseLevel}}</span>
-                    </li>
-                    <li>                
-                        <span>事件类型：</span>
-                        <span>{{taskDetailInfo.caseType}}</span>
-                    </li>
-                    <li>                
-                        <span>项目ID：</span>
-                        <span>{{taskDetailInfo.projectId}}</span>
-                    </li>
-                    <li>                
-                        <span>项目编号：</span>
-                        <span>{{taskDetailInfo.projectNo}}</span>
-                    </li>
-                    <li>                
-                        <span>项目名称：</span>
-                        <span>{{taskDetailInfo.projectName}}</span>
-                    </li>
-                    <li>                
-                        <span>人员评价状态：</span>
-                        <span>{{taskDetailInfo.eng2mgrEvalstatusName}}</span>
-                    </li>
-                    <li>                
-                        <span>备件评价状态：</span>
-                        <span>{{taskDetailInfo.eng2partEvalstatusName}}</span>
-                    </li>
-                </ul>
-            </div>
+        <div class="taskDetailView">
+            <el-tabs v-model="activeName">
+                <el-tab-pane label="任务信息" name="first"><task-detail></task-detail></el-tab-pane>
+                <el-tab-pane label="项目特殊提示" name="second" lazy><special-notes></special-notes></el-tab-pane>
+                <el-tab-pane label="风险提示" name="third" lazy><risk-warn></risk-warn></el-tab-pane>
+            </el-tabs>
         </div>
-
         <div class="eventShowFooter">
         <el-row>
             <el-col :span="7">
@@ -144,7 +26,7 @@
             </router-link>
             </el-col>
             <el-col :span="7" >
-            <router-link v-if="this.taskDetailInfo.workStatusId!=5" :to="{name:'serviceList',query:{caseId:this.$route.query.caseId,workId:this.$route.query.workId,taskId:taskDetailInfo.taskId}}">
+            <router-link v-if="taskDetailInfo.workStatusId!=5" :to="{name:'serviceList',query:{caseId:this.$route.query.caseId,workId:this.$route.query.workId,taskId:taskDetailInfo.taskId}}">
                 <div>
                 <img src="../../assets/images/eventBaseInfo_3.png" style="width: 0.145rem; height: 0.145rem;" alt="">
                 <span>服务单</span>
@@ -175,7 +57,7 @@
             <router-link :to="{name:'part_recycle'}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件回收</li>
             </router-link>
-            <router-link :to="{name:'eventReplenish',query:{caseId:this.caseId}}">
+            <router-link :to="{name:'eventReplenish',query:{caseId:this.caseId,type:'process',workId:this.$route.query.workId}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">过程记录</li>
             </router-link>
             <router-link :to="{name:'eventSLAInfo',query:{caseId:this.caseId}}">
@@ -243,33 +125,34 @@
 
 
 <script>
+import taskDetail from '../../components/taskDetailInfo/taskDetail'
+import specialNotes from '../../components/taskDetailInfo/specialNotes'
+import riskWarn from '../../components/taskDetailInfo/riskWarn'
 import headerLast from '../header/headerLast'
-import loadingtmp from '@/components/load/loading'
 import fetch from '../../utils/ajax'
 export default {
     name: 'workBenchTaskDetailInfo',
     components: {
         headerLast,
-        loadingtmp
+        taskDetail,
+        specialNotes,
+        riskWarn
     }, 
-
-    // inject: ['reload'],
-   
-
     data(){
         return{
-            workBenchTaskDetailTit:"任务",
+            workBenchTaskDetailTit:'任务',
+            activeName: 'first',
             workId:this.$route.query.workId,
             caseId:this.$route.query.caseId,
+            taskId:this.$route.query.taskId,
             expectStart:this.$route.query.expectStart,
             expectEnd:this.$route.query.expectEnd,
+            creatorRealname:this.$route.query.creatorRealname,
+            taskDetailInfo:'',
             eng2partEvalid:'',
             popBg: false,
             popBgUndertake: false,
             popBgRefusal: false,
-            attention:"实施过程中遇到技术问题反馈技术责任人，非技术问题反馈派工人，非工作时间请联系 400-610-6661",
-            taskDetailInfo:{},
-            // REFUSE_REASON:
             refuseReason: '',
             showModal: false,
             outerVisibleUndertake: false,
@@ -280,19 +163,17 @@ export default {
     },
     created:function(){
         fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
-            // console.log(res.DATA[0]);   
+            console.log(res.DATA);   
             this.taskDetailInfo = res.DATA[0];
             this.taskDetailInfo.refuseReason = '';
         });
     },
     beforeRouteLeave( to, from,next){
-        console.log(to);
         if (to.name == 'workBenchTaskList') {
             to.meta.isUseCache = true;    
         }        
         next();
     },
-
     methods: {
         clickService(){
             this.$message({
@@ -451,6 +332,7 @@ export default {
         },
     
     }
+
 }
 
 </script>
@@ -458,18 +340,12 @@ export default {
 
 <style scoped>
 .workBenchTaskDetailView{width:100%;background: #ffffff;}
-.attention{color: red;margin-top: 0.05rem;margin-bottom: 0.08rem}
-.taskDetailCell{overflow: scroll;margin-bottom: 0.5rem;}
-.taskDetailCell .taskDetailTit{position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.14rem; color: #2698d6;}
-.taskDetailCell .taskDetailTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
-.taskDetailCell .taskDetailTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
-
-.tableTd li{display: flex; line-height: 0.25rem; padding: 0 0.2rem; color: #666666;}
-.tableTd span{text-align: center;}
-.tableTd a{width: 100%;text-align: left;}
-.tableTd span:nth-child(1){width: 100%; text-align: left;}
-.tableTd span:nth-child(2){width: 100%;text-align: left}
-.content:nth-child(2n+1){background: #fafafa}  
+.taskDetailView{margin: 0 0; background: #ffffff; position: relative;}
+.taskDetailView >>> .el-tabs__header{margin: 0 0 0.1rem;}
+.taskDetailView >>> .el-tabs__item.is-active{color: #2698d6;}
+.taskDetailView >>> .el-tabs__active-bar{background: #2698d6;}
+.taskDetailView >>> .el-tabs__nav{width: 100%; text-align: center;}
+.taskDetailView >>> .el-tabs__item{width: 33%; padding: 0; font-size: 0.14rem; color: #666666;text-align: center}
 
 .eventShowFooter{position: absolute; left: 0; right: 0; bottom: 0; height: 0.5rem; background: #ffffff;}
 .eventShowFooter .el-row{}
