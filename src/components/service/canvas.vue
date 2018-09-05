@@ -2,7 +2,7 @@
   <div class="helloView">
 <!--touchstart,touchmove,touchend,touchcancel 这-->
     <el-form ref="form" :model="form" label-width="65px" >
-        <canvas id="canvas" style="width:100%;height:400px; border:1px solid black">Canvas画板</canvas>
+        <canvas id="canvas" style="width:100%; border:1px solid black">Canvas画板</canvas>
         <el-form-item class="searchBtn">
             <el-button @click="clear">取消</el-button>
             <el-button class="searchBtnCell" @click="save">保存</el-button>
