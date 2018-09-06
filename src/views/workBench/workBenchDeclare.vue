@@ -3,6 +3,13 @@
   <div class="workBenchDeclareView">
     <header-base-four :title="workBenchDeclareTit"></header-base-four>
     <div class="content">
+      <div class="attention">
+        {{attentionhello}}<br>
+        {{attentioninfo1}}
+        <a @click="sendCall(attentioncall1)" v-bind:href="'tel:'+attentioncall1" style="color: #2698d6;"> {{attentioncall1}} </a>,
+        <a @click="sendCall(attentioncall2)" v-bind:href="'tel:'+attentioncall2" style="color: #2698d6;"> {{attentioncall2}} </a>
+        {{attentioninfo2}}
+      </div>
       <el-form :model="formData" label-width="0.9rem" ref="formData">
         <el-form-item label="序列号：">
           <el-input v-model="formData.num" placeholder="请输入序列号"></el-input>
@@ -77,8 +84,12 @@ export default {
       options: areajson,
       // popBg: false,
       degree: '',
-      range: ''
-
+      range: '',
+      attentionhello: "尊敬的客户您好！",
+      attentioncall1: "400-6106661",
+      attentioncall2: "800-8106661",
+      attentioninfo1: "神州信息Web/APP报障方式支持5*9（9:00-18:00），非工作时间请拨打服务热线报障：",
+      attentioninfo2: "（密码：7653），感谢您的支持！",
     }
   },
 
@@ -148,6 +159,7 @@ export default {
 
 <style scoped>
   .workBenchDeclareView{width: 100%;}
+  .attention{color: red;margin: 0.1rem;}
   .content{background: #ffffff; position: relative; padding-bottom: 0.5rem; margin-bottom: 0.5rem; top: 0.5rem;}
   .content >>> .el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
   .content >>> .el-form-item__label{font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.25rem; text-align: left}
