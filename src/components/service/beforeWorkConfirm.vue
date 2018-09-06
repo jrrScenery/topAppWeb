@@ -353,7 +353,7 @@ export default {
                         loading.close();
                         this.$message({
                             message:'序号1请选择是或者否,不能全选或不选!',
-                            type: 'success',
+                            type: 'warning',
                             center: true,
                             customClass:'msgdefine'
                         });
@@ -363,7 +363,7 @@ export default {
                         loading.close();
                         this.$message({
                             message:'序号2请选择是或者否,不能全选或不选!',
-                            type: 'success',
+                            type: 'warning',
                             center: true,
                             customClass:'msgdefine'
                         });
@@ -373,7 +373,7 @@ export default {
                         loading.close();
                         this.$message({
                             message:'序号3请选择是或者否,不能全选或不选!',
-                            type: 'success',
+                            type: 'warning',
                             center: true,
                             customClass:'msgdefine'
                         });
@@ -383,7 +383,7 @@ export default {
                         loading.close();
                         this.$message({
                             message:'序号4请选择是或者否,不能全选或不选!',
-                            type: 'success',
+                            type: 'warning',
                             center: true,
                             customClass:'msgdefine'
                         });
@@ -393,7 +393,7 @@ export default {
                         loading.close();
                         this.$message({
                             message:'序号5请选择是或者否,不能全选或不选!',
-                            type: 'success',
+                            type: 'warning',
                             center: true,
                             customClass:'msgdefine'
                         });
@@ -403,7 +403,7 @@ export default {
                         loading.close();
                         this.$message({
                             message:'序号6请选择是或者否,不能全选或不选!',
-                            type: 'success',
+                            type: 'warning',
                             center: true,
                             customClass:'msgdefine'
                         });
@@ -426,7 +426,7 @@ export default {
                         loading.close();
                         this.$message({
                             message:'序号1请选择是,取消否!',
-                            type: 'success',
+                            type: 'warning',
                             center: true,
                             customClass:'msgdefine'
                         });
@@ -436,7 +436,7 @@ export default {
                         loading.close();
                         this.$message({
                             message:'序号2请选择是,取消否!',
-                            type: 'success',
+                            type: 'warning',
                             center: true,
                             customClass:'msgdefine'
                         });
@@ -446,7 +446,7 @@ export default {
                         loading.close();
                         this.$message({
                             message:'序号3请选择是,取消否!',
-                            type: 'success',
+                            type: 'warning',
                             center: true,
                             customClass:'msgdefine'
                         });
@@ -456,7 +456,7 @@ export default {
                         loading.close();
                         this.$message({
                             message:'序号5请选择是,取消否!',
-                            type: 'success',
+                            type: 'warning',
                             center: true,
                             customClass:'msgdefine'
                         });
@@ -466,7 +466,7 @@ export default {
                         loading.close();
                         this.$message({
                             message:'序号6请选择是,取消否!',
-                            type: 'success',
+                            type: 'warning',
                             center: true,
                             customClass:'msgdefine'
                         });
