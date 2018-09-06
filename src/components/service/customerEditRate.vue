@@ -1,7 +1,7 @@
 <template>
     <div class="customerEditRateView">    
         <div class="serviceInfoCell">
-            <div class="content">
+            <div class="serviceContent">
                 <el-form :model="formData" ref="formData">
                     <div class="editorView" v-for="(item,i) in evaluateval" :key="i">
                         <el-form-item>
@@ -38,7 +38,7 @@
                         </el-form-item>
                     </ul>
                     <div style="height: 0.6rem;"></div>
-                    <el-form-item class="submitBtn" v-if="!signImg">
+                    <el-form-item class="serviceSubmitBtn" v-if="!signImg">
                         <el-button @click="submitForm('formData')">提交</el-button>
                     </el-form-item>
                 </el-form>
@@ -399,10 +399,11 @@ export default {
 </script>
 
 <style scoped>
-.customerEditRateView{width: 100%; position: relative;background-color: #ffffff;margin-top:0.1rem}
-.content{background: #ffffff; color: #999999; padding: 0.05rem 0.2rem 0.1rem;}
-
-.editorView .star{display: flex;line-height: 0.1rem}
+.customerEditRateView{width: 100%; position: relative;background-color: #ffffff;margin-top:0.05rem}
+.serviceContent{background: #ffffff; color: #999999; padding: 0.05rem 0 0.1rem;}
+.serviceContent>>> .el-form-item{padding: 0 0.1rem}
+.improve>>> span{padding: 0 0.05rem}
+.editorView .star{display: flex;line-height: 0.2rem}
 .editorView .star .starTit{ display: inline-block; width: 1.5rem;font-size: 0.14rem}
 .editorView .improve span{line-height: 0.02rem;font-size: 0.13rem}
 .editorView .improve >>> .el-checkbox{display: block; margin: 0;line-height: 0.1rem; font-size: 0.13rem; color: #999999;}
@@ -414,8 +415,8 @@ export default {
 .signature .el-form-item div{color: #333333; margin-left: 0.6rem;}
 .signature .el-form-item .sign{ }
 .signature .el-form-item .sign img{width: 100%; display: block; flex-grow: 1;}
-.submitBtn >>> .el-form-item__content{margin: 0!important;}
-.submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
+.serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
+.serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
 </style>
 <style>
   .eventEvaluationEditorView span{ color: #666;}

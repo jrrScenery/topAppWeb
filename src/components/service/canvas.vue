@@ -124,9 +124,9 @@ export default {
 
 } } </script> 
 <style scoped> 
-  .helloView{width: 80%; background: #ffffff; padding: 0.1rem 0.2rem 0.3rem; position: relative;}
+  .helloView{width: 80%; background: #ffffff; padding: 0.1rem 0.2rem 0.45rem; position: relative;}
   .helloView >>> .el-form-item{margin-bottom: 0.05rem;}
-  .helloView >>> .searchBtn{position: absolute; bottom: -0.15rem; left: 0; right: 0; height: 0.4rem;}
+  .helloView >>> .searchBtn{position: absolute; bottom: -0.05rem; left: 0; right: 0; height: 0.4rem;}
   .helloView >>> .searchBtn .el-button{width: 50%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
   .helloView >>> .searchBtn .el-button:hover{background: #ffffff;}
   .helloView >>> .searchBtn .searchBtnCell:hover{background: #2698d6;}

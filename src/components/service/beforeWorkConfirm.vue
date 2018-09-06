@@ -143,8 +143,8 @@
                         <el-checkbox v-model="checked[5].ifF6" @change="changeIfF6"></el-checkbox>
                     </div>               
                 </el-form-item>
-                <div>神州数码工程师已按规范要求就本次服务内容、影响和风险与用户进行了沟通，同意神州数码工程师开始服务实施。</div>
-                <div>用户确认</div>
+                <div style="margin:0 0.1rem">神州数码工程师已按规范要求就本次服务内容、影响和风险与用户进行了沟通，同意神州数码工程师开始服务实施。</div>
+                <div style="margin:0 0.1rem">用户确认</div>
                 <div v-if="formData.caseServiceQuestion.imgStrQuestion">
                     <img id="imgStrQuestion" style="height:1.5rem;" v-bind:src="formData.caseServiceQuestion.imgStrQuestion" alt="">
                 </div>
@@ -174,7 +174,7 @@
                     </div>
                 </div> -->
                 <div style="height: 0.6rem;"></div>
-                <el-form-item class="submitBtn" v-if="!imgStrQuestion">
+                <el-form-item class="serviceSubmitBtn" v-if="!imgStrQuestion">
                     <el-button @click="submitForm('formData')">提交</el-button>
                 </el-form-item>
             </el-form>
@@ -505,8 +505,6 @@ export default {
                    data.append('data',JSON.stringify(temp));
                    console.log(data);
                     fetch.post("?action=/work/submitServiceQuestion",data).then(res=>{
-                        // console.log("==========");
-                        // console.log(res);
                         loading.close();
                         if(res.STATUSCODE=="0"){
                             this.$message({
@@ -527,23 +525,21 @@ export default {
                             customClass: 'msgdefine'
                             });
                         }
-
                     })
                 }
             })
         },
-
     }
 }
 </script>
 
 <style scoped>
 .attention{margin:0.05rem 0.1rem 0.1rem;color: red}
-.confirmView{margin:0.1rem;line-height: 0.2rem}
-.confirmView >>> .el-form-item{margin-bottom:0}
+.confirmView{margin:0.1rem 0;line-height: 0.2rem}
+.confirmView >>> .el-form-item{margin-bottom:0;margin:0 0.05rem;}
 .selectBox{display: flex;}
-.submitBtn >>> .el-form-item__content{margin: 0!important;}
-.submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
+.serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
+.serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
 /* .popBg{background: rgba(0,0,0,0.5); position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1}
 .popBg div{background: #f5f5f9; position: absolute; right: 0; bottom: 0; z-index: 2; line-height: 0.3rem} */
 </style>

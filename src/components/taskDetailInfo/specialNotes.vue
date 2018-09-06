@@ -81,13 +81,14 @@ export default {
 
 
 <style scoped>
-.riskWarnView{width:100%;background-color: #ffffff}
+.riskWarnView{width:100%;}
 .attention{color: red;margin: 0.1rem;}
 .taskDetailCell{overflow: scroll;margin-bottom: 0.5rem;}
 .taskDetailCell .taskDetailTit{position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.14rem; color: #2698d6;}
 .taskDetailCell .taskDetailTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
 .taskDetailCell .taskDetailTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
 .content{margin: 0.2rem 0.14rem 0; display: block;}
+.content>>> .el-table{z-index: 0;}
 .content >>> .el-table td{height: 0.3rem!important; box-sizing: border-box; margin: 0; padding: 0; text-align: center;}
 .content >>> .risk .el-table td:nth-child(1) .cell{padding: 0}
 .content >>> .risk .el-table td:nth-child(2){text-align: left}

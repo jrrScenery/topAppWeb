@@ -2,7 +2,7 @@
     <div class="endSummaryView">
         <div class="serviceInfoCell">
             <div class="serviceInfoTit">用户及项目信息</div>
-            <div class="content">
+            <div class="serviceContent">
                 <el-form :model="formData" ref="formData">
                     <ul class="tableTd">
                         <li>
@@ -103,7 +103,7 @@
                         </el-form-item>
                     </div>
                     <div style="height: 0.6rem;"></div>
-                    <el-form-item class="submitBtn" v-if="!workResultInfo">
+                    <el-form-item class="serviceSubmitBtn" v-if="!workResultInfo">
                         <el-button @click="submitForm('formData')">提交</el-button>
                     </el-form-item>
                 </el-form>
@@ -375,16 +375,16 @@ export default {
     .serviceInfoCell .serviceInfoTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
     .serviceInfoCell .serviceInfoTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
     /* .summaryView{margin:0.1rem;line-height: 0.2rem} */
-    .content{background: #ffffff; color: #999999; padding: 0.1rem 0.05rem 0.15rem;}
-    .content >>> .el-form-item{border-bottom: 0.01rem; margin: 0.03rem 0;}
-    .content >>> .el-form-item__label{font-size: 0.13rem; padding: 0 0.2rem 0 0.2rem; text-align: left}
+    .serviceContent{background: #ffffff; color: #999999; padding: 0.1rem 0.05rem 0.15rem;}
+    .serviceContent >>> .el-form-item{border-bottom: 0.01rem; margin: 0.03rem 0;}
+    .serviceContent >>> .el-form-item__label{font-size: 0.13rem; padding: 0 0.2rem 0 0.2rem; text-align: left}
     .article{line-height: 0.3rem; padding: 0 0.2rem 0 0.2rem;}
     .tableTd li{display: flex; line-height: 0.2rem; padding: 0 0.2rem; color: #666666;}
     .tableTd span{text-align: center;}
     .tableTd span:nth-child(1){width: 100%; text-align: left;}
     .tableTd span:nth-child(2){width: 100%;text-align: left}
-    .submitBtn >>> .el-form-item__content{margin: 0!important;}
-    .submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
+    .serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
+    .serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
 
 </style>
 
