@@ -30,7 +30,7 @@
                         <!-- <div class="submitBtn"><el-button @click="submitForm">提交</el-button></div> -->
                     </el-form-item>
                 </div>
-                <el-form-item class="submitBtn" >
+                <el-form-item class="submitBtn1" >
                     <el-button v-if="submitFlg==1" @click="submitForm">提交</el-button>
                     <div v-if="submitFlg==0" style="margin-left:20px"><p>当前评价已提交或不可提交！</p></div>
             </el-form-item>
@@ -210,7 +210,7 @@ export default {
 .improve >>> .el-checkbox{display: block; margin-left: 10px; font-size: 0.13rem; color: #999999;}
 /* .submitBtn{width:100%;} */
 /* .submitBtn >>> .el-form-item__content{margin: 0!important;} */
-.submitBtn >>> .el-button{width:100% ;border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff;height: 0.5rem;}
+.submitBtn1 >>> .el-button{width:100% ;border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff;height: 0.5rem;}
 /* .improveCell span{ font-size: 0.1rem} */
 .improveCell{margin-left:5px;overflow: auto;}
 </style>
