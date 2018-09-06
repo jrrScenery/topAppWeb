@@ -18,12 +18,16 @@
             </div>
             </el-col>
             <el-col :span="7">
-            <router-link :to="{name:'workBenchSLAfeedback',query:{workId:this.$route.query.workId}}">
+            <router-link v-if="taskDetailInfo.workStatusId==6" :to="{name:'workBenchSLAfeedback',query:{workId:this.$route.query.workId}}">
                 <div>
                     <img src="../../assets/images/eventBaseInfo_2.png" style="width: 0.15rem; height: 0.135rem;" alt="">
                     <span>SLA反馈</span>
                 </div>
             </router-link>
+            <div  v-else @click="SLAclickService">
+                    <img src="../../assets/images/eventBaseInfo_2.png" style="width: 0.15rem; height: 0.135rem;" alt="">
+                    <span>SLA反馈</span>
+                </div>
             </el-col>
             <el-col :span="7" >
             <router-link v-if="taskDetailInfo.workStatusId!=5" :to="{name:'serviceList',query:{caseId:this.$route.query.caseId,workId:this.$route.query.workId,taskId:taskDetailInfo.taskId}}">
@@ -54,7 +58,7 @@
             <router-link :to="{name: 'sparePartsSortOut',query:{caseId:this.caseId}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件整理</li>
             </router-link>
-            <router-link :to="{name:'part_recycle'}">
+            <router-link :to="{name:'workBenchPartRecycle',query:{caseId:this.caseId}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件回收</li>
             </router-link>
             <router-link :to="{name:'eventReplenish',query:{caseId:this.$route.query.caseId,type:'process',workId:this.$route.query.workId}}">
@@ -178,6 +182,14 @@ export default {
         clickService(){
             this.$message({
                 message:'已爽约状态没有服务单！',
+                type: 'success',
+                center: true,
+                customClass: 'msgdefine'
+            });
+        },
+        SLAclickService(){
+            this.$message({
+                message:'任务尚未承接，无法反馈！',
                 type: 'success',
                 center: true,
                 customClass: 'msgdefine'
