@@ -1,7 +1,7 @@
 <template>
     <div class="customerEditRateView">    
         <div class="serviceInfoCell">
-            <div class="content">
+            <div class="serviceContent">
                 <el-form :model="formData" ref="formData">
                     <div class="editorView" v-for="(item,i) in evaluateval" :key="i">
                         <el-form-item>
@@ -400,8 +400,8 @@ export default {
 
 <style scoped>
 .customerEditRateView{width: 100%; position: relative;background-color: #ffffff;margin-top:0.05rem}
-.content{background: #ffffff; color: #999999; padding: 0.05rem 0 0.1rem;}
-.content>>> .el-form-item{padding: 0 0.1rem}
+.serviceContent{background: #ffffff; color: #999999; padding: 0.05rem 0 0.1rem;}
+.serviceContent>>> .el-form-item{padding: 0 0.1rem}
 .improve>>> span{padding: 0 0.05rem}
 .editorView .star{display: flex;line-height: 0.2rem}
 .editorView .star .starTit{ display: inline-block; width: 1.5rem;font-size: 0.14rem}
