@@ -59,7 +59,7 @@
                                     <el-form-item label="回收件说明">
                                         <el-input placeholder="请输入回收件说明" v-model="scope.row.useStatusRemark" class="bInput"></el-input>
                                     </el-form-item>
-                                    <el-form-item class="submitBtn">
+                                    <el-form-item class="submitBtnSpare">
                                         <el-button type="primary" @click="onSubmit(scope.row)">提交</el-button>
                                     </el-form-item>
                                 </el-form>
@@ -386,8 +386,8 @@ export default {
 .contentPopover >>> .el-button{padding: 0px 0px}
 .contentPopover >>> .el-icon-edit-outline:before{color: green}
 
-.submitBtn >>> .el-form-item__content{margin: 0!important;}
-.submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; bottom: 0;}
+.submitBtnSpare >>> .el-form-item__content{margin: 0!important;}
+.submitBtnSpare >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; bottom: 0;}
 
 
 </style>
