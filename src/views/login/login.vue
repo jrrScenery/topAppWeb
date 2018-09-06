@@ -79,12 +79,9 @@ export default {
         // 清空Cookie
         self.clearCookie();
       }
-      console.log("urlbefore", global_.Server+"/api/login","ACCOUNT="+this.ruleForm.userName+"&PASSWORD="+this.getBasePass())
       this.$refs[formName].validate((valid) => {
-        console.log("urlafter", global_.Server+"/api/login","ACCOUNT="+this.ruleForm.userName+"&PASSWORD="+this.getBasePass())
         if (valid) {
           this.$axios.post(global_.Server+"/api/login","ACCOUNT="+this.ruleForm.userName+"&PASSWORD="+this.getBasePass()).then(res=>{
-            console.log("res", res)
             loading.close();
             if(res.status==500){
               alert("连接服务超时或密码错");
