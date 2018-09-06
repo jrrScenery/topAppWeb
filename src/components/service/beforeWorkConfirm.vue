@@ -33,26 +33,6 @@
                                 </el-date-picker>
                         </el-col>
                     </el-form-item>
-                    <!-- <div>
-                        从：
-                        <div class="block">
-                                <el-date-picker
-                                v-model="formData.caseServiceQuestion.operationStarttime"
-                                type="datetime"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                placeholder="选择开始时间">
-                                </el-date-picker>
-                        </div>
-                        至：
-                        <div class="block">
-                                <el-date-picker
-                                v-model="formData.caseServiceQuestion.operationEndtime"
-                                type="datetime"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                placeholder="选择结束时间">
-                                </el-date-picker>
-                        </div>
-                    </div> -->
                     <div class="selectBox">
                         <div>否：</div>
                         <el-checkbox v-model="checked[0].ifF1" @change="changeIfF1"></el-checkbox>
@@ -86,27 +66,7 @@
                                 style="width:100%">
                                 </el-date-picker>
                         </el-col>
-                    </el-form-item>
-                    <!-- <div>
-                        从：
-                        <div class="block">
-                                <el-date-picker
-                                v-model="formData.caseServiceQuestion.stopStarttime"
-                                type="datetime"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                placeholder="选择开始时间">
-                                </el-date-picker>
-                        </div>
-                        至：
-                        <div class="block">
-                                <el-date-picker
-                                v-model="formData.caseServiceQuestion.stopEndtime"
-                                type="datetime"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                placeholder="选择结束时间">
-                                </el-date-picker>
-                        </div>
-                    </div> -->
+                    </el-form-item>                    
                     <div class="selectBox">
                         <div>否：</div>
                         <el-checkbox v-model="checked[1].ifF2" @change="changeIfF2"></el-checkbox>
@@ -136,20 +96,12 @@
                 <el-form-item>
                     <div>4.服务开始前，用户保留了相关配置信息和文档</div>
                     <div>用于可能必要的恢复</div>
-                        <el-form-item label="是：">
-                            <el-checkbox v-model="checked[3].ifY4" @change="changeIfY4"></el-checkbox>
-                        </el-form-item>
-                        <el-form-item label="否：">
-                            <el-checkbox v-model="checked[3].ifF4" @change="changeIfF4"></el-checkbox>
-                        </el-form-item>
-                    <!-- <div class="selectBox">
-                        <div>是：</div>
+                    <el-form-item label="是：">
                         <el-checkbox v-model="checked[3].ifY4" @change="changeIfY4"></el-checkbox>
-                    </div>       
-                    <div class="selectBox">
-                        <div>否：</div>
+                    </el-form-item>
+                    <el-form-item label="否：">
                         <el-checkbox v-model="checked[3].ifF4" @change="changeIfF4"></el-checkbox>
-                    </div>                -->
+                    </el-form-item>
                 </el-form-item>
                 <el-form-item>
                     <div>5.用户在服务开始前完成了业务相关数据备份</div>
@@ -199,7 +151,18 @@
                 <div v-else><img style="height:0.5rem;" src="" alt=""></div>
                 <add-signature :title="addSignatureTit" :queryData="searchData" @searchPro="signature"></add-signature>
                 
-                <div class="selectBox">
+                <el-form-item label="日期：">
+                    <el-col :span="15">
+                            <el-date-picker
+                            v-model="formData.caseServiceQuestion.serviceTime"
+                            type="datetime"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            placeholder="请选择时间"
+                            style="width:100%">
+                            </el-date-picker>
+                    </el-col>
+                </el-form-item>  
+                <!-- <div class="selectBox">
                     <div>日期：</div>
                     <div class="block">
                         <el-date-picker
@@ -209,7 +172,7 @@
                         placeholder="请选择时间">
                         </el-date-picker>
                     </div>
-                </div>
+                </div> -->
                 <div style="height: 0.6rem;"></div>
                 <el-form-item class="submitBtn" v-if="!imgStrQuestion">
                     <el-button @click="submitForm('formData')">提交</el-button>
@@ -243,7 +206,7 @@ export default {
             serviceId:this.$route.query.serviceId,
             serviceType:this.$route.query.serviceType,
             taskId:this.$route.query.taskId,
-            popBg: false,
+            // popBg: false,
             checked:[
                 {ifY1:false,ifF1:false},
                 {ifY2:false,ifF2:false},
@@ -581,7 +544,7 @@ export default {
 .selectBox{display: flex;}
 .submitBtn >>> .el-form-item__content{margin: 0!important;}
 .submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
-.popBg{background: rgba(0,0,0,0.5); position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1}
-.popBg div{background: #f5f5f9; position: absolute; right: 0; bottom: 0; z-index: 2; line-height: 0.3rem}
+/* .popBg{background: rgba(0,0,0,0.5); position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1}
+.popBg div{background: #f5f5f9; position: absolute; right: 0; bottom: 0; z-index: 2; line-height: 0.3rem} */
 </style>
 
