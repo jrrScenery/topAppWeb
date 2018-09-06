@@ -255,8 +255,13 @@ export default new Router({
       component: resolve => require(['@/views/workBench/casePartEvaluate'], resolve)
     },
     {
-      path: '/workBench/part_recycle',
-      name: 'part_recycle',
+      path: '/workBench/workBenchPartRecycle',
+      name: 'workBenchPartRecycle',
+      component: resolve => require(['@/views/workBench/workBenchPartRecycle'], resolve)
+    },
+    {
+      path: '/workBench/part_recycles',
+      name: 'partRecycles',
       component: resolve => require(['@/views/workBench/part_recycle'], resolve)
     },
     {
