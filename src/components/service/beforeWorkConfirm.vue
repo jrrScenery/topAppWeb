@@ -536,7 +536,7 @@ export default {
 <style scoped>
 .attention{margin:0.05rem 0.1rem 0.1rem;color: red}
 .confirmView{margin:0.1rem 0;line-height: 0.2rem}
-.confirmView >>> .el-form-item{margin-bottom:0;margin:0 0.1rem;}
+.confirmView >>> .el-form-item{margin-bottom:0;margin:0 0.05rem;}
 .selectBox{display: flex;}
 .submitBtn >>> .el-form-item__content{margin: 0!important;}
 .submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
