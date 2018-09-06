@@ -38,7 +38,7 @@
                         </el-form-item>
                     </ul>
                     <div style="height: 0.6rem;"></div>
-                    <el-form-item class="submitBtn" v-if="!signImg">
+                    <el-form-item class="serviceSubmitBtn" v-if="!signImg">
                         <el-button @click="submitForm('formData')">提交</el-button>
                     </el-form-item>
                 </el-form>
@@ -415,8 +415,8 @@ export default {
 .signature .el-form-item div{color: #333333; margin-left: 0.6rem;}
 .signature .el-form-item .sign{ }
 .signature .el-form-item .sign img{width: 100%; display: block; flex-grow: 1;}
-.submitBtn >>> .el-form-item__content{margin: 0!important;}
-.submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
+.serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
+.serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
 </style>
 <style>
   .eventEvaluationEditorView span{ color: #666;}

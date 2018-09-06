@@ -103,7 +103,7 @@
                         </el-form-item>
                     </div>
                     <div style="height: 0.6rem;"></div>
-                    <el-form-item class="submitBtn" v-if="!workResultInfo">
+                    <el-form-item class="serviceSubmitBtn" v-if="!workResultInfo">
                         <el-button @click="submitForm('formData')">提交</el-button>
                     </el-form-item>
                 </el-form>
@@ -383,8 +383,8 @@ export default {
     .tableTd span{text-align: center;}
     .tableTd span:nth-child(1){width: 100%; text-align: left;}
     .tableTd span:nth-child(2){width: 100%;text-align: left}
-    .submitBtn >>> .el-form-item__content{margin: 0!important;}
-    .submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
+    .serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
+    .serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
 
 </style>
 
