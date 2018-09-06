@@ -168,7 +168,7 @@ export default {
             if(this.formData.serviceType==null&&this.serviceType==2){
                 this.$message({
                     message:'请选择服务类型!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -178,7 +178,7 @@ export default {
             if(this.formData.userAndPrjItem.arriveTime==null){
                 this.$message({
                     message:'请填写到场时间!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -188,7 +188,7 @@ export default {
             if(this.formData.userAndPrjItem.leaveTime==null){
                 this.$message({
                     message:'请填写离场时间!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -198,7 +198,7 @@ export default {
             if(this.formData.userAndPrjItem.realWork==null&&this.serviceType==2){
                 this.$message({
                     message:'请填写实际工时!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -208,7 +208,7 @@ export default {
             if(this.formData.workResult==null&&this.serviceType==2){
                 this.$message({
                     message:'请填写工作结果!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -219,7 +219,7 @@ export default {
             if(this.formData.userAndPrjItem.workContent==null&&this.serviceType==2){
                 this.$message({
                     message:'请填写工作内容!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -229,7 +229,7 @@ export default {
             if(this.formData.userAndPrjItem.problemPlan==null&&this.serviceType==2){
                 this.$message({
                     message:'请填写存在问题!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -239,7 +239,7 @@ export default {
             if(this.formData.userAndPrjItem.faultDesc==null&&this.serviceType==1){
                 this.$message({
                     message:'请选择工作结果!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -249,7 +249,7 @@ export default {
             if(this.formData.userAndPrjItem.analysis==null&&this.serviceType==1){
                 this.$message({
                     message:'请填写分析诊断!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -259,7 +259,7 @@ export default {
             if(this.formData.userAndPrjItem.implementResult==null&&this.serviceType==1){
                 this.$message({
                     message:'请填写实施结果!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -269,7 +269,7 @@ export default {
             if(this.formData.userAndPrjItem.problemSuggest==null&&this.serviceType==1){
                 this.$message({
                     message:'请填写遗留问题及建议!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
