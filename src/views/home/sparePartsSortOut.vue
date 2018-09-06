@@ -9,7 +9,7 @@
                     <div class="contentPopover">
                         <el-popover placement="bottom" width="335" trigger="click">
                         
-                            <el-button  slot="reference" class="el-icon-edit-outline"></el-button>
+                            <el-button @click="ifChoiseUsed(scope.row)" slot="reference" class="el-icon-edit-outline"></el-button>
                             <div class="contentParts">
                                 <el-form label-width="1rem">
                                     <el-form-item label="备件来源">
@@ -345,7 +345,7 @@ export default {
             else{
                 this.isShow = false;
             }
-        }
+        },
     },
     created:function(){
     },
