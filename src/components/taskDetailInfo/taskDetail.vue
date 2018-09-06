@@ -23,11 +23,11 @@
                     </li>
                     <li>                
                         <span>座机：</span>
-                        <a @click="sendCall(taskDetailInfo.customerCellnumber)" v-bind:href="'tel:'+taskDetailInfo.customerCellnumber" style="font-size: 0.13em; color: #2698d6;"> {{taskDetailInfo.customerCellnumber}} </a>
+                        <a @click="sendCall(taskDetailInfo.customerCellnumber)" v-bind:href="'tel:'+taskDetailInfo.customerCellnumber" style="font-size: 0.14rem; color: #2698d6;"> {{taskDetailInfo.customerCellnumber}} </a>
                     </li>
                     <li>                
                         <span>手机：</span>
-                        <a @click="sendCall(taskDetailInfo.customerCellnumber)" v-bind:href="'tel:'+taskDetailInfo.customerCellnumber" style="font-size: 0.13em; color: #2698d6;"> {{taskDetailInfo.customerCellnumber}} </a>
+                        <a @click="sendCall(taskDetailInfo.customerCellnumber)" v-bind:href="'tel:'+taskDetailInfo.customerCellnumber" style="font-size: 0.14rem; color: #2698d6;"> {{taskDetailInfo.customerCellnumber}} </a>
                     </li>
                     <li>                
                         <span>客户地址：</span>
