@@ -177,7 +177,7 @@ export default {
                                 returnFlg = 1;
                                 vm.$message({
                                     message:'请给相关项打分',
-                                    type: 'success',
+                                    type: 'warning',
                                     center: true,
                                     customClass:'msgdefine'
                                 });
@@ -193,8 +193,6 @@ export default {
                                     temp2.questionId = items.questionId;
                                     temp2.optionId = item;
                                     detailArray.push(temp2);
-                                    console.log("bbbbbbbbbbb");
-                                    console.log(detailArray);
                                 }
                             }) 
                         })      
@@ -215,15 +213,13 @@ export default {
                     if(!vm.formData.data.imgStr){
                         vm.$message({
                             message:'请签名',
-                            type: 'success',
+                            type: 'warning',
                             center: true,
                             customClass:'msgdefine'
                         });
                         loading.close();
                         return;
                     }
-                    console.log("==========");
-                    console.log(detailArray);
                     let avgScore = totalScore/countScore;
                     let postData = new URLSearchParams;
                     postData.append('workId',vm.workId);
@@ -233,7 +229,6 @@ export default {
                     postData.append('EvaluateResult',JSON.stringify(detailArray));
                     postData.append('failFlg',failFlg);
                     postData.append('workId',vm.workId);
-                    console.log(postData);
                     fetch.post("?action=/work/SubmitClientReview",postData).then(res=>{
                         console.log(res);
                         loading.close();
@@ -328,7 +323,7 @@ export default {
             if(this.formData.data.serviceType==null){
                 this.$message({
                     message:'请选择服务类型!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -338,7 +333,7 @@ export default {
             if(this.formData.data.arriveTime==null){
                 this.$message({
                     message:'请填写到场时间!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -348,7 +343,7 @@ export default {
             if(this.formData.data.leaveTime==null){
                 this.$message({
                     message:'请填写离场时间!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -358,7 +353,7 @@ export default {
             if(this.formData.data.realWork==null){
                 this.$message({
                     message:'请填写实际工时!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -368,7 +363,7 @@ export default {
             if(this.formData.data.workContent==null){
                 this.$message({
                     message:'请填写工作内容!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -378,7 +373,7 @@ export default {
             if(this.formData.data.workResult==null){
                 this.$message({
                     message:'请选择工作结果!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -388,7 +383,7 @@ export default {
             if(this.formData.data.problemPlan==null){
                 this.$message({
                     message:'请填写存在问题!',
-                    type: 'success',
+                    type: 'warning',
                     center: true,
                     customClass:'msgdefine'
                 });
@@ -405,10 +400,6 @@ export default {
 
 <style scoped>
 .customerEditRateView{width: 100%; position: relative;background-color: #ffffff;margin-top:0.1rem}
-/* .serviceInfoCell{} */
-/* .serviceInfoCell .serviceInfoTit{position: relative; line-height: 0.05rem; margin-left: 0.15rem; font-size: 0.14rem; color: #2698d6;}
-.serviceInfoCell .serviceInfoTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
-.serviceInfoCell .serviceInfoTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;} */
 .content{background: #ffffff; color: #999999; padding: 0.05rem 0.2rem 0.1rem;}
 
 .editorView .star{display: flex;line-height: 0.1rem}
