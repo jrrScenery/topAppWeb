@@ -75,7 +75,7 @@
                     </li>
                     <li>                
                         <span>派工人电话：</span>
-                        <a @click="sendCall(taskDetailInfo.workManagerMobile)" v-bind:href="'tel:'+taskDetailInfo.workManagerMobile" style="font-size: 0.13em; color: #2698d6;"> {{taskDetailInfo.workManagerMobile}} </a>
+                        <a @click="sendCall(taskDetailInfo.workManagerMobile)" v-bind:href="'tel:'+taskDetailInfo.workManagerMobile" style="font-size: 0.14rem; color: #2698d6;"> {{taskDetailInfo.workManagerMobile}} </a>
                     </li>
                     <li>                
                         <span>技术责任人：</span>
@@ -83,7 +83,7 @@
                     </li>
                     <li>                
                         <span>技术责任人电话：</span>
-                        <a @click="sendCall(taskDetailInfo.techManagerMobile)" v-bind:href="'tel:'+taskDetailInfo.techManagerMobile" style="font-size: 0.13em; color: #2698d6;"> {{taskDetailInfo.techManagerMobile}} </a>
+                        <a @click="sendCall(taskDetailInfo.techManagerMobile)" v-bind:href="'tel:'+taskDetailInfo.techManagerMobile" style="font-size: 0.14rem; color: #2698d6;"> {{taskDetailInfo.techManagerMobile}} </a>
                     </li>
                     <li>                
                         <span>事件编号：</span>
