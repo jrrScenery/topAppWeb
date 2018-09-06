@@ -26,7 +26,7 @@
                                     </el-form-item>
                                     <el-form-item label="备件类型">
                                         <el-select v-model="scope.row.typeName" placeholder="请选择备件类型" clearable>
-                                            <el-option v-for="itemParts in partsTypeList" :label="itemParts.partsTypeName" :value="itemParts.partsTypeId" :key="itemParts.id" @c></el-option>
+                                            <el-option v-for="itemParts in partsTypeList" :label="itemParts.partsTypeName" :value="itemParts.partsTypeId" :key="itemParts.id"></el-option>
                                         </el-select>
                                     </el-form-item>
                                     <el-form-item label="是否有包装">

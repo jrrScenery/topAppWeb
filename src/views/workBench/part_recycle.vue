@@ -405,30 +405,30 @@ export default {
 };
 </script>
 <style>
-.el-form {
+.workBenchPartRecycle>>>.el-form {
   margin: 0.1rem 0.2rem 0.2rem 0.2rem;
 }
-.el-form .el-form-item {
+.workBenchPartRecycle>>>.el-form .el-form-item {
   margin: 0.04rem 0 0 0rem;
 }
-.el-form .el-form-item label {
+.workBenchPartRecycle>>>.el-form .el-form-item label {
   font-size: 10px;
 }
-.el-form .el-form-item .el-input {
+.workBenchPartRecycle>>>.el-form .el-form-item .el-input {
   border: none;
 }
-.el-form p {
+.workBenchPartRecycle>>>.el-form p {
   font-size: 10px;
   font-weight: bold;
   display: block;
   margin-bottom: 0.1rem;
   margin-top: 0.1rem;
 }
-.el-button {
+.workBenchPartRecycle>>>.el-button {
   margin: 0.1rem 0.2rem 0.2rem 0.2rem;
   padding: 0.08rem 0.1rem;
   color: #ffffff;
   background: #2698d6;
 }
-.el-dialog .el-roe .el-col .el-input{font-size: 6px}
+.workBenchPartRecycle>>>.el-dialog .el-roe .el-col .el-input{font-size: 6px}
 </style>
