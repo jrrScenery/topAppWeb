@@ -402,7 +402,7 @@ export default {
 .customerEditRateView{width: 100%; position: relative;background-color: #ffffff;margin-top:0.1rem}
 .content{background: #ffffff; color: #999999; padding: 0.05rem 0.2rem 0.1rem;}
 
-.editorView .star{display: flex;line-height: 0.1rem}
+.editorView .star{display: flex;line-height: 0.2rem}
 .editorView .star .starTit{ display: inline-block; width: 1.5rem;font-size: 0.14rem}
 .editorView .improve span{line-height: 0.02rem;font-size: 0.13rem}
 .editorView .improve >>> .el-checkbox{display: block; margin: 0;line-height: 0.1rem; font-size: 0.13rem; color: #999999;}
