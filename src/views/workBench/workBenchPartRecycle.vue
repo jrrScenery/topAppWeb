@@ -9,46 +9,46 @@
           <el-tab-pane :label="item.label" :name="item.name" :key="item.id">  
             <div style="overflow:auto">
               <div class="partsContent" v-for="info in item.partsListArr" :key="info.id"  @select-change="handleSelectionChange">
-            <div class="partsDetail">
-                <el-row>
-                  <el-col :span="6"><span class="tit">备件来源</span></el-col>
-                  <el-col :span="16">
-                    <span v-if="info.supplyType==3" class="tit">换下件</span>
-                    <span v-else class="tit">供货件</span>
-                    </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="6"><span class="tit">厂商</span></el-col>
-                  <el-col :span="16"><span class="tit">{{info.factoryName}}</span></el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="6"><span class="tit">备件编号</span></el-col>
-                  <el-col :span="16"><span class="tit"> {{info.pkid}}</span></el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="6"><span class="tit">备件类型</span></el-col>
-                  <el-col :span="15" style="postion:fixed"><span class="tit">{{info.equipType}}</span></el-col>
-                  <el-col :span="3" v-if="info.workerStatus==2" style="float:right"><input type="checkbox" :value="info" v-model="multipleSelection"/></el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="6"><span class="tit">PN/FUR</span></el-col>
-                  <el-col :span="18"><span class="tit">{{info.partPn}}</span></el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="6"><span class="tit">备件使用状况</span></el-col>
-                  <el-col :span="16">
-                    <span v-if="info.useState==1" class="tit">已使用件</span>
-                    <span v-if="info.useState==2"  class="tit">未使用件</span>
-                    <span v-if="info.useState==3"  class="tit">坏件</span>
-                    <span v-if="info.useState==4"  class="tit">备件不可用</span>
-                    <span v-if="info.useState==5"  class="tit">未到场</span>
-                    </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="6"><span class="tit">序列号</span></el-col>
-                  <el-col :span="16"><span class="tit">{{info.singlepartSortnum}}</span></el-col>
-                </el-row>
-            </div>
+                <div class="partsDetail">
+                  <el-row>
+                    <el-col :span="6"><span class="tit">备件来源</span></el-col>
+                    <el-col :span="16">
+                      <span v-if="info.supplyType==3" class="tit">换下件</span>
+                      <span v-else class="tit">供货件</span>
+                      </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="6"><span class="tit">厂商</span></el-col>
+                    <el-col :span="16"><span class="tit">{{info.factoryName}}</span></el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="6"><span class="tit">备件编号</span></el-col>
+                    <el-col :span="16"><span class="tit"> {{info.pkid}}</span></el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="6"><span class="tit">备件类型</span></el-col>
+                    <el-col :span="15" style="postion:fixed"><span class="tit">{{info.equipType}}</span></el-col>
+                    <el-col :span="3" v-if="info.workerStatus==2" style="float:right"><input type="checkbox" :value="info" v-model="multipleSelection"/></el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="6"><span class="tit">PN/FUR</span></el-col>
+                    <el-col :span="18"><span class="tit">{{info.partPn}}</span></el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="6"><span class="tit">备件使用状况</span></el-col>
+                    <el-col :span="16">
+                      <span v-if="info.useState==1" class="tit">已使用件</span>
+                      <span v-if="info.useState==2"  class="tit">未使用件</span>
+                      <span v-if="info.useState==3"  class="tit">坏件</span>
+                      <span v-if="info.useState==4"  class="tit">备件不可用</span>
+                      <span v-if="info.useState==5"  class="tit">未到场</span>
+                      </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="6"><span class="tit">序列号</span></el-col>
+                    <el-col :span="16"><span class="tit">{{info.singlepartSortnum}}</span></el-col>
+                  </el-row>
+                </div>
               </div>
             </div>
             
@@ -57,19 +57,15 @@
           <!-- <router-view v-bind:parts="parts"></router-view> -->
         </template>
         <router-link v-if="this.multipleSelection.length>0" :to="{name:'partRecycles',params:{parts:this.parts,caseId:this.caseId}}">
-           <div style="width:100%;text-algin:center">
-              <!-- <part_recycle :parts="parts"></part_recycle> -->
-              
-            <el-button  @click="handleSelectionChange">备件回收</el-button>
-            
+          <div style="width:100%;text-algin:center">
+            <!-- <part_recycle :parts="parts"></part_recycle> -->             
+            <el-button  @click="handleSelectionChange">备件回收</el-button>            
           </div>  
-          </router-link>
-          <div v-else style="width:100%;text-algin:center">
-              <!-- <part_recycle :parts="parts"></part_recycle> -->
-              
-            <el-button  @click="handleSelectionChangeerr">备件回收</el-button>
-            
-          </div>  
+        </router-link>
+        <div v-else style="width:100%;text-algin:center">
+            <!-- <part_recycle :parts="parts"></part_recycle> -->             
+          <el-button  @click="handleSelectionChangeerr">备件回收</el-button>            
+        </div>  
       </el-tabs>
     </div>
   </div>
@@ -200,5 +196,5 @@ export default {
   .partsContent .partsDetail p{line-height: 0.3rem; color: #333333; font-size: 0.15rem;}
   .partsContent .partsDetail .el-col{line-height: 0.25rem; color: #999999;}
  .partsContent .partsDetail input{background: #ffffff;border: #333333;}
- .el-button {width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; bottom: 0;}
+ .partRecycleTabs>>>.el-button {width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; bottom: 0;}
 </style>

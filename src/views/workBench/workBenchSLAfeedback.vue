@@ -207,19 +207,19 @@ export default {
 .tabdetail el-row el-col {
   height: 0.16rem;
 }
-.el-dailog {
+.workBenchSLAfeedback>>>.el-dailog {
   margin:10px;
   /* padding-top: 10px */
 }
-.dialog >>> .el-dialog__header{padding-bottom: 0}
+.workBenchSLAfeedback>>>.dialog >>> .el-dialog__header{padding-bottom: 0}
 /* .dialog >>> .el-dialog__header .el-dialog__title{line-height: 10px} */
-.dialog >>>.el-dialog__body{padding:0 20px 20px;color:#606266;font-size:14px;}
+.workBenchSLAfeedback>>>.dialog >>>.el-dialog__body{padding:0 20px 20px;color:#606266;font-size:14px;}
 /* #el-title .el-dialog__title {color: red!important;} */
-.el-form .el-form-item {
+.workBenchSLAfeedback>>>.el-form .el-form-item {
   font-size: 0.08rem;
 }
-.el-radio {
+.workBenchSLAfeedback>>>.el-radio {
   margin-top: 5px;font-size:6px
 }
-el-button{widows: 0.4rem;height: 0.4rem;}
+.workBenchSLAfeedback>>> el-button{widows: 0.4rem;height: 0.4rem;}
 </style>
