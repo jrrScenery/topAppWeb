@@ -31,9 +31,9 @@
                     </el-form-item>
                 </div>
                 <el-form-item class="submitBtn" >
-                    <el-button v-if="this.submitFlg==1" @click="submitForm">提交</el-button>
+                    <el-button v-if="submitFlg==1" @click="submitForm">提交</el-button>
                     <div v-if="submitFlg==0" style="margin-left:20px"><p>当前评价已提交或不可提交！</p></div>
-                </el-form-item>
+            </el-form-item>
             </el-form>
         </div>
     </div>
@@ -201,15 +201,16 @@ export default {
 .casePersontInfoView{width:100%;background: #ffffff;}
 .content{background: #ffffff; color: #999999; font-size: 0.13rem;}
 .content>>> .questionComment{font-size: 0.13rem;background: #ffffff;margin-bottom: 0.2rem;padding: 0.1rem 0.25rem 0;}
-.content>>>.editorView{padding: 0.1rem 0.25rem 0;overflow: scroll}
+.content>>>.editorView{padding: 0.1rem 0.25rem 0;}
 .content>>> .editorView .star{display: flex;margin-bottom: 0.2rem}
 .editorView .star .starTit{ display: inline-block; width: 1.2rem;}
 .el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
+/* .improve {position:relative} */
 .improve span{line-height: 0.1rem;}
 .improve >>> .el-checkbox{display: block; margin-left: 10px; font-size: 0.13rem; color: #999999;}
 /* .submitBtn{width:100%;} */
-.submitBtn >>> .el-form-item__content{margin: 0!important;}
-.submitBtn >>> .el-button{position:fixed;width:100%;border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff;height: 0.5rem; bottom: 0;}
+/* .submitBtn >>> .el-form-item__content{margin: 0!important;} */
+.submitBtn >>> .el-button{width:100% ;border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff;height: 0.5rem;}
 /* .improveCell span{ font-size: 0.1rem} */
-.improveCell{margin-left:5px;height: 2.8rem;overflow: scroll;}
+.improveCell{margin-left:5px;overflow: auto;}
 </style>

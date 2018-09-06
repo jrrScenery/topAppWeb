@@ -16,7 +16,7 @@
       <el-row v-for="item in SLAObj" :key="item.slaTypeId"><!--这几条数据在一个json数组slaStatus中，workid相同。-->
         <el-col :span="7"><div style="text-align:left">{{item.slaType}}</div></el-col>
         <el-col :span="8"><div style="font-size:0.13rem;line-height:0.2rem;">{{item.operateDate}}</div></el-col>
-        <el-col :span="6"><div style="font-size:0.13rem;padding-right:5px;">{{item.feedbackDescription}}</div></el-col><!--反馈说明-->
+        <el-col :span="6"><div style="font-size:0.13rem;padding-right:5px;line-height:0.2rem;">{{item.feedbackDescription}}</div></el-col><!--反馈说明-->
         <el-col :span="3" style="float:right;color:#2698d6" >
           <!-- <div v-if="item.slaTypeId==8||item.slaTypeId==10&&item.ifFeedback==0" @click="dialogVisible=true">反馈</div>
           <div v-else-if="item.ifFeedback!=0">已反馈</div>

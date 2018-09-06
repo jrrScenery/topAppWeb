@@ -27,8 +27,8 @@
                 </el-row>
                 <el-row>
                   <el-col :span="6"><span class="tit">备件类型</span></el-col>
-                  <el-col :span="15"><span class="tit">{{info.equipType}}</span></el-col>
-                  <el-col :span="3" v-if="info.partsStatus==9"><input type="checkbox" :value="info" v-model="multipleSelection"/></el-col>
+                  <el-col :span="15" style="postion:fixed"><span class="tit">{{info.equipType}}</span></el-col>
+                  <el-col :span="3" v-if="info.workerStatus==2" style="float:right"><input type="checkbox" :value="info" v-model="multipleSelection"/></el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="6"><span class="tit">PN/FUR</span></el-col>
@@ -53,14 +53,23 @@
             </div>
             
           </el-tab-pane>
-          <div style="width:100%;text-algin:center">
-              <!-- <part_recycle :parts="parts"></part_recycle> -->
-              <router-link :to="{name:'partRecycles',params:{parts:parts}}">
-            <el-button  @click="handleSelectionChange">备件回收</el-button>
-            </router-link>
-          </div>     
+          
           <!-- <router-view v-bind:parts="parts"></router-view> -->
         </template>
+        <router-link v-if="this.multipleSelection.length>0" :to="{name:'partRecycles',params:{parts:this.parts,caseId:this.caseId}}">
+           <div style="width:100%;text-algin:center">
+              <!-- <part_recycle :parts="parts"></part_recycle> -->
+              
+            <el-button  @click="handleSelectionChange">备件回收</el-button>
+            
+          </div>  
+          </router-link>
+          <div v-else style="width:100%;text-algin:center">
+              <!-- <part_recycle :parts="parts"></part_recycle> -->
+              
+            <el-button  @click="handleSelectionChangeerr">备件回收</el-button>
+            
+          </div>  
       </el-tabs>
     </div>
   </div>
@@ -84,7 +93,7 @@ export default {
       workBenchPartRecycleTit: "备件回收",
       activeName: "first",
       multipleSelection:[],
-      parts:[""],
+      parts:[],
       workBenchPartRecycle: [
         {
           id:1,
@@ -138,14 +147,18 @@ export default {
         // console.log("222222222");
         // console.log(this.parts);
         
+    },
+    handleSelectionChangeerr(){
+      alert("请选择至少一个备件！")
+      return false;
     }
   },
   created: function() {
-    fetch.get("?action=/parts/queryPartsArrangeList&caseId=124769 ").then(res => {
+    fetch.get("?action=/parts/queryPartsArrangeList&caseId="+this.caseId).then(res => {
       console.log(res);
       let baseinfo=res.DATA;
       for(var items in baseinfo){
-        if(baseinfo[items].partsStatus==9){
+        if(baseinfo[items].workerStatus==2){
           this.workBenchPartRecycle[0].partsListArr.push(baseinfo[items]);
         }
         else{
@@ -161,8 +174,8 @@ export default {
 
 <style scoped>
 .partRecycleTabs {
-  margin: 0 0;
-  position: relative;
+  /* margin: 0 0; */
+  /* position: relative; */
 }
 .partRecycleTabs >>> .el-tabs__header {
   margin: 0 0 0.1rem;
@@ -187,5 +200,5 @@ export default {
   .partsContent .partsDetail p{line-height: 0.3rem; color: #333333; font-size: 0.15rem;}
   .partsContent .partsDetail .el-col{line-height: 0.25rem; color: #999999;}
  .partsContent .partsDetail input{background: #ffffff;border: #333333;}
- .el-button {width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;}
+ .el-button {width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; bottom: 0;}
 </style>
