@@ -182,7 +182,7 @@ export default {
         clickService(){
             this.$message({
                 message:'已爽约状态没有服务单！',
-                type: 'success',
+                type: 'warning',
                 center: true,
                 customClass: 'msgdefine'
             });
@@ -190,7 +190,7 @@ export default {
         SLAclickService(){
             this.$message({
                 message:'任务尚未承接，无法反馈！',
-                type: 'success',
+                type: 'warning',
                 center: true,
                 customClass: 'msgdefine'
             });
