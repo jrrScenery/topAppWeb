@@ -144,7 +144,7 @@
                     </div>               
                 </el-form-item>
                 <div style="margin:0 0.1rem">神州数码工程师已按规范要求就本次服务内容、影响和风险与用户进行了沟通，同意神州数码工程师开始服务实施。</div>
-                <div style="margin:0 0.1rem">用户确认</div>
+                <div style="margin:0.1rem">用户确认</div>
                 <div v-if="formData.caseServiceQuestion.imgStrQuestion">
                     <img id="imgStrQuestion" style="height:1.5rem;" v-bind:src="formData.caseServiceQuestion.imgStrQuestion" alt="">
                 </div>
@@ -162,17 +162,6 @@
                             </el-date-picker>
                     </el-col>
                 </el-form-item>  
-                <!-- <div class="selectBox">
-                    <div>日期：</div>
-                    <div class="block">
-                        <el-date-picker
-                        v-model="formData.caseServiceQuestion.serviceTime"
-                        type="datetime"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        placeholder="请选择时间">
-                        </el-date-picker>
-                    </div>
-                </div> -->
                 <div style="height: 0.6rem;"></div>
                 <el-form-item class="serviceSubmitBtn" v-if="!imgStrQuestion">
                     <el-button @click="submitForm('formData')">提交</el-button>
@@ -535,8 +524,8 @@ export default {
 
 <style scoped>
 .attention{margin:0.05rem 0.1rem 0.1rem;color: red}
-.confirmView{margin:0.1rem 0.05rem;line-height: 0.2rem}
-.confirmView >>> .el-form-item{margin-bottom:0;margin:0 0.05rem;}
+.confirmView{margin:0.1rem 0;line-height: 0.2rem}
+.confirmView >>> .el-form-item{margin-left:0.2rem;margin-bottom:0;margin:0 0.05rem;}
 .selectBox{display: flex;}
 .serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
 .serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}

@@ -26,7 +26,7 @@
                             <el-input type="textarea" v-model="formData.otherResult" placeholder="请输入其他想法和建议"></el-input>
                         </el-form-item>
                     </div>
-                    <div style="margin-left:0.1rem">客户签名</div>
+                    <div style="margin:0.1rem">客户签名</div>
                     <div v-if="formData.data.imgStr">
                         <img style="height:1.5rem;" v-bind:src="formData.data.imgStr" alt="">
                     </div>
@@ -401,7 +401,6 @@ export default {
 <style scoped>
 .customerEditRateView{width: 100%; position: relative;background-color: #ffffff;margin-top:0.05rem}
 .serviceContent{background: #ffffff; color: #999999; padding: 0.05rem 0 0.1rem;}
-.serviceContent>>> .el-form{padding: 0 0.05rem}
 .serviceContent>>> .el-form-item{padding: 0 0.1rem}
 .improve>>> span{padding: 0 0.05rem}
 .editorView .star{display: flex;line-height: 0.2rem}
@@ -414,7 +413,7 @@ export default {
 
 .signature .el-form-item{overflow: hidden;zoom:1; margin: 0; color: #2698d6; border-top: 0.01rem solid #e1e1e1;border-bottom: 0.01rem solid #e1e1e1}
 .signature .el-form-item div{color: #333333; margin-left: 0.6rem;}
-.signature .el-form-item .sign{ }
+.signature .el-form-item .sign{}
 .signature .el-form-item .sign img{width: 100%; display: block; flex-grow: 1;}
 .serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
 .serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
