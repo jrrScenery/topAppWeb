@@ -5,8 +5,8 @@
         <div class="taskDetailView">
             <el-tabs v-model="activeName">
                 <el-tab-pane label="任务信息" name="first"><task-detail></task-detail></el-tab-pane>
-                <el-tab-pane label="项目特殊提示" name="second" lazy><special-notes></special-notes></el-tab-pane>
-                <el-tab-pane label="风险提示" name="third" lazy><risk-warn></risk-warn></el-tab-pane>
+                <el-tab-pane :label="secondTabTit+'('+specialNotes.length+')'" name="second" lazy><special-notes></special-notes></el-tab-pane>
+                <el-tab-pane :label="thirdTabTit+'('+riskInfos.length+')'" name="third" lazy><risk-warn></risk-warn></el-tab-pane>
             </el-tabs>
         </div>
         <div class="eventShowFooter">
@@ -145,6 +145,8 @@ export default {
     data(){
         return{
             workBenchTaskDetailTit:'任务',
+            secondTabTit:"项目特殊提示",
+            thirdTabTit:'风险提示',
             activeName: 'first',
             workId:this.$route.query.workId,
             caseId:this.$route.query.caseId,
@@ -152,7 +154,9 @@ export default {
             expectStart:this.$route.query.expectStart,
             expectEnd:this.$route.query.expectEnd,
             creatorRealname:this.$route.query.creatorRealname,
-            taskDetailInfo:'',
+            taskDetailInfo:{},
+            specialNotes:[],
+            riskInfos:[],
             eng2partEvalid:'',
             popBg: false,
             popBgUndertake: false,
@@ -170,6 +174,8 @@ export default {
             console.log(res.DATA);   
             this.taskDetailInfo = res.DATA[0];
             this.taskDetailInfo.refuseReason = '';
+            this.specialNotes = res.DATA[0].specialNotes;
+            this.riskInfos = res.DATA[0].riskInfos;
         });
     },
     beforeRouteLeave( to, from,next){
