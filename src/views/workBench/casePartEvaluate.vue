@@ -3,7 +3,7 @@
         <header-last v-if="templateType==2" :title="casePartInfoTit"></header-last>
         <header-last v-if="templateType==1" :title="casePersonInfoTit"></header-last>
         <div style="height:0.45rem"></div>
-        <div class="content">
+        <div class="casePartContent">
             <div class="questionComment">{{questionComment}}</div>
             <el-form :model="formData" ref="formData">
                 <div class="editorView" v-for="(item,i) in evaluateval" :key="i">
@@ -199,12 +199,12 @@ export default {
 
 <style scoped>
 .casePersontInfoView{width:100%;background: #ffffff;}
-.content{background: #ffffff; color: #999999; font-size: 0.13rem;}
-.content>>> .questionComment{font-size: 0.13rem;background: #ffffff;margin-bottom: 0.2rem;padding: 0.1rem 0.25rem 0;}
-.content>>>.editorView{padding: 0.1rem 0.25rem 0;}
-.content>>> .editorView .star{display: flex;margin-bottom: 0.2rem}
+.casePartContent{background: #ffffff; color: #999999; font-size: 0.13rem;}
+.casePartContent>>> .questionComment{font-size: 0.13rem;background: #ffffff;margin-bottom: 0.2rem;padding: 0.1rem 0.25rem 0;}
+.casePartContent>>>.editorView{padding: 0.1rem 0.25rem 0;}
+.casePartContent>>> .editorView .star{display: flex;margin-bottom: 0.2rem}
 .editorView .star .starTit{ display: inline-block; width: 1.2rem;}
-.el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
+.casePartContent>>>.el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
 /* .improve {position:relative} */
 .improve span{line-height: 0.1rem;}
 .improve >>> .el-checkbox{display: block; margin-left: 10px; font-size: 0.13rem; color: #999999;}

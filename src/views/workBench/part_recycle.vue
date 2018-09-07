@@ -408,16 +408,16 @@ export default {
 .workBenchPartRecycle>>>.el-form {
   margin: 0.1rem 0.2rem 0.2rem 0.2rem;
 }
-.workBenchPartRecycle>>>.el-form .el-form-item {
+.workBenchPartRecycle>>>.el-form>>> .el-form-item {
   margin: 0.04rem 0 0 0rem;
 }
-.workBenchPartRecycle>>>.el-form .el-form-item label {
+.workBenchPartRecycle>>>.el-form>>> .el-form-item label {
   font-size: 10px;
 }
-.workBenchPartRecycle>>>.el-form .el-form-item .el-input {
+.workBenchPartRecycle>>>.el-form>>> .el-form-item .el-input {
   border: none;
 }
-.workBenchPartRecycle>>>.el-form p {
+.workBenchPartRecycle>>>.el-form>>> p {
   font-size: 10px;
   font-weight: bold;
   display: block;
