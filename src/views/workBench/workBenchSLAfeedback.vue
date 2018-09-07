@@ -37,7 +37,8 @@
             <el-input class="input1" :value="item.slaTypeId"></el-input>
           </el-form-item> -->
           <el-form-item>
-            <el-input type="textarea" :rows="4" placeholder="请简要描述所做操作及处理结果。例如，更换25盘柜上的13号硬盘后，存储状态恢复正常。" v-model="form.des1" style="font-size:6px"></el-input>
+             <el-input v-if="typeid==6" type="textarea" :rows="4" placeholder="请简要描述所做操作及处理结果。例如，更换25盘柜上的13号硬盘后，存储状态恢复正常。" v-model="form.des1" style="font-size:6px"></el-input>
+            <el-input v-else  type="textarea" placeholder="请填写说明" v-model="form.des1" style="font-size:6px"></el-input>
           </el-form-item>
           <el-form-item class="submit">
             <el-button @click="dialogVisible0 = false">取消</el-button>
@@ -113,6 +114,7 @@ export default {
   created: function() {
     fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res => {
       console.log(res);
+      // console.log("1111111")
       let baseInfo = res.DATA[0];
       this.SLAObj = baseInfo.slaStatus;
     });

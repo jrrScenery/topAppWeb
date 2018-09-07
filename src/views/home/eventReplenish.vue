@@ -11,7 +11,7 @@
         <el-form-item class="text">
           <el-input type="textarea" v-model="form.desc" placeholder="补充说明"></el-input>
         </el-form-item>
-        <div class="takePhoto" @click="takePhoto"><img src="../../assets/images/takephoto.png" alt=""></div>
+        <!-- <div class="takePhoto" @click="takePhoto"><img src="../../assets/images/takephoto.png" alt=""></div> -->
         <el-form-item class="submitBtn">
           <el-button type="primary" @click="onSubmit">提交</el-button>
         </el-form-item>
@@ -157,7 +157,7 @@ export default {
     }
   },
   created:function(){
-    window.getPhotoUrl = this.getPhotoUrl;
+    // window.getPhotoUrl = this.getPhotoUrl;
 
     this.$parent.setComponent(this);
     fetch.get("?action=GetCaseInfo&CASE_ID="+this.caseid,{}).then(res=>{
