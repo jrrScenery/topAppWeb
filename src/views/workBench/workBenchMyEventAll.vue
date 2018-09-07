@@ -115,7 +115,17 @@ export default {
   },
   activated(){
     if(!this.$route.meta.isUseCache){
-      
+      this.busy= false;
+      this.loadall= false;
+      this.page =1;
+      this.objpages["first"]["page"] = 1;
+      this.objpages["first"]["loadall"]=false
+      this.opinionTab[0].eventListArr = [];
+      this.objpages["second"]["loadall"]=false
+      this.opinionTab[1].eventListArr = [];
+      this.objpages["third"]["loadall"]= false;
+      this.opinionTab[2].eventListArr = [];
+      this.loadMore();
     }
     this.$route.meta.isUseCache = false;
   },

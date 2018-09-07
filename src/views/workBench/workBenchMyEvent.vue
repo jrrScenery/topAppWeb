@@ -108,11 +108,19 @@ export default {
   created () {
     
   },
-  activated(){
+  activated(){ 
     if(!this.$route.meta.isUseCache){
-      // this.eventListArr = [];
-      // this.busy= false;
-      // this.loadMore();
+      this.busy= false;
+      this.loadall= false;
+      this.page =1;
+      this.objpages["first"]["page"] = 1;
+      this.objpages["first"]["loadall"]=false
+      this.opinionTab[0].eventListArr = [];
+      this.objpages["second"]["loadall"]=false
+      this.opinionTab[1].eventListArr = [];
+      this.objpages["third"]["loadall"]= false;
+      this.opinionTab[2].eventListArr = [];
+      this.loadMore();
     }
     this.$route.meta.isUseCache = false;
   },
@@ -170,14 +178,12 @@ export default {
         params.END_TIME = this.searchData.endTime;
       }
       console.log("SSS_params", params);
-
-
       fetch.get(strurl,params).then(res => {
         if('0'== res.STATUSCODE){
           let obj = this.opinionTab[objnowpage.idx].eventListArr;
           this.opinionTab[objnowpage.idx].eventListArr = this.returnList(flag, res, obj)
           this.totalData= res.totalData;
-          console.log(this.totalData) 
+          console.log(this.totalData)          
         }
         else{
 
