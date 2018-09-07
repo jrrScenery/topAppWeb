@@ -91,10 +91,15 @@ export default new Router({
       component: resolve => require(['@/views/home/declareWorkLoad'], resolve)
     },
     {
-      path: '/home/sparePartsSortOut',
-      name: 'sparePartsSortOut',
-      component: resolve => require(['@/views/home/sparePartsSortOut'], resolve)
+      path: '/workBench/sparePartsSortFlow',
+      name: 'sparePartsSortFlow',
+      component: resolve => require(['@/views/workBench/sparePartsSortFlow'], resolve)
     },
+    // {
+    //   path: '/home/sparePartsSortBak',
+    //   name: 'sparePartsSortBak',
+    //   component: resolve => require(['@/views/home/sparePartsSortBak'], resolve)
+    // },
     {
       path: '/home/addParts',
       name: 'addParts',
