@@ -26,7 +26,7 @@
                             <el-input type="textarea" v-model="formData.otherResult" placeholder="请输入其他想法和建议"></el-input>
                         </el-form-item>
                     </div>
-                    <div>客户签名</div>
+                    <div style="margin-left:0.1rem">客户签名</div>
                     <div v-if="formData.data.imgStr">
                         <img style="height:1.5rem;" v-bind:src="formData.data.imgStr" alt="">
                     </div>
@@ -401,6 +401,7 @@ export default {
 <style scoped>
 .customerEditRateView{width: 100%; position: relative;background-color: #ffffff;margin-top:0.05rem}
 .serviceContent{background: #ffffff; color: #999999; padding: 0.05rem 0 0.1rem;}
+.serviceContent>>> .el-form{padding: 0 0.05rem}
 .serviceContent>>> .el-form-item{padding: 0 0.1rem}
 .improve>>> span{padding: 0 0.05rem}
 .editorView .star{display: flex;line-height: 0.2rem}
