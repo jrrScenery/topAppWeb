@@ -106,6 +106,25 @@ export default {
 
   mounted () {
   },
+  activated(){ 
+    if(!this.$route.meta.isUseCache){
+      this.busy= false;
+      this.loadall= false;
+      this.page =1;
+
+      this.objpages["first"]["page"] = 1;
+      this.objpages["first"]["loadall"]=false
+      this.workBenchMyProTab[0].programListArr = [];
+
+      this.objpages["second"]["loadall"]=false
+      this.workBenchMyProTab[1].programListArr = [];
+
+      this.objpages["third"]["loadall"]= false;
+      this.workBenchMyProTab[2].programListArr = [];
+      this.loadMore();
+    }
+    this.$route.meta.isUseCache = false;
+  },
 
   methods: {
     tabClick (e) {
