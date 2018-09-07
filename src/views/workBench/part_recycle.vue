@@ -2,7 +2,7 @@
   <div class="workBenchPartRecycle">
     <header-last :title="workBenchPartRecycleTit"></header-last>
     <div style="height: 0.45rem;"></div>
-    <div>
+    <div class="partRecycleContent">
         <el-form label-width="100px" label-position="left">
             <p>基本信息</p>
             <el-form-item label="回收申请人：">
@@ -76,6 +76,7 @@
                 <el-input type="textarea" placeholder="请填写回寄说明" :rows="3" v-model="remark"></el-input>
             </el-form-item>
             </el-form>
+            <div class="buttons">
             <el-button type="primary" @click="sender">我要寄件</el-button>
                 <el-button type="primary" @click="onSubmit2(2)" >暂存</el-button>
                 <el-button type="primary" @click="onSubmit2(1)">提交</el-button>
@@ -83,7 +84,8 @@
                 <el-button type="primary" >关闭</el-button>
                 </router-link>
             </div>
-            <div>
+            </div>
+            <div class="partRecDialog">
     <el-dialog :visible.sync="dialogVisible" width="80%">
         <el-form class="form1" style="color:#333333" label-width="80px">
             <p>发件人信息</p>
@@ -112,18 +114,30 @@
           <el-form-item label="详细地址">
             <el-input v-model="recycleInfoinput.recycleAddr"></el-input>
           </el-form-item>
+          <el-form-item class="submit">
+            <el-button type="primary" @click="dialogVisible = false" >取消</el-button>
+          <el-button type="primary"  class="onsubmit"  @click="innerVisible=true" >顺丰下单</el-button>
+          </el-form-item>
         </el-form>
-        <div style="algin-text:center">
-          <el-button type="primary" @click="dialogVisible = false" >取消</el-button>
-          <el-button type="primary" @click="innerVisible=true" >顺丰下单</el-button>
-        </div>
+        <!-- <div style="algin-text:center">
+          
+        </div> -->
     </el-dialog>
-    <el-dialog :visible.sync="innerVisible" width="60%">
-        <div style="text-align:center"><span>确定预约寄件？</span></div>
+    <el-dialog :visible.sync="innerVisible"  width="60%">
+      <el-form class="form1" style="color:#333333" label-width="80px">
+        <!-- <div style="height"> -->
+            <p style="line-height:60px"><span>确定预约寄件？</span></p>
+        <!-- </div> -->
+          <el-form-item class="submit">
+            <el-button type="primary" @click="innerVisible = false" >取消</el-button>
+          <el-button type="primary" class="onsubmit"  @click="onSubmit1" >确定</el-button>
+          </el-form-item>
+      </el-form>
+        <!-- <div style="text-align:center"></div>
         <div style="algin-text:center;margin-top:10px">
           <el-button type="primary" @click="innerVisible = false" >取消</el-button>
           <el-button type="primary" @click="onSubmit1" >确定</el-button>
-        </div>
+        </div> -->
     </el-dialog>
     </div>
  </div>
@@ -405,30 +419,50 @@ export default {
 };
 </script>
 <style>
-.workBenchPartRecycle>>>.el-form {
+.partRecycleContent {
   margin: 0.1rem 0.2rem 0.2rem 0.2rem;
 }
-.workBenchPartRecycle>>>.el-form>>> .el-form-item {
+.partRecycleContent .el-form .el-form-item {
   margin: 0.04rem 0 0 0rem;
 }
-.workBenchPartRecycle>>>.el-form>>> .el-form-item label {
+.partRecycleContent .el-form .el-form-item label {
   font-size: 10px;
 }
-.workBenchPartRecycle>>>.el-form>>> .el-form-item .el-input {
+.partRecycleContent .el-form .el-form-item .el-input {
   border: none;
 }
-.workBenchPartRecycle>>>.el-form>>> p {
+.partRecycleContent .el-form p {
   font-size: 10px;
   font-weight: bold;
   display: block;
   margin-bottom: 0.1rem;
   margin-top: 0.1rem;
 }
-.workBenchPartRecycle>>>.el-button {
-  margin: 0.1rem 0.2rem 0.2rem 0.2rem;
-  padding: 0.08rem 0.1rem;
+.buttons{
+  margin:0.07rem;
+  text-align: center;
+}
+.buttons .el-button {
+  margin-left: 0.07rem;
+  padding: 0.08rem 0.08rem;
   color: #ffffff;
   background: #2698d6;
+  /* border: red solid 1px  */
 }
-.workBenchPartRecycle>>>.el-dialog .el-roe .el-col .el-input{font-size: 6px}
+.partRecDialog .el-form .el-form-item {
+  margin: 0.04rem 0 0 0rem;
+}
+.partRecDialog .el-form .el-form-item label {
+  font-size: 10px;
+}
+.partRecDialog .el-dialog .el-roe .el-col .el-input{font-size: 6px}
+  .partRecDialog  .submit{position: absolute;left: 0; right: 0; height: 0.4rem;}
+  .partRecDialog  .submit .el-button{background: #ffffff;width: 50%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
+  .partRecDialog  .submit .el-button:hover{background: #ffffff;}
+  .partRecDialog  .submit .onsubmit:hover{background: #2698d6;}
+  .partRecDialog  .submit .el-form-item__content{margin: 0!important; display: flex;}
+  .partRecDialog  .submit .onsubmit{background: #2698d6; color: #ffffff;}
+
+  .partRecDialog .el-dialog .el-dialog__header{padding-bottom: 10px}
+.partRecDialog .el-dialog .el-dialog__body{padding:0px 20px 40px; color:#606266;font-size:14px;}
 </style>

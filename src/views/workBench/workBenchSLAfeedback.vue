@@ -27,7 +27,7 @@
       </el-row>
     </div>
     </div>
-    <div>
+    <div class="SLAdialog">
     <el-dialog :visible.sync="dialogVisible0" width="70%" :show-close=false class="dialog">
               <el-form class="form1" style="color:#333333">
           <el-form-item label="反馈时间">
@@ -37,16 +37,19 @@
             <el-input class="input1" :value="item.slaTypeId"></el-input>
           </el-form-item> -->
           <el-form-item>
-            <el-input type="textarea" placeholder="请填写说明" v-model="form.des1" style="font-size:6px"></el-input>
+            <el-input type="textarea" :rows="4" placeholder="请简要描述所做操作及处理结果。例如，更换25盘柜上的13号硬盘后，存储状态恢复正常。" v-model="form.des1" style="font-size:6px"></el-input>
+          </el-form-item>
+          <el-form-item class="submit">
+            <el-button @click="dialogVisible0 = false">取消</el-button>
+          <el-button type="primary" class="onsubmit" @click="onSubmit">提交</el-button>
           </el-form-item>
         </el-form>
-        <div style="text-align:center">
-          <el-button @click="dialogVisible0 = false" style="width:0.65rem;height:0.4rem;">取消</el-button>
-          <el-button type="primary" @click="onSubmit" style="width:0.65rem;height:0.4rem;">提交</el-button>
-        </div>
+        <!-- <div style="text-align:center">
+          
+        </div> -->
     </el-dialog>
     </div>
-    <div>
+    <div class="SLAdialog">
     <el-dialog title="任务反馈" :visible.sync="dialogVisible1" width="70%">
         <el-form class="form1">
           <!-- <el-form-item></el-form-item> -->
@@ -61,13 +64,16 @@
             </el-radio-group>
           </el-form-item>
             <el-form-item label="解决不成功原因">
-            <el-input type="textarea" placeholder="请填写说明" v-model="form.des3" style="font-size:6px"></el-input>
+            <el-input type="textarea" :rows="3" placeholder="请填写说明" v-model="form.des3" style="font-size:6px"></el-input>
+          </el-form-item>
+          <el-form-item  class="submit">
+            <el-button @click="dialogVisible1 = false" >取 消</el-button>
+          <el-button type="primary"  class="onsubmit"  @click="onSubmit">提 交</el-button>
           </el-form-item>
         </el-form>
-        <div style="text-align:center">
-          <el-button @click="dialogVisible1 = false" style="width:0.65rem;height:0.4rem;">取 消</el-button>
-          <el-button type="primary" @click="onSubmit" style="width:0.65rem;height:0.4rem;">提 交</el-button>
-        </div>
+        <!-- <div style="text-align:center">
+          
+        </div> -->
     </el-dialog>
     </div>
   </div>
@@ -207,19 +213,24 @@ export default {
 .tabdetail el-row el-col {
   height: 0.16rem;
 }
-.workBenchSLAfeedback>>>.el-dailog {
+.el-dailog {
   margin:10px;
   /* padding-top: 10px */
 }
-.workBenchSLAfeedback>>>.dialog >>> .el-dialog__header{padding-bottom: 0}
-/* .dialog >>> .el-dialog__header .el-dialog__title{line-height: 10px} */
-.workBenchSLAfeedback>>>.dialog >>>.el-dialog__body{padding:0 20px 20px;color:#606266;font-size:14px;}
+.SLAdialog .dialog>>> .el-dialog__header{padding-bottom: 0}
+.SLAdialog .dialog>>> .el-dialog__body{padding:0px 20px 20px; color:#606266;font-size:14px;}
 /* #el-title .el-dialog__title {color: red!important;} */
-.workBenchSLAfeedback>>>.el-form .el-form-item {
+.SLAdialog>>>.el-form .el-form-item {
   font-size: 0.08rem;
 }
-.workBenchSLAfeedback>>>.el-radio {
+.SLAdialog>>>.el-radio {
   margin-top: 5px;font-size:6px
 }
-.workBenchSLAfeedback>>> el-button{widows: 0.4rem;height: 0.4rem;}
+/* .SLAdialog>>>.el-button{widows: 0.4rem;height: 0.4rem;} */
+  .SLAdialog  .submit{position: absolute;left: 0; right: 0; height: 0.4rem;}
+  .SLAdialog >>> .submit .el-button{width: 50%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
+  .SLAdialog >>> .submit .el-button:hover{background: #ffffff;}
+  .SLAdialog >>> .submit .onsubmit:hover{background: #2698d6;}
+  .SLAdialog >>> .submit .el-form-item__content{margin: 0!important; display: flex;}
+  .SLAdialog >>> .submit .onsubmit{background: #2698d6; color: #ffffff;}
 </style>
