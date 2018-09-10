@@ -390,15 +390,15 @@ export default {
 .content >>> .el-message-box{width: 70%}
 
   /* .content{margin-top: 0.05rem;background: #ffffff;} */
-/* .contentParts{background-color:#00FFFF;height:100px;width:100px;overflow:scroll} */
-.contentParts >>> .el-form-item{height: 30px; border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
-.contentParts >>> .el-form-item__label{height: 30px;font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.15rem; text-align: left}
-.contentParts >>> .el-form-item__content{height: 30px;}
+.contentParts{height:500px;width:340px;overflow:scroll}
+.contentParts >>> .el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
+.contentParts >>> .el-form-item__label{font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.15rem; text-align: left}
+/* .contentParts >>> .el-form-item__content{height: 30px;} */
 
-.contentParts >>> .el-input{height: 30px;}
-.contentParts >>> .el-input__inner{height: 18px; border: none; color: #333333; padding: 0px 0px; position: relative;}
+/* .contentParts >>> .el-input{height: 30px;} */
+.contentParts >>> .el-input__inner{border: none; color: #333333; padding: 0px 0px; position: relative;}
 
-.contentParts >>> .el-input__icon{line-height: 30px}
+/* .contentParts >>> .el-input__icon{line-height: 30px} */
 .contentParts >>> .el-input__inner::placeholder{font-size: 0.13rem; color: #acacac}
 .contentParts >>> .el-input.is-disabled .el-input__inner{background: #ffffff}
 
@@ -406,7 +406,7 @@ export default {
 .contentPopover >>> .el-icon-edit-outline:before{color: green}
 
 .submitBtnSpare >>> .el-form-item__content{margin: 0!important;}
-.submitBtnSpare >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.4rem; line-height: 10px; bottom: 0;}
+.submitBtnSpare >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; bottom: 0;}
 
 
 </style>
