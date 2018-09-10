@@ -7,7 +7,7 @@
                 <el-table-column prop="date" label="修改" width="10%">
                     <template slot-scope="scope">
                     <div class="contentPopover">
-                        <el-popover placement="bottom" width="335" trigger="click">
+                        <el-popover placement="right" width="250" trigger="click">
                         
                             <el-button @click="ifChoiseUsed(scope.row)" slot="reference" class="el-icon-edit-outline"></el-button>
                             <div class="contentParts">
@@ -377,6 +377,7 @@ export default {
 .content >>> .el-message-box{width: 70%}
 
   /* .content{margin-top: 0.05rem;background: #ffffff;} */
+.contentParts{background-color:#00FFFF;height:100px;width:100px;overflow:scroll}
 .contentParts >>> .el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
 .contentParts >>> .el-form-item__label{font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.15rem; text-align: left}
 .contentParts >>> .el-input__inner{border: none; color: #333333; padding: 0px 0px}
