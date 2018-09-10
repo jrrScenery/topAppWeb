@@ -4,7 +4,7 @@
         <div style="height:0.45rem"></div>
         <div class="taskDetailView">
             <el-tabs v-model="activeName">
-                <el-tab-pane label="任务信息" name="first"><task-detail></task-detail></el-tab-pane>
+                <el-tab-pane label="任务信息" name="first"><task-detail :task-detail-info="taskDetailInfo"></task-detail></el-tab-pane>
                 <el-tab-pane :label="secondTabTit+'('+specialNotes.length+')'" name="second" lazy><special-notes></special-notes></el-tab-pane>
                 <el-tab-pane :label="thirdTabTit+'('+riskInfos.length+')'" name="third" lazy><risk-warn></risk-warn></el-tab-pane>
             </el-tabs>
@@ -216,9 +216,7 @@ export default {
             });
             let vm = this;
             let params = "&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+this.getCurrentTime()
-            console.log("rrr", params);
             fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=2" + params,{}).then(res=>{
-                console.log("aaaaaaaaaaaaaaaaaaaaaaa", res);
                 loading.close();
                 if(res.STATUSCODE=="0"){
                     this.$message({
@@ -260,9 +258,7 @@ export default {
             });
             let vm = this;
             let params = "&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+this.getCurrentTime()
-            console.log("cooltime", params)
             fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=5" + params,{}).then(res=>{
-                console.log("sssssssssssssssssssssssss", res);
                 loading.close();
                 if(res.STATUSCODE=="0"){
                     this.$message({
@@ -296,9 +292,7 @@ export default {
             });
             let vm = this;
             let params = "&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+this.getCurrentTime()+"&REFUSE_REASON="+this.taskDetailInfo.refuseReason;
-            console.log("time", params)
             fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=3" + params,{}).then(res=>{
-                console.log(res)
                 loading.close();
                 if(res.STATUSCODE=="0"){
                     this.$message({

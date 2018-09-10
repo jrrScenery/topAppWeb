@@ -3,7 +3,7 @@
         <div class="attention">{{attention}}</div>
         <div class="taskDetailCell">
             <div class="taskDetailTit">任务信息</div>
-            <div class="content">
+            <div class="content" ref="taskDetailInfo" :model="taskDetailInfo">
                 <ul class="tableTd">
                     <li>
                         <span>派工单号：</span>  
@@ -141,19 +141,14 @@ export default {
     components: {
         loadingtmp
     }, 
+    props: ["taskDetailInfo"],
     data(){
         return{
             workId:this.$route.query.workId,
             caseId:this.$route.query.caseId,      
             attention:"实施过程中遇到技术问题反馈技术责任人，非技术问题反馈派工人，非工作时间请联系 400-610-6661",
-            taskDetailInfo:{},           
         }
         
-    },
-    created:function(){
-        fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{    
-            this.taskDetailInfo = res.DATA[0];
-        });
     },
     beforeRouteLeave( to, from,next){
         if (to.name == 'workBenchTaskList') {
