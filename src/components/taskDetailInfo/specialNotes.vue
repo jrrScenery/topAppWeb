@@ -2,7 +2,7 @@
     <div class="riskWarnView">
         <div class="attention">{{attention}}</div>
         <div class="taskDetailCell">
-            <!-- <div class="taskDetailTit">项目特殊提示</div> -->
+            <div class="taskDetailTit">项目特殊提示</div>
             <div class="content">
                 <div class="risk">
                     <el-table
