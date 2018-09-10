@@ -284,6 +284,16 @@ export default new Router({
       component: resolve => require(['@/views/workBench/onsiteServiceInfo'], resolve)
     },
     {
+      path: '/workBench/applicationSupport',
+      name: 'applicationSupport',
+      component: resolve => require(['@/views/workBench/applicationSupport'], resolve),
+    },
+    {
+      path: '/workBench/application',
+      name: 'application',
+      component: resolve => require(['@/views/workBench/application'], resolve),
+    },
+    {
       path: '/reportform/reportFormShow',
       name: 'reportFormShow',
       component: resolve => require(['@/views/reportform/reportFormShow'], resolve)
