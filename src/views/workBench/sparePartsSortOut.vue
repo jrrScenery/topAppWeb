@@ -4,10 +4,11 @@
         <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
             <div class="SelectListCell">
             <el-table :data="sparePartsSortOutSelectArr" style="width: 100%">
-                <el-table-column prop="date" label="修改" width="10%">
+
+                <el-table-column prop="date" label="修改" width="8%">
                     <template slot-scope="scope">
                     <div class="contentPopover">
-                        <el-popover placement="right" width="340" trigger="click">
+                        <el-popover placement="bottom" width="340" trigger="click">
                         
                             <el-button @click="ifChoiseUsed(scope.row)" slot="reference" class="el-icon-edit-outline"></el-button>
                             <div class="contentParts">
@@ -59,6 +60,15 @@
                                     <el-form-item label="回收件说明">
                                         <el-input placeholder="请输入回收件说明" v-model="scope.row.useStatusRemark" class="bInput"></el-input>
                                     </el-form-item>
+                                    <el-form-item label="物流信息">
+                                        <el-form-item label="物流公司">
+                                        <p style="color: green; height: 30px">{{scope.row.deliveryInfo}}</p>
+                                        </el-form-item>
+                                        <el-form-item label="物流单号">
+                                        <p style="color: green; height: 30px">{{scope.row.transcode}}</p>
+                                        </el-form-item>
+                                    </el-form-item>
+
                                     <el-form-item class="submitBtnSpare">
                                         <el-button type="primary" @click="onSubmit(scope.row)">提交</el-button>
                                     </el-form-item>
@@ -69,11 +79,14 @@
                     </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="ifArrangeName" label="已整理" width="20%"></el-table-column>
-                <el-table-column prop="partsSourceName" label="来源" width="20%"></el-table-column>
-                <el-table-column prop="pnFru" label="PN/FRU" width="20%"></el-table-column>
-                <el-table-column prop="typeName" label="备件类型" width="20%"></el-table-column>
-                <el-table-column prop="sn" label="SN" width="10%"></el-table-column>
+                <el-table-column prop="ifArrangeName" label="已整理" width="12%"></el-table-column>
+                <el-table-column prop="dealStatus" label="处理状态" width="14%"></el-table-column>
+                <el-table-column prop="partsSourceName" label="来源" width="14%"></el-table-column>
+                <el-table-column prop="pnFru" label="PN/FRU" width="18%"></el-table-column>
+                <el-table-column prop="typeName" label="备件类型" width="14%"></el-table-column>
+                <el-table-column prop="sn" label="SN" width="20%"></el-table-column>
+                        
+
             </el-table>
             </div>
 
@@ -134,7 +147,7 @@ export default {
         getSparePart(){
             fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId, {}).then(res=>{
                 this.sparePartsSortOutSelectArr = res.DATA;
-                this.sparePartsSortOutSelectArr.takeDownSN = "";
+                console.log("spare", res)
                 this.busy = false;
                 this.loadall = true;
 
@@ -380,8 +393,12 @@ export default {
 /* .contentParts{background-color:#00FFFF;height:100px;width:100px;overflow:scroll} */
 .contentParts >>> .el-form-item{height: 30px; border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
 .contentParts >>> .el-form-item__label{height: 30px;font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.15rem; text-align: left}
-.contentParts >>> .el-form-item__content{height: 30px; }
-.contentParts >>> .el-input__inner{height: 20px; border: none; color: #333333; padding: 0px 0px; position: fixed;}
+.contentParts >>> .el-form-item__content{height: 30px;}
+
+.contentParts >>> .el-input{height: 30px;}
+.contentParts >>> .el-input__inner{height: 18px; border: none; color: #333333; padding: 0px 0px; position: relative;}
+
+.contentParts >>> .el-input__icon{line-height: 30px}
 .contentParts >>> .el-input__inner::placeholder{font-size: 0.13rem; color: #acacac}
 .contentParts >>> .el-input.is-disabled .el-input__inner{background: #ffffff}
 
@@ -389,7 +406,7 @@ export default {
 .contentPopover >>> .el-icon-edit-outline:before{color: green}
 
 .submitBtnSpare >>> .el-form-item__content{margin: 0!important;}
-.submitBtnSpare >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.05rem; line-height: 30px; bottom: 0;}
+.submitBtnSpare >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.4rem; line-height: 10px; bottom: 0;}
 
 
 </style>
