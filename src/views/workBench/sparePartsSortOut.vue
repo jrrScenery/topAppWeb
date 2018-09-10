@@ -8,7 +8,7 @@
                 <el-table-column prop="date" label="修改" width="8%">
                     <template slot-scope="scope">
                     <div class="contentPopover">
-                        <el-popover placement="bottom" width="340" trigger="click">
+                        <el-popover placement="bottom" width="320" trigger="click">
                         
                             <el-button @click="ifChoiseUsed(scope.row)" slot="reference" class="el-icon-edit-outline"></el-button>
                             <div class="contentParts">
