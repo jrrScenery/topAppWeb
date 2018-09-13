@@ -29,7 +29,7 @@ export default {
                 {arr: [
                     {imgSrc: require('@/assets/images/workBench_1.png'), text: '申报', href: 'application'},
                     {imgSrc: require('@/assets/images/workBench_2.png'), text: '报价', href: ''},
-                    {imgSrc: require('@/assets/images/workBench_3.png'), text: '事件', href: ''}
+                    {imgSrc: require('@/assets/images/workBench_3.png'), text: '事件', href: 'applicationEvent'}
                 ]}
             ],
         }

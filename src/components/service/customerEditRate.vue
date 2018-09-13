@@ -34,7 +34,7 @@
                     <add-signature :title="addSignatureTit" :queryData="searchData" @searchPro="signature"></add-signature>
                     <ul class="signature">
                         <el-form-item label="工程师">
-                            <div>{{formData.data.enginnername}}</div>
+                            <div>{{formData.data.engineername}}</div>
                         </el-form-item>
                     </ul>
                     <div style="height: 0.6rem;"></div>
