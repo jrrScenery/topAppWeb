@@ -473,7 +473,6 @@ export default {
             this.staffPriceInfo[j].resourceTypeName = "内部资源";
           }
         }
-        console.log("BBBB", this.staffPriceInfo.roleName);
         console.log("staffPriceInfo", this.staffPriceInfo);
       });
     fetch.get("?action=/once/queryWBMPersonFree&onceNum=" + this.num, {}).then(res => {
@@ -487,13 +486,10 @@ export default {
         this.personInfo.priceTypeData = this.choisePriceType(this.personInfo.priceType);
         this.personInfo.onceStatusData = this.choisePriceStatus(this.personInfo.onceStatus);
         // this.personInfo.payData = this.choise
-        let payWayData = this.choiseStaffPay(this.personInfo.priceTypeData,this.personInfo.fitProjectFlg);
+        // let payWayData = this.choiseStaffPay(this.personInfo.priceTypeData,this.personInfo.fitProjectFlg);
         this.personInfo.PayWayDataId = "3";
         this.personInfo.notFitPayWayDataId = "3";
         // this.personInfo.staffPay, this.personInfo.partsPay,
-        console.log("getCaseOnceByProcessInstID", this.personInfo);
-        console.log("fitProjectFlg", this.personInfo.fitProjectFlg)
-        console.log(this.personInfo.PayWayDataId)
         if (this.personInfo.specialApproved = "1"){
           this.ifShowSpeciallyApprove = true
         }
@@ -582,8 +578,6 @@ export default {
             this.staffPriceInfo[j].resourceTypeName = "内部资源";
           }
         }
-        console.log("BBBB", this.staffPriceInfo.roleName);
-        console.log("staffPriceInfo", this.staffPriceInfo);
       });
     },
     choisePriceType(priceId) {
@@ -602,10 +596,7 @@ export default {
     },
 
     isFitProjectFlg(fitProjectFlgId) {
-      // let ftpay = {};
-      // let prepay = {};
       if (fitProjectFlgId=="1") {
-        // this.personInfo.PayWayDataId = "3";
         this.isShowPayIsFit = true;
         this.isShowPayNotIsFit = false;
         this.isShowSingleFT = false;
@@ -621,23 +612,14 @@ export default {
           }
         }
         
-        // ftpay.payid = "3";
-        // ftpay.payname = "分摊";
-        console.log(this.PayWayDataId, "e2e2e")
-        console.log("personInfo.PayWayDataId", this.personInfo.PayWayDataId);
-        console.log(this.personInfo.fitProjectFlg);
       } else if (fitProjectFlgId == "0") {
-        // this.personInfo.notFitPayWayDataId = "3";
         this.isShowPayIsFit = false;
         this.isShowPayNotIsFit = true;
         this.isShowSingleFT = false;
-        console.log("aaaaaaaaaaaaa", this.personInfo.notFitPayWayDataId)
         if (this.personInfo.notFitPayWayDataId=="3"){
           this.isShowFtCode = true;
           this.isShowSingleFT = false;
           if (this.personInfo.priceTypeData=="人员"){
-            console.log("number",Number(this.WBMInfoPrice.WBM_STAFF_FT) + Number(this.WBMInfoPrice.WBM_STAFF_FT_TRAVEL))
-            console.log(this.WBMInfoPrice.WBM_STAFF_FT,)
             this.personInfo.actualFeeAmount = Number(this.WBMInfoPrice.WBM_STAFF_FT) + Number(this.WBMInfoPrice.WBM_STAFF_FT_TRAVEL);
           }
           else if (this.personInfo.priceTypeData=="备件"){
@@ -655,16 +637,6 @@ export default {
           }
         }
             
-        // ftpay.payid = "3";
-        // ftpay.payname = "分摊";
-        // prepay.payid = "1";
-        // prepay.payname = "预付费";
-        // this.payNotIsFit.push(ftpay)
-        // this.payNotIsFit.push(prepay)
-        // console.log(
-        //   "personInfo.PayWayDataId",
-        //   this.personInfo.notFitPayWayDataId
-        // );
         console.log(this.personInfo.fitProjectFlg);
       }
     },
@@ -692,8 +664,6 @@ export default {
     },
 
     choiseStaffPay(staffPayNum, partsPayNum, priceTypeData, fitProjectNum) {
-      // partsPayData = {}
-      // staffPayData = {}
       if (fitProjectNum == "1") {
         if (priceTypeData == "人员") {
           if (staffPayNum == "3") {
@@ -707,7 +677,6 @@ export default {
           }
         }
       } else if (priceTypeData == "备件") {
-        // if
       }
     },
     isSpeciallyApprove(val){
@@ -739,7 +708,6 @@ export default {
           data.partsPay = this.personInfo.PayWayDataId
           data.partsShareNo = this.personInfo.ShareNoData
       }
-      console.log("data", data)
       return data
   
     },
@@ -754,7 +722,6 @@ export default {
           console.log("suan", math.format(math.chain(math.bignumber(total)).subtract(math.bignumber(this.multipleSelection[i].restAmount)).done()))
           if (math.format(math.chain(math.bignumber(total)).subtract(math.bignumber(this.multipleSelection[i].restAmount)).done())>0.0) {
             dob.restAmount = this.multipleSelection[i].restAmount;
-            console.log("saleUse", dob.restAmount)
             total = math.chain(math.bignumber(total)).subtract(math.bignumber(this.multipleSelection[i].restAmount)).done()
           }
           else{
@@ -768,7 +735,6 @@ export default {
         dob.projectId = this.multipleSelection[i].projectId;
         dob.projectCode = this.multipleSelection[i].projectCode
         dataFee[i] = dob;
-        console.log("products", dataFee)
       }
       return dataFee
     },
@@ -819,7 +785,6 @@ export default {
       data.processinstid = this.personInfo.processinstid;
       data.priceType = this.personInfo.priceType;
       data.remark = this.personInfo.remark;
-      console.log("refuse", data)
       data = JSON.stringify(data);
       params.append("data", data)
       params.append("todo", "/ntop/caseManage/caseDeal/caseEditOnce.jsp?caseId="+this.personInfo.caseId+"&num=")
@@ -869,7 +834,6 @@ export default {
         data.processinstid = this.personInfo.processinstid;
         data.priceType = this.personInfo.priceType;
         data.productRemark = this.personInfo.productRemark;
-        console.log("refuse", data)
         data = JSON.stringify(data);
         params.append("data", data)
         params.append("todoLink", "/ntop/caseManage/caseDeal/caseEditOnce.jsp?caseId="+this.personInfo.caseId+"&num=")
@@ -905,7 +869,6 @@ export default {
         data.processinstid = this.personInfo.processinstid;
         data.priceType = this.personInfo.priceType;
         data.productRemark = this.personInfo.productRemark;
-        console.log("refuse", data)
         data = JSON.stringify(data);
         params.append("data", data)
         params.append("todoLink", "/ntop/caseManage/caseDeal/caseEditOnce.jsp?caseId="+this.personInfo.caseId+"&num=")
@@ -936,14 +899,12 @@ export default {
     },
 
     handleSelectionChange(val) {
-      console.log(val)
       let math = require('mathjs');
       console.log(math.format(math.chain(math.bignumber(0.1112)).subtract(math.bignumber(-0.322)).done()));
       this.multipleSelection = val;
     },
     staffPriceSelectionChange(val){
       this.priceInfoDataAdd = val[0];
-      console.log(this.priceInfoDataAdd)
       if (this.priceInfoDataAdd==undefined){
         this.priceInfoDataAdd = {};
       }
@@ -965,7 +926,6 @@ export default {
         }
       }
       else if(key==2){
-        console.log(this.priceInfoDataAdd.__ob__)
         if (this.priceInfoDataAdd.__ob__.value.caseId==undefined){
           this.$message({
             message: "没有选择编辑项，无编辑项",

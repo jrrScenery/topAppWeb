@@ -63,8 +63,23 @@ export default {
         }
     },
     created:function(){
+        const loading = this.$loading({
+          lock: true,
+          text: '加载中...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(255, 255, 255, 0.3)'
+        });
         fetch.get("?action=/once/QueryMyBidCount",{}).then(res=>{ 
             console.log("opNum", res)
+            loading.close();
+            if(res.STATUSCODE=="0"){
+                this.$message({
+                    message:'加载完毕',
+                    type: 'success',
+                    center: true,
+                    customClass: 'msgdefine'
+                });
+            };
             let opNum = "opNum"
             for (var i=1;i<this.form.mydeal.length+1;i++){
                 this.form.mydeal[i-1].num = res[opNum+i]
