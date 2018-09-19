@@ -47,7 +47,7 @@
                 <div class="titleInfo">报价信息</div>
                 <div class="userForm" v-for="quotation in bidList" :key=quotation.bidId>
                     <el-form-item  label="报价编号">
-                        <router-link :to="{name:'bidDescriptView',query:{caseId:CASE_ID, num: quotation.bidNum, processinstId: quotation.bidId}}">
+                        <router-link :to="{name:'bidDescriptView',query:{caseId:CASE_ID, num: quotation.num, processinstId: quotation.bidId}}">
                             <!-- processinstId=1174545&num=1057491&caseId=92550&relate=deal&status=3 -->
                         <el-input v-model="quotation.bidNum" class="bInputco" disabled></el-input>
                         </router-link>
@@ -108,6 +108,7 @@ export default {
             // console.log(baseinfo);
             this.ueserList=baseinfo.users;
             this.bidList=baseinfo.bids;
+            console.log("bid", this.bidList)
             this.formData=baseinfo;
             console.log(this.formData);
         })
