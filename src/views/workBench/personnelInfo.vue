@@ -12,7 +12,7 @@
                 <p>{{personnelData.realname}}</p>
                 <ul>
                     <li><span>邮箱：</span>{{personnelData.oemail}}</li>
-                    <li><span>手机：</span><a  @click="sendCall(personnelData.mobileno)" v-bind:href="'tel:'+personnelData.mobileno" >{{personnelData.mobileno}}</a></li>
+                    <li><span>手机：</span><a style="color: #2698d6" @click="sendCall(personnelData.mobileno)" v-bind:href="'tel:'+personnelData.mobileno" >{{personnelData.mobileno}}</a></li>
                     <li><span>参与角色：</span>{{personnelData.positionName}}</li>
                 </ul>
             </div>
