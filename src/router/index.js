@@ -96,11 +96,6 @@ export default new Router({
       component: resolve => require(['@/views/workBench/sparePartsSortOut'], resolve)
     },
     {
-      path: '/workBench/bidProgressView',
-      name: 'bidProgressView',
-      component: resolve => require(['@/views/workBench/bidProgressView'], resolve)
-    },
-    {
       path: '/workBench/bidDescriptView',
       name: 'bidDescriptView',
       component: resolve => require(['@/views/workBench/bidDescriptView'], resolve)
@@ -309,19 +304,19 @@ export default new Router({
       component: resolve => require(['@/views/workBench/application'], resolve),
     },
     {
-      path: '/workBench/bindClass',
-      name: 'bindClass',
-      component: resolve => require(['@/views/workBench/bindClass'], resolve),
-    },
-    {
-      path: '/workBench/applicationEvent',
-      name: 'applicationEvent',
-      component: resolve => require(['@/views/workBench/applicationEvent'], resolve),
-    },
-    {
       path: '/workBench/baseInfomation',
       name: 'baseInfomation',
       component: resolve => require(['@/views/workBench/baseInfomation'], resolve),
+    },
+    {
+      path: '/workBench/myApplication',
+      name: 'myApplication',
+      component: resolve => require(['@/views/workBench/myApplication'], resolve),
+    },
+    {
+      path: '/workBench/caseProgress',
+      name: 'caseProgress',
+      component: resolve => require(['@/views/workBench/caseProgress'], resolve),
     },
     {
       path: '/reportform/reportFormShow',
