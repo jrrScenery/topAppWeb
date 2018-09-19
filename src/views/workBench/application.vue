@@ -5,9 +5,8 @@
         <div class="application">
             <el-tabs v-model="activeName">
                 <el-tab-pane label="故障类" name="first"><case-application></case-application></el-tab-pane>
-                <el-tab-pane label="非故障类" name="second" lazy></el-tab-pane>
+                <el-tab-pane label="非故障类" name="second" lazy><nonecase-application></nonecase-application></el-tab-pane>
             </el-tabs>
-
         </div>
     </div>
 </template>
@@ -15,11 +14,13 @@
 <script>
 import headerLast from '../header/headerLast'
 import caseApplication from '../../components/applications/caseApplication'
+import nonecaseApplication from '../../components/applications/nonecaseApplication'
 export default {
      name: 'application',
     components: {
         headerLast,
-        caseApplication
+        caseApplication,
+        nonecaseApplication
     },
     data(){
         return{

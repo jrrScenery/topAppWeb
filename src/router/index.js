@@ -309,6 +309,21 @@ export default new Router({
       component: resolve => require(['@/views/workBench/application'], resolve),
     },
     {
+      path: '/workBench/bindClass',
+      name: 'bindClass',
+      component: resolve => require(['@/views/workBench/bindClass'], resolve),
+    },
+    {
+      path: '/workBench/applicationEvent',
+      name: 'applicationEvent',
+      component: resolve => require(['@/views/workBench/applicationEvent'], resolve),
+    },
+    {
+      path: '/workBench/baseInfomation',
+      name: 'baseInfomation',
+      component: resolve => require(['@/views/workBench/baseInfomation'], resolve),
+    },
+    {
       path: '/reportform/reportFormShow',
       name: 'reportFormShow',
       component: resolve => require(['@/views/reportform/reportFormShow'], resolve)

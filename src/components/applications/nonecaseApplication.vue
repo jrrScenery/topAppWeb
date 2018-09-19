@@ -7,10 +7,15 @@
             {{attention2}}
         </div>
         <div class="applicationBase">
-            <div class="caseApplicationCell">
-                <div class="caseApplicationTit">基本信息</div>
-            </div>
             <el-form :model="formData" label-width="0.9rem" ref="formData">
+                <div class="caseApplicationCell">
+                    <div class="caseApplicationTit">基本信息</div>
+                </div>
+                <el-form-item label="申报类型：" class="formborder">
+                    <el-select v-model="formData.typeId" placeholder="请选择申报类型">
+                        <el-option v-for="item in type" :label="item.value" :value="item.id" :key="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="所在城市：" class="formborder">
                     <el-cascader
                         :options="options"
@@ -27,34 +32,7 @@
                 <el-form-item label="概要说明：" class="applicationtext textborder">
                     <el-input type="textarea" v-model="formData.desc" placeholder="请输入概要说明"></el-input>
                 </el-form-item>
-                <div class="caseApplicationCell" style="margin-top:0.2rem">
-                    <div class="caseApplicationTit">故障信息</div>
-                </div>
-                <el-form-item label="厂商名称：" class="formborder">
-                    <el-input v-model="formData.factoryNm" :value="formData.factoryId" placeholder="通过设备型号自动带出" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="设备型号：">
-                    <el-autocomplete class="el-input"
-                              v-model="formData.modelName" 
-                              :fetch-suggestions="querySearchAsync"
-                              placeholder="请输入设备型号" 
-                              :trigger-on-focus="false"
-                              @select="getDevName">
-                    </el-autocomplete>
-                </el-form-item>
-                <el-form-item label="序列号：">
-                    <el-input v-model="formData.num" placeholder="请输入序列号"></el-input>
-                </el-form-item>
-                <el-form-item label="影响程度：">
-                    <el-select v-model="formData.levelId" placeholder="请选择">
-                        <el-option v-for="item in level" :label="item.value" :value="item.id" :key="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="影响范围：">
-                    <el-select v-model="formData.scopeId" placeholder="请选择">
-                        <el-option v-for="item in scope" :label="item.value" :value="item.id" :key="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
+                
                 <div class="caseApplicationCell" style="margin-top:0.2rem">
                     <div class="caseApplicationTit">联系信息</div>
                 </div>
@@ -74,10 +52,10 @@
                     <div class="caseApplicationTit">项目信息</div>
                 </div>
                 <el-form-item label="项目名称：" class="formborder">
-                    <el-input v-model="formData.projectName" placeholder="请输入项目名称或留空"></el-input>
+                    <el-input v-model="formData.projectName" placeholder="请输入项目名称"></el-input>
                 </el-form-item>
                 <el-form-item label="项目编号：">
-                    <el-input v-model="formData.projectCode" placeholder="请输入项目编号或留空"></el-input>
+                    <el-input v-model="formData.projectCode" placeholder="请输入项目编号"></el-input>
                 </el-form-item>
                 <div class="attention">
                     1.如知道对应项目编号和名称则输入，不了解可为空<br />
@@ -105,16 +83,10 @@ export default {
             attentioncall2:"800-8106661",
             attention2:"（密码：7653），感谢您的支持！",
             formData:{
+                typeId:'',
                 city: [],
                 address:'',
-                desc:'',
-                factoryNm:'',
-                factoryId:'',
-                modelName:'',
-                devId:'',
-                num:'',
-                levelId:'',
-                scopeId:'',
+                desc:'',                
                 custName:'',
                 custMobile:'',
                 custPhone:'',
@@ -123,32 +95,27 @@ export default {
                 projectCode:''
             },
             cityName:'',
-            typeId:1,
-            options: areajson,
-            deviceArray:[],
             caseLevel:'',
             caseLevelName:'',
+            options: areajson,
             prop:{
                 label:'label',
                 children:'children'
             },
-            level: [
-                {"id" : "1","value" : "有问题,但是没有明显影响"}, 
-                {"id" : "2","value" : "性能受损,业务尚可运行"}, 
-                {"id" : "3","value" : "严重性能下降"}, 
-                {"id" : "4","value" : "业务已经中断"}
-            ],
-            scope:[
-                {"id" : "1","value" : "极小范围或者个人"}, 
-                {"id" : "2","value" : "部分业务范围"}, 
-                {"id" : "3","value" : "整个业务范围"}
+            type:[
+                {"id" : "3","value" : "巡检"}, 
+                {"id" : "4","value" : "技术咨询"}, 
+                {"id" : "5","value" : "非故障技术支持"}
             ]
         }
     },
     created(){
+        // fetch.get("?action=/work/findDevList",'').then(res=>{
+        //     console.log(res);
+        // })
     },
     methods:{
-       handleChange(val){
+        handleChange(val){
            var vm = this;
            let children1 = [];
            let children2 = [];
@@ -170,41 +137,6 @@ export default {
                }
            })
        },
-        getDevName(){
-            if(this.formData.modelName){
-                for(let i=0;i<this.deviceArray.length;i++){
-                    if(this.deviceArray[i].modelName == this.formData.modelName){
-                        this.formData.factoryNm = this.deviceArray[i].factoryNm;
-                        this.formData.factoryId = this.deviceArray[i].factoryId;
-                        this.formData.devId = this.deviceArray[i].modelId;
-                    }
-                } 
-            }
-        },
-        querySearchAsync(queryString, cb) {
-            fetch.get("?action=/once/queryPartsModelAuto&key="+this.formData.modelName,'').then(res=>{
-                console.log(res);
-                this.deviceArray = res.datas;
-                let deviceArray = [];
-                for(let i=0;i<res.datas.length;i++){
-                   deviceArray.push({'modelId':res.datas[i].modelId,'factoryNm':res.datas[i].factoryNm,'value':res.datas[i].modelName})
-                }
-                
-                let results = queryString ? deviceArray.filter(this.createStateFilter(queryString)) : deviceArray;
-        
-                clearTimeout(this.timeout);
-                this.timeout = setTimeout(() => {
-                    cb(results);
-                }, 1000 * Math.random());
-            })
-            // let deviceArray = this.deviceArray;
-        },
-        createStateFilter(queryString) {
-            console.log(queryString);
-            return (devId) => {
-                return (devId.value.toLowerCase().indexOf(queryString.toLowerCase()) !== -1);
-            };
-        },
         submitForm (formName) {
             const loading = this.$loading({
                 lock: true,
@@ -215,9 +147,8 @@ export default {
             let vm= this;
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    console.log(vm.cityName);
-                    vm.getCaseLevel();
                     if(!vm.check(loading)) return;
+                    vm.getCaseLevel();
                     var data = new URLSearchParams;
                     var caseContacts = new Array();
                     var temp = {};
@@ -229,14 +160,14 @@ export default {
                     var map = new Map();
                     map.set("userId",localStorage.getItem('empId'));
                     map.set("userName",localStorage.getItem('realName'));
-                    map.set("typeId",'1');
+                    map.set("typeId",vm.formData.typeId);
                     map.set("city",vm.cityName);
                     map.set("cityId",vm.formData.city[vm.formData.city.length - 1]);
-                    map.set("producerId",vm.formData.factoryId);
-                    map.set("devId",vm.formData.devId);
-                    map.set("sn",vm.formData.num);
-                    map.set("levelId",vm.formData.levelId);
-                    map.set("scopeId",vm.formData.scopeId);
+                    map.set("producerId",'');
+                    map.set("devId",'');
+                    map.set("sn",'');
+                    map.set("levelId",'');
+                    map.set("scopeId",'');
                     map.set("custName",vm.formData.custName);
                     map.set("custMobile",vm.formData.custMobile);
                     map.set("custPhone",vm.formData.custPhone);
@@ -257,7 +188,6 @@ export default {
                     }
                     console.log(obj);
                     data.append('map',JSON.stringify(obj));
-                    console.log(data);
                     fetch.post("?action=/once/insertCaseOnceO2O",data).then(res=>{
                         console.log(res);
                         loading.close();
@@ -270,52 +200,28 @@ export default {
                             });
                             //跳转
                         }
-                    })
-                    
+                    })                   
                 }
             })
         },
         getCaseLevel(){
-            let caselevelId = this.formData.levelId;
-            let casescopeId = this.formData.scopeId;
-            if(caselevelId!=''&&casescopeId!=''){
-                if((caselevelId==1)&&((casescopeId==1)||(casescopeId==2))){
-                    this.caseLevel = "4";
-				    this.caseLevelName="四级";
-                }else if((caselevelId==1)&&(casescopeId==3)){
-                    this.caseLevel = "3";
-				    this.caseLevelName="三级";
-                }else if((caselevelId==2)&&(casescopeId==1)){
-                    this.caseLevel = "3";
-				    this.caseLevelName="三级";
-                }else if((caselevelId==2)&&(casescopeId==2)){
-                    this.caseLevel = "3";
-				    this.caseLevelName="三级";
-                }else if((caselevelId==2)&&(casescopeId==3)){
-                    this.caseLevel = "2";
-				    this.caseLevelName="二级";
-                }else if((caselevelId==3)&&(casescopeId==1)){
-                    this.caseLevel = "3";
-				    this.caseLevelName="三级";
-                }else if((caselevelId==3)&&(casescopeId==2)){
-                    this.caseLevel = "2";
-				    this.caseLevelName="二级";
-                }else if((caselevelId==3)&&(casescopeId==3)){
-                    this.caseLevel = "2";
-				    this.caseLevelName="二级";
-                }else if((caselevelId==4)&&(casescopeId==1)){
-                    this.caseLevel = "2";
-				    this.caseLevelName="二级";
-                }else if((caselevelId==4)&&(casescopeId==2)){
-                    this.caseLevel = "1";
-				    this.caseLevelName="一级";
-                }else if((caselevelId==4)&&(casescopeId==3)){
-                    this.caseLevel = "1";
-				    this.caseLevelName="一级";
-                }
+            let casetypeId = this.formData.typeId;
+            if((casetypeId==3)||(casetypeId==4)||(casetypeId==5)){
+                this.caseLevel = "5";
+			    this.caseLevelName="五级";
             }
         },
         check(loading){
+            if(this.formData.typeId==''){
+                this.$message({
+                    message:'请选择申报类型!',
+                    type: 'warning',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
             if(this.formData.city.length==0){
                 this.$message({
                     message:'请选择所在城市!',
@@ -345,47 +251,7 @@ export default {
                 });
                 loading.close();
                 return false
-            }
-            if(this.formData.factoryNm==''){
-                this.$message({
-                    message:'请输入厂商名称!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.formData.modelName==''){
-                this.$message({
-                    message:'请输入设备型号!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.formData.levelId==''){
-                this.$message({
-                    message:'请输入影响程度!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.formData.scopeId==''){
-                this.$message({
-                    message:'请输入影响范围!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
+            }            
             if(this.formData.custName==''){
                 this.$message({
                     message:'请输入客户姓名!',
@@ -444,11 +310,12 @@ export default {
 .applicationBase >>> .el-select{width: 85%;}
 .applicationtext{margin: 0!important;}
 .applicationtext >>> .el-form-item__content{margin: 0!important; line-height: 0.2rem;}
-.applicationtext >>> .el-textarea{border: 0.01rem solid #e5e5e5;width: 90%; margin:0 5%;}
+.applicationtext >>> .el-textarea{border: 0.01rem solid #e5e5e5; width: 90%;margin: 0 5%}
 .applicationtext >>> .el-textarea__inner{border: none; padding: 0 0.25rem; line-height: 0.3rem;    min-height: 1rem!important; color: #333333;}
 .applicationtext >>> .el-textarea__inner::placeholder{font-size: 0.13rem; color: #acacac;}
 .submitBtn >>> .el-form-item__content{margin: 0!important;}
 .submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;}
+
 .applicationBase>>>.textborder{border-bottom: 0rem solid #e5e5e5}
 .applicationBase>>>.formborder{border-top: 0.01rem solid #e5e5e5}
 </style>
