@@ -105,6 +105,8 @@ export default {
               localStorage.setItem("email", res.data.userInfo[0].EMAIL);
               console.log(JSON.stringify(res.data.userPermission));
               localStorage.setItem("userPermission", JSON.stringify(res.data.userPermission));
+              localStorage.setItem("userName", this.ruleForm.userName);
+
 
               
               let ua = navigator.userAgent.toLowerCase();

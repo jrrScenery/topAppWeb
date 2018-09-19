@@ -95,11 +95,26 @@ export default new Router({
       name: 'sparePartsSortOut',
       component: resolve => require(['@/views/workBench/sparePartsSortOut'], resolve)
     },
-    // {
-    //   path: '/home/sparePartsSortBak',
-    //   name: 'sparePartsSortBak',
-    //   component: resolve => require(['@/views/home/sparePartsSortBak'], resolve)
-    // },
+    {
+      path: '/workBench/bidProgressView',
+      name: 'bidProgressView',
+      component: resolve => require(['@/views/workBench/bidProgressView'], resolve)
+    },
+    {
+      path: '/workBench/bidDescriptView',
+      name: 'bidDescriptView',
+      component: resolve => require(['@/views/workBench/bidDescriptView'], resolve)
+    },
+    {
+      path: '/workBench/bidClass',
+      name: 'bidClass',
+      component: resolve => require(['@/views/workBench/bidClass'], resolve)
+    },
+    {
+      path: '/workBench/bid',
+      name: 'bid',
+      component: resolve => require(['@/views/workBench/bid'], resolve)
+    },
     {
       path: '/home/addParts',
       name: 'addParts',
