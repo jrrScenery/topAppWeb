@@ -19,7 +19,9 @@
                 <el-form-item label="报价类型">
                     <el-input v-model="personInfo.priceTypeData" class="bInput" disabled></el-input>
                 </el-form-item>
-                <el-button type="primary" @click="onSubmit(scope.row)">查看报价进展</el-button>
+                <router-link :to="{name:'bidPriceProgress',query:{caseId: this.personInfo.caseId, num: this.personInfo.num}}">
+                    <el-button type="primary">查看报价进展</el-button>
+                </router-link>
             </el-form>
         </div>
         <div class="titleInfo">参与人员</div>

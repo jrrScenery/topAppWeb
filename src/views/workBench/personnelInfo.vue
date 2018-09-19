@@ -3,7 +3,7 @@
         <header-last :title="personnelTit"></header-last>
         <div style="height: 0.45rem;"></div>
         <div class="content"></div>
-        <div class="eventPeopleCell" ref="personnelData" :data="personnelData" v-if="userRole==undefined">
+        <div class="personForm" ref="personnelData" :data="personnelData" v-if="userRole==undefined">
             <div class="cellLeft">
                 <img v-if="!personnelData.imgSrc" src="../../assets/images/photo.png" alt="">
                 <img v-else :src="personnelData.imgSrc" alt="">
@@ -17,7 +17,7 @@
                 </ul>
             </div>
         </div>
-        <div class="eventPeopleCell" ref="personnelSupportData" :data="personnelSupportData" v-if="userRole!=undefined">
+        <div class="personForm" ref="personnelSupportData" :data="personnelSupportData" v-if="userRole!=undefined">
             <div class="cellLeft">
                 <img v-if="!personnelSupportData.imgSrc" src="../../assets/images/photo.png" alt="">
                 <img v-else :src="personnelSupportData.imgSrc" alt="">
@@ -125,13 +125,13 @@ export default {
 
 .personnelView{ width: 100%; height: 100%; position: relative}
 .content{margin-top: 0.05rem; background: #ffffff;}
-.eventPeopleCell{display: flex; margin: 0 0.25rem; padding: 0.15rem 0; border-bottom: 0.01rem solid #cccccc}
-.eventPeopleCell:last-child{border-bottom: none}
-.eventPeopleCell .cellLeft{width: 0.75rem; height: 0.75rem; margin-right: 0.25rem;}
-.eventPeopleCell .cellLeft img{width: 0.75rem; height: 0.75rem; border-radius: 50%;}
-.eventPeopleCell .cellRight p{font-size: 0.15rem; color: #262626; margin-bottom: 0.1rem;}
-.eventPeopleCell .cellRight li{color: #666666; font-size: 0.12rem; line-height: 0.18rem;}
-.eventPeopleCell .cellRight li span{margin-right: 0.15rem;}
+.personForm{display: flex; margin: 0 0.25rem; padding: 0.15rem 0; border-bottom: 0.01rem solid #cccccc}
+.personForm:last-child{border-bottom: none}
+.personForm .cellLeft{width: 0.75rem; height: 0.75rem; margin-right: 0.25rem;}
+.personForm .cellLeft img{width: 0.75rem; height: 0.75rem; border-radius: 50%;}
+.personForm .cellRight p{font-size: 0.15rem; color: #262626; margin-bottom: 0.1rem;}
+.personForm .cellRight li{color: #666666; font-size: 0.12rem; line-height: 0.18rem;}
+.personForm .cellRight li span{margin-right: 0.15rem;}
     
 </style>
     

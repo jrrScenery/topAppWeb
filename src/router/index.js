@@ -106,6 +106,11 @@ export default new Router({
       component: resolve => require(['@/views/workBench/bidClass'], resolve)
     },
     {
+      path: '/workBench/bidPriceProgress',
+      name: 'bidPriceProgress',
+      component: resolve => require(['@/views/workBench/bidPriceProgress'], resolve)
+    },
+    {
       path: '/workBench/bid',
       name: 'bid',
       component: resolve => require(['@/views/workBench/bid'], resolve)

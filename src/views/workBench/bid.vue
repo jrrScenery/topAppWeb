@@ -52,7 +52,7 @@
                                     <!-- staffQuoterName: staffQuoterName, partsQuoterName: partsQuoterName, saleQuoterName: saleQuoterName, productQuoterName: productQuoterName -->
                                     <el-button type="primary">查看详情</el-button>
                                 </router-link>
-                                <router-link :to="{name:'bidProgressView',query:{}}">
+                                <router-link :to="{name:'bidPriceProgress',query:{caseId: item.caseId, num: item.num}}">
                                     <el-button type="primary">查看进展</el-button>
                                 </router-link>
                             </el-row>
@@ -120,12 +120,12 @@ export default {
                         this.bidList = res.data;
                     }
                     if(0 == res.data.length || res.data.length<this.pageSize ){
-                    this.busy = false;
-                    this.loadall = true;
+                        this.busy = false;
+                        this.loadall = true;
                     }
                     else{
-                    this.busy = false;
-                    this.page++
+                        this.busy = false;
+                        this.page++
                     }
                 })
             }else{
