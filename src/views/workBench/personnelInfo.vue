@@ -26,7 +26,7 @@
                 <p>{{personnelSupportData.userName}}</p>
                 <ul>
                     <li><span>邮箱：</span>{{personnelSupportData.email}}</li>
-                    <li><span>手机：</span><a  @click="sendCall(personnelSupportData.userPhone)" v-bind:href="'tel:'+personnelSupportData.userPhone" >{{personnelSupportData.userPhone}}</a></li>
+                    <li><span>手机：</span><a style="color: #2698d6" @click="sendCall(personnelSupportData.userPhone)" v-bind:href="'tel:'+personnelSupportData.userPhone" >{{personnelSupportData.userPhone}}</a></li>
                     <li><span>参与角色：</span>{{personnelSupportData.userRole}}</li>
                 </ul>
             </div>
