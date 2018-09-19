@@ -111,6 +111,11 @@ export default new Router({
       component: resolve => require(['@/views/workBench/bid'], resolve)
     },
     {
+      path: '/workBench/personnelInfo',
+      name: 'personnelInfo',
+      component: resolve => require(['@/views/workBench/personnelInfo'], resolve)
+    },
+    {
       path: '/home/addParts',
       name: 'addParts',
       component: resolve => require(['@/views/home/addParts'], resolve)

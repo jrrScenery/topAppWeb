@@ -9,7 +9,9 @@
                     <el-input v-model="personInfo.code" class="bInput" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="事件编号">
-                    <el-input v-model="personInfo.caseCd" class="bInput" disabled></el-input>
+                  <router-link :to="{name:'baseInfomation',query:{CASE_ID: this.personInfo.caseId}}">
+                    <el-input v-model="personInfo.caseCd" class="caseCode" disabled></el-input>
+                  </router-link>
                 </el-form-item>
                 <el-form-item label="报价状态">
                     <el-input v-model="personInfo.onceStatusData" class="bInput" disabled></el-input>
@@ -24,22 +26,39 @@
         <div class="bodyForm">
             <el-form ref="personInfo" :model="personInfo" label-width="1rem">
                 <el-form-item label="需求销售">
-                    <el-input v-model="personInfo.demandname" class="bInput" disabled></el-input>
+                  <router-link :to="{name:'personnelInfo',query:{USERID: this.personInfo.demandPersion, positionName: '需求销售'}}">
+                    <el-input v-model="personInfo.demandname" class="roleInfo" disabled></el-input>
+                  </router-link>
                 </el-form-item>
                 <el-form-item label="报价发起人">
-                    <el-input v-model="personInfo.applyername" class="bInput" disabled></el-input>
+                  <router-link :to="{name:'personnelInfo',query:{USERID: this.personInfo.createdBy, positionName: '报价发起人'}}">
+                    <el-input v-model="personInfo.applyername" class="roleInfo" disabled></el-input>
+                  </router-link>
                 </el-form-item>
                 <el-form-item label="销售确认人">
-                    <el-input v-model="personInfo.salename" class="bInput" disabled></el-input>
+                  <router-link :to="{name:'personnelInfo',query:{USERID: this.personInfo.saleQuoter, positionName: '销售确认人'}}">
+                    <el-input v-model="personInfo.salename" class="roleInfo" disabled></el-input>
+                  </router-link>
                 </el-form-item>
                 <el-form-item label="项目经理">
-                    <el-input v-model="personInfo.managername" class="bInput" disabled></el-input>
+                  <router-link :to="{name:'personnelInfo',query:{USERID: this.personInfo.projectManager, positionName: '项目经理'}}">
+                    <el-input v-model="personInfo.managername" class="roleInfo" disabled></el-input>
+                  </router-link>
                 </el-form-item>
-                 <el-form-item label="备件报价人">
-                    <el-input v-model="personInfo.partsname" class="bInput" disabled></el-input>
+                <el-form-item label="备件报价人" v-if="personInfo.priceTypeData=='备件'">
+                  <router-link :to="{name:'personnelInfo',query:{USERID: this.personInfo.partsQuoter, positionName: '备件报价人'}}">
+                    <el-input v-model="personInfo.partsname" class="roleInfo" disabled></el-input>
+                  </router-link>
                 </el-form-item>
-                 <el-form-item label="分摊确认人">
-                    <el-input v-model="personInfo.productname" class="bInput" disabled></el-input>
+                <el-form-item label="人员报价人" v-if="personInfo.priceTypeData=='人员'">
+                  <router-link :to="{name:'personnelInfo',query:{USERID: this.personInfo.staffQuoter, positionName: '人员报价人'}}">
+                    <el-input v-model="personInfo.staffname" class="roleInfo" disabled></el-input>
+                  </router-link>
+                </el-form-item>
+                <el-form-item label="分摊确认人">
+                  <router-link :to="{name:'personnelInfo',query:{USERID: this.personInfo.productQuoter, positionName: '分摊确认人'}}">
+                    <el-input v-model="personInfo.productname" class="roleInfo" disabled></el-input>
+                  </router-link>
                 </el-form-item>
             </el-form>
         </div>
@@ -1073,6 +1092,8 @@ export default {
 .popPrice{background: rgba(0,0,0,0.5); position: relative; bottom: 0; z-index: 999; padding: 0 0.25rem;}
 
 .popPrice {width: 90%;}
+.bodyForm >>> .caseCode .el-input__inner{color: #2698d6}
+.bodyForm >>> .roleInfo .el-input__inner{color: #2698d6}
 .popPrice >>> .el-form-item {border-bottom: 0.01rem solid #e5e5e5;margin: 0;}
 .popPrice >>> .el-form-item__label {font-size: 0.13rem;color: #acacac;padding: 0 0 0 0.15rem;text-align: left;}
 .popPrice >>> .el-form-item__error {position: relative;}

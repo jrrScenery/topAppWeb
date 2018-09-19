@@ -38,14 +38,17 @@
                 </div>
                 <div class="titleInfo">参与人员</div>
                 <div class="userForm" v-for="item in ueserList" :key="item.userRole">
-                    <el-form-item :label=item.userRole>
+                    <router-link :to="{name:'personnelInfo',query:{userRole: item.userRole, userName: item.userRname, userPhone: item.userPhone, email: item.email}}">
+                      <el-form-item :label=item.userRole>
                         <el-input  style="color:#2698d6"  v-model="item.userRname"  disabled></el-input>
-                    </el-form-item>                     
+                      </el-form-item>     
+                    </router-link>                
                 </div>
                 <div class="titleInfo">报价信息</div>
                 <div class="userForm" v-for="quotation in bidList" :key=quotation.bidId>
                     <el-form-item  label="报价编号">
-                        <router-link :to="{name:'bidDescriptView',query:{CASE_ID:CASE_ID}}">
+                        <router-link :to="{name:'bidDescriptView',query:{caseId:CASE_ID, num: quotation.bidNum, processinstId: quotation.bidId}}">
+                            <!-- processinstId=1174545&num=1057491&caseId=92550&relate=deal&status=3 -->
                         <el-input v-model="quotation.bidNum" class="bInputco" disabled></el-input>
                         </router-link>
                     </el-form-item>                     
@@ -100,7 +103,7 @@ export default {
     created: function(){
         console.log(this.CASE_ID);
         fetch.get("?action=/once/getCaseInfoAndOnceList&caseId="+this.CASE_ID).then(res => {
-            console.log(res);
+            console.log("res", res)
             let baseinfo=JSON.parse(res.data);
             // console.log(baseinfo);
             this.ueserList=baseinfo.users;
