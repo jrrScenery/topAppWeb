@@ -37,19 +37,19 @@
                     </el-form-item>      -->
                 </div>
                 <div class="titleInfo">参与人员</div>
-                <div class="userForm" v-for="item in ueserList" :key="item.userRole">
+                <div class="bodyForm" v-for="item in ueserList" :key="item.userRole">
                     <router-link :to="{name:'personnelInfo',query:{userRole: item.userRole, userName: item.userRname, userPhone: item.userPhone, email: item.email}}">
                       <el-form-item :label=item.userRole>
-                        <el-input  style="color:#2698d6"  v-model="item.userRname"  disabled></el-input>
+                        <el-input  class="bluecolor"  v-model="item.userRname"  disabled></el-input>
                       </el-form-item>     
                     </router-link>                
                 </div>
                 <div class="titleInfo">报价信息</div>
-                <div class="userForm" v-for="quotation in bidList" :key=quotation.bidId>
+                <div class="bodyForm" v-for="quotation in bidList" :key=quotation.bidId>
                     <el-form-item  label="报价编号">
                         <router-link :to="{name:'bidDescriptView',query:{caseId:CASE_ID, num: quotation.num, processinstId: quotation.bidId}}">
                             <!-- processinstId=1174545&num=1057491&caseId=92550&relate=deal&status=3 -->
-                        <el-input v-model="quotation.bidNum" class="bInputco" disabled></el-input>
+                        <el-input v-model="quotation.bidNum" class="bluecolor" disabled></el-input>
                         </router-link>
                     </el-form-item>                     
                 </div>
@@ -146,13 +146,13 @@ export default {
 .bodyForm{width:100%;background: #ffffff;}
 .bodyForm >>> .el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
 .bodyForm >>> .el-form-item__label{font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.15rem; text-align: left}
-.userForm{width:100%;background: #ffffff;}
-.userForm >>> .el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
-.userForm >>> .el-form-item__label{font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.15rem; text-align: left}
+/* .userForm{width:100%;background: #ffffff;} */
+/* .userForm >>> .el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;} */
+/* .userForm >>> .el-form-item__label{font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.15rem; text-align: left} */
 /* .bodyForm >>> .el-form-item__error{position: relative} */
-.userForm >>> .el-input__inner{border: none;color: #2698d6;  padding: 0px 0px}
-.userForm >>> .el-input.is-disabled .el-input__inner{background: #ffffff}
-.userForm >>> .el-input__inner::placeholder{font-size: 0.13rem; color: #acacac}
+.bodyForm >>> .bluecolor .el-input__inner{border: none;color: #2698d6;  padding: 0px 0px}
+.bodyForm >>> .bluecolor .el-input.is-disabled .el-input__inner{background: #ffffff}
+.bodyForm >>> .bluecolor .el-input__inner::placeholder{font-size: 0.13rem; color: #acacac}
 .bodyForm >>> .el-input__inner{border: none;color: #333333;  padding: 0px 0px}
 .bodyForm >>> .el-textarea__inner{border: none; color: #333333 ; padding: 10px 0px}
 .bodyForm >>> .el-input__inner::placeholder{font-size: 0.13rem; color: #acacac}
@@ -162,5 +162,3 @@ export default {
 /* .bodyForm >>> .el-input__inner .bInputco{color: #2698d6;} */
 .bodyForm >>> .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; bottom: 0};
 </style>
-
-
