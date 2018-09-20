@@ -171,6 +171,7 @@ export default {
                 this.dialogVisible0=false;
                 this.dialogVisible1=false;
                 this.$router.go(0)
+                
               }else{
                 this.$message({
                   message:res.MESSAGE,
@@ -186,6 +187,8 @@ export default {
       });
       // location. reload()
               // this.$router.go(0)
+    //   location. reload()
+               this.$router.go(0)
     }
   }
 

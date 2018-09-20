@@ -140,7 +140,7 @@ export default {
 </script>
 
 <style scoped>
-.titleInfo{width:100%;position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.14rem; color: #2698d6;}
+.titleInfo{position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.14rem; color: #2698d6;}
 .titleInfo::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
 .titleInfo::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
 .bodyForm{width:100%;background: #ffffff;}
