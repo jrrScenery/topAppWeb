@@ -4,7 +4,7 @@
     <div style="height: 0.45rem;"></div>
     <div class="bidProgressTabs" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
         <el-collapse v-model="activeName" v-for="item in bidProgressObj" :key="item.id">
-            <el-collapse-item>
+            <el-collapse-item :name="item.sortName">
                 <template slot="title">
                     <img class="titleImg" :src="require('@/assets/images/ok.png')" alt="">{{item.createOn}}
                 </template>
@@ -33,7 +33,7 @@ export default {
     data () {
         return {
             bidProgressTit:"单次报价进展",
-            activeName:["2"],
+            activeName: 1,
             caseId: this.$route.query.caseId,
             num: this.$route.query.num,
             page:1,
@@ -60,9 +60,9 @@ export default {
             fetch.get("?action=/once/queryProcessLogForCaseOnce",params).then(res => {
                 console.log(res);
                 if(flag){
-                    this.bidProgressObj =this.bidProgressObj.concat(res.datas);
+                    this.bidProgressObj = this.bidProgressObj.concat(res.datas).reverse();
                 }else{
-                    this.bidProgressObj = res.datas;
+                    this.bidProgressObj = res.datas.reverse();
                 }
                 if(0 == res.datas.length || res.datas.length<this.pageSize){
                     this.busy = true;
@@ -71,6 +71,10 @@ export default {
                 else{
                     this.busy = false;
                     this.page++
+                }
+                console.log(this.bidProgressObj.length)
+                for (var i=0;i<this.bidProgressObj.length;i++){
+                    this.bidProgressObj[i].sortName = Number(i+1)
                 }
             });
         },

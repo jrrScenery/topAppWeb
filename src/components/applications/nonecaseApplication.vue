@@ -16,20 +16,21 @@
                         <el-option v-for="item in type" :label="item.value" :value="item.id" :key="item.id"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="所在城市：" class="formborder">
-                    <el-cascader
-                        :options="options"
-                        v-model="formData.city" 
+                <div>
+                <el-form-item label="所在城市：">
+                    <el-cascader :options="options" change-on-select>
+                        <!-- v-model="formData.city" 
                         :props="prop"  
                         filterable
                         placeholder="请选择所在城市"
-                        @change="handleChange">
+                        @change="handleChange"> -->
                     </el-cascader>
                 </el-form-item>
+                </div>
                 <el-form-item label="具体地址：">
                     <el-input v-model="formData.address" placeholder="请输入具体地址"></el-input>
                 </el-form-item>
-                <el-form-item label="概要说明：" class="applicationtext textborder">
+                <el-form-item label="故障现象：" class="applicationtext textborder">
                     <el-input type="textarea" v-model="formData.desc" placeholder="请输入概要说明"></el-input>
                 </el-form-item>
                 
@@ -296,7 +297,7 @@ export default {
 .caseApplicationView{width: 100%}
 .attention{color: red;margin: 0.1rem;}
 .caseApplicationCell{overflow: scroll;margin-bottom: 0.1rem;}
-.caseApplicationCell .caseApplicationTit{position: relative; line-height: 0.3rem; margin-left: 0.15rem; font-size: 0.14rem; color: #2698d6;}
+.caseApplicationCell .caseApplicationTit{position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.14rem; color: #2698d6;}
 .caseApplicationCell .caseApplicationTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
 /* .caseApplicationCell .caseApplicationTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;} */
 
@@ -313,6 +314,7 @@ export default {
 .applicationtext >>> .el-textarea{border: 0.01rem solid #e5e5e5; width: 90%;margin: 0 5%}
 .applicationtext >>> .el-textarea__inner{border: none; padding: 0 0.25rem; line-height: 0.3rem;    min-height: 1rem!important; color: #333333;}
 .applicationtext >>> .el-textarea__inner::placeholder{font-size: 0.13rem; color: #acacac;}
+.applicationBase >>> .el-cascader-menu {min-width: 100px}
 .submitBtn >>> .el-form-item__content{margin: 0!important;}
 .submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;}
 

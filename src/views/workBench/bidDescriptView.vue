@@ -325,10 +325,10 @@
                 <el-form-item label="意见说明">
                     <el-input v-model="personInfo.remark" class="bInput"></el-input>
                 </el-form-item>
-                <div v-show="isShowSaleButton">
-                <el-button type="primary" @click="onSubmitSale()" v-if="relate">同意</el-button>
-                <el-button type="primary" @click="refuseSubmitSale()" v-if="relate">拒绝</el-button>
-                </div>
+                <el-form-item v-show="isShowSaleButton" class="saleSubmitCell">
+                    <el-button type="primary" @click="onSubmitSale()" v-if="relate">同意</el-button>
+                    <el-button class="submitBtn" type="primary" @click="refuseSubmitSale()" v-if="relate">拒绝</el-button>
+                </el-form-item>
             </el-form>
         </div>
         <div class="titleInfo" v-if="status!='2'&&(realName==personInfo.productname)||status=='6'">分摊确认信息</div>
@@ -485,6 +485,7 @@ export default {
     console.log("processinstId", this.processinstId);
     fetch.get("?action=/once/getCaseOnceByProcessInstID&processInstID=" + this.processinstId,{}).then(res => {
         this.personInfo = res.data;
+        console.log("getCaseOnceByProcessInstID_before", this.personInfo)
         this.personInfo.priceTypeData = this.choisePriceType(this.personInfo.priceType);
         this.personInfo.onceStatusData = this.choisePriceStatus(this.personInfo.onceStatus);
         // this.personInfo.payData = this.choise
@@ -492,7 +493,7 @@ export default {
         this.personInfo.PayWayDataId = "3";
         this.personInfo.notFitPayWayDataId = "3";
         // this.personInfo.staffPay, this.personInfo.partsPay,
-        if (this.personInfo.specialApproved = "1"){
+        if (this.personInfo.specialApproved == "1"){
           this.ifShowSpeciallyApprove = true
         }
         else{
@@ -543,6 +544,7 @@ export default {
               }
             }
           }
+          console.log("getCaseOnceByProcessInstID_after", this.personInfo)
         // }
     });
   },
@@ -1079,6 +1081,12 @@ export default {
 .bodyForm >>> .priceOpCell .submitBtn{background: #2698d6; color: #ffffff;}
 
 
+.bodyForm >>> .saleSubmitCell{position: relative}
+.bodyForm >>> .saleSubmitCell .el-button{width: 50%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #ffffff; font-size: 0.13rem;}
+.bodyForm >>> .saleSubmitCell .el-button:hover{background: #ffffff;}
+.bodyForm >>> .saleSubmitCell .searchBtnCell:hover{background: #2698d6;}
+.bodyForm >>> .saleSubmitCell .el-form-item__content{margin: 0!important; display: flex;}
+.bodyForm >>> .saleSubmitCell .submitBtn{background: #2698d6; color: #ffffff;}
 
 
 .bodyForm {width: 100%;background: #ffffff;}
