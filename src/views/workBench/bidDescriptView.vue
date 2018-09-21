@@ -603,6 +603,7 @@ export default {
     },
 
     isFitProjectFlg(fitProjectFlgId) {
+      let math = require('mathjs');
       if (fitProjectFlgId=="1") {
         this.isShowPayIsFit = true;
         this.isShowPayNotIsFit = false;
@@ -612,10 +613,10 @@ export default {
         if (this.personInfo.PayWayDataId=="3"){
           this.isShowFtCode = true
           if (this.personInfo.priceTypeData=="人员"){
-            this.personInfo.actualFeeAmount = Number(this.WBMInfoPrice.WBM_STAFF_FT_TO_PRJ) + Number(this.WBMInfoPrice.WBM_STAFF_FT_TO_PRJ_TRAVEL);
+            this.personInfo.actualFeeAmount = math.format(math.chain(math.bignumber(this.WBMInfoPrice.WBM_STAFF_FT_TO_PRJ)).add(math.bignumber(this.WBMInfoPrice.WBM_STAFF_FT_TO_PRJ_TRAVEL)).done());
           }
           else if (this.personInfo.priceTypeData=="备件"){
-            this.personInfo.actualFeeAmount = Number(this.WBMInfoPrice.WBM_PART_FT_TO_PRJ) + Number(this.WBMInfoPrice.WBM_PART_FT_TO_PRJ_TRAVEL);
+            this.personInfo.actualFeeAmount = math.format(math.chain(math.bignumber(this.WBMInfoPrice.WBM_PART_FT_TO_PRJ)).add(math.bignumber(this.WBMInfoPrice.WBM_PART_FT_TO_PRJ_TRAVEL)).done());
           }
         }
         
@@ -627,20 +628,20 @@ export default {
           this.isShowFtCode = true;
           this.isShowSingleFT = false;
           if (this.personInfo.priceTypeData=="人员"){
-            this.personInfo.actualFeeAmount = Number(this.WBMInfoPrice.WBM_STAFF_FT) + Number(this.WBMInfoPrice.WBM_STAFF_FT_TRAVEL);
+            this.personInfo.actualFeeAmount = math.format(math.chain(math.bignumber(this.WBMInfoPrice.WBM_STAFF_FT)).add(math.bignumber(this.WBMInfoPrice.WBM_STAFF_FT_TRAVEL)).done());
           }
           else if (this.personInfo.priceTypeData=="备件"){
-            this.personInfo.actualFeeAmount = Number(this.WBMInfoPrice.WBM_PART_FT) + Number(this.WBMInfoPrice.WBM_PART_FT_TRAVEL);
+            this.personInfo.actualFeeAmount = math.format(math.chain(math.bignumber(this.WBMInfoPrice.WBM_PART_FT)).add(math.bignumber(this.WBMInfoPrice.WBM_PART_FT_TRAVEL)).done());
           }
         }
         else if (this.personInfo.notFitPayWayDataId=="1"){
           this.isShowFtCode = false;
           this.isShowSingleFT = false;
           if (this.personInfo.priceTypeData=="人员"){
-            this.personInfo.actualFeeAmount = Number(this.WBMInfoPrice.WBM_STAFF_PREPAY) + Number(this.WBMInfoPrice.WBM_STAFF_PREPAY_TRAVEL);
+            this.personInfo.actualFeeAmount = math.format(math.chain(math.bignumber(this.WBMInfoPrice.WBM_STAFF_PREPAY)).add(math.bignumber(this.WBMInfoPrice.WBM_STAFF_PREPAY_TRAVEL)).done());
           }
           else if (this.personInfo.priceTypeData=="备件"){
-            this.personInfo.actualFeeAmount = Number(this.WBMInfoPrice.WBM_PART_PREPAY) + Number(this.WBMInfoPrice.WBM_PART_PREPAY_TRAVEL);
+            this.personInfo.actualFeeAmount = math.format(math.chain(math.bignumber(this.WBMInfoPrice.WBM_PART_PREPAY)).add(math.bignumber(this.WBMInfoPrice.WBM_PART_PREPAY_TRAVEL)).done());
           }
         }
             
@@ -648,23 +649,24 @@ export default {
       }
     },
     choiseNotFit(){
+      let math = require('mathjs');
       if (this.personInfo.PayWayDataId=="1"){
         this.isShowFtCode = false;
         this.isShowPreFee = true;
         if (this.personInfo.priceTypeData=="人员"){
-            this.personInfo.actualFeeAmount = Number(this.WBMInfoPrice.WBM_STAFF_PREPAY) + Number(this.WBMInfoPrice.WBM_STAFF_PREPAY_TRAVEL);
+            this.personInfo.actualFeeAmount = math.format(math.chain(math.bignumber(this.WBMInfoPrice.WBM_STAFF_PREPAY)).add(math.bignumber(this.WBMInfoPrice.WBM_STAFF_PREPAY_TRAVEL)).done());
           }
         else if (this.personInfo.priceTypeData=="备件"){
-          this.personInfo.actualFeeAmount = Number(this.WBMInfoPrice.WBM_PART_PREPAY) + Number(this.WBMInfoPrice.WBM_PART_PREPAY_TRAVEL);
+          this.personInfo.actualFeeAmount = math.format(math.chain(math.bignumber(this.WBMInfoPrice.WBM_PART_PREPAY)).add(math.bignumber(this.WBMInfoPrice.WBM_PART_PREPAY_TRAVEL)).done());
         }
       }
       else if(this.personInfo.PayWayDataId=="3"){
         this.isShowFtCode = true
         if (this.personInfo.priceTypeData=="人员"){
-            this.personInfo.actualFeeAmont = Number(this.WBMInfoPrice.WBM_STAFF_FT) + Number(this.WBMInfoPrice.WBM_STAFF_FT_TRAVEL);
+            this.personInfo.actualFeeAmount = math.format(math.chain(math.bignumber(this.WBMInfoPrice.WBM_STAFF_FT)).add(math.bignumber(this.WBMInfoPrice.WBM_STAFF_FT_TRAVEL)).done());
           }
         else if (this.personInfo.priceTypeData=="备件"){
-          this.personInfo.actualFeeAmount = Number(this.WBMInfoPrice.WBM_PART_FT) + Number(this.WBMInfoPrice.WBM_PART_FT_TRAVEL);
+          this.personInfo.actualFeeAmount = math.format(math.chain(math.bignumber(this.WBMInfoPrice.WBM_PART_FT)).add(math.bignumber(this.WBMInfoPrice.WBM_PART_FT_TRAVEL)).done());
         }
       }
       console.log("dddddddddddddd", this.personInfo.PayWayDataId)
@@ -721,64 +723,92 @@ export default {
     projectFeeData(){
       let math = require('mathjs');
       let dataFee = [];
-      let dob = {};
       let flag = true;
       let total = this.personInfo.actualFeeAmount;
+      console.log("multipleSelection", this.multipleSelection)
       for (var i=0;i<this.multipleSelection.length;i++){
+        let dob = {};
         if (flag){
-          console.log("suan", math.format(math.chain(math.bignumber(total)).subtract(math.bignumber(this.multipleSelection[i].restAmount)).done()))
           if (math.format(math.chain(math.bignumber(total)).subtract(math.bignumber(this.multipleSelection[i].restAmount)).done())>0.0) {
-            dob.restAmount = this.multipleSelection[i].restAmount;
-            total = math.chain(math.bignumber(total)).subtract(math.bignumber(this.multipleSelection[i].restAmount)).done()
+            dob.restAmount = parseInt(this.multipleSelection[i].restAmount);
+            total = math.format(math.chain(math.bignumber(total)).subtract(math.bignumber(this.multipleSelection[i].restAmount)).done());
           }
           else{
-            dob.restAmount = total;
+            dob.restAmount = parseInt(total);
             flag = false;
           }
         }
         else{
-          dob.restAmount = 0.0
+          dob.restAmount = parseInt(0.0);
         }
         dob.projectId = this.multipleSelection[i].projectId;
         dob.projectCode = this.multipleSelection[i].projectCode
-        dataFee[i] = dob;
+        dataFee.push(dob);
       }
       return dataFee
+    },
+    ifAdequacyOfFunds(funds){
+      let total = 0;
+      for (var i=0;i<funds.length;i++){
+        total += funds[i].restAmount
+      }
+      console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQ", total)
+      if (this.personInfo.actualFeeAmount==total){
+        return true
+      }
+      else{
+        return false
+      }
     },
     onSubmitSale(){
       let params = new URLSearchParams;
       let userName = localStorage.getItem("userName");
       let data = JSON.stringify(this.saleData());
+      let ifFunds = null;
       params.append("data", data)
       if (this.personInfo.priceType=="1"){
-        params.append("products", JSON.stringify(this.projectFeeData()))
+        let projectFeedata = this.projectFeeData()
+        ifFunds = this.ifAdequacyOfFunds(projectFeedata)
+        params.append("products", JSON.stringify(projectFeedata))
       }
       else{
-        params.append("proParts", this.projectFeeData())
+        let projectFeedata = this.projectFeeData()
+        ifFunds = this.ifAdequacyOfFunds(projectFeedata)
+        params.append("proParts", JSON.stringify(projectFeedata))
       }
       params.append("taskTodoLink", "/ntop/caseManage/caseDeal/caseEditOnce.jsp?caseId="+this.personInfo.caseId+"&num=");
       params.append("USERNAME", userName.toUpperCase())
-      const loading = this.$loading({
-        lock: true,
-        text: '提交中...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(255, 255, 255, 0.3)'
-      });
-
-      fetch.post("?action=/once/finishCaseOnceFlow", params).then(res=>{
-        console.log("resssssre", res)
-        loading.close();
-        if(res.STATUSCODE=="0"){
-          this.$message({
-            message:'提交成功',
-            type: 'success',
-            center: true,
-            customClass: 'msgdefine'
+      if (ifFunds){
+        const loading = this.$loading({
+          lock: true,
+          text: '提交中...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(255, 255, 255, 0.3)'
+        });
+  
+        fetch.post("?action=/once/finishCaseOnceFlow", params).then(res=>{
+          console.log("resssssre", res)
+          loading.close();
+          if(res.STATUSCODE=="0"){
+            this.$message({
+              message:'提交成功',
+              type: 'success',
+              center: true,
+              customClass: 'msgdefine'
+            });
+            this.opPriceInfo();
+            this.isShowSaleButton = false;
+          }
+        })
+      }
+      else {
+        this.$message({
+          message: "被选择的项目资金不足，请确认可用资金",
+          type: 'warning',
+          center: true,
+          customClass:'msgdefine'
           });
-          this.opPriceInfo();
-          this.isShowSaleButton = false;
-        }
-      })
+      }
 
     },
 
@@ -907,7 +937,6 @@ export default {
 
     handleSelectionChange(val) {
       let math = require('mathjs');
-      console.log(math.format(math.chain(math.bignumber(0.1112)).subtract(math.bignumber(-0.322)).done()));
       this.multipleSelection = val;
     },
     staffPriceSelectionChange(val){
