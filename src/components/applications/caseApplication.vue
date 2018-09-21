@@ -24,7 +24,7 @@
                     <el-input v-model="formData.address" placeholder="请输入具体地址"></el-input>
                 </el-form-item>
                 <el-form-item label="故障现象：" class="applicationtext textborder">
-                    <el-input type="textarea" v-model="formData.desc" placeholder="请输入概要说明"></el-input>
+                    <el-input type="textarea" v-model="formData.desc" placeholder="请输入故障现象"></el-input>
                 </el-form-item>
                 <div class="caseApplicationCell" style="margin-top:0.2rem">
                     <div class="caseApplicationTit">故障信息</div>

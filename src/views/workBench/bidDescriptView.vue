@@ -652,7 +652,8 @@ export default {
         }
       }
       else if(this.personInfo.PayWayDataId=="3"){
-        this.isShowFtCode = true
+        this.isShowFtCode = true;
+        this.isShowPreFee = false;
         if (this.personInfo.priceTypeData=="人员"){
             this.personInfo.actualFeeAmount = math.format(math.chain(math.bignumber(this.WBMInfoPrice.WBM_STAFF_FT)).add(math.bignumber(this.WBMInfoPrice.WBM_STAFF_FT_TRAVEL)).done());
           }

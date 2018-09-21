@@ -30,7 +30,7 @@
                 <el-form-item label="具体地址：">
                     <el-input v-model="formData.address" placeholder="请输入具体地址"></el-input>
                 </el-form-item>
-                <el-form-item label="故障现象：" class="applicationtext textborder">
+                <el-form-item label="概要说明：" class="applicationtext textborder">
                     <el-input type="textarea" v-model="formData.desc" placeholder="请输入概要说明"></el-input>
                 </el-form-item>
                 
