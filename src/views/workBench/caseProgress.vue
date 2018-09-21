@@ -3,8 +3,8 @@
     <header-last :title="eventProgressTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="EventProgressTabs" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
-        <el-collapse v-model="activeName" v-for="items in eventProgressObj['caseProgress']" :key="items.name">
-            <el-collapse-item>
+        <el-collapse v-model="activeName" v-for="items in eventProgressObj['caseProgress']" :key="items.id">
+            <el-collapse-item :name="items.id">
                 <template slot="title">
                     <img class="titleImg" :src="eventProgressObj['imgSrc']" alt="">{{items.dealDate}}
                 </template>
@@ -39,7 +39,7 @@ export default {
   data () {
     return {
         eventProgressTit:"单次事件进展",
-        activeName:["2"],
+        activeName:1,
         CASE_ID:this.$route.query.CASE_ID,
         page:1,
       pageSize:10,
@@ -87,6 +87,9 @@ export default {
         else{
           this.busy = false;
           this.page++
+        }
+        for(var i=0;i<this.eventProgressObj['caseProgress'].length;i++){
+          this.eventProgressObj['caseProgress'][i].id=i+1
         }
         console.log(this.eventProgressObj)
       });
