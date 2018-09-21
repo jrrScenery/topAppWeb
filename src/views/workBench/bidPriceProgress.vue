@@ -72,7 +72,6 @@ export default {
                     this.busy = false;
                     this.page++
                 }
-                console.log(this.bidProgressObj.length)
                 for (var i=0;i<this.bidProgressObj.length;i++){
                     this.bidProgressObj[i].sortName = Number(i+1)
                 }

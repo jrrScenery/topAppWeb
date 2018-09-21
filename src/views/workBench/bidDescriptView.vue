@@ -421,10 +421,6 @@ export default {
       caseId: this.$route.query.caseId,
       relate: this.$route.query.relate,
       status: this.$route.query.status,
-      productQuoterName: this.$route.query.productQuoterName,
-      saleQuoterName: this.$route.query.saleQuoterName,
-      staffQuoterName: this.$route.query.staffQuoterName,
-      partsQuoterName: this.$route.query.partsQuoterName,
 
       ifSpeciallyApprove: "",
       ifFT: "",
@@ -513,7 +509,6 @@ export default {
         // //   this.personInfo = res.data;
         // // } 
         // else {
-          console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
           if (this.personInfo.fitProjectFlg == "1") {
             if (this.personInfo.priceTypeData == "人员") {
               if (this.personInfo.staffPay == "3") {
@@ -547,8 +542,6 @@ export default {
               }
             }
           }
-          console.log("getCaseOnceByProcessInstID_after", this.personInfo)
-        // }
     });
   },
   methods: {
@@ -644,8 +637,6 @@ export default {
             this.personInfo.actualFeeAmount = math.format(math.chain(math.bignumber(this.WBMInfoPrice.WBM_PART_PREPAY)).add(math.bignumber(this.WBMInfoPrice.WBM_PART_PREPAY_TRAVEL)).done());
           }
         }
-            
-        console.log(this.personInfo.fitProjectFlg);
       }
     },
     choiseNotFit(){
@@ -669,7 +660,6 @@ export default {
           this.personInfo.actualFeeAmount = math.format(math.chain(math.bignumber(this.WBMInfoPrice.WBM_PART_FT)).add(math.bignumber(this.WBMInfoPrice.WBM_PART_FT_TRAVEL)).done());
         }
       }
-      console.log("dddddddddddddd", this.personInfo.PayWayDataId)
     },
 
     choiseStaffPay(staffPayNum, partsPayNum, priceTypeData, fitProjectNum) {
@@ -725,7 +715,6 @@ export default {
       let dataFee = [];
       let flag = true;
       let total = this.personInfo.actualFeeAmount;
-      console.log("multipleSelection", this.multipleSelection)
       for (var i=0;i<this.multipleSelection.length;i++){
         let dob = {};
         if (flag){
@@ -752,7 +741,6 @@ export default {
       for (var i=0;i<funds.length;i++){
         total += funds[i].restAmount
       }
-      console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQ", total)
       if (this.personInfo.actualFeeAmount==total){
         return true
       }
@@ -860,7 +848,6 @@ export default {
       }
     },
     onSubmitFT(ftway){
-      console.log("ftway", ftway)
       if (ftway=="1"){
         let params = new URLSearchParams;
         let data = {};
