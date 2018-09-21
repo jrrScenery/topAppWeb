@@ -294,7 +294,7 @@
                       </el-table>
                       <el-button type="primary" @click="onSubmitPreFee()">添加预付费项目</el-button>
                       <div v-if="popBg" class="popBg">
-                      <el-table :data="PrefeeInfo" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
+                      <el-table :data="PrefeeInfo" tooltip-effect="dark" style="width: 100%" height="483" @selection-change="handleSelectionChange">
                           <el-table-column type="selection" width="4%">
                           </el-table-column>
                           <el-table-column label="项目名称" prop="projectName" width="12%">
@@ -312,7 +312,10 @@
                           <el-table-column label="结束时间" prop="serviceEnd" width="12%">
                           </el-table-column>
                       </el-table>
-                      <el-button type="primary" @click="onSubmitPreFeeSure()">确认选择</el-button>
+                      <el-form-item class="saleSubmitCell">
+                          <el-button type="primary" @click="onSubmitPreFeeSure()">确认选择</el-button>
+                          <el-button class="submitBtn" type="primary" @click="onSubmitPreFeeCancel()">取消选择</el-button>
+                      </el-form-item>
                       </div>
                   </div>
                 </div>
@@ -921,6 +924,10 @@ export default {
       this.popBg = false;
       this.isShowPreFeeInfo = true;
     },
+    onSubmitPreFeeCancel(){
+      this.popBg = false;
+      this.multipleSelection = [];
+    },
     onSubmitPriceAddorEdit(key){
       if (key==1){
         if (this.priceInfoDataAdd!=undefined){
@@ -1052,8 +1059,8 @@ export default {
 </script>
 
 <style scoped>
-.popBg{background: rgba(190, 100, 100, 0.5); position: absolute; top: 0.45rem; bottom: 0; z-index: 999; padding: 0 0.25rem;}
-.popPrice{background: rgba(0,0,0,0.5); position: relative; bottom: 0; z-index: 999; padding: 0 0.25rem;}
+.popBg{background: rgba(0,0,0,0.5); overflow:scroll; position: absolute; top: 0.45rem; bottom: 0; z-index: 998; padding: 0 0.25rem;}
+.popPrice{background: rgba(0,0,0,0.5); position: relative; bottom: 0; z-index: 998; padding: 0 0.25rem;}
 
 .popPrice {width: 90%;}
 .bodyForm >>> .caseCode .el-input__inner{color: #2698d6}
@@ -1096,7 +1103,7 @@ export default {
 .bodyForm >>> .el-input__inner {border: none;color: #333333;padding: 0px 0px;}
 .bodyForm >>> .el-input__inner::placeholder {font-size: 0.13rem;color: #acacac;}
 .bodyForm >>> .el-input.is-disabled .el-input__inner {background: #ffffff;}
-.bodyForm >>> .el-button {margin-top: 3px;width: 100%;}
+.bodyForm >>> .el-button {width: 100%;}
 .bodyForm >>> .el-button+.el-button {margin-left: 0px}
 
 .bodyForm >>> .el-radio__label {font-size: 14px;}
