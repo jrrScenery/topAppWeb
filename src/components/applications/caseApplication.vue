@@ -337,7 +337,7 @@ export default {
             }
             if(this.formData.desc==''){
                 this.$message({
-                    message:'请输入概要说明!',
+                    message:'请输入故障现象!',
                     type: 'warning',
                     center: true,
                     customClass:'msgdefine'

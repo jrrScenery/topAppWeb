@@ -111,16 +111,26 @@ export default {
       ],
     };
   },
+
   created: function() {
-    fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res => {
-      console.log(res);
-      // console.log("1111111")
-      let baseInfo = res.DATA[0];
-      this.SLAObj = baseInfo.slaStatus;
-    });
+    this.getWorkInfo();
+    // fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res => {
+    //   console.log(res);
+    //   // console.log("1111111")
+    //   let baseInfo = res.DATA[0];
+    //   this.SLAObj = baseInfo.slaStatus;
+    // });
   },
   
   methods: {
+    getWorkInfo:function(){
+      fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res => {
+        console.log(res);
+        // console.log("1111111")
+        let baseInfo = res.DATA[0];
+        this.SLAObj = baseInfo.slaStatus;
+      });
+    },
     getTime:function() {
       var date = new Date();
       var seperator1 = "-";
@@ -170,7 +180,8 @@ export default {
                 });
                 this.dialogVisible0=false;
                 this.dialogVisible1=false;
-                location.reload()
+                vm.getWorkInfo();
+                // location.reload()
               }else{
                 this.$message({
                   message:res.MESSAGE,
@@ -184,7 +195,7 @@ export default {
               
               console.log(res);
       });
-       location.reload()
+      //  location.reload()
               // this.$router.go(0)
     }
   }
