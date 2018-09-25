@@ -75,6 +75,7 @@ export default {
   },
   methods: {
     onSubmit () {
+      this.loadmachine(this.promachinepage>1);
       this.$emit('emitparams',this.searparams);
     },
     loadmachine(flag){
@@ -83,7 +84,7 @@ export default {
       queryparam.FACTORY_NAME=this.form.firm;
       queryparam.MODEL_NAME=this.form.typeNum;
       queryparam.SN=this.form.serialNum;
-      
+      console.log(queryparam);
       fetch.get("?action=GetProjectDeviceList&EMPID="+global_.empId,queryparam).then(res=>{
         //console.log(this.eventListArr);
         if(flag){
