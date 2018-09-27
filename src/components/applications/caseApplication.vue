@@ -145,6 +145,7 @@ export default {
         }
     },
     created(){
+
     },
     methods:{
        handleChange(val){
@@ -153,7 +154,7 @@ export default {
            let children2 = [];
            vm.options.forEach(function(v,i){
                if(v.value == val[0]){
-                   vm.cityName += v.label;
+                   vm.cityName = v.label;
                    children1 = v.children;
                }
            });

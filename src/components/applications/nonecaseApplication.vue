@@ -122,7 +122,7 @@ export default {
            let children2 = [];
            vm.options.forEach(function(v,i){
                if(v.value == val[0]){
-                   vm.cityName += v.label;
+                   vm.cityName = v.label;
                    children1 = v.children;
                }
            });
@@ -148,6 +148,7 @@ export default {
             let vm= this;
             this.$refs[formName].validate((valid) => {
                 if (valid) {
+                    console.log(vm.cityName)
                     if(!vm.check(loading)) return;
                     vm.getCaseLevel();
                     var data = new URLSearchParams;
