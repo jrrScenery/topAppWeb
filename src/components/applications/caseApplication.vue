@@ -12,12 +12,12 @@
             </div>
             <el-form :model="formData" label-width="0.9rem" ref="formData">
                 <el-form-item label="所在城市：" class="formborder">
-                    <el-cascader :options="options" change-on-select>
-                        <!-- v-model="formData.city" 
+                    <el-cascader :options="options"
+                        v-model="formData.city" 
                         :props="prop"  
-                        filterable
                         placeholder="请选择所在城市"
-                        @change="handleChange"> -->
+                        change-on-select
+                        @change="handleChange">
                     </el-cascader>
                 </el-form-item>
                 <el-form-item label="具体地址：">

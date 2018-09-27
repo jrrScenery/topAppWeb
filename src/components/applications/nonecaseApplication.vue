@@ -18,12 +18,12 @@
                 </el-form-item>
                 <div>
                 <el-form-item label="所在城市：">
-                    <el-cascader :options="options" change-on-select>
-                        <!-- v-model="formData.city" 
+                    <el-cascader :options="options"
+                        v-model="formData.city" 
                         :props="prop"  
-                        filterable
                         placeholder="请选择所在城市"
-                        @change="handleChange"> -->
+                        change-on-select
+                        @change="handleChange">
                     </el-cascader>
                 </el-form-item>
                 </div>
