@@ -329,7 +329,7 @@
                     <el-input v-model="personInfo.remark" class="bInput"></el-input>
                 </el-form-item>
                 <el-form-item v-show="isShowSaleButton" class="saleSubmitCell">
-                    <el-button type="primary" @click="onSubmitSale()" v-if="relate">同意</el-button>
+                    <el-button type="primary" @click="onSubmitSale('personInfo')" v-if="relate">同意</el-button>
                     <el-button class="submitBtn" type="primary" @click="refuseSubmitSale()" v-if="relate">拒绝</el-button>
                 </el-form-item>
             </el-form>
@@ -749,18 +749,43 @@ export default {
         return false
       }
     },
-    onSubmitSale(){
+    check(loading){
+      if(this.personInfo.fitProjectFlg==undefined){
+        this.$message({
+            message:'请选择是否入项目',
+            type: 'warning',
+            center: true,
+            customClass:'msgdefine'
+        });
+        loading.close();
+        return false
+      }
+      if(this.personInfo.ShareNoData==undefined&&this.personInfo.PayWayDataId!='1'){
+        this.$message({
+            message:'请输入分摊编号',
+            type: 'warning',
+            center: true,
+            customClass:'msgdefine'
+        });
+        loading.close();
+        return false
+      }
+      return true;
+    },
+
+
+    onSubmitSale(personForm){
       let params = new URLSearchParams;
       let userName = localStorage.getItem("userName");
       let data = JSON.stringify(this.saleData());
-      let ifFunds = null;
+      let ifFunds = true;
       params.append("data", data)
-      if (this.personInfo.priceType=="1"){
+      if (this.personInfo.priceType=="1"&&this.personInfo.PayWayDataId=='1'){
         let projectFeedata = this.projectFeeData()
         ifFunds = this.ifAdequacyOfFunds(projectFeedata)
         params.append("products", JSON.stringify(projectFeedata))
       }
-      else{
+      else if(this.personInfo.PayWayDataId=='1'){
         let projectFeedata = this.projectFeeData()
         ifFunds = this.ifAdequacyOfFunds(projectFeedata)
         params.append("proParts", JSON.stringify(projectFeedata))
@@ -774,19 +799,24 @@ export default {
           spinner: 'el-icon-loading',
           background: 'rgba(255, 255, 255, 0.3)'
         });
-  
-        fetch.post("?action=/once/finishCaseOnceFlow", params).then(res=>{
-          console.log("resssssre", res)
-          loading.close();
-          if(res.STATUSCODE=="0"){
-            this.$message({
-              message:'提交成功',
-              type: 'success',
-              center: true,
-              customClass: 'msgdefine'
-            });
-            this.opPriceInfo();
-            this.isShowSaleButton = false;
+        let vm= this;
+        this.$refs[personForm].validate((valid) => {
+          if (valid) {
+            if(!vm.check(loading)) return;
+            fetch.post("?action=/once/finishCaseOnceFlow", params).then(res=>{
+              console.log("resssssre", res)
+              loading.close();
+              if(res.STATUSCODE=="0"){
+                this.$message({
+                  message:'提交成功',
+                  type: 'success',
+                  center: true,
+                  customClass: 'msgdefine'
+                });
+                this.opPriceInfo();
+                this.isShowSaleButton = false;
+              }
+            })
           }
         })
       }
@@ -798,7 +828,6 @@ export default {
           customClass:'msgdefine'
           });
       }
-
     },
 
     refuseSubmitSale(){
