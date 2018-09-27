@@ -199,6 +199,7 @@ export default {
       console.log(this.parts)
       console.log("=======")
     fetch.get("?action=/parts/getPartsCanRecycle&CASE_ID="+this.caseId).then(res => {
+      console.log("ffffffffff");
       console.log(res);
       //   let remain=;
       //   let rr=res.;
@@ -220,6 +221,7 @@ export default {
       if(this.transportCompany=="1000047"){
       this.dialogVisible=true;
       fetch.get("?action=/parts/queryArea&areaCode="+this.maininput.areaId).then(res => {
+        console.log("hhhhhhhhhh");
       console.log(res);
       this.senderArea=res.DATA[0];
     })
@@ -311,9 +313,9 @@ export default {
           detailpa.gOrB=v.gOrB;
           detailpa.length=v.length;
           detailpa.pkid=v.pkid;
-          detailpa.supplyTyle=v.supplyTyle;
+          detailpa.supplyType=v.supplyType;
           detailpa.useState=v.useState;    
-           details.push(detailpa);
+          details.push(detailpa);
       });
 
       let main={};
@@ -349,6 +351,7 @@ export default {
           break;
         }
       }
+      console.log("details:"+details);
       let postData=new URLSearchParams;
       postData.append('main',JSON.stringify(main)),
       postData.append('details',JSON.stringify(details));
