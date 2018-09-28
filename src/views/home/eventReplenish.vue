@@ -11,7 +11,8 @@
         <el-form-item class="text">
           <el-input type="textarea" v-model="form.desc" placeholder="补充说明"></el-input>
         </el-form-item>
-        <!-- <div class="takePhoto" @click="takePhoto"><img src="../../assets/images/takephoto.png" alt=""></div> -->
+        <!-- <input @change="presup" type="file" value="浏览兰兰"> -->
+        <div class="takePhoto" @click="takePhoto"><img src="../../assets/images/takephoto.png" alt=""></div>
         <el-form-item class="submitBtn">
           <el-button type="primary" @click="onSubmit">提交</el-button>
         </el-form-item>
@@ -80,6 +81,11 @@ export default {
     console.log(this.$loading,1111111111);
   },
   methods: {
+    presup(){
+      fetch.post("?action=upload",{FILETYPE:'jpg'}).then(res=>{
+        console.log('上传')
+      });
+    },
     uptest(){
       console.log('上传测试');
       fetch.post("?action=upload",{FILETYPE:'jpg'}).then(res=>{
