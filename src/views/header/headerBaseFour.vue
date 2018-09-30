@@ -4,9 +4,9 @@
     <header>
       <div class="headerLeft"  v-on:click="back"><i class="el-icon-arrow-left"></i></div>
       <h2>{{title}}</h2>
-      <div class="headerRight">
-        <img src="../../assets/images/header_sao.png" alt="">
-        <p>{{headerRight}}</p>
+      <div class="headerRight"   @click="onSao">
+        <img src="../../assets/images/header_sao.png" v-if="false" alt="">
+        <p v-if="false">{{headerRight}}</p>
       </div>
     </header>
   </div>
@@ -37,6 +37,16 @@ export default {
 
     back: function (event) {
       this.$router.back(-1)
+    },
+    onSao(){
+      let ua = navigator.userAgent.toLowerCase();
+      if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
+        var info={action:"scan",scantype:'declare',empId:localStorage.getItem('empId')}
+        window.webkit.messageHandlers.ioshandle.postMessage({body: info});
+      }else if(/(Android)/i.test(ua)){
+        var value = "{action:scan,scantype:declare,empId:"+localStorage.getItem('empId')+"}";
+        android.getClient(value);
+      }
     }
 
   }
