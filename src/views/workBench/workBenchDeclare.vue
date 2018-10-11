@@ -72,9 +72,9 @@ export default {
     return {
       workBenchDeclareTit: '事件申报',
       formData: {
-        num: '',
-        type: '',
-        firm: '',
+        num: this.$route.query.num,
+        type: this.$route.query.type,
+        firm: this.$route.query.firm,
         city: [],
         degree: '',
         range: '',

@@ -70,7 +70,7 @@ export default {
     fetch.get(url,{}).then(res=>{
       let tmpdata= res.data;
       tmpdata.map(function(item){
-        item.href =global_.Server +"/api/download?fileId="+item.DOC_ID + "&fileName=" + item.DOC_NAME;
+        item.href =global_.Server +"/api/download?fileId="+item.FILE_ID + "&fileName=" + item.DOC_NAME;
         let artemp = item.DOC_NAME.split('.'); 
         item.fileext =  artemp[artemp.length-1];
         item.docname= item.DOC_NAME;

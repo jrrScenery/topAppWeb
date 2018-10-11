@@ -11,12 +11,14 @@
         <el-form-item class="text">
           <el-input type="textarea" v-model="form.desc" placeholder="补充说明"></el-input>
         </el-form-item>
-        <!-- <div class="takePhoto" @click="takePhoto"><img src="../../assets/images/takephoto.png" alt=""></div> -->
+        <input @change="presup" type="file" value="浏览兰兰">11
+        <div class="takePhoto" @click="takePhoto"><img src="../../assets/images/takephoto.png" alt=""></div>
+        <input type="button" @click="takePhoto" value="选择照片">
         <el-form-item class="submitBtn">
           <el-button type="primary" @click="onSubmit">提交</el-button>
         </el-form-item>
       </el-form>
-      <img id="showpic" :src="uploadres" ref="showpic">
+      <img id="showpic" :src="uploadres" ref="showpic" style=" width:200px; margin-top:30px;">
     </div>
 
 <!--     <el-upload
@@ -58,28 +60,33 @@ export default {
       },
       caseid: this.$route.query.caseId,
       upaction: 'http://139.129.207.35:8084/api/upload',
-      uploadres:''
+      uploadres:require('../../assets/images/takephoto.png')
       // upaction: 'http://localhost:8081/api/upload?EMPID=' + localStorage.getItem("empId")
     }
   },
   beforeCreate(){
-    var vm = this;
-    window.photoResult = function(str){
-      if(str){
-        
-      }      
-    }
+    
     
   },
   mounted(){
     console.log(444);
     console.log(this.$loading,222);
+
+    var vm = this;
+    console.log(this)
+    window.afun = () =>{ console.log(111)}
+    window.photoResult = this.getPhotoUrl;
   },
   created (){
     console.log(3333);
     console.log(this.$loading,1111111111);
   },
   methods: {
+    presup(){
+      fetch.post("?action=upload",{FILETYPE:'jpg'}).then(res=>{
+        console.log('上传')
+      });
+    },
     uptest(){
       console.log('上传测试');
       fetch.post("?action=upload",{FILETYPE:'jpg'}).then(res=>{
@@ -101,6 +108,7 @@ export default {
         this.opinionTab[0].data = res.data;
       });
 
+      
 
       fetch.get("?action=UpdateProcessInfo&CASE_ID="+this.caseid+"&REMARK="+this.form.desc,"").then(res=>{
         if(res.STATUSCODE=="0"){
@@ -139,21 +147,29 @@ export default {
         });
       }) ;
     },
+    // takePhoto:function(){
+    //   let ua = navigator.userAgent.toLowerCase();
+    //   console.log(ua);
+    //   if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
+    //     var info={action:"takePhoto"}
+    //     window.webkit.messageHandlers.ioshandle.postMessage({body: info});
+    //   }else if(/(Android)/i.test(ua) && /mobile/i.test(ua)){
+    //     var value = "{action:takePhoto}";
+    //     android.getClient(value);
+    //   }
+    // },
     takePhoto:function(){
-      let ua = navigator.userAgent.toLowerCase();
-      console.log(ua);
-      if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
-        var info={action:"takePhoto"}
-        window.webkit.messageHandlers.ioshandle.postMessage({body: info});
-      }else if(/(Android)/i.test(ua) && /mobile/i.test(ua)){
-        var value = "{action:takePhoto}";
-        android.getClient(value);
-      }
+      var data=new URLSearchParams;
+      data.append("FILETYPE","jpg")
+      data.append("FILE",'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==')
+      fetch.post("?action=upload",data).then(res=>{
+        console.log(res)
+      });
     },
     getPhotoUrl: function(photodata){
       alert(photodata);
-
-      this.$refs.showpic.url = photodata;
+      console.log(this.$refs.showpic.src);
+      this.$refs.showpic.src = photodata;
     }
   },
   created:function(){
@@ -166,6 +182,9 @@ export default {
       this.eventReplenishData[1].desc = baseInfo.PROJECT_NAME ;
       this.eventReplenishData[2].desc = baseInfo.CASE_NO ;
     });
+  },
+  beforeDestroy(){
+    window.photoResult = null;
   }
 }
 

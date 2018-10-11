@@ -11,6 +11,7 @@ import axios from 'axios'
 import echarts from 'echarts'
 // import localstorage from './utils/localstorage'
 import commonUtil from './utils/common'
+import toastRegistry from './utils/toast/toast'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
@@ -18,6 +19,7 @@ axios.defaults.withCredentials = false
 Vue.prototype.$axios = axios
 Vue.prototype.$echarts = echarts
 Vue.use(commonUtil)
+Vue.use(toastRegistry)
 
 Vue.directive('loadmore', {
   bind (el, binding) {
