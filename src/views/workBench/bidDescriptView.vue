@@ -1238,8 +1238,8 @@ export default {
 .popPrice{background: rgba(0,0,0,0.5); position: relative; bottom: 0; z-index: 998; padding: 0 0.25rem;}
 
 .popPrice {width: 90%;}
-.bodyForm >>> .caseCode .el-input__inner{color: #2698d6}
-.bodyForm >>> .roleInfo .el-input__inner{color: #2698d6}
+.bodyForm >>> .caseCode .el-input__inner{color: #104E8B}
+.bodyForm >>> .roleInfo .el-input__inner{color: #104E8B}
 .popPrice >>> .el-form-item {border-bottom: 0.01rem solid #e5e5e5;margin: 0;}
 .popPrice >>> .el-form-item__label {font-size: 0.13rem;color: #acacac;padding: 0 0 0 0.15rem;text-align: left;}
 .popPrice >>> .el-form-item__error {position: relative;}
@@ -1275,7 +1275,7 @@ export default {
 .bodyForm >>> .el-form-item {border-bottom: 0.01rem solid #e5e5e5;margin: 0;}
 .bodyForm >>> .el-form-item__label {font-size: 0.13rem;color: #acacac;padding: 0 0 0 0.15rem;text-align: left;}
 .bodyForm >>> .el-form-item__error {position: relative;}
-.bodyForm >>> .el-input__inner {border: none;color: #333333;padding: 0px 0px;}
+.bodyForm >>> .el-input__inner {border: none;color: black;padding: 0px 0px;}
 .bodyForm >>> .el-input__inner::placeholder {font-size: 0.13rem;color: #acacac;}
 .bodyForm >>> .el-input.is-disabled .el-input__inner {background: #ffffff;}
 .bodyForm >>> .el-button {width: 100%;}
