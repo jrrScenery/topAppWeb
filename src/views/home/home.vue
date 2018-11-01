@@ -9,7 +9,6 @@
         </el-carousel-item>
       </el-carousel>
     </div>
-
     <div class="content">
       <div class="event">
         <div class="title">
@@ -165,6 +164,7 @@
 <script>
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
+
 
 export default {
   name: 'index',
@@ -350,6 +350,7 @@ export default {
   },
 
   methods:{
+    
     // showMore3:function (event) {
     //   if (this.activeName=='first') {
     //     this.$router.push({name:'complaintList',params:{}});
@@ -386,7 +387,6 @@ export default {
 
       fetch.get("?action=GetComplaintsList&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
         this.opinionTab[0].data = res.data;
-        //console.log(res.data)
         var tmpar= res.data;
         tmpar = tmpar.map(function(item){
           item.COMPLAINT_COMMENT = item.COMPLAINT_COMMENT.replace(/\n/g, "<br/>");
@@ -395,6 +395,7 @@ export default {
         this.loadalls.casopinionTabe2 = {"busy": false, loadall:true};
       });
     }
+    
   },
   beforeCreate:function(){
     this.$router.replace(location);
@@ -404,10 +405,60 @@ export default {
       history.go(1)
     }
 　　
+    window.routeback = () =>{
+      if(["login","home","approve","workBench","reportForm","mine"].indexOf(this.$route.name)>-1){
+        if(typeof(android)!="undefined"){
+          if(sessionStorage.backTime && (new Date()).getTime()- parseInt(sessionStorage.backTime) <1500  ){
+            console.log((new Date()).getTime()- parseInt(sessionStorage.backTime))
+            sessionStorage.backTime = ''
+            android.Finish();
+          }
+          else{
+            this.$toast('再按一次退出')
+            sessionStorage.backTime = (new Date()).getTime()
+          }
+        }
+      }
+      else{
+        this.$router.back(-1)
+      }
+      
+    }
+
+    window.scanResult = (res) =>{
+      
+      let objtmp={};
+      let strscan = res;
+      let ar= []
+      ar = strscan.split("|");
+      console.log(ar);
+      if(ar.length){
+        ar.forEach(element => {
+          if(element.length){
+            let arsub = element.split("：")
+            if('厂商'==arsub[0] ){
+              objtmp.factory = arsub.length>1? arsub[1]:''
+            }
+            if('型号'== arsub[0]){
+              objtmp.xinghao = arsub.length>1? arsub[1]:''
+            }
+            if('SN'== arsub[0]){
+              objtmp.sn = arsub.length>1? arsub[1]:''
+            }
+            if('城市'== arsub[0]){
+              objtmp.city = arsub.length>1? arsub[1]:''
+            }
+          }
+        });
+      }
+
+      this.$router.push({name:"workBenchDeclare" , query:{num:objtmp.sn, type:objtmp.xinghao, firm:objtmp.factory,cityname:objtmp.city }})
+    }
+
+
   },
   mounted:function(){
     
-　　
   },
   activated(){
     console.log(this.$route.meta.isUseCache);

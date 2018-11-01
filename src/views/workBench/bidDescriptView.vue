@@ -2,6 +2,8 @@
     <div class="bidDescriptView">
         <header-last :title="bidDescriptTit"></header-last>
         <div style="height: 0.45rem;"></div>
+
+
         <div class="titleInfo">基本信息</div>
         <div class="bodyForm">
             <el-form ref="personInfo" :model="personInfo" label-width="1rem">
@@ -24,6 +26,8 @@
                 </router-link>
             </el-form>
         </div>
+
+
         <div class="titleInfo">参与人员</div>
         <div class="bodyForm">
             <el-form ref="personInfo" :model="personInfo" label-width="1rem">
@@ -65,6 +69,7 @@
             </el-form>
         </div>
 
+
         <div class="titleInfo">报价信息</div>
         <div class="bodyForm">
             <template ref="personInfo" :model="personInfo">
@@ -78,7 +83,6 @@
                     <el-input type="textarea" placeholder="请输入特批说明" :rows="2" v-model="personInfo.specialApprovedRemark" v-show="ifShowSpeciallyApprove"></el-input>
                 </el-form>
             </template>
-
             <template v-if="personInfo.priceTypeData=='人员'&&status=='2'&&(realName==personInfo.staffname)"> 
                 <el-table :data="staffPriceInfo" tooltip-effect="dark" style="width: 100%" @selection-change="staffPriceSelectionChange">
                     <el-table-column type="selection" width="5">
@@ -158,14 +162,14 @@
             </el-form-item>
             <el-form-item label="资源类型">
               <el-radio-group v-model="priceInfoDataAdd.resourceType">
-                <el-radio label="1">外部资源</el-radio>
-                <el-radio label="0">内部资源</el-radio>
+                <el-radio label="1" @change="isInsideOrExternalSource('1')">外部资源</el-radio>
+                <el-radio label="0" @change="isInsideOrExternalSource('0')">内部资源</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="工作量(天)">
               <el-input v-model="priceInfoDataAdd.workload" class="bInput"></el-input>
             </el-form-item>
-            <el-form-item label="外援费用">
+            <el-form-item label="外援费用" v-if="ifInsideSource">
               <el-input v-model="priceInfoDataAdd.price" class="bInput"></el-input>
             </el-form-item>
             <el-form-item label="差旅费用">
@@ -175,14 +179,14 @@
               <el-input type="textarea" :rows="2" v-model="priceInfoDataAdd.remark" class="bInput"></el-input>
             </el-form-item>
             <el-form-item class="submitCell">
-              <el-button type="primary" size="small" @click="onSubmitPriceInfoAddAndEdit(priceInfoDataAdd)">确认</el-button>
+              <el-button type="primary" size="small" @click="onSubmitPriceInfoAddAndEdit(priceInfoDataAdd, 'priceInfoDataAdd')">确认</el-button>
               <el-button class="submitBtn" type="primary" size="small" @click="onSubmitPriceAddorEdit(0)">取消</el-button>
             </el-form-item>
           </el-form>
         </div>
 
-        <div class="titleInfo">WBM报价</div>
 
+        <div class="titleInfo">WBM报价</div>
         <div class="bodyForm">
             <template v-if="personInfo.priceTypeData=='人员'">
                 <el-table :data="WBMInfo" style="width: 100%">
@@ -230,6 +234,8 @@
                 </el-table>
             </template>
         </div>
+
+
         <div class="titleInfo" v-if="status!='2'&&(realName==personInfo.salename)||status=='6'">销售确认信息</div>
         <div class="bodyForm" v-if="status!='2'&&(realName==personInfo.salename)||status=='6'">
             <el-form ref="personInfo" :model="personInfo" label-width="1rem">
@@ -334,6 +340,8 @@
                 </el-form-item>
             </el-form>
         </div>
+
+
         <div class="titleInfo" v-if="status!='2'&&(realName==personInfo.productname)||status=='6'">分摊确认信息</div>
         <div class="bodyForm" v-if="status!='2'&&(realName==personInfo.productname)||status=='6'">
             <template v-if="personInfo.PayWayData=='分摊'">
@@ -375,65 +383,89 @@ export default {
   },
   data() {
     return {
-      realName: localStorage.getItem("realName"),
 
-      payWay: [],
-      isShowPayIsFit: false,
-      isShowPayNotIsFit: false,
-      payIsFit: [{payname: "分摊", payid: "3"}],
-      payNotIsFit: [{payname: "分摊", payid: "3"}, {payname: "预付费", payid: "1"}],
+  // 标题：
+      bidDescriptTit: "单次报价详情",      
 
-      // involvedroles: [{roleName: "一线", roleId:"3"},{roleName: "二线", roleId: "4"},{roleName: "三线", roleId: "5"},{roleName: "CMO", roleId: "1"},{roleName: "PM", roleId: "2"}],
-      // engineerLevel: [{levelName: "初级", levelId: "1"},{levelName: "中级", levelId: "2"},{levelName: "高级", levelId: "3"},{levelName: "专家", levelId: "4"}],
-    //   PayWayDataId: "3",
-    //   notFitPayWayDataId: "3",
-      roleList: [{ dictID: "3", dictName: "一线" },{ dictID: "4", dictName: "二线" },{ dictID: "5", dictName: "三线" },{ dictID: "1", dictName: "CMO" },{ dictID: "2", dictName: "PM" }],
-      stageList: [{ dictID: "1", dictName: "分析诊断" },{ dictID: "2", dictName: "实施" }],
-      levelList: [{ dictID: "1", dictName: "初级" },{ dictID: "2", dictName: "中级" },{ dictID: "3", dictName: "高级" },{ dictID: "4", dictName: "专家" }],
-      statusList: [{ dictID: "1", dictName: "待提交" },{ dictID: "2", dictName: "待报价" },{ dictID: "3", dictName: "待销售确认" },{ dictID: "4", dictName: "已拒绝" },{ dictID: "5", dictName: "驳回" },{ dictID: "6", dictName: "已完成" },{ dictID: "7", dictName: "待分摊确认" },{ dictID: "8", dictName: "拒绝分摊" },{ dictID: "99", dictName: "已取消" },{ dictID: "9", dictName: "待产品经理审核" }],
-
-      popBg: false,
-      popPrice: false,
-      popSubmit: true,
-
-      isShow: false,
-      isShowSureFT: false,
-      isShowSingleFT: true,
-      isShowSaleButton: true,
-      isShowFtCode: false,
-      isShowPreFee: false,
-      isShowPreFeeInfo: false,
-      ifShowSpeciallyApprove: false,
-
-      ifEdit: "",
-
-      WBMInfo: [],
-      staffPriceInfo: {},
-      partsPriceInfo: {},
-      personInfo: {},
-      PrefeeInfo: [],
-      priceInfoDataAdd: {},
-
-      multipleSelection: [],
-
+  // 访问(router)参数：
       processinstId: this.$route.query.processinstId,
       num: this.$route.query.num,
       caseId: this.$route.query.caseId,
       relate: this.$route.query.relate,
       status: this.$route.query.status,
+      realName: localStorage.getItem("realName"),
 
-      ifSpeciallyApprove: "",
+  // 公共参数：
+      personInfo: {},
+
+  // 报价信息参数：
+      stageList: [{ dictID: "1", dictName: "分析诊断" },{ dictID: "2", dictName: "实施" }],
+      roleList: [{ dictID: "3", dictName: "一线" },{ dictID: "4", dictName: "二线" },{ dictID: "5", dictName: "三线" },{ dictID: "1", dictName: "CMO" },{ dictID: "2", dictName: "PM" }],
+      levelList: [{ dictID: "1", dictName: "初级" },{ dictID: "2", dictName: "中级" },{ dictID: "3", dictName: "高级" },{ dictID: "4", dictName: "专家" }],
+      statusList: [{ dictID: "1", dictName: "待提交" },{ dictID: "2", dictName: "待报价" },{ dictID: "3", dictName: "待销售确认" },{ dictID: "4", dictName: "已拒绝" },{ dictID: "5", dictName: "驳回" },{ dictID: "6", dictName: "已完成" },{ dictID: "7", dictName: "待分摊确认" },{ dictID: "8", dictName: "拒绝分摊" },{ dictID: "99", dictName: "已取消" },{ dictID: "9", dictName: "待产品经理审核" }],
+     
+      ifShowSpeciallyApprove: false,
+      popSubmit: true,
+      popPrice: false,
+      ifInsideSource: true,
+
+      staffPriceInfo: {},
+      partsPriceInfo: {},
+      priceInfoDataAdd: {},
+
+      ifEdit: "",
+
+  // WBM报价参数：
+      WBMInfo: [],
+ 
+  // 销售确认信息参数：
+      payIsFit: [{payname: "分摊", payid: "3"}],
+      payNotIsFit: [{payname: "分摊", payid: "3"}, {payname: "预付费", payid: "1"}],
+      
+      isShowPayIsFit: false,
+      isShowPayNotIsFit: false,
+      isShowFtCode: false,
+      isShowPreFee: false,
+      popBg: false,
+      isShowSaleButton: true,
+
+      PrefeeInfo: [],
+      multipleSelection: [],
+
+  // 分摊确认信息参数：
+      isShowSureFT: false,
       ifFT: "",
 
-      bidDescriptTit: "单次报价详情"
+
+  //
+              // payWay: [],
+      // isShowPayIsFit: false,
+      // isShowPayNotIsFit: false,
+
+      // popBg: false,
+      // popPrice: false,
+      // popSubmit: true,
+
+              // isShow: false,
+      // isShowSureFT: false,
+              // isShowSingleFT: true,
+      // isShowSaleButton: true,
+      // isShowFtCode: false,
+      // isShowPreFee: false,
+              // isShowPreFeeInfo: false,
+      // ifShowSpeciallyApprove: false,
+
+
+              // ifSpeciallyApprove: "",
     };
   },
   created() {
-    // console.log("oooo", this.$route.query.status, this.$route.query.relate)
+
     if(this.status==7||this.status==9||this.status==6||this.status==1){
       this.isShowSaleButton = false;
     }
 
+  // 销售确认信息：
     fetch.get("?action=/once/serchFreeOffer&num=" + this.num, {}).then(res => {
       console.log(res)
       this.PrefeeInfo = res.data;
@@ -445,53 +477,59 @@ export default {
     fetch.get("?action=/once/queryCaseOnceFee&caseId=" + this.caseId + "&num=" + this.num + "&feeFlg=", {}).then(res => {
       console.log("queryCaseOnceFee", res);
     });
+  
+  // 备件报价信息
     fetch.get("?action=/once/queryCaseOncePartsByProcessInstID&processInstID=" +this.processinstId,{}).then(res => {
       console.log("queryCaseOncePartsByProcessInstID", res);
       this.partsPriceInfo = res.data;
     });
+
+  // 人员报价信息
     fetch.get("?action=/once/queryCaseOnceStaffByProcessInstId&processInstID=" +this.processinstId,{}).then(res => {
-        console.log("queryCaseOnceStaffByProcessInstId", res);
-        this.staffPriceInfo = res.data;
-        for (var j = 0; j < this.staffPriceInfo.length; j++) {
-          for (var i = 0; i < this.roleList.length; i++) {
-            if (this.roleList[i]["dictID"] == this.staffPriceInfo[j].roleId) {
-              this.staffPriceInfo[j].roleName = this.roleList[i]["dictName"];
-            }
-          }
-          for (var i = 0; i < this.stageList.length; i++) {
-            if (this.stageList[i]["dictID"] == this.staffPriceInfo[j].stageId) {
-              this.staffPriceInfo[j].stageName = this.stageList[i]["dictName"];
-            }
-          }
-          for (var i = 0; i < this.levelList.length; i++) {
-            if (this.levelList[i]["dictID"] == this.staffPriceInfo[j].engineerLevel) {
-              this.staffPriceInfo[j].engineerLevelName = this.levelList[i]["dictName"];
-            }
-          }
-          if (this.staffPriceInfo[j].resourceType == "1") {
-            this.staffPriceInfo[j].resourceTypeName = "外部资源";
-          } else if (this.staffPriceInfo[j].resourceType == "0") {
-            this.staffPriceInfo[j].resourceTypeName = "内部资源";
+      console.log("queryCaseOnceStaffByProcessInstId", res);
+      this.staffPriceInfo = res.data;
+      for (var j = 0; j < this.staffPriceInfo.length; j++) {
+        for (var i = 0; i < this.roleList.length; i++) {
+          if (this.roleList[i]["dictID"] == this.staffPriceInfo[j].roleId) {
+            this.staffPriceInfo[j].roleName = this.roleList[i]["dictName"];
           }
         }
-        console.log("staffPriceInfo", this.staffPriceInfo);
-      });
+        for (var i = 0; i < this.stageList.length; i++) {
+          if (this.stageList[i]["dictID"] == this.staffPriceInfo[j].stageId) {
+            this.staffPriceInfo[j].stageName = this.stageList[i]["dictName"];
+          }
+        }
+        for (var i = 0; i < this.levelList.length; i++) {
+          if (this.levelList[i]["dictID"] == this.staffPriceInfo[j].engineerLevel) {
+            this.staffPriceInfo[j].engineerLevelName = this.levelList[i]["dictName"];
+          }
+        }
+        if (this.staffPriceInfo[j].resourceType == "1") {
+          this.staffPriceInfo[j].resourceTypeName = "外部资源";
+        } else if (this.staffPriceInfo[j].resourceType == "0") {
+          this.staffPriceInfo[j].resourceTypeName = "内部资源";
+        }
+      }
+      console.log("staffPriceInfo", this.staffPriceInfo);
+    });
+
+  // WBM报价信息
     fetch.get("?action=/once/queryWBMPersonFree&onceNum=" + this.num, {}).then(res => {
         console.log("queryWBMPersonFree", res);
         this.WBMInfo = res.data;
         this.WBMInfoPrice = res.data[0]
     });
-    console.log("processinstId", this.processinstId);
+  
+  // 公共信息
     fetch.get("?action=/once/getCaseOnceByProcessInstID&processInstID=" + this.processinstId,{}).then(res => {
         this.personInfo = res.data;
         console.log("getCaseOnceByProcessInstID_before", this.personInfo)
         this.personInfo.priceTypeData = this.choisePriceType(this.personInfo.priceType);
         this.personInfo.onceStatusData = this.choisePriceStatus(this.personInfo.onceStatus);
-        // this.personInfo.payData = this.choise
-        // let payWayData = this.choiseStaffPay(this.personInfo.priceTypeData,this.personInfo.fitProjectFlg);
+
         this.personInfo.PayWayDataId = "3";
         this.personInfo.notFitPayWayDataId = "3";
-        // this.personInfo.staffPay, this.personInfo.partsPay,
+
         if (this.personInfo.specialApproved == "1"){
           this.ifShowSpeciallyApprove = true
         }
@@ -499,102 +537,213 @@ export default {
           this.ifShowSpeciallyApprove = false
         }
 
-        // if ((this.relate == "deal" && this.status == "3")||(this.relate == "relate" && this.status == "3")) {
-        //   this.personInfo = res.data;
-        // } 
-        // // if ((this.relate == "deal" && this.status == "3")||(this.relate == "relate" && this.status == "3")) {
-        // //   this.personInfo = res.data;
-        // // } 
-        // // else if ((this.relate == "deal" && this.status == "7") ||(this.relate == "relate" && this.status == "7")) {
-        // //   this.personInfo = res.data;
-        // // } 
-        // else {
-          if (this.personInfo.fitProjectFlg == "1") {
-            if (this.personInfo.priceTypeData == "人员") {
-              if (this.personInfo.staffPay == "3") {
-                this.personInfo.PayWayData = "分摊";
-                this.personInfo.ShareNoData = this.personInfo.staffShareNo;
-                console.log("sharenoDATA", this.personInfo.ShareNoData)
-                this.isShowFtCode = true;
-              }
-            } else if (this.personInfo.priceTypeData == "备件") {
-              if (this.personInfo.partsPay == "3") {
-                this.personInfo.PayWayData = "分摊";
-                this.personInfo.ShareNoData = this.personInfo.partsShareNo;
-                this.isShowFtCode = true;
-              }
+        if (this.personInfo.fitProjectFlg == "1") {
+          if (this.personInfo.priceTypeData == "人员") {
+            if (this.personInfo.staffPay == "3") {
+              this.personInfo.PayWayData = "分摊";
+              this.personInfo.ShareNoData = this.personInfo.staffShareNo;
+              console.log("sharenoDATA", this.personInfo.ShareNoData)
+              this.isShowFtCode = true;
             }
-          } else if (this.personInfo.fitProjectFlg == "0") {
-            if (this.personInfo.priceTypeData == "人员") {
-              if (this.personInfo.staffPay == "3") {
-                this.personInfo.PayWayData = "分摊";
-                this.personInfo.ShareNoData = this.personInfo.staffShareNo;
-                this.isShowFtCode = true;
-              } else {
-                this.personInfo.PayWayData = "预付费";
-              }
-            } else if (this.personInfo.priceTypeData == "备件") {
-              if (this.personInfo.partsPay == "3") {
-                this.personInfo.PayWayData = "分摊";
-                this.isShowFtCode = true;
-              } else {
-                this.personInfo.PayWayData = "预付费";
-              }
+          } else if (this.personInfo.priceTypeData == "备件") {
+            if (this.personInfo.partsPay == "3") {
+              this.personInfo.PayWayData = "分摊";
+              this.personInfo.ShareNoData = this.personInfo.partsShareNo;
+              this.isShowFtCode = true;
             }
           }
+        } else if (this.personInfo.fitProjectFlg == "0") {
+          if (this.personInfo.priceTypeData == "人员") {
+            if (this.personInfo.staffPay == "3") {
+              this.personInfo.PayWayData = "分摊";
+              this.personInfo.ShareNoData = this.personInfo.staffShareNo;
+              this.isShowFtCode = true;
+            } else {
+              this.personInfo.PayWayData = "预付费";
+            }
+          } else if (this.personInfo.priceTypeData == "备件") {
+            if (this.personInfo.partsPay == "3") {
+              this.personInfo.PayWayData = "分摊";
+              this.isShowFtCode = true;
+            } else {
+              this.personInfo.PayWayData = "预付费";
+            }
+          }
+        }
     });
   },
+
   methods: {
-    opWBMInfo(){
-      fetch.get("?action=/once/queryWBMPersonFree&onceNum=" + this.num, {}).then(res => {
-        console.log("queryWBMPersonFree", res);
-        this.WBMInfo = res.data;
-      // this.WBMInfoPrice = res.data[0]
-      });
-    },
-    opPriceInfo(){
-      fetch.get("?action=/once/queryCaseOnceStaffByProcessInstId&processInstID=" +this.processinstId,{}).then(res => {
-        console.log("queryCaseOnceStaffByProcessInstId", res);
-        this.staffPriceInfo = res.data;
-        for (var j = 0; j < this.staffPriceInfo.length; j++) {
-          for (var i = 0; i < this.roleList.length; i++) {
-            if (this.roleList[i]["dictID"] == this.staffPriceInfo[j].roleId) {
-              this.staffPriceInfo[j].roleName = this.roleList[i]["dictName"];
-            }
-          }
-          for (var i = 0; i < this.stageList.length; i++) {
-            if (this.stageList[i]["dictID"] == this.staffPriceInfo[j].stageId) {
-              this.staffPriceInfo[j].stageName = this.stageList[i]["dictName"];
-            }
-          }
-          for (var i = 0; i < this.levelList.length; i++) {
-            if (this.levelList[i]["dictID"] == this.staffPriceInfo[j].engineerLevel) {
-              this.staffPriceInfo[j].engineerLevelName = this.levelList[i]["dictName"];
-            }
-          }
-          if (this.staffPriceInfo[j].resourceType == "1") {
-            this.staffPriceInfo[j].resourceTypeName = "外部资源";
-          } else if (this.staffPriceInfo[j].resourceType == "0") {
-            this.staffPriceInfo[j].resourceTypeName = "内部资源";
-          }
-        }
-      });
-    },
-    choisePriceType(priceId) {
-      if (priceId == 1) {
-        return "人员";
-      } else if (priceId == 2) {
-        return "备件";
+  // 报价信息：
+    isSpeciallyApprove(val){
+      if (val=="1"){
+        this.ifShowSpeciallyApprove = true;
       }
-    },
-    choisePriceStatus(onceStatusId) {
-      for (var i = 0; i < this.statusList.length; i++) {
-        if (this.statusList[i]["dictID"] == onceStatusId) {
-          return this.statusList[i]["dictName"];
-        }
+      else if(val=="0")
+      {
+        this.ifShowSpeciallyApprove = false;
       }
     },
 
+    isInsideOrExternalSource(val){
+      if (val=="0"){
+        this.ifInsideSource = false;
+      }
+      else if (val=="1"){
+        this.ifInsideSource = true;
+        this.priceInfoDataAdd.price = undefined;
+        
+      }
+    },
+
+    onSubmitPrice(){
+      let params = new URLSearchParams;
+      params.append("onceType", this.personInfo.priceType);
+      params.append("approved", this.personInfo.specialApproved);
+      if (this.personInfo.specialApproved=="1"){
+        params.append("remark",this.personInfo.remark);
+      }
+      else if (this.personInfo.specialApproved=="0"){
+        console.log(this.personInfo.specialApproved)
+      }
+      params.append("onceNum", this.personInfo.num);
+      const loading = this.$loading({
+        lock: true,
+        text: '提交中...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(255, 255, 255, 0.3)'
+      });
+      fetch.post("?action=/once/submitCaseOnceAll", params).then(res=>{
+        console.log("resssssre", res)
+        loading.close();
+        if(res.STATUSCODE=="0"){
+          this.$message({
+            message:'提交成功',
+            type: 'success',
+            center: true,
+            customClass: 'msgdefine'
+          });
+          this.opPriceInfo();
+          this.opWBMInfo();
+          this.popPrice = false;
+          this.popSubmit = false;
+        }
+        else if(res.STATUSCODE=="1"){
+          this.$message({
+            message: res.MESSAGE,
+            type: 'warning',
+            center: true,
+            customClass: 'msgdefine'
+          });
+        }
+      })
+    },
+
+    onSubmitPriceAddorEdit(key){
+      if (key==1){
+        if (this.priceInfoDataAdd!=undefined){
+          this.priceInfoDataAdd = {};
+          this.ifEdit = 1;
+          this.popPrice = true;
+        }
+      }
+      else if(key==2){
+        if (this.priceInfoDataAdd.__ob__.value.caseId==undefined){
+          this.$message({
+            message: "没有选择编辑项，无编辑项",
+            type: 'warning',
+            center: true,
+            customClass:'msgdefine'
+          });
+        }
+        else{
+          this.ifEdit = 2;
+          this.popPrice = true;
+        }
+      }
+      else{
+        this.popPrice = false;
+      }
+    },
+    
+    onSubmitPriceDelete(){
+      let params = new URLSearchParams;
+      params.append("num", this.priceInfoDataAdd.num);
+      const loading = this.$loading({
+        lock: true,
+        text: '提交中...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(255, 255, 255, 0.3)'
+      });
+      fetch.post("?action=/once/deleteCaseOnceStaff", params).then(res=>{
+        console.log("resssssre", res)
+        loading.close();
+        if(res.STATUSCODE=="0"){
+          this.$message({
+            message:'提交成功',
+            type: 'success',
+            center: true,
+            customClass: 'msgdefine'
+          });
+          this.opPriceInfo();
+        }
+      })
+    },
+
+    onSubmitPriceInfoAddAndEdit(priceAddEditData, priceInfoDataAddForm){
+      let params = new URLSearchParams;
+      let data = {};
+      data.caseId = this.caseId;
+      data.processinstid = this.processinstId
+      data.roleId = priceAddEditData.roleId;
+      data.engineerLevel = priceAddEditData.engineerLevel;
+      data.resourceType = priceAddEditData.resourceType;
+      data.workload = priceAddEditData.workload;
+      data.price = priceAddEditData.price;
+      data.trvaelPrice = priceAddEditData.trvaelPrice;
+      data.remark = priceAddEditData.remark;
+      if (this.ifEdit=="2"){
+        data.num = priceAddEditData.num;
+      }
+      let array = JSON.stringify(data);
+      params.append("ifEdit", this.ifEdit);
+      params.append("data", array);
+      const loading = this.$loading({
+        lock: true,
+        text: '提交中...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(255, 255, 255, 0.3)'
+      });
+      let vm = this;
+      this.$refs[priceInfoDataAddForm].validate((valid) => {
+        if (valid) {
+          if(!vm.checkAdd(loading)) return;
+          fetch.post("?action=/once/saveCaseOnceStaff", params).then(res=>{
+            console.log("resssssre", res)
+            loading.close();
+            if(res.STATUSCODE=="0"){
+              this.$message({
+                message:'提交成功',
+                type: 'success',
+                center: true,
+                customClass: 'msgdefine'
+              });
+              this.opPriceInfo();
+              this.popPrice = false;
+            }
+          })
+        }
+      })
+    },
+
+    staffPriceSelectionChange(val){
+      this.priceInfoDataAdd = val[0];
+      if (this.priceInfoDataAdd==undefined){
+        this.priceInfoDataAdd = {};
+      }
+    },
+    
+  // 销售确认信息：
     isFitProjectFlg(fitProjectFlgId) {
       let math = require('mathjs');
       if (fitProjectFlgId=="1") {
@@ -639,6 +788,7 @@ export default {
         }
       }
     },
+
     choiseNotFit(){
       let math = require('mathjs');
       if (this.personInfo.PayWayDataId=="1"){
@@ -663,116 +813,19 @@ export default {
       }
     },
 
-    choiseStaffPay(staffPayNum, partsPayNum, priceTypeData, fitProjectNum) {
-      if (fitProjectNum == "1") {
-        if (priceTypeData == "人员") {
-          if (staffPayNum == "3") {
-            staffPayData.staffPay = "分摊";
-            return staffPayData;
-          }
-        } else if (priceTypeData == "备件") {
-          if (partsPayNum == "3") {
-            partsPayData.partsPay = "3";
-            return staffPayData;
-          }
-        }
-      } else if (priceTypeData == "备件") {
-      }
-    },
-    isSpeciallyApprove(val){
-        if (val=="1"){
-            this.ifShowSpeciallyApprove = true;
-        }
-        else if(val=="0")
-        {
-            this.ifShowSpeciallyApprove = false;
-        }
-
-    },
-    onSubmitSpeciallyApprove() {},
-    saleData(){
-      let data = {};
-      data.caseId = this.personInfo.caseId;
-      data.num = this.personInfo.num;
-      data.code = this.personInfo.code;
-      data.processinstid = this.personInfo.processinstid;
-      data.fitProjectFlg = this.personInfo.fitProjectFlg;
-      data.priceType = this.personInfo.priceType;
-      data.actualFeeAmount = this.personInfo.actualFeeAmount;
-      data.remark = this.personInfo.remark;
-      if (this.personInfo.priceType=="1"){
-          data.staffPay = this.personInfo.PayWayDataId
-          data.staffShareNo = this.personInfo.ShareNoData
-      }
-      else{
-          data.partsPay = this.personInfo.PayWayDataId
-          data.partsShareNo = this.personInfo.ShareNoData
-      }
-      return data
-  
-    },
-    projectFeeData(){
-      let math = require('mathjs');
-      let dataFee = [];
-      let flag = true;
-      let total = this.personInfo.actualFeeAmount;
-      for (var i=0;i<this.multipleSelection.length;i++){
-        let dob = {};
-        if (flag){
-          if (math.format(math.chain(math.bignumber(total)).subtract(math.bignumber(this.multipleSelection[i].restAmount)).done())>0.0) {
-            dob.restAmount = parseInt(this.multipleSelection[i].restAmount);
-            total = math.format(math.chain(math.bignumber(total)).subtract(math.bignumber(this.multipleSelection[i].restAmount)).done());
-          }
-          else{
-            dob.restAmount = parseInt(total);
-            flag = false;
-          }
-        }
-        else{
-          dob.restAmount = parseInt(0.0);
-        }
-        dob.projectId = this.multipleSelection[i].projectId;
-        dob.projectCode = this.multipleSelection[i].projectCode
-        dataFee.push(dob);
-      }
-      return dataFee
-    },
-    ifAdequacyOfFunds(funds){
-      let total = 0;
-      for (var i=0;i<funds.length;i++){
-        total += funds[i].restAmount
-      }
-      if (this.personInfo.actualFeeAmount==total){
-        return true
-      }
-      else{
-        return false
-      }
-    },
-    check(loading){
-      if(this.personInfo.fitProjectFlg==undefined){
-        this.$message({
-            message:'请选择是否入项目',
-            type: 'warning',
-            center: true,
-            customClass:'msgdefine'
-        });
-        loading.close();
-        return false
-      }
-      if(this.personInfo.ShareNoData==undefined&&this.personInfo.PayWayDataId!='1'){
-        this.$message({
-            message:'请输入分摊编号',
-            type: 'warning',
-            center: true,
-            customClass:'msgdefine'
-        });
-        loading.close();
-        return false
-      }
-      return true;
+    onSubmitPreFee(){
+      this.popBg = true;
     },
 
+    onSubmitPreFeeSure(){
+      this.popBg = false;
+      this.isShowPreFeeInfo = true;
+    },
+
+    onSubmitPreFeeCancel(){
+      this.popBg = false;
+      this.multipleSelection = [];
+    },
 
     onSubmitSale(personForm){
       let params = new URLSearchParams;
@@ -866,7 +919,12 @@ export default {
         }
       })
     },
+    handleSelectionChange(val) {
+      let math = require('mathjs');
+      this.multipleSelection = val;
+    },
 
+  // 分摊确认信息：
     onSubmitFTOK(){
       if (this.status=='7'){
         this.isShowSureFT = true;
@@ -877,6 +935,7 @@ export default {
         this.isShowSureFT = true;
       }
     },
+
     onSubmitFT(ftway){
       if (ftway=="1"){
         let params = new URLSearchParams;
@@ -948,156 +1007,226 @@ export default {
           }
         });
       }
+    },
+  
+  // 公共信息：
 
-      
+    opWBMInfo(){
+      fetch.get("?action=/once/queryWBMPersonFree&onceNum=" + this.num, {}).then(res => {
+        console.log("queryWBMPersonFree", res);
+        this.WBMInfo = res.data;
+      // this.WBMInfoPrice = res.data[0]
+      });
+    },
+    opPriceInfo(){
+      fetch.get("?action=/once/queryCaseOnceStaffByProcessInstId&processInstID=" +this.processinstId,{}).then(res => {
+        console.log("queryCaseOnceStaffByProcessInstId", res);
+        this.staffPriceInfo = res.data;
+        for (var j = 0; j < this.staffPriceInfo.length; j++) {
+          for (var i = 0; i < this.roleList.length; i++) {
+            if (this.roleList[i]["dictID"] == this.staffPriceInfo[j].roleId) {
+              this.staffPriceInfo[j].roleName = this.roleList[i]["dictName"];
+            }
+          }
+          for (var i = 0; i < this.stageList.length; i++) {
+            if (this.stageList[i]["dictID"] == this.staffPriceInfo[j].stageId) {
+              this.staffPriceInfo[j].stageName = this.stageList[i]["dictName"];
+            }
+          }
+          for (var i = 0; i < this.levelList.length; i++) {
+            if (this.levelList[i]["dictID"] == this.staffPriceInfo[j].engineerLevel) {
+              this.staffPriceInfo[j].engineerLevelName = this.levelList[i]["dictName"];
+            }
+          }
+          if (this.staffPriceInfo[j].resourceType == "1") {
+            this.staffPriceInfo[j].resourceTypeName = "外部资源";
+          } else if (this.staffPriceInfo[j].resourceType == "0") {
+            this.staffPriceInfo[j].resourceTypeName = "内部资源";
+          }
+        }
+      });
     },
 
-    handleSelectionChange(val) {
-      let math = require('mathjs');
-      this.multipleSelection = val;
-    },
-    staffPriceSelectionChange(val){
-      this.priceInfoDataAdd = val[0];
-      if (this.priceInfoDataAdd==undefined){
-        this.priceInfoDataAdd = {};
+    choisePriceType(priceId) {
+      if (priceId == 1) {
+        return "人员";
+      } else if (priceId == 2) {
+        return "备件";
       }
     },
-    onSubmitPreFee(){
-      this.popBg = true;
-
-    },
-    onSubmitPreFeeSure(){
-      this.popBg = false;
-      this.isShowPreFeeInfo = true;
-    },
-    onSubmitPreFeeCancel(){
-      this.popBg = false;
-      this.multipleSelection = [];
-    },
-    onSubmitPriceAddorEdit(key){
-      if (key==1){
-        if (this.priceInfoDataAdd!=undefined){
-          this.priceInfoDataAdd = {};
-          this.ifEdit = 1;
-          this.popPrice = true;
+    choisePriceStatus(onceStatusId) {
+      for (var i = 0; i < this.statusList.length; i++) {
+        if (this.statusList[i]["dictID"] == onceStatusId) {
+          return this.statusList[i]["dictName"];
         }
       }
-      else if(key==2){
-        if (this.priceInfoDataAdd.__ob__.value.caseId==undefined){
-          this.$message({
-            message: "没有选择编辑项，无编辑项",
+    },
+
+    choiseStaffPay(staffPayNum, partsPayNum, priceTypeData, fitProjectNum) {
+      if (fitProjectNum == "1") {
+        if (priceTypeData == "人员") {
+          if (staffPayNum == "3") {
+            staffPayData.staffPay = "分摊";
+            return staffPayData;
+          }
+        } else if (priceTypeData == "备件") {
+          if (partsPayNum == "3") {
+            partsPayData.partsPay = "3";
+            return staffPayData;
+          }
+        }
+      } else if (priceTypeData == "备件") {
+      }
+    },
+    
+
+    saleData(){
+      let data = {};
+      data.caseId = this.personInfo.caseId;
+      data.num = this.personInfo.num;
+      data.code = this.personInfo.code;
+      data.processinstid = this.personInfo.processinstid;
+      data.fitProjectFlg = this.personInfo.fitProjectFlg;
+      data.priceType = this.personInfo.priceType;
+      data.actualFeeAmount = this.personInfo.actualFeeAmount;
+      data.remark = this.personInfo.remark;
+      if (this.personInfo.priceType=="1"){
+          data.staffPay = this.personInfo.PayWayDataId
+          data.staffShareNo = this.personInfo.ShareNoData
+      }
+      else{
+          data.partsPay = this.personInfo.PayWayDataId
+          data.partsShareNo = this.personInfo.ShareNoData
+      }
+      return data
+  
+    },
+    projectFeeData(){
+      let math = require('mathjs');
+      let dataFee = [];
+      let flag = true;
+      let total = this.personInfo.actualFeeAmount;
+      for (var i=0;i<this.multipleSelection.length;i++){
+        let dob = {};
+        if (flag){
+          if (math.format(math.chain(math.bignumber(total)).subtract(math.bignumber(this.multipleSelection[i].restAmount)).done())>0.0) {
+            dob.restAmount = parseInt(this.multipleSelection[i].restAmount);
+            total = math.format(math.chain(math.bignumber(total)).subtract(math.bignumber(this.multipleSelection[i].restAmount)).done());
+          }
+          else{
+            dob.restAmount = parseInt(total);
+            flag = false;
+          }
+        }
+        else{
+          dob.restAmount = parseInt(0.0);
+        }
+        dob.projectId = this.multipleSelection[i].projectId;
+        dob.projectCode = this.multipleSelection[i].projectCode
+        dataFee.push(dob);
+      }
+      return dataFee
+    },
+    ifAdequacyOfFunds(funds){
+      let total = 0;
+      for (var i=0;i<funds.length;i++){
+        total += funds[i].restAmount
+      }
+      if (this.personInfo.actualFeeAmount==total){
+        return true
+      }
+      else{
+        return false
+      }
+    },
+
+    checkAdd(loading,){
+      if(this.priceInfoDataAdd.resourceType==undefined){
+        this.$message({
+            message:'请选择外部(内部)资源',
             type: 'warning',
             center: true,
             customClass:'msgdefine'
-          });
-        }
-        else{
-          this.ifEdit = 2;
-          this.popPrice = true;
-        }
-      }
-      else{
-        this.popPrice = false;
-      }
-    },
-    onSubmitPriceDelete(){
-      let params = new URLSearchParams;
-      params.append("num", this.priceInfoDataAdd.num);
-      const loading = this.$loading({
-        lock: true,
-        text: '提交中...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(255, 255, 255, 0.3)'
-      });
-      fetch.post("?action=/once/deleteCaseOnceStaff", params).then(res=>{
-        console.log("resssssre", res)
+        });
         loading.close();
-        if(res.STATUSCODE=="0"){
-          this.$message({
-            message:'提交成功',
-            type: 'success',
-            center: true,
-            customClass: 'msgdefine'
-          });
-          this.opPriceInfo();
-        }
-      })
-    },
-    onSubmitPriceInfoAddAndEdit(priceAddEditData){
-      let params = new URLSearchParams;
-      let data = {};
-      data.caseId = this.caseId;
-      data.processinstid = this.processinstId
-      data.roleId = priceAddEditData.roleId;
-      data.engineerLevel = priceAddEditData.engineerLevel;
-      data.resourceType = priceAddEditData.resourceType;
-      data.workload = priceAddEditData.workload;
-      data.price = priceAddEditData.price;
-      data.trvaelPrice = priceAddEditData.trvaelPrice;
-      data.remark = priceAddEditData.remark;
-      if (this.ifEdit=="2"){
-        data.num = priceAddEditData.num;
+        return false
       }
-      let array = JSON.stringify(data);
-      params.append("ifEdit", this.ifEdit);
-      params.append("data", array);
-      const loading = this.$loading({
-        lock: true,
-        text: '提交中...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(255, 255, 255, 0.3)'
-      });
-      fetch.post("?action=/once/saveCaseOnceStaff", params).then(res=>{
-        console.log("resssssre", res)
-        loading.close();
-        if(res.STATUSCODE=="0"){
-          this.$message({
-            message:'提交成功',
-            type: 'success',
+      if(this.priceInfoDataAdd.resourceType=='0'&&this.priceInfoDataAdd.roleId==undefined){
+        this.$message({
+            message:'请选择涉及角色',
+            type: 'warning',
             center: true,
-            customClass: 'msgdefine'
-          });
-          this.opPriceInfo();
-          this.popPrice = false;
+            customClass:'msgdefine'
+        });
+        loading.close();
+        return false
+      }
+      if(this.priceInfoDataAdd.resourceType=='0'&&this.priceInfoDataAdd.workload==undefined){
+        this.$message({
+            message:'请输入工作量(天)',
+            type: 'warning',
+            center: true,
+            customClass:'msgdefine'
+        });
+        loading.close();
+        return false
+      }
+      if(this.priceInfoDataAdd.resourceType=='1'&&this.priceInfoDataAdd.roleId==undefined){
+        this.$message({
+            message:'请选择涉及角色',
+            type: 'warning',
+            center: true,
+            customClass:'msgdefine'
+        });
+        loading.close();
+        return false
+      }
+      if(this.priceInfoDataAdd.resourceType=='1'&&this.priceInfoDataAdd.engineerLevel==undefined){
+        this.$message({
+            message:'请选择工程师级别',
+            type: 'warning',
+            center: true,
+            customClass:'msgdefine'
+        });
+        loading.close();
+        return false
+      }
+      if(this.priceInfoDataAdd.resourceType=='1'&&this.priceInfoDataAdd.price==undefined){
+        this.$message({
+            message:'请输入外援费用',
+            type: 'warning',
+            center: true,
+            customClass:'msgdefine'
+        });
+        loading.close();
+        return false
+      }
+      return true;
+    },
+    
 
-        }
-      })
-    },
-    onSubmitPrice(){
-      let params = new URLSearchParams;
-      params.append("onceType", this.personInfo.priceType);
-      params.append("approved", this.personInfo.specialApproved);
-      if (this.personInfo.specialApproved=="1"){
-        params.append("remark",this.personInfo.remark);
-      }
-      else if (this.personInfo.specialApproved=="0"){
-        console.log(this.personInfo.specialApproved)
-      }
-      params.append("onceNum", this.personInfo.num);
-      const loading = this.$loading({
-        lock: true,
-        text: '提交中...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(255, 255, 255, 0.3)'
-      });
-      fetch.post("?action=/once/submitCaseOnceAll", params).then(res=>{
-        console.log("resssssre", res)
-        loading.close();
-        if(res.STATUSCODE=="0"){
-          this.$message({
-            message:'提交成功',
-            type: 'success',
+    check(loading){
+      if(this.personInfo.fitProjectFlg==undefined){
+        this.$message({
+            message:'请选择是否入项目',
+            type: 'warning',
             center: true,
-            customClass: 'msgdefine'
-          });
-          this.opPriceInfo();
-          this.opWBMInfo();
-          this.popPrice = false;
-          this.popSubmit = false;
-        }
-      })
-      
-
+            customClass:'msgdefine'
+        });
+        loading.close();
+        return false
+      }
+      if(this.personInfo.ShareNoData==undefined&&this.personInfo.PayWayDataId!='1'){
+        this.$message({
+            message:'请输入分摊编号',
+            type: 'warning',
+            center: true,
+            customClass:'msgdefine'
+        });
+        loading.close();
+        return false
+      }
+      return true;
     },
 
   }
@@ -1109,8 +1238,8 @@ export default {
 .popPrice{background: rgba(0,0,0,0.5); position: relative; bottom: 0; z-index: 998; padding: 0 0.25rem;}
 
 .popPrice {width: 90%;}
-.bodyForm >>> .caseCode .el-input__inner{color: #2698d6}
-.bodyForm >>> .roleInfo .el-input__inner{color: #2698d6}
+.bodyForm >>> .caseCode .el-input__inner{color: #104E8B}
+.bodyForm >>> .roleInfo .el-input__inner{color: #104E8B}
 .popPrice >>> .el-form-item {border-bottom: 0.01rem solid #e5e5e5;margin: 0;}
 .popPrice >>> .el-form-item__label {font-size: 0.13rem;color: #acacac;padding: 0 0 0 0.15rem;text-align: left;}
 .popPrice >>> .el-form-item__error {position: relative;}
@@ -1146,7 +1275,7 @@ export default {
 .bodyForm >>> .el-form-item {border-bottom: 0.01rem solid #e5e5e5;margin: 0;}
 .bodyForm >>> .el-form-item__label {font-size: 0.13rem;color: #acacac;padding: 0 0 0 0.15rem;text-align: left;}
 .bodyForm >>> .el-form-item__error {position: relative;}
-.bodyForm >>> .el-input__inner {border: none;color: #333333;padding: 0px 0px;}
+.bodyForm >>> .el-input__inner {border: none;color: black;padding: 0px 0px;}
 .bodyForm >>> .el-input__inner::placeholder {font-size: 0.13rem;color: #acacac;}
 .bodyForm >>> .el-input.is-disabled .el-input__inner {background: #ffffff;}
 .bodyForm >>> .el-button {width: 100%;}
