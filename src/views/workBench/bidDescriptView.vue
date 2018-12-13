@@ -241,7 +241,7 @@
             <el-form ref="personInfo" :model="personInfo" label-width="1rem">
                 <el-form-item label="入项目">
                     <el-radio-group v-model="personInfo.fitProjectFlg">
-                        <el-radio label="1" @change="isFitProjectFlg('1')">是</el-radio>
+                        <el-radio label="1" @change="isFitProjectFlg('1')" v-if="personInfo.caseType!='5'">是</el-radio>
                         <el-radio label="0" @change="isFitProjectFlg('0')">否</el-radio>
                     </el-radio-group>
                 </el-form-item>
@@ -467,26 +467,26 @@ export default {
 
   // 销售确认信息：
     fetch.get("?action=/once/serchFreeOffer&num=" + this.num, {}).then(res => {
-      console.log(res)
+      console.log("serchFreeOffer1",res)
       this.PrefeeInfo = res.data;
     });
 
     fetch.get("?action=/once/checkOnceRules&num=" + this.num, {}).then(res => {
-      console.log("checkOnceRules", res);
+      console.log("checkOnceRules2", res);
     });
     fetch.get("?action=/once/queryCaseOnceFee&caseId=" + this.caseId + "&num=" + this.num + "&feeFlg=", {}).then(res => {
-      console.log("queryCaseOnceFee", res);
+      console.log("queryCaseOnceFee3", res);
     });
   
   // 备件报价信息
     fetch.get("?action=/once/queryCaseOncePartsByProcessInstID&processInstID=" +this.processinstId,{}).then(res => {
-      console.log("queryCaseOncePartsByProcessInstID", res);
+      console.log("queryCaseOncePartsByProcessInstID4", res);
       this.partsPriceInfo = res.data;
     });
 
   // 人员报价信息
     fetch.get("?action=/once/queryCaseOnceStaffByProcessInstId&processInstID=" +this.processinstId,{}).then(res => {
-      console.log("queryCaseOnceStaffByProcessInstId", res);
+      console.log("queryCaseOnceStaffByProcessInstId5", res);
       this.staffPriceInfo = res.data;
       for (var j = 0; j < this.staffPriceInfo.length; j++) {
         for (var i = 0; i < this.roleList.length; i++) {
@@ -515,7 +515,7 @@ export default {
 
   // WBM报价信息
     fetch.get("?action=/once/queryWBMPersonFree&onceNum=" + this.num, {}).then(res => {
-        console.log("queryWBMPersonFree", res);
+        console.log("queryWBMPersonFree6", res);
         this.WBMInfo = res.data;
         this.WBMInfoPrice = res.data[0]
     });
@@ -523,7 +523,7 @@ export default {
   // 公共信息
     fetch.get("?action=/once/getCaseOnceByProcessInstID&processInstID=" + this.processinstId,{}).then(res => {
         this.personInfo = res.data;
-        console.log("getCaseOnceByProcessInstID_before", this.personInfo)
+        console.log("getCaseOnceByProcessInstID_before7", this.personInfo)
         this.personInfo.priceTypeData = this.choisePriceType(this.personInfo.priceType);
         this.personInfo.onceStatusData = this.choisePriceStatus(this.personInfo.onceStatus);
 

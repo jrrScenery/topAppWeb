@@ -79,7 +79,7 @@ export default {
       ],
 
       page: 1,
-      pageSize: 15,
+      pageSize: 30,
       busy: false,
       loadall: false,
       tableHeight:400

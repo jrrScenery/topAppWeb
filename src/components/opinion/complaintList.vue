@@ -76,7 +76,7 @@ export default {
       ],
 
       page: 1,
-      pageSize: 15,
+      pageSize: 30,
       busy: false,
       loadall: false,
       tableHeight:400,
@@ -113,7 +113,9 @@ export default {
       fetch.get("?action=GetComplaintsList",reqParams).then(res=>{
         var tmpar= res.data;
         tmpar = tmpar.map(function(item){
-          item.COMPLAINT_COMMENT = item.COMPLAINT_COMMENT.replace(/\n/g, "<br/>");
+          if(item.COMPLAINT_COMMENT!=null){
+            item.COMPLAINT_COMMENT = item.COMPLAINT_COMMENT.replace(/\n/g, "<br/>");
+          }
           return item;
         })
         if(flag){
