@@ -377,7 +377,6 @@ export default new Router({
       name: 'workBenchPOinfo',
       component: resolve => require(['@/views/workBench/workBenchPOinfo'], resolve)
     },
-<<<<<<< HEAD
     {
       path: '/workBench/workBenchQualityControl',
       name: 'workBenchQualityControl',
@@ -419,9 +418,7 @@ export default new Router({
         keepAlive: true
       }
     },
-=======
  
->>>>>>> 700636f70230d1564be17077827fa2a11f44c7ce
     {
       path: '/workBench/workBenchDeclare',
       name: 'workBenchDeclare',
