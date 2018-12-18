@@ -38,6 +38,9 @@ export default new Router({
         //   path: '/managementModule',
         //   name: 'managementModule',
         //   component: resolve => require(['@/views/managementModule/managementModule'], resolve)
+        //   path: '/reportform',
+        //   name: 'reportForm',
+        //   component: resolve => require(['@/views/reportform/reportForm'], resolve)
         // },
         {
           path: '/mine',
@@ -50,6 +53,132 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: resolve => require(['@/views/login/login'], resolve)
+    },
+    //首页我的任务
+    {
+      path: '/workBench/workBenchMyTask',
+      name: 'workBenchMyTask',
+      component: resolve => require(['@/views/workBench/workBenchMyTask'], resolve),
+    },
+    //首页我的事件
+    {
+      path: '/workBench/workBenchMyEvent',
+      name: 'workBenchMyEvent',
+      component: resolve => require(['@/views/workBench/workBenchMyEvent'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
+    },
+    //首页我的项目
+    {
+      path: '/workBench/workBenchMyPro',
+      name: 'workBenchMyPro',
+      component: resolve => require(['@/views/workBench/workBenchMyPro'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
+    },
+    //首页单次报价
+    {
+      path: '/workBench/bidClass',
+      name: 'bidClass',
+      component: resolve => require(['@/views/workBench/bidClass'], resolve)
+    },
+    //首页事件总览
+    {
+      path: '/workBench/workBenchMyEventAll',
+      name: 'workBenchMyEventAll',
+      component: resolve => require(['@/views/workBench/workBenchMyEventAll'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
+    },
+    //首页项目总览
+    {
+      path: '/workBench/workBenchMyProAll',
+      name: 'workBenchMyProAll',
+      component: resolve => require(['@/views/workBench/workBenchMyProAll'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
+    },
+    //首页意见投诉
+    {
+      path: '/home/tabshowTest',
+      name: 'tabshowTest',
+      component: resolve => require(['@/views/home/tabshowTest'], resolve)
+    },
+    //首页报表统计（业务）
+    {
+      path: '/home/reportBusinessForm',
+      name: 'reportBusinessForm',
+      component: resolve => require(['@/views//home/reportBusinessForm'], resolve)
+    },
+    //任务列表（首页我的任务->任务列表）
+    {
+      path: '/workBench/workBenchTaskList',
+      name: 'workBenchTaskList',
+      component: resolve => require(['@/views/workBench/workBenchTaskList'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
+    },
+    //任务列表（首页我的任务->任务列表->任务）
+    {
+      path: '/workBench/workBenchTaskDetailInfo', 
+      name: 'workBenchTaskDetailInfo',
+      component: resolve => require(['@/views/workBench/workBenchTaskDetailInfo'], resolve),
+    },
+    //任务列表（首页我的任务->任务列表->任务->SLA反馈）
+    {
+      path: '/workBench/workBenchSLAfeedback', 
+      name: 'workBenchSLAfeedback',
+      component: resolve => require(['@/views/workBench/workBenchSLAfeedback'], resolve)
+    },
+    //任务列表（首页我的任务->任务列表->任务->服务单一览表）
+    {
+      path: '/workBench/serviceList',
+      name: 'serviceList',
+      component: resolve => require(['@/views/workBench/serviceList'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
+    },
+    //任务列表（首页我的任务->任务列表->任务->服务单一览表->现场服务单/故障处理服务单）
+    {
+      path: '/workBench/onsiteServiceInfo',
+      name: 'onsiteServiceInfo',
+      component: resolve => require(['@/views/workBench/onsiteServiceInfo'], resolve)
+    },
+    //任务列表（首页我的任务->任务列表->任务->工作量申报）
+    {
+      path: '/home/declareWorkLoad',
+      name: 'declareWorkLoad',
+      component: resolve => require(['@/views/home/declareWorkLoad'], resolve)
+    },
+    //任务列表（首页我的任务->任务列表->任务->人员评价/备件评价）
+    {
+      path: '/workBench/casePartEvaluate',
+      name: 'casePartEvaluate',
+      component: resolve => require(['@/views/workBench/casePartEvaluate'], resolve)
+    },
+    //任务列表（首页我的任务->任务列表->任务->事件备件列表）
+    {
+      path: '/workBench/sparePartsSortOut',
+      name: 'sparePartsSortOut',
+      component: resolve => require(['@/views/workBench/sparePartsSortOut'], resolve)
+    },
+    //任务列表（首页我的任务->任务列表->任务->备件回收
+    {
+      path: '/workBench/workBenchPartRecycle',
+      name: 'workBenchPartRecycle',
+      component: resolve => require(['@/views/workBench/workBenchPartRecycle'], resolve)
     },
     {
       path: '/home/eventList',
@@ -65,6 +194,7 @@ export default new Router({
       name: 'eventShow',
       component: resolve => require(['@/views//home/eventShow'], resolve)
     },
+
     {
       path: '/home/eventFeedback',
       name: 'eventFeedback',
@@ -85,26 +215,13 @@ export default new Router({
       name: 'eventSLAInfo',
       component: resolve => require(['@/views/home/eventSLAInfo'], resolve)
     },
-    {
-      path: '/home/declareWorkLoad',
-      name: 'declareWorkLoad',
-      component: resolve => require(['@/views/home/declareWorkLoad'], resolve)
-    },
-    {
-      path: '/workBench/sparePartsSortOut',
-      name: 'sparePartsSortOut',
-      component: resolve => require(['@/views/workBench/sparePartsSortOut'], resolve)
-    },
+    
     {
       path: '/workBench/bidDescriptView',
       name: 'bidDescriptView',
       component: resolve => require(['@/views/workBench/bidDescriptView'], resolve)
     },
-    {
-      path: '/workBench/bidClass',
-      name: 'bidClass',
-      component: resolve => require(['@/views/workBench/bidClass'], resolve)
-    },
+    
     {
       path: '/workBench/bidPriceProgress',
       name: 'bidPriceProgress',
@@ -159,11 +276,7 @@ export default new Router({
       name: 'programShow',
       component: resolve => require(['@/views/home/programShow'], resolve)
     },
-    {
-      path: '/home/tabshowTest',
-      name: 'tabshowTest',
-      component: resolve => require(['@/views/home/tabshowTest'], resolve)
-    },
+    
     {
       path: '/home/opinion',
       name: 'opinion',
@@ -264,6 +377,7 @@ export default new Router({
       name: 'workBenchPOinfo',
       component: resolve => require(['@/views/workBench/workBenchPOinfo'], resolve)
     },
+<<<<<<< HEAD
     {
       path: '/workBench/workBenchQualityControl',
       name: 'workBenchQualityControl',
@@ -305,64 +419,23 @@ export default new Router({
         keepAlive: true
       }
     },
+=======
+ 
+>>>>>>> 700636f70230d1564be17077827fa2a11f44c7ce
     {
       path: '/workBench/workBenchDeclare',
       name: 'workBenchDeclare',
       component: resolve => require(['@/views/workBench/workBenchDeclare'], resolve)
     },
-    {
-      path: '/workBench/workBenchMyTask',
-      name: 'workBenchMyTask',
-      component: resolve => require(['@/views/workBench/workBenchMyTask'], resolve),
-    },
-    {
-      path: '/workBench/workBenchTaskList',
-      name: 'workBenchTaskList',
-      component: resolve => require(['@/views/workBench/workBenchTaskList'], resolve),
-      meta: {
-        isUseCache: false,
-        keepAlive: true
-      }
-    },
-    {
-      path: '/workBench/workBenchTaskDetailInfo', 
-      name: 'workBenchTaskDetailInfo',
-      component: resolve => require(['@/views/workBench/workBenchTaskDetailInfo'], resolve),
-    },
-    {
-      path: '/workBench/workBenchSLAfeedback', 
-      name: 'workBenchSLAfeedback',
-      component: resolve => require(['@/views/workBench/workBenchSLAfeedback'], resolve)
-    }, 
-    {
-      path: '/workBench/casePartEvaluate',
-      name: 'casePartEvaluate',
-      component: resolve => require(['@/views/workBench/casePartEvaluate'], resolve)
-    },
-    {
-      path: '/workBench/workBenchPartRecycle',
-      name: 'workBenchPartRecycle',
-      component: resolve => require(['@/views/workBench/workBenchPartRecycle'], resolve)
-    },
+     
+    
     {
       path: '/workBench/part_recycles',
       name: 'partRecycles',
       component: resolve => require(['@/views/workBench/part_recycle'], resolve)
     },
-    {
-      path: '/workBench/serviceList',
-      name: 'serviceList',
-      component: resolve => require(['@/views/workBench/serviceList'], resolve),
-      meta: {
-        isUseCache: false,
-        keepAlive: true
-      }
-    },
-    {
-      path: '/workBench/onsiteServiceInfo',
-      name: 'onsiteServiceInfo',
-      component: resolve => require(['@/views/workBench/onsiteServiceInfo'], resolve)
-    },
+    
+    
     {
       path: '/workBench/applicationSupport',
       name: 'applicationSupport',

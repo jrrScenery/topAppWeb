@@ -41,15 +41,15 @@ export default {
   },
   created () {
     // this.ruleForm.userName = this.getCookie('username');
+    console.log(this.ruleForm.checked);
     if(this.ruleForm.checked){
       fetch.get("?action=checkSession","").then(res=>{
-
         var token = localStorage.getItem("token");
 
         fetch.get("?action=getUserPermission",{}).then(res=>{
-
+          console.log("res:",res)
+          // localStorage.removeItem("userPermission");
           localStorage.setItem("userPermission", JSON.stringify(res.userPermission));
-
           this.updateUserPermission(res.userPermission);
 
         });
@@ -90,7 +90,7 @@ export default {
             //console.log(res.data);
             if(res.data.STATUSCODE=="0"){
 
-
+console.log(res);
               global_.userInfo = res.data.userInfo;
               global_.userPermission = res.data.userPermission;
               global_.userRole = res.data.userRole;
@@ -104,10 +104,11 @@ export default {
               localStorage.setItem("mobile", res.data.userInfo[0].MOBILE);
               localStorage.setItem("email", res.data.userInfo[0].EMAIL);
               console.log(JSON.stringify(res.data.userPermission));
+              // localStorage.removeItem("userPermission");
               localStorage.setItem("userPermission", JSON.stringify(res.data.userPermission));
               localStorage.setItem("userName", this.ruleForm.userName);
 
-
+              
               
               let ua = navigator.userAgent.toLowerCase();
               if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
@@ -140,7 +141,6 @@ export default {
     },
 
     updateUserPermission(userPermission){
-
       var isGps = 0;
       if(userPermission.length>0){
         for(var i=0;i<userPermission.length;i++){

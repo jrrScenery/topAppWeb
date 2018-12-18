@@ -1,6 +1,6 @@
 <!--首页-事件详情头部-带搜索-->
 <template>
-  <div class="headerView">
+  <div class="headerView"> 
     <header>
       <div class="headerLeft"  v-on:click="back"><i class="el-icon-arrow-left"></i></div>
       <h2>{{title}}</h2>

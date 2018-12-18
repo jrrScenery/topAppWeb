@@ -2,11 +2,16 @@
 <template>
   <div>
     <!-- <div class="headerRight" @click.stop="popBg=!popBg">{{homeRight}}</div> -->
-    <el-form label-width="2.5rem">
+    <!-- <el-form label-width="2.5rem">
         <el-form-item :inline="true">
           <el-button  @click.stop="popBg=!popBg">{{homeRight}}</el-button>
         </el-form-item>
-    </el-form>
+    </el-form> -->
+    <header>
+      <div class="headerLeft"  v-on:click="back"><i class="el-icon-arrow-left"></i></div>
+      <h2>{{title}}</h2>
+      <div class="headerRight" @click.stop="popBg=!popBg">{{headerRight}}</div>
+    </header>
     <template v-if="popBg">
       <div class="popBg">
         <template v-if="searchType=='opnion1'">
@@ -40,12 +45,12 @@ export default {
 
   data () {
     return {
-      homeRight: '查询',
+      headerRight: '查询',
       popBg: false
     }
   },
 
-  props: ['searchType','queryData'],
+  props: ['title','searchType','queryData'],
 
   methods: {
 
@@ -60,7 +65,9 @@ export default {
       this.$emit('searchPro', data)
     },
 
-    
+    back: function (event) {
+      this.$router.back(-1)
+    }
 
   },
 }
@@ -68,8 +75,10 @@ export default {
 </script>
 
 <style scoped>
-  /* .headerLeft,.headerRight{display: flex; flex-direction: column; justify-content: center; align-items: center; width: 0.45rem; height: 0.45rem; font-size: 0.14rem;}
-  .headerLeft i{font-size: 0.2rem;} */
+  header{position:fixed; top: 0; left: 0; right: 0; z-index: 999;display: flex; justify-content: space-between; background: #2698d6; height: 0.45rem; line-height: 0.45rem; padding: 0 0.1rem; color: #ffffff}
+  h2{display: flex; background: #2698d6;font-size: 0.16rem;}
+  .headerLeft,.headerRight{display: flex; flex-direction: column; justify-content: center; align-items: center; width: 0.45rem; height: 0.45rem; font-size: 0.14rem;}
+  .headerLeft i{font-size: 0.2rem;}
   .popBg{background: rgba(0,0,0,0.5); position: fixed; top: 0.45rem; bottom: 0; z-index: 999; padding: 0 0.25rem;}
 </style>
 >
