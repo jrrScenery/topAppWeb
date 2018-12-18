@@ -28,10 +28,10 @@ export default {
   data: function () {
     return {
       footerArr: [
-        {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1'},
-        {elType: 2, index: 'approve', text: '关注', className: 'el-icon-bell'},
-        {elType: 3, index: 'workBench', text: '管理舱', imgSrc: require('@/assets/images/manager.png')},//
-        {elType: 4, index: 'mine', text: '设置', className: 'el-icon-setting'}
+        // {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1'},
+        // {elType: 2, index: 'approve', text: '关注', className: 'el-icon-bell'},
+        // {elType: 3, index: 'workBench', text: '管理舱', imgSrc: require('@/assets/images/manager.png')},//
+        // {elType: 4, index: 'mine', text: '设置', className: 'el-icon-setting'}
         // {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true},
         // {elType: 2, index: 'approve', text: '关注', className: 'el-icon-footer_2',display:true},
         // {elType: 3, index: 'workBench', text: '管理舱', className: 'el-icon-footer_4',display:false},
@@ -63,9 +63,12 @@ export default {
       console.log("permissions:",permissions)
       if(permissions.length==0){
         console.log("111111111111111");
-        this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true};
-        this.footerArr[1] = {elType: 2, index: 'approve', text: '关注', className: 'el-icon-footer_2',display:true};
-        this.footerArr[2] = {elType: 3, index: 'mine', text: '设置', className: 'el-icon-footer_5',display:true}
+        // this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true};
+        // this.footerArr[1] = {elType: 2, index: 'approve', text: '关注', className: 'el-icon-footer_2',display:true};
+        // this.footerArr[2] = {elType: 3, index: 'mine', text: '设置', className: 'el-icon-footer_5',display:true}
+        this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1'};
+        this.footerArr[1] = {elType: 2, index: 'approve', text: '关注', className: 'el-icon-bell'};
+        this.footerArr[3] = {elType: 4, index: 'mine', text: '设置', className: 'el-icon-setting'}
         console.log("this-this1",this.footerArr);
       }else{
         var m=0;
@@ -75,14 +78,21 @@ export default {
           }  
         }
         if(m!=0){
-          this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true};
-          this.footerArr[1] = {elType: 2, index: 'approve', text: '关注', className: 'el-icon-footer_2',display:true};
-          this.footerArr[2] = {elType: 3, index: 'workBench', text: '管理舱', className: 'el-icon-footer_4',display:false};
-          this.footerArr[3] = {elType: 3, index: 'mine', text: '设置', className: 'el-icon-footer_5',display:true}
+          // this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true};
+          // this.footerArr[1] = {elType: 2, index: 'approve', text: '关注', className: 'el-icon-footer_2',display:true};
+          // this.footerArr[2] = {elType: 3, index: 'workBench', text: '管理舱', className: 'el-icon-footer_4',display:false};
+          // this.footerArr[3] = {elType: 3, index: 'mine', text: '设置', className: 'el-icon-footer_5',display:true}
+          this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1'};
+          this.footerArr[1] = {elType: 2, index: 'approve', text: '关注', className: 'el-icon-bell'};
+          this.footerArr[2] = {elType: 3, index: 'workBench', text: '管理舱', imgSrc: require('@/assets/images/manager.png')};//
+          this.footerArr[3] = {elType: 4, index: 'mine', text: '设置', className: 'el-icon-setting'}
         }else{
-          this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true};
-          this.footerArr[1] = {elType: 2, index: 'approve', text: '关注', className: 'el-icon-footer_2',display:true};
-          this.footerArr[2] = {elType: 3, index: 'mine', text: '设置', className: 'el-icon-footer_5',display:true}
+          // this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true};
+          // this.footerArr[1] = {elType: 2, index: 'approve', text: '关注', className: 'el-icon-footer_2',display:true};
+          this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1'};
+          this.footerArr[1] = {elType: 2, index: 'approve', text: '关注', className: 'el-icon-bell'};
+          this.footerArr[3] = {elType: 4, index: 'mine', text: '设置', className: 'el-icon-setting'}
+          // this.footerArr[2] = {elType: 3, index: 'mine', text: '设置', className: 'el-icon-footer_5',display:true}
         }
         console.log("m:",m);
         console.log("this-this2",this.footerArr);
