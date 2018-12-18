@@ -24,10 +24,9 @@ export default {
     return {
       footerArr: [
         {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1'},
-        {elType: 2, index: 'approve', text: '待审批', className: 'el-icon-footer_2'},
-        {elType: 3, index: 'workBench', text: '工作台', imgSrc: require('@/assets/images/footer_3.png')},
-        {elType: 4, index: 'reportForm', text: '报表', className: 'el-icon-footer_4'},//
-        {elType: 5, index: 'mine', text: '我的', className: 'el-icon-footer_5'}
+        {elType: 2, index: 'approve', text: '关注', className: 'el-icon-bell'},
+        {elType: 3, index: 'workBench', text: '管理舱', imgSrc: require('@/assets/images/manager.png')},//
+        {elType: 4, index: 'mine', text: '设置', className: 'el-icon-setting'}
       ],
       title: [],
       defaultActive: 'home'
@@ -90,9 +89,9 @@ export default {
   .footerSelect{display: flex;position: fixed; bottom: 0; left: 0; right: 0; z-index: 999; width: 100%; height: 0.45rem; box-shadow: 0 -0.01rem 0.02rem 0 #d9d9d9}
   .footerSelect .el-menu-item, .el-submenu__title{height: 0.45rem!important;}
   .footerSelect .el-menu--horizontal{width: 100%; padding: 0 0.1rem;}
-  .footerSelect .el-menu--horizontal>.el-menu-item{display: flex; flex-direction: column; align-content: space-around; justify-content: space-around; border: none;width: 20%; text-align: center; padding: 0; color: #8a8a8a!important; background: #ffffff!important; font-size: 0.1rem;}
+  .footerSelect .el-menu--horizontal>.el-menu-item{display: flex; flex-direction: column; align-content: space-around; justify-content: space-around; border: none;width: 25%; text-align: center; padding: 0; color: #8a8a8a!important; background: #ffffff!important; font-size: 0.1rem;}
   .footerSelect .el-menu--horizontal>.el-menu-item span{line-height: 0.2rem!important;}
-  .footerSelect .el-menu--horizontal>.el-menu-item.is-active{border: none; color: #2698d6!important; background: #ffffff!important;}
+  .footerSelect .el-menu--horizontal>.el-menu-item.is-active{border: none; color: #909399!important; background: #ffffff!important;}
   .footerSelect .el-menu--horizontal>.el-menu-item i{display: inline-block; width: 0.22rem; height: 0.22rem; margin: auto; font-size: 0.24rem!important;}
-  .footerSelect .el-menu--horizontal>.el-menu-item .workImg{width: 0.57rem; height: 0.57rem; margin: auto; position: absolute; top: -0.3rem; left: 50%; margin-left: -0.285rem}
+  .footerSelect .el-menu--horizontal>.el-menu-item .workImg{width: 0.25rem; height: 0.25rem; margin: auto; position: absolute; top: -0rem; left: 50%; margin-left: -0.12rem}
 </style>

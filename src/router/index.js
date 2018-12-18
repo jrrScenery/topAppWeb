@@ -34,11 +34,11 @@ export default new Router({
           name: 'workBench',
           component: resolve => require(['@/views/workBench/workBench'], resolve)
         },
-        {
-          path: '/reportform',
-          name: 'reportForm',
-          component: resolve => require(['@/views/reportform/reportForm'], resolve)
-        },
+        // {
+        //   path: '/managementModule',
+        //   name: 'managementModule',
+        //   component: resolve => require(['@/views/managementModule/managementModule'], resolve)
+        // },
         {
           path: '/mine',
           name: 'mine',
@@ -180,6 +180,26 @@ export default new Router({
       component: resolve => require(['@/views/workBench/workBenchInfoDetail'], resolve)
     },
     {
+      path: '/workBench/workBenchPeopleInfoOfCity',
+      name: 'workBenchPeopleInfoOfCity',
+      component: resolve => require(['@/views/workBench/workBenchPeopleInfoOfCity'], resolve)
+    },
+    {
+      path: '/workBench/workBenchPeopleInfoOfCitySingle',
+      name: 'workBenchPeopleInfoOfCitySingle',
+      component: resolve => require(['@/views/workBench/workBenchPeopleInfoOfCitySingle'], resolve)
+    },
+    {
+      path: '/workBench/workBenchSupplierInfoOfCity',
+      name: 'workBenchSupplierInfoOfCity',
+      component: resolve => require(['@/views/workBench/workBenchSupplierInfoOfCity'], resolve)
+    },
+    // {
+    //   path: '/workBench/workBenchSupplierInfoOfCitySingle',
+    //   name: 'workBenchSupplierInfoOfCitySingle',
+    //   component: resolve => require(['@/views/workBench/workBenchSupplierInfoOfCitySingle'], resolve)
+    // },
+    {
       path: '/workBench/workBenchEventInfo',
       name: 'workBenchEventInfo',
       component: resolve => require(['@/views/workBench/workBenchEventInfo'], resolve)
@@ -200,6 +220,41 @@ export default new Router({
       component: resolve => require(['@/views/workBench/workBenchParts'], resolve)
     },
     {
+      path: '/workBench/workBenchPartsOwnList',
+      name: 'workBenchPartsOwnList',
+      component: resolve => require(['@/views/workBench/workBenchPartsOwnList'], resolve)
+    },
+    {
+      path: '/workBench/workBenchPartsSupplierListSingle',
+      name: 'workBenchPartsSupplierListSingle',
+      component: resolve => require(['@/views/workBench/workBenchPartsSupplierListSingle'], resolve)
+    },
+    {
+      path: '/workBench/workBenchPartsOwnListSingle',
+      name: 'workBenchPartsOwnListSingle',
+      component: resolve => require(['@/views/workBench/workBenchPartsOwnListSingle'], resolve)
+    },
+    {
+      path: '/workBench/workBenchOPStaff',
+      name: 'workBenchOPStaff',
+      component: resolve => require(['@/views/workBench/workBenchOPStaff'], resolve)
+    },
+    {
+      path: '/workBench/workBenchOPParts',
+      name: 'workBenchOPParts',
+      component: resolve => require(['@/views/workBench/workBenchOPParts'], resolve)
+    },
+    // {
+    //   path: '/workBench/workBenchManagementModule',
+    //   name: 'workBenchManagementModule',
+    //   component: resolve => require(['@/views/workBench/workBenchManagementModule'], resolve)
+    // },
+    {
+      path: '/workBench/workBenchPartsSupplierList',
+      name: 'workBenchPartsSupplierList',
+      component: resolve => require(['@/views/workBench/workBenchPartsSupplierList'], resolve)
+    },
+    {
       path: '/workBench/workBenchSupplier',
       name: 'workBenchSupplier',
       component: resolve => require(['@/views/workBench/workBenchSupplier'], resolve)
@@ -208,6 +263,11 @@ export default new Router({
       path: '/workBench/workBenchPOinfo',
       name: 'workBenchPOinfo',
       component: resolve => require(['@/views/workBench/workBenchPOinfo'], resolve)
+    },
+    {
+      path: '/workBench/workBenchQualityControl',
+      name: 'workBenchQualityControl',
+      component: resolve => require(['@/views/workBench/workBenchQualityControl'], resolve)
     },
     {
       path: '/workBench/workBenchMyEvent',

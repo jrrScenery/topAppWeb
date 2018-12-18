@@ -32,7 +32,7 @@
 <script>
 
 export default {
-  name: 'managementModule',
+  name: 'workBench',
 
   components: {
   },
@@ -41,13 +41,13 @@ export default {
     return {
       workBenchObj: [
         {arr: [
-          {imgSrc: require('@/assets/images/workBench_1.png'), text: '项目管理', href: 'workBenchInfo',display:true},
-          {imgSrc: require('@/assets/images/workBench_2.png'), text: '事件管理', href: 'workBenchEventInfo',display:true},
-          {imgSrc: require('@/assets/images/workBench_3.png'), text: '人员管理', href: 'workBenchPeopleInfo',display:true},
-          {imgSrc: require('@/assets/images/workBench_4.png'), text: '备件管理', href: 'workBenchParts',display:true},
-          {imgSrc: require('@/assets/images/workBench_5.png'), text: '供应商管理', href: 'workBenchSupplier',display:true},
-          {imgSrc: require('@/assets/images/workBench_6.png'), text: 'PO管理', href: 'workBenchPOinfo',display:true},
-          {imgSrc: require('@/assets/images/workBench_7.png'), text: '质量管理', href: 'workBenchQualityControl',display:true},
+          {imgSrc: require('@/assets/images/workBench_1.png'), text: '项目管理', href: 'workBenchInfo',display:false},
+          {imgSrc: require('@/assets/images/workBench_2.png'), text: '事件管理', href: 'workBenchEventInfo',display:false},
+          {imgSrc: require('@/assets/images/workBench_3.png'), text: '人员管理', href: 'workBenchPeopleInfo',display:false},
+          {imgSrc: require('@/assets/images/workBench_4.png'), text: '备件管理', href: 'workBenchParts',display:false},
+          {imgSrc: require('@/assets/images/workBench_5.png'), text: '供应商管理', href: 'workBenchSupplier',display:false},
+          {imgSrc: require('@/assets/images/workBench_6.png'), text: 'PO管理', href: 'workBenchPOinfo',display:false},
+          {imgSrc: require('@/assets/images/workBench_7.png'), text: '质量管理', href: 'workBenchQualityControl', params: {type: 'my'},display:true},
           // {imgSrc: require('@/assets/images/workBench_8.png'), text: '所有事件', href: 'workBenchMyEventAll', params: {type: 'all'},display:true},
         //   {imgSrc: require('@/assets/images/workBench_9.png'), text: '我的项目', href: 'workBenchMyPro', params: {type: 'my'},display:true},
         //   {imgSrc: require('@/assets/images/workBench_10.png') ,text: '所有项目', href: 'workBenchMyProAll', params: {type: 'all'},display:true}

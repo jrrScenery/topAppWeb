@@ -53,18 +53,30 @@ export default {
   },
   mounted(){
     fetch.get('?action=GetProjectStat',{}).then(res => {
-
+      // let math = require('mathjs');
+      console.log(res.data)
       if("0"== res.STATUSCODE){
 
         let logData = res.data;
         let temparr= [] ;
         let tempTypeId = -1;
         logData.forEach(function(v,i,ar){
+          // console.log(v)
+          // console.log(i)
+          // console.log(ar)
           if(0 == temparr.length || v.BTSORT!= temparr[temparr.length-1]["typeid"] ){
             temparr.push({"typeid":v.BTSORT,"inx":i,"name":v.BUSINESS_TYPE,arr:[]});
+            console.log(temparr[temparr.length-1]["typeid"])
           }
           temparr[temparr.length-1]["arr"].push(v);
         })
+        // logData.forEach(function(v,i,ar){
+        //   if(0 == temparr.length || v.INDUSTRY!= temparr[temparr.length-1]["type"] ){
+        //     temparr.push({"type":v.INDUSTRY,"inx":i,"name":v.BUSINESS_TYPE,arr:[]});
+        //     console.log(temparr[temparr.length-1]["type"])
+        //   }
+        //   temparr[temparr.length-1]["arr"].push(v);
+        // })
         console.log(temparr);
         this.workBenchInfoObj= temparr;
 
@@ -76,6 +88,7 @@ export default {
     })
   },
   methods: {
+    
 
   }
 }
