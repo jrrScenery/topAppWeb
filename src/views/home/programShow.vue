@@ -56,6 +56,9 @@
           </el-row>
           <el-row>
             <el-col :span="12"><span class="tit">签约类型：{{projectInfo.CONTRACT_WAY}}</span></el-col>
+            <!-- <router-link :to="{name:'personnelInfo',query:{USERID: this.personInfo.demandPersion, positionName: '需求销售'}}">
+              <el-input v-model="personInfo.demandname" class="roleInfo" disabled></el-input>
+            </router-link> -->
             <el-col :span="12"><span class="tit">PM姓名：{{projectInfo.PM_NAME}}</span></el-col>
           </el-row>
           <el-row>
@@ -167,6 +170,7 @@ export default {
     getProgramInfo(){
       fetch.get("?action=GetProjectInfo&EMPID="+global_.empId+"&PROJECT_ID="+this.$route.query.projectId,{}).then(res=>{
           let baseInfo = res.data;
+          console.log("res:",res)
           this.projectInfo = baseInfo;
         });
     },

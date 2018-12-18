@@ -1,7 +1,7 @@
 <!--业务-->
 <template>
   <div class="businessView">
-    <search-report-form-view  :queryData="searchData" @searchPro="getSearParams"></search-report-form-view>
+    <search-report-form-view :title="businessViewTit" :queryData="searchData" @searchPro="getSearParams"></search-report-form-view>
     <div class="echartsView">
       <div class="chartOne">
         <div class="BtmTit">{{chartOneTit}}</div>
@@ -51,6 +51,7 @@ export default {
     return {
       // homeRight: '查询',
       // popBg: false,
+      businessViewTit:"报表",
       form: {
         custom: '',
         program: '',
@@ -135,7 +136,7 @@ export default {
     },
 
     getSearParams (searchData) {
-      console.log(searchData);
+      console.log("searchData",searchData);
       this.searchData = searchData;
       this.getChartData();
       // let params = {}
@@ -152,6 +153,7 @@ export default {
       params.SALE_NAME = this.searchData.sale;
       params.timeStart = this.searchData.startTime;
       params.timeEnd = this.searchData.endTime;
+      console.log("params",params)
       this.freshCharts(params)
     },
 

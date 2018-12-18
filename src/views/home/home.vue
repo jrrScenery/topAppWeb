@@ -1,520 +1,258 @@
-<!--首页-->
+<!--工作台-->
 <template>
   <div class="homeView">
+    <div style="text-align:center;margin-top:0.1rem" v-for="items in workBenchObj" :key="items.id" v-if="items.arr.length!=0">
 
-    <div class="swiper">
-      <el-carousel trigger="click" arrow="never" width="100%" height="1.2rem">
-        <el-carousel-item v-for="item in imgObj" :key="item.id">
-          <img :src="item.imgSrc" alt="">
-        </el-carousel-item>
-      </el-carousel>
+      <ul class="ul_workBench" >
+          <template v-for="item in items.arr">
+            <li class="li_workBench" :key="item.id">
+              <router-link :to="{name:item.href,params:item.params}" >
+                <img  :src="item.imgSrc" alt="">
+              </router-link>
+              <span>{{item.text}}</span>
+            </li>
+            <!-- <li v-else class="li_workBench" :key="item.id" style="display:none">
+              <router-link :to="{name:item.href,params:item.params}" >
+                <img :src="item.imgSrc" alt=""  >
+              </router-link>
+              <span>{{item.text}}</span>
+            </li> -->
+        </template>
+      </ul>
     </div>
-    <div class="content">
-      <div class="event">
-        <div class="title">
-          <div class="titleLeft">
-            <img src="../../assets/images/index_1.png" alt="">
-            <router-link :to="{name:'focusEventList'}">
-              {{eventTitle+'('+eventTitleTotal+')'}}
-            </router-link>
-          </div>
-          <router-link :to="{name:'focusEventList'}">
-            <div class="titleRight">{{more}}</div>
-          </router-link>
-        </div>
-        <el-table
-          :data="caseData" 
-          v-loading="loadalls['caseData']['busy'] && !loadalls['caseData']['loadall']"
-          style="width: 100%; max-height:1.85rem; border: 0.01rem solid #e1e1e1">
-          <template v-for="item in eventTable">
-            <el-table-column
-              :fixed="item.fixed"
-              :key="item.id"
-              :prop="item.prop"
-              :label="item.label"
-              :min-width="item.width">
-              <template slot-scope="scope">
-                <template v-if="item.prop == 'CASEHEALTH'">
-                  <span v-if="scope.row[item.prop] == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></span>
-                  <span v-if="scope.row[item.prop] == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></span>
-                  <span v-if="scope.row[item.prop] == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ffff00;"></span>
-                  <span v-if="scope.row[item.prop] == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></span>
-                  <span v-if="scope.row[item.prop] == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span>
+    <div class="newInfo">
+      <img src='../../assets/images/new.jpg' alt="">
+      <div style="width:80%">
+        <ul class="ul_mineView" >
+          <div v-for="item in eventListArr" :key="item.id">
+            <router-link :to="{name:'mineNotice',params:{}}">
+              <li class="li_mineView" >
+                <template>
+                  <span style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;background: #ff0000;"></span>
+                  <span>{{item.TITLE}}</span>
+                  <i class="el-icon-arrow-right"></i>
                 </template>
-                <router-link v-else :to="{name:'eventShow',query:{caseId:scope.row['CASEID']}}">
-                  <span  class="table_name">{{scope.row[item.prop]}}</span>
-                </router-link>
-              </template>
-            </el-table-column>
-          </template>
-        </el-table>
-      </div>
-
-      <div class="program">
-        <div class="title">
-          <div class="titleLeft">
-            <img src="../../assets/images/index_2.png" alt="">
-            <router-link :to="{name:'programList'}">
-            {{programTitle+'('+programTitleTotal+')'}}
+              </li>
             </router-link>
           </div>
-          <router-link :to="{name:'programList'}">
-            <div class="titleRight">{{more}}</div>
-          </router-link>
-        </div>
-        <el-table
-          :data="projData"
-          v-loading="loadalls['projData']['busy'] && !loadalls['projData']['loadall']"
-          style="width: 100%; border: 0.01rem solid #e1e1e1">
-          <template v-for="item in programTable">
-            <el-table-column
-              :fixed="item.fixed"
-              :key="item.id"
-              :prop="item.prop"
-              :label="item.label"
-              :min-width="item.width">
-              <template slot-scope="scope">
-                <template v-if="item.prop == 'NOW_COLOR'">
-                <!-- 1 #ff0000 红，2 #ff9900 橙，3 #ffff00 黄，4 #009900 绿 -->                  
-                <div>
-                    <i v-if="scope.row[item.prop] == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></i>
-                    <i v-if="scope.row[item.prop] == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></i>
-                    <i v-if="scope.row[item.prop] == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></i>
-                    <i v-if="scope.row[item.prop] == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ffff00;"></i>
-                    <i v-if="scope.row[item.prop] == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></i>
-                  </div>
+          <div v-for="item in caseData" :key="item.id">
+            <router-link :to="{name:'eventShow',query:{caseId:item.CASEID}}">
+              <li class="li_mineView">
+                <template>
+                  <span style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;background: #ff0000;"></span>
+                  <span>{{item.CODE}} {{item.CUSTOM}} {{item.ITEM}} </span>
+                  <i class="el-icon-arrow-right"></i>
                 </template>
-                <router-link v-else :to="{name:'programShow',query:{projectId:scope.row['PROJECT_ID']}}">
-                  <span class="table_name">{{scope.row[item.prop]}}</span>
-                </router-link>
-              </template>
-            </el-table-column>
-          </template>
-        </el-table>
-      </div>
-
-      <div class="opinion">
-        <div class="title">
-          <div class="titleLeft">
-            <img src="../../assets/images/index_3.png" alt="">
-            <router-link :to="{name:'tabshowTest'}">
-              {{opinionTitle}}
+              </li>
             </router-link>
           </div>
-            <!--<div class="titleRight" v-on:click="showMore3">{{more}}</div>-->
-          <router-link :to="{name:'tabshowTest'}">
-            <div class="titleRight">{{more}}</div>
-          </router-link>
-        </div>
-        <div class="opinionTab">
-          <el-tabs v-model="activeName" type="card">
-            <template v-for="(itemTab,ti) in opinionTab">
-              <el-tab-pane :label="itemTab.label" :name="itemTab.name" v-bind:key="itemTab.name">
-                  <el-table
-                    :data="itemTab.data"
-                    v-loading="loadalls['casopinionTabe'+ti]['busy'] && !loadalls['casopinionTabe'+ti]['loadall']"
-                    style="width: 100%; border: 0.01rem solid #e1e1e1">
-                    <template v-for="item in itemTab.table">
-                      <el-table-column
-                        :fixed="item.fixed"
-                        :key="item.id"
-                        :prop="item.prop"
-                        :label="item.label"
-                        :min-width="item.width">
-                        <template slot-scope="scope">
-                          <template v-if="itemTab.name == 'first'">
-                            <router-link :to="{name:'mineFeedbackShow',query:{complantId:scope.row['COMPLANT_ID']}}">
-                            <template v-if="item.prop == 'programName'">
-                              <div style="display: flex;">
-                                <i style="display: inline-block; margin: 0.11rem 0.05rem 0; width: 0.08rem; height: 0.08rem; border-radius: 50%; background: #ff0000;"></i>
-                                <span class="table_name" v-html="scope.row.programName"></span>
-                              </div>
-                            </template>
-                            <template v-else-if="item.prop== 'TASK_TYPE'">
-                              <div style="text-align:center">{{scope.row[item.prop]}}</div>
-                            </template>
-                            <template v-else-if="item.prop== 'CUST_NAME'">
-                              <div style="text-align:left">{{scope.row[item.prop]}}</div>
-                            </template>
-                            <span v-else class="table_name" v-html="scope.row[item.prop]"></span>
-                            </router-link>
-                          </template>
-                          <template v-else>
-                            <template v-if="item.prop == 'programName'">
-                              <div style="display: flex;">
-                                <i style="display: inline-block; margin: 0.11rem 0.05rem 0; width: 0.08rem; height: 0.08rem; border-radius: 50%; background: #ff0000;"></i>
-                                <span class="table_name">{{scope.row.programName }}</span>
-                              </div>
-                            </template>
-                            <span v-else class="table_name">{{scope.row[item.prop]}}</span>
-                          </template>
-                        </template>
-                      </el-table-column>
-                    </template>
-                </el-table>
-              </el-tab-pane>
-            </template>
-          </el-tabs>
-        </div>
+          <div v-for="item in projData" :key="item.id">
+            <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID}}">
+              <li class="li_mineView">
+                <template>
+                  <span style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;background: #ff0000;"></span>
+                  <span>{{item.PROJECT_NAME}} {{item.START_DATE}} {{item.END_DATE}} </span>
+                  <i class="el-icon-arrow-right"></i>
+                </template>
+              </li>
+            </router-link>
+          </div>
+        </ul>
       </div>
     </div>
+    
+    <!--<template>-->
+      <!--<mt-datetime-picker-->
+            <!--ref="picker"-->
+            <!--type="date"-->
+            <!--v-model="pickerValue">-->
+          <!--</mt-datetime-picker>-->
+    <!--</template>-->
+    <!-- <input type="button" @click="aaa" value="aaaaa"> -->
   </div>
 </template>
 
 <script>
-import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
-
-
 export default {
-  name: 'index',
+  name: 'workBench',
 
   components: {
   },
 
   data () {
     return {
-      imgObj: [
-        {imgSrc: require('@/assets/images/swiper_1.jpg')},
-        {imgSrc: require('@/assets/images/swiper_2.jpg')},
-        {imgSrc: require('@/assets/images/swiper_3.jpg')},
-        {imgSrc: require('@/assets/images/swiper_4.jpg')},
-        {imgSrc: require('@/assets/images/swiper_5.jpg')}
+      workBenchObj: [
+        {arr: [
+          // {imgSrc: require('@/assets/images/workBench_1.png'), text: '我的任务', href: 'workBenchMyTask',params: {type: 'my'},display:false},
+          // {imgSrc: require('@/assets/images/workBench_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true},
+          // {imgSrc: require('@/assets/images/workBench_3.png'), text: '我的项目', href: 'workBenchMyPro',params: {type: 'my'},display:true}
+        ]},
+        {arr: [
+          // {imgSrc: require('@/assets/images/workBench_7.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false},
+          // {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true},
+          // {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true}
+        ]},
+        {arr: [
+          // {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true},
+          // {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true}
+          // {imgSrc: require('@/assets/images/workBench_4.png'), text: '需关注项目', href: 'focusEventList',display:true}
+        ]}
       ],
-      eventTitle: '需关注事件',
-      programTitle: '需关注项目',
-      opinionTitle: '意见和投诉',
-      more: '更多>',
-      ll:true,
-      eventTitleTotal:0,
-      programTitleTotal:0,
-      caseData: [],
-      eventTable:[
-        {
-          prop: 'CASEHEALTH',
-          label: '',
-          fixed: true,
-          width: '5%'
-        },
-        {
-          prop: 'CODE',
-          label: '事件编号',
-          fixed: true,
-          width: '35px'
-        },
-        {
-          prop: 'ITEM',
-          label: '关注原因',
-          fixed: true,
-          width: '35%'
-        },
-        {
-          prop: 'CUSTOM',
-          label: '客户名称',
-          fixed: true,
-          width: '35%'
-        }
-      ],
+      eventListArr: [],
+      caseData:[],
       projData:[],
-      programTable:[
-        {
-          prop: 'NOW_COLOR',
-          label: '',
-          fixed: true,
-          width: '5%'
-        },
-        {
-          prop: 'PROJECT_NAME',
-          label: '项目名称',
-          fixed: true,
-          width: '45%'
-        },
-        {
-          prop: 'START_DATE',
-          label: '开始日期',
-          fixed: true,
-          width: '25%'
-        },
-        {
-          prop: 'END_DATE',
-          label: '结束日期',
-          fixed: true,
-          width: '25%'
-        }
-      ],
-      opinionTab:[
-        {
-          name: 'first',
-          label: '意见投诉',
-          table:[
-            // {
-            //   prop: 'COMPLAINT_COMMENT',
-            //   label: '意见内容',
-            //   fixed: true,
-            //   width: '75%'
-            // },
-            {
-              prop: 'TASK_TYPE',
-              label: '类型',
-              fixed: true,
-              width: '15%'
-            },
-            {
-              prop: 'CUST_NAME',
-              label: '客户',
-              fixed: true,
-              width: '50%'
-            },
-            {
-              prop: 'CREATE_ON',
-              label: '提交日期',
-              fixed: true,
-              width: '20%'
-            },
-            {
-              prop: 'TASK_STATUS',
-              label: '状态',
-              fixed: true,
-              width: '15%'
-            }
-          ],
-          data:[]
-        },
-        {
-          name: 'second',
-          label: '项目满意度',
-          table:[
-            {
-              prop: 'PROJECT_NAME',
-              label: '项目名称',
-              fixed: true,
-              width: '45%'
-            },
-            {
-              prop: 'TOTAL_SCORE',
-              label: '分值',
-              fixed: true,
-              width: '14%'
-            },
-            {
-              prop: 'EVALUATE_FROM_NAME',
-              label: '评价人',
-              fixed: true,
-              width: '16%'
-            },
-            {
-              prop: 'EVALUATE_TIME',
-              label: '评价时间',
-              fixed: true,
-              width: '25%'
-            }
-          ],
-          data:[]
-        },
-        {
-          name: 'third',
-          label: 'Case评价',
-          table:[
-            {
-              prop: 'PROJECT_NAME',
-              label: '项目名称',
-              fixed: true,
-              width: '50%'
-            },
-            {
-              prop: 'CASE_CD',
-              label: '事件编号',
-              fixed: true,
-              width: '36%'
-            },
-            {
-              prop: 'TOTAL_SCORE',
-              label: '分值',
-              fixed: true,
-              width: '14%'
-            }
-          ],
-          data:[]
-        }
-      ],
-      activeName: 'first',
-      loadalls:{
-        "caseData":{busy:true,loadall:false},
-        "projData":{busy:true,loadall:false},
-        "casopinionTabe0":{busy:true,loadall:false},
-        "casopinionTabe1":{busy:true,loadall:false},
-        "casopinionTabe2":{busy:true,loadall:false}
-      }
-      
+      page:1,
+      pageSize:1,
+      pickerValue:null
     }
-  },
-
-  methods:{
-    
-    // showMore3:function (event) {
-    //   if (this.activeName=='first') {
-    //     this.$router.push({name:'complaintList',params:{}});
-    //   }else if (this.activeName=='second') {
-    //     this.$router.push({name:'projectEvaluateList',params:{}});
-    //   }else if (this.activeName=='third') {
-    //     this.$router.push({name:'caseEvaluateList',params:{}});
-    //   }
-    // }
-    fetchData:function(){
-
-      fetch.get("?action=GetFocusCase&PAGE_NUM=1&PAGE_TOTAL=3","").then(res=>{
-        console.log(res.data);
-        this.caseData = res.data;
-        this.eventTitleTotal = res.total;
-        this.loadalls.caseData = {"busy": false, loadall:true};
-      });
-
-      fetch.get("?action=GetFocusProject&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
-        this.projData = res.data;
-        this.programTitleTotal = res.total;
-        this.loadalls.projData = {"busy": false, loadall:true};
-      });
-
-      fetch.get("?action=GetCaseEvaluate&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
-        this.opinionTab[2].data = res.data;
-        this.loadalls.casopinionTabe0 = {"busy": false, loadall:true};
-      });
-
-      fetch.get("?action=GetProjectEvaluate&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
-        this.opinionTab[1].data = res.data;
-        this.loadalls.casopinionTabe1 = {"busy": false, loadall:true};
-      });
-
-      fetch.get("?action=GetComplaintsList&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
-        this.opinionTab[0].data = res.data;
-        var tmpar= res.data;
-        tmpar = tmpar.map(function(item){
-          item.COMPLAINT_COMMENT = item.COMPLAINT_COMMENT.replace(/\n/g, "<br/>");
-          return item;
-        })
-        this.loadalls.casopinionTabe2 = {"busy": false, loadall:true};
-      });
-    }
-    
-  },
-  beforeCreate:function(){
-    this.$router.replace(location);
-    
-    history.pushState(null, null, document.url);
-    window.onpopstate = () => {
-      history.go(1)
-    }
-　　
-    // window.routeback = () =>{
-    //   if(["login","home","approve","workBench","reportForm","mine"].indexOf(this.$route.name)>-1){
-    //     if(typeof(android)!="undefined"){
-    //       if(sessionStorage.backTime && (new Date()).getTime()- parseInt(sessionStorage.backTime) <1500  ){
-    //         console.log((new Date()).getTime()- parseInt(sessionStorage.backTime))
-    //         sessionStorage.backTime = ''
-    //         android.Finish();
-    //       }
-    //       else{
-    //         this.$toast('再按一次退出')
-    //         sessionStorage.backTime = (new Date()).getTime()
-    //       }
-    //     }
-    //   }
-    //   else{
-    //     this.$router.back(-1)
-    //   }
-      
-    // }
-
-    window.scanResult = (res) =>{
-      
-      let objtmp={};
-      let strscan = res;
-      let ar= []
-      ar = strscan.split("|");
-      console.log(ar);
-      if(ar.length){
-        ar.forEach(element => {
-          if(element.length){
-            let arsub = element.split("：")
-            if('厂商'==arsub[0] ){
-              objtmp.factory = arsub.length>1? arsub[1]:''
-            }
-            if('型号'== arsub[0]){
-              objtmp.xinghao = arsub.length>1? arsub[1]:''
-            }
-            if('SN'== arsub[0]){
-              objtmp.sn = arsub.length>1? arsub[1]:''
-            }
-            if('城市'== arsub[0]){
-              objtmp.city = arsub.length>1? arsub[1]:''
-            }
-          }
-        });
-      }
-
-      this.$router.push({name:"workBenchDeclare" , query:{num:objtmp.sn, type:objtmp.xinghao, firm:objtmp.factory,cityname:objtmp.city }})
-    }
-
-
-  },
-  mounted:function(){
-    
   },
   activated(){
-    console.log(this.$route.meta.isUseCache);
+    // console.log(this.$route.meta.isUseCache);
+    this.workBenchObj = [
+        {arr: []},
+        {arr: []},
+        {arr: []}
+    ];
+    this.getWorkBenchObj();
+    // let permissions = JSON.parse(localStorage.getItem("userPermission"));
+    // var m=0;
+    // var n=0;
+    // for(let i=0;i<permissions.length;i++){
+    //   if(permissions[i].PRIVID=='workFlow_my_task'){
+    //     m++;
+    //   }
+    //   if(permissions[i].PRIVID=='workFlow_case_once'){
+    //     n++;
+    //   }
+    // }
+    // if(m!=0){
+    //   this.workBenchObj[0].arr[0] = {imgSrc: require('@/assets/images/workBench_1.png'), text: '我的任务', href: 'workBenchMyTask',params: {type: 'my'},display:false};
+    //   this.workBenchObj[0].arr[1] = {imgSrc: require('@/assets/images/workBench_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true};
+    //   this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/workBench_3.png'), text: '我的项目', href: 'workBenchMyPro',params: {type: 'my'},display:true};
+    //   if(n!=0){
+    //     this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_7.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false};
+    //     this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
+    //     this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
+    //     this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
+    //     this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
+    //   }else{
+    //     this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
+    //     this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
+    //     this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
+    //     this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
+    //   }
+    // }else{
+    //   this.workBenchObj[0].arr[0] = {imgSrc: require('@/assets/images/workBench_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true};
+    //   this.workBenchObj[0].arr[1] = {imgSrc: require('@/assets/images/workBench_3.png'), text: '我的项目', href: 'workBenchMyPro',params: {type: 'my'},display:true};
+    //   if(n!=0){
+    //     this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/workBench_7.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false};
+    //     this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
+    //     this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
+    //     this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
+    //     this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
+    //   }else{
+    //     this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true},
+    //     this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
+    //     this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
+    //     this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
+    //     this.workBenchObj[2].arr = []
+    //   }
+    // }
+    // console.log("workBenchObj",this.workBenchObj);
+    
     if(!this.$route.meta.isUseCache){
       this.caseData = [];
-      this.projData = [];
-      this.opinionTab[0].data=[];
-      this.opinionTab[1].data=[];
-      this.opinionTab[2].data=[];
-      this.loadalls = {
-        "caseData":{busy:true,loadall:false},
-        "projData":{busy:true,loadall:false},
-        "casopinionTabe0":{busy:true,loadall:false},
-        "casopinionTabe1":{busy:true,loadall:false},
-        "casopinionTabe2":{busy:true,loadall:false}
-      }
-
       fetch.get("?action=checkSession",{}).then(res=>{
-        this.fetchData();
+        this.getEventList();
       });
     }
     this.$route.meta.isUseCache = false;
   },
-  deactivated(){
-    console.log('移除');
-    window.onpopstate = null
+  created(){
+    this.getWorkBenchObj();
+  },
+  methods: {
+    getWorkBenchObj(){
+      let permissions = JSON.parse(localStorage.getItem("userPermission"));
+      var m=0;
+      var n=0;
+      for(let i=0;i<permissions.length;i++){
+        if(permissions[i].PRIVID=='workFlow_my_task'){
+          m++;
+        }
+        if(permissions[i].PRIVID=='workFlow_case_once'){
+          n++;
+        }
+      }
+      if(m!=0){
+        this.workBenchObj[0].arr[0] = {imgSrc: require('@/assets/images/workBench_1.png'), text: '我的任务', href: 'workBenchMyTask',params: {type: 'my'},display:false};
+        this.workBenchObj[0].arr[1] = {imgSrc: require('@/assets/images/workBench_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true};
+        this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/workBench_3.png'), text: '我的项目', href: 'workBenchMyPro',params: {type: 'my'},display:true};
+        if(n!=0){
+          this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_7.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false};
+          this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
+          this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
+          this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
+          this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
+        }else{
+          this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
+          this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
+          this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
+          this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
+        }
+      }else{
+        this.workBenchObj[0].arr[0] = {imgSrc: require('@/assets/images/workBench_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true};
+        this.workBenchObj[0].arr[1] = {imgSrc: require('@/assets/images/workBench_3.png'), text: '我的项目', href: 'workBenchMyPro',params: {type: 'my'},display:true};
+        if(n!=0){
+          this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/workBench_7.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false};
+          this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
+          this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
+          this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
+          this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
+        }else{
+          this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true},
+          this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
+          this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
+          this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
+          this.workBenchObj[2].arr = []
+        }
+      }
+    },
+
+    getEventList(flag){
+      let url = "?action=GetTaskMessage&PAGE_NUM="+this.page+"&PAGE_TOTAL="+this.pageSize;
+      fetch.get(url,"").then(res=>{
+        this.eventListArr = res.data;
+      });
+
+      fetch.get("?action=GetFocusCase&PAGE_NUM=1&PAGE_TOTAL=1","").then(res=>{
+        this.caseData = res.data;
+      });
+
+      fetch.get("?action=GetFocusProject&PAGE_NUM=1&PAGE_TOTAL=1",{}).then(res=>{
+        this.projData = res.data;
+      });
+    },
   }
 }
 </script>
 
 <style scoped>
-  .homeView{width: 100%;}
-  .swiper >>> .el-carousel__button{width: 0.08rem; height: 0.08rem; border-radius: 100%;}
-  .swiper >>> .el-carousel__indicator.is-active button{background: #199dff}
-  .swiper img{width: 100%; height: 100%}
-  .content{margin: 0 0.14rem; display: block;}
-  .content .title{display: flex; justify-content: space-between;height: 0.33rem; line-height: 0.33rem; font-size: 0.14rem; color: #2698d6;}
-  .content .title a{color: #2698d6;}
-  .content .title .titleRight{font-size: 0.13rem; color: #999999;}
-  .content .title img{width: 0.18rem; height: 0.18rem; vertical-align: text-bottom; margin-right: 0.08rem;}
-  .content >>> .el-table td{height: 0.3rem!important; box-sizing: border-box; margin: 0; padding: 0; text-align: center}
-  .content >>> .event .el-table td:nth-child(1) .cell{padding: 0}
-  .content >>> .program .el-table td:nth-child(1) .cell{padding: 0}
-  .content >>> .event .el-table td:nth-child(3){text-align: left}
-  .content >>> .event .el-table td:nth-child(4){text-align: left}
-  .content >>> .program .el-table td:nth-child(2){text-align: left}
-  .content >>> .opinion .el-table td:nth-child(1){text-align: left}
-  .content >>> .el-table th{height: 0.3rem!important; box-sizing: border-box; margin: 0; text-align: center; padding: 0;}
-  .content >>> .el-table td>.cell{color: #666666; padding: 0 0.02rem}
-  .content >>> .el-table th>.cell{color: #333333; padding: 0 0.02rem;}
-  .event .table_name{display: block; width: 100%; height: 0.3rem; line-height: 0.3rem; overflow: hidden; text-overflow: ellipsis;white-space: nowrap;}
-  .opinionTab >>> .el-tabs__item{width: 33%; padding: 0!important; text-align: center; border: 1px solid #f7f7f7!important; border-radius: 0.2rem;}
-  .opinionTab >>> .el-tabs__item.is-active{color: #2698d6; background: #ffffff; border: 1px solid #e1e1e1!important; border-radius: 0.2rem;}
-  .opinionTab >>> .el-tabs--card>.el-tabs__header{border: none; margin-bottom: 0.1rem;}
-  .opinionTab >>> .el-tabs--card>.el-tabs__header .el-tabs__nav{display: flex; justify-content: space-around; border: none; width: 100%;}
-  .opinionTab >>> .el-tabs__item{border: none; color: #999999; height: 0.24rem; line-height: 0.24rem;}
-  a{color: #666666}
-</style>
+  .homeView{ width: 100%;}
+  .homeView .ul_workBench{display: flex;flex-wrap: wrap; padding: 0.15rem 0.1rem; margin-top: 0.09rem; background: #ffffff;}
+  .homeView .ul_workBench:first-child .li_workBench:first-child span{width: 110%; margin-left: -5%;}
+  .homeView .ul_workBench .li_workBench{display: flex; flex-direction: column; align-content: space-around; justify-content: space-around; width: 33%; height: 0.55rem; text-align: center;}
+  .homeView .ul_workBench .li_workBench:nth-child(n+5){margin-top: 0.15rem;}
+  .homeView img{ width: 0.3rem; height: 0.3rem; margin: auto;}
 
+  .homeView .newInfo{display:flex;margin-top: 0.15rem;background:#ffffff}
+  .homeView .newInfo .newImg{width:20%;text-align: center;}
+  .homeView .newInfo img{width: 0.6rem; height: 0.6rem; border-radius: 50%; }
+  /* .workBenchView .newInfo .newImg img{height:100%;width: 100%;} */
+  .homeView .ul_mineView{}
+  .homeView .ul_mineView .li_mineView{display: flex; justify-content: space-between; align-items: center;height: 100%; background: #ffffff; border-bottom: 0.01rem solid #e5e5e5; font-size: 0.12rem; line-height: 0.2rem; padding: 0.05rem 0.2rem;}
+  .homeView .ul_mineView .li_mineView:nth-child(4){margin-top: 0.1rem; border-top: 0.01rem solid #e5e5e5;}
+  .homeView .ul_mineView .li_mineView img{width: 0.24rem; height: 0.24rem; margin-right: 0.15rem;}
+  .homeView .ul_mineView .li_mineView span{width: 100%; text-align: left; color: #262626}
+</style>

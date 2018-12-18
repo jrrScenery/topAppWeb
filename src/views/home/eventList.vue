@@ -160,6 +160,7 @@ export default {
     },
 
     searchList(formData){
+      console.log("formData",formData)
       this.searchData = formData;
       this.eventListArr=[];
       this.isSearch = true;
