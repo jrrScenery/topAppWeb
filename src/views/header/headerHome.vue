@@ -56,7 +56,7 @@ export default {
         case 'home':
           this.title = '首页'
           break
-        case 'approve':
+        case 'focus':
           this.title = '关注'
           break
         case 'workBench':

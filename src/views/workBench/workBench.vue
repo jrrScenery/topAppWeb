@@ -63,7 +63,7 @@ export default {
   },
   mounted () {
     let permissions = JSON.parse(localStorage.getItem("userPermission"));
-    console.log(permissions);
+    // console.log(permissions);
     for(let i=0;i<permissions.length;i++){
       if(permissions[i].PRIVID=='workFlow_business_statistics'){
         this.workBenchObj[0].arr[0].display = true;

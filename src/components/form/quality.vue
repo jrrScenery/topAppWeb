@@ -12,7 +12,7 @@
               :label="item.BATCH_NAME"
               :value="item.BATCH_ID">
             </el-option>
-          </el-select>
+          </el-select> 
         </el-form-item>
         
       </el-form>

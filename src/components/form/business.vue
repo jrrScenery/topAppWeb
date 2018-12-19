@@ -51,7 +51,7 @@ export default {
     return {
       // homeRight: '查询',
       // popBg: false,
-      businessViewTit:"报表",
+      businessViewTit:"业务报表",
       form: {
         custom: '',
         program: '',
