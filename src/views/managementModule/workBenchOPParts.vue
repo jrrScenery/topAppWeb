@@ -1,7 +1,7 @@
 <!--工作台-人员信息-->
 <template>
   <div class="workBenchPartsOwnListView">
-    <header-base-o-p-parts :title="workBenchOPPartsTit"></header-base-o-p-parts>
+    <header-base-p-o-parts :title="workBenchPOPartsTit"></header-base-p-o-parts>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <!-- <router-link :to="{name:'workBenchTaskDetailInfo',query:{}}"> -->
@@ -11,7 +11,7 @@
         v-loading="busy && !loadall"
         @row-click="rowClick"
         style="width: 100%">
-        <template v-for="item in workBenchOPPartsObj">
+        <template v-for="item in workBenchPOPartsObj">
             <el-table-column
               :key="item.id"
               :prop="item.prop"
@@ -26,23 +26,23 @@
 </template>
 
 <script>
-import headerBaseOPParts from '../header/headerBaseOPParts'
+import headerBasePOParts from '../header/headerBasePOParts'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
 export default {
-  name: 'workBenchOPParts',
+  name: 'workBenchPOParts',
 
   components: {
-    headerBaseOPParts
+    headerBasePOParts
   },
 
   data () {
     return {
-      workBenchOPPartsTit: 'OP管理',
+      workBenchPOPartsTit: 'PO管理',
       tableData: [],
       busy:true,
       loadall: false,
-      workBenchOPPartsObj: [
+      workBenchPOPartsObj: [
         {prop: 'name', label: '供应商', width: '25%'},
         {prop: 'na', label: '类型', width: '25%'},
         {prop: 'res', label: '实际支付日期', width: '25%'},

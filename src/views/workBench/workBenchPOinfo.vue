@@ -45,7 +45,7 @@ export default {
 
   data () {
     return {
-      workBenchPOinfoTit: 'PO信息',
+      workBenchPOinfoTit: 'PO管理',
       POinfoTab: [
         {
           name: 'first',
@@ -97,10 +97,10 @@ export default {
     rowClick (row) {
       console.log("111111111111", row)
       if (row.__ob__.value.KIND == 0){
-        this.$router.push({name: 'workBenchOPStaff', query: {}})
+        this.$router.push({name: 'workBenchPOStaff', query: {}})
       }
       if (row.__ob__.value.KIND == 1){
-        this.$router.push({name: 'workBenchOPParts', query: {}})
+        this.$router.push({name: 'workBenchPOParts', query: {}})
       }
     },
   }

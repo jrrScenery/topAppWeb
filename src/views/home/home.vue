@@ -83,28 +83,15 @@ export default {
   data () {
     return {
       workBenchObj: [
-        {arr: [
-          // {imgSrc: require('@/assets/images/workBench_1.png'), text: '我的任务', href: 'workBenchMyTask',params: {type: 'my'},display:false},
-          // {imgSrc: require('@/assets/images/workBench_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true},
-          // {imgSrc: require('@/assets/images/workBench_3.png'), text: '我的项目', href: 'workBenchMyPro',params: {type: 'my'},display:true}
-        ]},
-        {arr: [
-          // {imgSrc: require('@/assets/images/workBench_7.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false},
-          // {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true},
-          // {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true}
-        ]},
-        {arr: [
-          // {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true},
-          // {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true}
-          // {imgSrc: require('@/assets/images/workBench_4.png'), text: '需关注项目', href: 'focusEventList',display:true}
-        ]}
+        {arr: []},
+        {arr: []},
+        {arr: []}
       ],
       eventListArr: [],
       caseData:[],
       projData:[],
       page:1,
-      pageSize:1,
-      pickerValue:null
+      pageSize:1
     }
   },
   activated(){
@@ -114,53 +101,7 @@ export default {
         {arr: []},
         {arr: []}
     ];
-    this.getWorkBenchObj();
-    // let permissions = JSON.parse(localStorage.getItem("userPermission"));
-    // var m=0;
-    // var n=0;
-    // for(let i=0;i<permissions.length;i++){
-    //   if(permissions[i].PRIVID=='workFlow_my_task'){
-    //     m++;
-    //   }
-    //   if(permissions[i].PRIVID=='workFlow_case_once'){
-    //     n++;
-    //   }
-    // }
-    // if(m!=0){
-    //   this.workBenchObj[0].arr[0] = {imgSrc: require('@/assets/images/workBench_1.png'), text: '我的任务', href: 'workBenchMyTask',params: {type: 'my'},display:false};
-    //   this.workBenchObj[0].arr[1] = {imgSrc: require('@/assets/images/workBench_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true};
-    //   this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/workBench_3.png'), text: '我的项目', href: 'workBenchMyPro',params: {type: 'my'},display:true};
-    //   if(n!=0){
-    //     this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_7.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false};
-    //     this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
-    //     this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
-    //     this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
-    //     this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
-    //   }else{
-    //     this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
-    //     this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
-    //     this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
-    //     this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
-    //   }
-    // }else{
-    //   this.workBenchObj[0].arr[0] = {imgSrc: require('@/assets/images/workBench_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true};
-    //   this.workBenchObj[0].arr[1] = {imgSrc: require('@/assets/images/workBench_3.png'), text: '我的项目', href: 'workBenchMyPro',params: {type: 'my'},display:true};
-    //   if(n!=0){
-    //     this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/workBench_7.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false};
-    //     this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
-    //     this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
-    //     this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
-    //     this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
-    //   }else{
-    //     this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true},
-    //     this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
-    //     this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
-    //     this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
-    //     this.workBenchObj[2].arr = []
-    //   }
-    // }
-    // console.log("workBenchObj",this.workBenchObj);
-    
+    this.getWorkBenchObj();  
     if(!this.$route.meta.isUseCache){
       this.caseData = [];
       fetch.get("?action=checkSession",{}).then(res=>{
@@ -171,6 +112,13 @@ export default {
   },
   created(){
     this.getWorkBenchObj();
+    if(!this.$route.meta.isUseCache){
+      this.caseData = [];
+      fetch.get("?action=checkSession",{}).then(res=>{
+        this.getEventList();
+      });
+    }
+    this.$route.meta.isUseCache = false;
   },
   methods: {
     getWorkBenchObj(){
@@ -223,24 +171,40 @@ export default {
     getEventList(flag){
       let url = "?action=GetTaskMessage&PAGE_NUM="+this.page+"&PAGE_TOTAL="+this.pageSize;
       fetch.get(url,"").then(res=>{
+        // console.log("eventListArr:",res);
         this.eventListArr = res.data;
       });
 
       fetch.get("?action=GetFocusCase&PAGE_NUM=1&PAGE_TOTAL=1","").then(res=>{
+        // console.log("caseData:",res);
         this.caseData = res.data;
       });
 
       fetch.get("?action=GetFocusProject&PAGE_NUM=1&PAGE_TOTAL=1",{}).then(res=>{
+        // console.log("projData:",res);
         this.projData = res.data;
       });
     },
+  },
+
+  beforeCreate:function(){
+    this.$router.replace(location);
+    
+    history.pushState(null, null, document.url);
+    window.onpopstate = () => {
+      history.go(1)
+    }
+  },
+  deactivated(){
+    console.log('移除');
+    window.onpopstate = null
   }
 }
 </script>
 
 <style scoped>
   .homeView{ width: 100%;}
-  .homeView .ul_workBench{display: flex;flex-wrap: wrap; padding: 0.15rem 0.1rem; margin-top: 0.09rem; background: #ffffff;}
+  .homeView .ul_workBench{display: flex;flex-wrap: wrap; padding: 0.15rem 0.1rem; margin-top: 0.09rem; background: #ffffff;font-size: 0.15rem}
   .homeView .ul_workBench:first-child .li_workBench:first-child span{width: 110%; margin-left: -5%;}
   .homeView .ul_workBench .li_workBench{display: flex; flex-direction: column; align-content: space-around; justify-content: space-around; width: 33%; height: 0.55rem; text-align: center;}
   .homeView .ul_workBench .li_workBench:nth-child(n+5){margin-top: 0.15rem;}

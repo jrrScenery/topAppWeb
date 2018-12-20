@@ -8,19 +8,19 @@
     </header>
     <template v-if="popBg">
       <div class="popBg">
-        <search-o-p-staff @change="updatePopBg" @search="searchData" :queryData="queryData"></search-o-p-staff>
+        <search-p-o-staff @change="updatePopBg" @search="searchData" :queryData="queryData"></search-p-o-staff>
       </div>
     </template>
   </div>
 </template>
 
 <script>
-import searchOPStaff from '@/components/searchOPStaff'
+import searchPOStaff from '@/components/searchPOStaff'
 export default {
-  name: 'headerBaseOPStaff',
+  name: 'headerBasePOStaff',
 
   components: {
-    searchOPStaff
+    searchPOStaff
   },
 
   data () {

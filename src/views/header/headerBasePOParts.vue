@@ -8,19 +8,19 @@
     </header>
     <template v-if="popBg">
       <div class="popBg">
-        <search-o-p-parts @change="updatePopBg" @search="searchData" :queryData="queryData"></search-o-p-parts>
+        <search-p-o-parts @change="updatePopBg" @search="searchData" :queryData="queryData"></search-p-o-parts>
       </div>
     </template>
   </div>
 </template>
 
 <script>
-import searchOPParts from '@/components/searchOPParts'
+import searchPOParts from '@/components/searchPOParts'
 export default {
-  name: 'headerBaseOPParts',
+  name: 'headerBasePOParts',
 
   components: {
-    searchOPParts
+    searchPOParts
   },
 
   data () {

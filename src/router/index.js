@@ -24,11 +24,20 @@ export default new Router({
             keepAlive: true
           }
         },
-        {
-          path: '/approve',
-          name: 'approve',
-          component: resolve => require(['@/views/approve/approve'], resolve)
+        {          
+          path: '/focus',          
+          name: 'focus',          
+          component: resolve => require(['@/views/focus/focus'], resolve),          
+          meta: {          
+            isUseCache: false,            
+            keepAlive: true          
+          }        
         },
+        // {
+        //   path: '/approve',
+        //   name: 'approve',
+        //   component: resolve => require(['@/views/approve/approve'], resolve)
+        // },
         {
           path: '/workBench',
           name: 'workBench',
@@ -180,6 +189,7 @@ export default new Router({
       name: 'workBenchPartRecycle',
       component: resolve => require(['@/views/workBench/workBenchPartRecycle'], resolve)
     },
+
     {
       path: '/home/eventList',
       name: 'focusEventList',
