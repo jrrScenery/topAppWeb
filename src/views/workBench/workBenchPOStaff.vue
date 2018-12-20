@@ -1,7 +1,7 @@
 <!--工作台-人员信息-->
 <template>
-  <div class="workBenchOPStaffView">
-    <header-base-o-p-staff :title="workBenchOPStaffTit"></header-base-o-p-staff>
+  <div class="workBenchPOStaffView">
+    <header-base-p-o-staff :title="workBenchPOStaffTit"></header-base-p-o-staff>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <!-- <router-link :to="{name:'workBenchTaskDetailInfo',query:{}}"> -->
@@ -11,7 +11,7 @@
         v-loading="busy && !loadall"
         @row-click="rowClick"
         style="width: 100%">
-        <template v-for="item in workBenchOPStaffObj">
+        <template v-for="item in workBenchPOStaffObj">
             <el-table-column
               :key="item.id"
               :prop="item.prop"
@@ -26,23 +26,23 @@
 </template>
 
 <script>
-import headerBaseOPStaff from '../header/headerBaseOPStaff'
+import headerBasePOStaff from '../header/headerBasePOStaff'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
 export default {
-  name: 'workBenchOPStaff',
+  name: 'workBenchPOStaff',
 
   components: {
-    headerBaseOPStaff
+    headerBasePOStaff
   },
 
   data () {
     return {
-      workBenchOPStaffTit: 'OP管理',
+      workBenchPOStaffTit: 'PO管理',
       tableData: [],
       busy:true,
       loadall: false,
-      workBenchOPStaffObj: [
+      workBenchPOStaffObj: [
         {prop: 'name', label: '供应商', width: '25%'},
         {prop: 'na', label: '类型', width: '25%'},
         {prop: 'res', label: '实际支付日期', width: '25%'},
@@ -68,7 +68,7 @@ export default {
 </script>
 
 <style scoped>
-  .workBenchOPStaffView{width: 100%;}
+  .workBenchPOStaffView{width: 100%;}
   .content{margin-top: 0.05rem; color: #666666;}
   .content >>> .el-table__body{width: 100%!important}
   .content >>> .el-table__header{width: 100%!important}
