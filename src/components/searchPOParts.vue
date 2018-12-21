@@ -9,7 +9,14 @@
         <el-input v-model="form.projectName" class="bInput"></el-input>
       </el-form-item>
       <el-form-item label="实际支付日期">
-        <el-input v-model="form.caseNo" class="bInput"></el-input>
+        <el-col :span="11">
+          <el-date-picker type="date" v-model="form.startTime" style="width: 100%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
+        </el-col>
+        <el-col class="line" :span="2">～</el-col>
+        <el-col :span="11">
+          <el-date-picker type="date" v-model="form.endTime" style="width: 100%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
+        </el-col>
+        <!-- <el-input v-model="form.caseNo" class="bInput"></el-input> -->
       </el-form-item>
       
       <el-form-item class="searchBtn">
@@ -34,7 +41,8 @@ export default {
       form: {
         jobName: '',
         resourceType: '',
-        projectDepartment: ''
+        startTime: '',
+        endTime: ''
       },
       caseLevelArr: []
     }
@@ -51,7 +59,8 @@ export default {
     });
     this.form.jobName = this.queryData.projectNo;
     this.form.resourceType = this.queryData.projectName;
-    this.form.projectDepartment = this.queryData.caseNo;
+    this.form.startTime = this.queryData.startTime;
+    this.form.endTime = this.queryData.endTime;
   },
 
   methods: {
@@ -78,7 +87,7 @@ export default {
 </script>
 
 <style scoped>
-  .searchPOPartsView{width:80%;background: #ffffff; padding: 0.15rem 0.2rem 0.5rem;position: relative;}
+  .searchPOPartsView{background: #ffffff; padding: 0.15rem 0.2rem 0.5rem;position: relative;}
   .searchPOPartsView >>> .el-form-item{margin-bottom: 0.1rem;}
   .searchPOPartsView >>> .el-select{width: 80%;}
   .searchPOPartsView >>> .el-input__inner{padding: 0 0.05rem}

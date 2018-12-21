@@ -29,7 +29,7 @@
       </el-form-item>
       <el-form-item label="事件编号">
         <el-input v-model="form.eventNum" class="bInput"></el-input>
-      </el-form-item>
+      </el-form-item> 
       <el-form-item label="关键词">
         <el-input v-model="form.keyWord" class="bInput"></el-input>
       </el-form-item>

@@ -1,7 +1,7 @@
 <!--工作台-人员信息-->
 <template>
   <div class="workBenchPartsOwnListView">
-    <header-base-p-o-parts :title="workBenchPOPartsTit" :queryData="searchData"  @searchPro="searchList"></header-base-p-o-parts>
+    <header-base :title="workBenchPOPartsTit" :searchType="searchType" :queryData="searchData"  @searchPro="searchList"></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <!-- <router-link :to="{name:'workBenchTaskDetailInfo',query:{}}"> -->
@@ -26,19 +26,20 @@
 </template>
 
 <script>
-import headerBasePOParts from '../header/headerBasePOParts'
+import headerBase from '../header/headerBase'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
 export default {
   name: 'workBenchPOParts',
 
   components: {
-    headerBasePOParts
+    headerBase
   },
 
   data () {
     return {
       workBenchPOPartsTit: 'PO信息-备件',
+      searchType:'POPartsInfo',
       tableData: [],
       busy:true,
       loadall: false,

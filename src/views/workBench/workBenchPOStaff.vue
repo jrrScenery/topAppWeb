@@ -1,7 +1,7 @@
 <!--工作台-人员信息-->
 <template>
   <div class="workBenchPOStaffView">
-    <header-base-p-o-staff :title="workBenchPOStaffTit" :queryData="searchData"  @searchPro="searchList"></header-base-p-o-staff>
+    <header-base :title="workBenchPOStaffTit" :searchType="searchType" :queryData="searchData"  @searchPro="searchList"></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <!-- <router-link :to="{name:'workBenchTaskDetailInfo',query:{}}"> -->
@@ -26,19 +26,20 @@
 </template>
 
 <script>
-import headerBasePOStaff from '../header/headerBasePOStaff'
+import headerBase from '../header/headerBase'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
 export default {
   name: 'workBenchPOStaff',
 
   components: {
-    headerBasePOStaff
+    headerBase
   },
 
   data () {
     return {
       workBenchPOStaffTit: 'PO信息-人员',
+      searchType: 'POStaffInfo',
       tableData: [],
       busy:true,
       loadall: false,
@@ -54,6 +55,7 @@ export default {
   },
   created () {
     fetch.get("?action=GetPersonStat",{}).then(res=>{
+      console.log("222222222222",res);
       this.tableData = res.data;
       this.busy= false;
       this.loadall = true;

@@ -20,6 +20,15 @@
         <template v-else-if="searchType=='focusEvent'">
           <focus-search-view @change="updatePopBg" @search="searchData" :queryData="queryData"></focus-search-view>
         </template>
+
+        <template v-else-if="searchType=='POStaffInfo'">
+          <search-p-o-staff @change="updatePopBg" @search="searchData" :queryData="queryData"></search-p-o-staff>
+        </template>
+
+        <template v-else-if="searchType=='POPartsInfo'">
+          <search-p-o-parts @change="updatePopBg" @search="searchData" :queryData="queryData"></search-p-o-parts>
+        </template>
+
         <search-view v-else @change="updatePopBg" @search="searchData"  :queryData="queryData"></search-view>
       </div>
     </template>
@@ -31,13 +40,17 @@
 import searchView from '@/components/searchView'
 import focusSearchView from '@/components/focusSearchView'
 import searchComplaintView from '@/components/searchCompaintView'
+import searchPOStaff from '@/components/searchPOStaff'
+import searchPOParts from '@/components/searchPOParts'
 export default {
   name: 'headerBase',
 
   components: {
     searchView,
     focusSearchView,
-    searchComplaintView
+    searchComplaintView,
+    searchPOStaff,
+    searchPOParts
   },
 
   data () {
@@ -80,5 +93,5 @@ export default {
   h2{display: flex; background: #2698d6;font-size: 0.16rem;}
   .headerLeft,.headerRight{display: flex; flex-direction: column; justify-content: center; align-items: center; width: 0.45rem; height: 0.45rem; font-size: 0.14rem;}
   .headerLeft i{font-size: 0.2rem;}
-  .popBg{background: rgba(0,0,0,0.5); position: fixed; top: 0.45rem; bottom: 0; z-index: 999; padding: 0 0.25rem;}
+  .popBg{background: rgba(0,0,0,0.5); position: fixed;top: 0.45rem; bottom: 0; z-index: 999; padding: 0 0.25rem;}
 </style>

@@ -27,19 +27,14 @@ export default {
   name: 'footerHome',
   data: function () {
     return {
-      footerArr: [],
+      footerArr: null,
       title: [],
       defaultActive: 'home'
     }
   },
   activated(){
-    this.footerArr=[
-      {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true},
-      {elType: 2, index: 'focus', text: '关注', className: 'el-icon-footer_2',display:true},
-      {elType: 5, index: 'mine', text: '设置', className: 'el-icon-footer_5',display:true}
-    ];
+    this.footerArr=null;
     this.efaultActive = 'home';
-    // localStorage.removeItem("footerSelectObj");
     this.getFooterArr(); 
   },
 
@@ -50,17 +45,17 @@ export default {
 
   methods: {
     getFooterArr(){
+      this.footerArr = [];
       localStorage.removeItem("footerSelectObj");
-      // this.defaultActive = 'home';
       let permissions = JSON.parse(localStorage.getItem("userPermission"));
-      // console.log("permissions:",permissions)
-      if(permissions.length==0){
-        // console.log("111111111111111");
+      console.log("permissions:",permissions);
+      if(permissions==null||permissions.length==0){
+        console.log("00000000");
         this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true};
         this.footerArr[1] = {elType: 2, index: 'focus', text: '关注', className: 'el-icon-footer_2',display:true};
         this.footerArr[2] = {elType: 3, index: 'mine', text: '设置', className: 'el-icon-footer_5',display:true}
-        // console.log("this-this1",this.footerArr);
       }else{
+        console.log("1111111111");
         var m=0;
         for(let i=0;i<permissions.length;i++){
           if(permissions[i].PRIVID=='workFlow_business_statistics'){
@@ -77,12 +72,9 @@ export default {
           this.footerArr[1] = {elType: 2, index: 'focus', text: '关注', className: 'el-icon-footer_2',display:true};
           this.footerArr[2] = {elType: 3, index: 'mine', text: '设置', className: 'el-icon-footer_5',display:true}
         }
-        // console.log("m:",m);
-        // console.log("this-this2",this.footerArr);
       }
     },
-    select (index, indexPath, e) {
-      
+    select (index, indexPath, e) {   
       // let footerSelectObj = localStorage.getItem('footerSelectObj') || JSON.stringify({})
       // let footerArr = this.footerArr
       // let dealAfterObj = JSON.parse(footerSelectObj);
@@ -100,38 +92,37 @@ export default {
       //     return
       //   }
       // }
-      // console.log(footerSelectObj);
-      // console.log("dealAfterObj:",dealAfterObj)
     },
 
     routerChange (e) {
-      // console.log("e:",e);
-      let path = e.path.split('/')[1]
-      let footerArr = this.footerArr;
-      // console.log("bbbbbbbbbbbb",this.footerArr);
-      // console.log("path22222222",path);
-      for (let i = 0; i < footerArr.length; i++) {
-        console.log(footerArr[i].index);
-        console.log("path:",path);
-        if (footerArr[i].index === path) {
-          this.defaultActive = path
-          break
-        }
-        if (footerArr[i].arr) {
-          for (let j = 0; j < footerArr[i].arr.length; j++) {
-            if (footerArr[i].arr[j].index === path) {
-              this.defaultActive = path
-              break
+      this.efaultActive = 'home';
+      this.getFooterArr();
+        let path = e.path.split('/')[1]
+        let footerArr = this.footerArr;
+        console.log("footerArr:",footerArr);
+        for (let i = 0; i < footerArr.length; i++) {
+          console.log(footerArr[i].index);
+          console.log("path:",path);
+          if (footerArr[i].index === path) {
+            this.defaultActive = path
+            break
+          }
+          if (footerArr[i].arr) {
+            console.log("footerArr[i].arr:",footerArr[i].arr);
+            for (let j = 0; j < footerArr[i].arr.length; j++) {
+              if (footerArr[i].arr[j].index === path) {
+                console.log(footerArr[i].arr[j].index)
+                this.defaultActive = path
+                break
+              }
             }
           }
         }
-      }
       console.log("defaultActive:",this.defaultActive)
     },
 
     routerPush (path) {
-      // localStorage.removeItem("footerSelectObj");
-      // console.log("path:",path)
+      console.log("routerPush",path);
       if(path.length>0){
         this.$router.push({path: '/' + path})        
       }
