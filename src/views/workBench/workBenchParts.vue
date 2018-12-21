@@ -94,7 +94,7 @@ export default {
 <style scoped>
   .workBenchPartsView{width: 100%;}
   .content{margin: 0 0; background: #ffffff; position: relative;}
-  .content >>> .el-tabs__header{margin: 0 0 0.1rem;}
+  .content >>> .el-tabs__header{margin: 0 0 0rem;}
   .content >>> .el-tabs__item.is-active{color: #2698d6;}
   .content >>> .el-tabs__active-bar{background: #2698d6;}
   .content >>> .el-tabs__nav{width: 100%; text-align: center;}
