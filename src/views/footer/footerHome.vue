@@ -8,7 +8,7 @@
       @select="select">
     <template v-for="item in footerArr">
       <el-menu-item v-if="footerArr.length == 4" style="width: 25%;" :index="item.index" @click="routerPush(item.index)" :key="item.id">
-        <!-- <img v-if="item.elType === 3" :src="item.imgSrc" class="workImg" /> -->
+        <img v-if="item.elType === 3" :src="item.imgSrc" class="workImg" />
         <i :class="item.className"></i>
         <span>{{ item.text }}</span>
       </el-menu-item>
@@ -52,8 +52,8 @@ export default {
       if(permissions==null||permissions.length==0){
         console.log("00000000");
         this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true};
-        this.footerArr[1] = {elType: 2, index: 'focus', text: '关注', className: 'el-icon-footer_2',display:true};
-        this.footerArr[2] = {elType: 3, index: 'mine', text: '设置', className: 'el-icon-footer_5',display:true}
+        this.footerArr[1] = {elType: 2, index: 'focus', text: '关注', className: 'el-icon-bell',display:true};
+        this.footerArr[2] = {elType: 3, index: 'mine', text: '设置', className: 'el-icon-setting',display:true}
       }else{
         console.log("1111111111");
         var m=0;
@@ -64,13 +64,13 @@ export default {
         }
         if(m!=0){
           this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true};
-          this.footerArr[1] = {elType: 2, index: 'focus', text: '关注', className: 'el-icon-footer_2',display:true};
-          this.footerArr[2] = {elType: 3, index: 'workBench', text: '管理舱', className: 'el-icon-footer_4',display:false};
-          this.footerArr[3] = {elType: 4, index: 'mine', text: '设置', className: 'el-icon-footer_5',display:true}
+          this.footerArr[1] = {elType: 2, index: 'focus', text: '关注', className: 'el-icon-bell',display:true};
+          this.footerArr[2] = {elType: 3, index: 'workBench', text: '管理舱', imgSrc: require('../../assets/images/manager.png'),display:false};
+          this.footerArr[3] = {elType: 4, index: 'mine', text: '设置', className: 'el-icon-setting',display:true}
         }else{
           this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true};
-          this.footerArr[1] = {elType: 2, index: 'focus', text: '关注', className: 'el-icon-footer_2',display:true};
-          this.footerArr[2] = {elType: 3, index: 'mine', text: '设置', className: 'el-icon-footer_5',display:true}
+          this.footerArr[1] = {elType: 2, index: 'focus', text: '关注', className: 'el-icon-bell',display:true};
+          this.footerArr[2] = {elType: 3, index: 'mine', text: '设置', className: 'el-icon-setting',display:true}
         }
       }
     },
