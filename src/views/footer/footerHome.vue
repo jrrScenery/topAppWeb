@@ -34,7 +34,7 @@ export default {
   },
   activated(){
     this.footerArr=null;
-    this.efaultActive = 'home';
+    this.defaultActive = 'home';
     this.getFooterArr(); 
   },
 
