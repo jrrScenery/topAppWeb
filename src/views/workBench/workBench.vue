@@ -32,7 +32,7 @@
 <script>
 
 export default {
-  name: 'managementModule',
+  name: 'workBench',
 
   components: {
   },
