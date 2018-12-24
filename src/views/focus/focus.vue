@@ -117,7 +117,12 @@ export default {
   },
 
   created:function(){
-     fetch.get("?action=GetFocusCase&PAGE_NUM=1&PAGE_TOTAL=2","").then(res=>{
+    this.fetchData();
+  },
+
+  methods:{
+    fetchData:function(){
+      fetch.get("?action=GetFocusCase&PAGE_NUM=1&PAGE_TOTAL=2","").then(res=>{
         // console.log("res",res.data);
         this.caseData = res.data;
       }); 
@@ -127,10 +132,6 @@ export default {
       fetch.get("?action=GetTaskMessage&PAGE_NUM=1&PAGE_TOTAL=1",{}).then(res=>{
         this.noticeData = res.data;
       });
-  },
-
-  methods:{
-    fetchData:function(){
     }
     
   },

@@ -112,13 +112,7 @@ export default {
   },
   created(){
     this.getWorkBenchObj();
-    if(!this.$route.meta.isUseCache){
-      this.caseData = [];
-      fetch.get("?action=checkSession",{}).then(res=>{
-        this.getEventList();
-      });
-    }
-    this.$route.meta.isUseCache = false;
+    this.getEventList();
   },
   methods: {
     getWorkBenchObj(){

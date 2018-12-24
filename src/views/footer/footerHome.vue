@@ -34,7 +34,7 @@ export default {
   },
   activated(){
     this.footerArr=null;
-    this.efaultActive = 'home';
+    this.defaultActive = 'home';
     this.getFooterArr(); 
   },
 
@@ -55,7 +55,6 @@ export default {
         this.footerArr[1] = {elType: 2, index: 'focus', text: '关注', className: 'el-icon-bell',display:true};
         this.footerArr[2] = {elType: 3, index: 'mine', text: '设置', className: 'el-icon-setting',display:true}
       }else{
-        console.log("1111111111");
         var m=0;
         for(let i=0;i<permissions.length;i++){
           if(permissions[i].PRIVID=='workFlow_business_statistics'){
@@ -95,7 +94,8 @@ export default {
     },
 
     routerChange (e) {
-      this.efaultActive = 'home';
+      console.log("e:",e)
+      this.defaultActive = 'home';
       this.getFooterArr();
         let path = e.path.split('/')[1]
         let footerArr = this.footerArr;
