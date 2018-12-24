@@ -94,7 +94,8 @@ export default {
     },
 
     routerChange (e) {
-      this.efaultActive = 'home';
+      console.log("e:",e)
+      this.defaultActive = 'home';
       this.getFooterArr();
         let path = e.path.split('/')[1]
         let footerArr = this.footerArr;
