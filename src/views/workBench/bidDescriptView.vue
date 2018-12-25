@@ -241,7 +241,7 @@
             <el-form ref="personInfo" :model="personInfo" label-width="1rem">
                 <el-form-item label="入项目">
                     <el-radio-group v-model="personInfo.fitProjectFlg">
-                        <el-radio label="1" @change="isFitProjectFlg('1')" v-if="personInfo.caseType!='5'">是</el-radio>
+                        <el-radio label="1" @change="isFitProjectFlg('1')" v-if="personInfo.caseType!='5'||personInfo.serviceType!='5'">是</el-radio>
                         <el-radio label="0" @change="isFitProjectFlg('0')">否</el-radio>
                     </el-radio-group>
                 </el-form-item>
