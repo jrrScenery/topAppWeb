@@ -50,7 +50,7 @@ export default {
   },
   mounted(){
     window.routeback = () =>{
-      if(["login","home","focus","workBench","mine","login"].indexOf(this.$route.name)>-1){
+      if(["home","focus","workBench","mine"].indexOf(this.$route.name)>-1){
         if(typeof(android)!="undefined"){
           if(sessionStorage.backTime && (new Date()).getTime()- parseInt(sessionStorage.backTime) <1500  ){
             console.log((new Date()).getTime()- parseInt(sessionStorage.backTime))

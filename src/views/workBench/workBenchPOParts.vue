@@ -1,25 +1,28 @@
 <!--工作台-人员信息-->
 <template>
-  <div class="workBenchPartsOwnListView">
+  <div class="workBenchPOPartsView">
     <header-base :title="workBenchPOPartsTit" :searchType="searchType" :queryData="searchData"  @searchPro="searchList"></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <!-- <router-link :to="{name:'workBenchTaskDetailInfo',query:{}}"> -->
-      <el-table
-        stripe
-        :data="tableData"
-        v-loading="busy && !loadall"
-        @row-click="rowClick"
-        style="width: 100%">
-        <template v-for="item in workBenchPOPartsObj">
-            <el-table-column
-              :key="item.id"
-              :prop="item.prop"
-              :label="item.label"
-              :min-width="item.width">
-            </el-table-column>
-        </template>
-      </el-table>
+        <el-table
+          stripe
+          v-loading="busy && !loadall"
+          element-loading-text="正在加载下一页"
+          v-loadmore="loadMore"
+          :data="tableData"
+          :height = "tableHeight"
+          @row-click="rowClick"
+          style="width: 100%">
+          <template v-for="item in workBenchPOPartsObj">
+              <el-table-column
+                :key="item.id"
+                :prop="item.prop"
+                :label="item.label"
+                :min-width="item.width">
+              </el-table-column>
+          </template>
+        </el-table>
       <!-- </router-link> -->
     </div>
   </div>
@@ -29,11 +32,13 @@
 import headerBase from '../header/headerBase'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
+import loadingtmp from '@/components/load/loading'
 export default {
   name: 'workBenchPOParts',
 
   components: {
-    headerBase
+    headerBase,
+    loadingtmp
   },
 
   data () {
@@ -41,46 +46,101 @@ export default {
       workBenchPOPartsTit: 'PO信息-备件',
       searchType:'POPartsInfo',
       tableData: [],
-      busy:true,
-      loadall: false,
       workBenchPOPartsObj: [
-        {prop: 'name', label: '供应商', width: '25%'},
-        {prop: 'na', label: '类型', width: '25%'},
-        {prop: 'res', label: '实际支付日期', width: '25%'},
-        {prop: 'jin', label: '金额', width: '25%'}
+        {prop: 'SUPPLIER_NAME', label: '供应商', width: '25%'},
+        {prop: 'POTYPENAME', label: '类型', width: '25%'},
+        {prop: 'PAYPLAN_ACTUALDATE', label: '实际支付日期', width: '25%'},
+        {prop: 'TOTALAMOUNT', label: '金额', width: '25%'}
       ],
+      page:1,
+      pageSize:30,
+      busy:false,
+      loadall: false,
+      tableHeight:400,
+      isSearch:false,
       searchData:{
       },
+      type: this.$route.query.TYPE
     }
   },
-  created () {
-    fetch.get("?action=GetPersonStat",{}).then(res=>{
-      this.tableData = res.data;
-      this.busy= false;
-      this.loadall = true;
-      console.log(this.tableData);
-    });
+  created(){
+    this.getPOPartsList()
+  },
+  mounted(){
+    this.$nextTick(() => {
+      let self = this;
+      this.tableHeight = document.documentElement.clientHeight- ("my"== this.type?45:90);
+      window.onresize = function() {
+        self.tableHeight = document.documentElement.clientHeight- ("my"== this.type?45:90);
+      }
+    })
   },
   methods: {
-    rowClick (row) {
-      console.log(row)
-      this.$router.push({name: 'workBenchPartsOwnListSingle', query: {}})
+    getPOPartsList(){
+      var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize,TYPE:"2",YM:this.$route.query.YM};
+      console.log(params);
+      if(this.isSearch){
+        params.SUPPLIER_NAME = this.searchData.supplyName;
+        params.POTYPENAME = this.searchData.poTypeName;
+        // params.POTYPENAME = this.searchData.poTypeName;
+      }
+      //console.log(params);
+      var flag = this.page>1;
+      fetch.get("?action=/po/GetPOList",params).then(res=>{
+        console.log("222222",res);
+        if(flag){
+            this.tableData = this.tableData.concat(res.data);
+        }else{
+            this.tableData = res.data;
+        }
+        if(0 == res.data.length || res.data.length<this.pageSize ){
+          this.busy = true;
+          this.loadall = true;
+          this.$message({
+            message:'已加载全部数据',
+            type: 'success',
+            center: true,
+            duration:3000,
+            customClass:'msgdefine'
+          });
+        }
+        else{
+          this.busy = false;
+          this.page++
+        }
+      });
     },
-
+    rowClick (row) {
+      console.log("row",row)
+      this.$router.push({name: 'workBenchPOPayDetail', query: {type:"2",payPlanId:row.PAYPLAN_ID}})
+    },
+    loadMore(){
+      if(this.busy){return false}
+      this.busy = true;
+      setTimeout(() => {
+        this.getPOPartsList();
+      }, 1000);
+    },
     searchList(formData){
       console.log("formData",formData)
       this.searchData = formData;
+      this.tableData=[];
+      this.isSearch = true;
+      this.page = 1;
+      this.loadall= false;
+      this.loadMore();
     }
-  }
+  },
+  
 }
 </script>
 
 <style scoped>
-  .workBenchPartsOwnListView{width: 100%;}
-  .content{margin-top: 0.05rem; color: #666666;}
+  .workBenchPOPartsView{width: 100%;}
+  .content{width: 100%; position: absolute; top: 0.45rem;bottom: 0; color: #666666;overflow: scroll;}
   .content >>> .el-table__body{width: 100%!important}
   .content >>> .el-table__header{width: 100%!important}
-  .content >>> .el-table{font-size: 0.13rem; text-align: center}
+  .content >>> .el-table{font-size: 0.13rem; text-align: center;}
   .content >>> .el-table th{text-align: center; background: #f7f7f7; color: #333333}
   .content >>> .el-table td{border: none}
   .content >>> .el-table .cell{padding: 0;}

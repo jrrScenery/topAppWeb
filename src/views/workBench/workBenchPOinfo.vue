@@ -97,10 +97,10 @@ export default {
     rowClick (row) {
       console.log("111111111111", row)
       if (row.__ob__.value.KIND == 0){
-        this.$router.push({name: 'workBenchPOStaff', query: {}})
+        this.$router.push({name: 'workBenchPOStaff', query:{YM:row.YM}})
       }
       if (row.__ob__.value.KIND == 1){
-        this.$router.push({name: 'workBenchPOParts', query: {}})
+        this.$router.push({name: 'workBenchPOParts', query: {YM:row.YM}})
       }
     },
   }

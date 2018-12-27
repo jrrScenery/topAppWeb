@@ -53,7 +53,7 @@
                 <el-col :span="16"><span>关注原因:</span><span>{{item.ITEM.split(",")[0]}}</span></el-col>
             </el-row>
             <el-row>
-                <el-col><span>客户名称：</span><span>{{item.CUSTOM}}</span></el-col>
+              <el-col><span>客户名称：</span><span>{{item.CUSTOM}}</span></el-col>
                 <!-- <el-col>{{}}</el-col> -->
             </el-row>
             </el-col>

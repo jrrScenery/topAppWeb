@@ -48,9 +48,9 @@ export default {
       this.footerArr = [];
       localStorage.removeItem("footerSelectObj");
       let permissions = JSON.parse(localStorage.getItem("userPermission"));
-      console.log("permissions:",permissions);
+      // console.log("permissions:",permissions);
       if(permissions==null||permissions.length==0){
-        console.log("00000000");
+        // console.log("00000000");
         this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true};
         this.footerArr[1] = {elType: 2, index: 'focus', text: '关注', className: 'el-icon-bell',display:true};
         this.footerArr[2] = {elType: 3, index: 'mine', text: '设置', className: 'el-icon-setting',display:true}
@@ -94,35 +94,35 @@ export default {
     },
 
     routerChange (e) {
-      console.log("e:",e)
-      this.defaultActive = 'home';
+      // console.log("e:",e)
+      // this.defaultActive = 'home';
       this.getFooterArr();
         let path = e.path.split('/')[1]
         let footerArr = this.footerArr;
-        console.log("footerArr:",footerArr);
+        // console.log("footerArr:",footerArr);
         for (let i = 0; i < footerArr.length; i++) {
-          console.log(footerArr[i].index);
-          console.log("path:",path);
+          // console.log(footerArr[i].index);
+          // console.log("path:",path);
           if (footerArr[i].index === path) {
             this.defaultActive = path
             break
           }
-          if (footerArr[i].arr) {
-            console.log("footerArr[i].arr:",footerArr[i].arr);
-            for (let j = 0; j < footerArr[i].arr.length; j++) {
-              if (footerArr[i].arr[j].index === path) {
-                console.log(footerArr[i].arr[j].index)
-                this.defaultActive = path
-                break
-              }
-            }
-          }
+          // if (footerArr[i].arr) {
+          //   console.log("footerArr[i].arr:",footerArr[i].arr);
+          //   for (let j = 0; j < footerArr[i].arr.length; j++) {
+          //     if (footerArr[i].arr[j].index === path) {
+          //       console.log(footerArr[i].arr[j].index)
+          //       this.defaultActive = path
+          //       break
+          //     }
+          //   }
+          // }
         }
-      console.log("defaultActive:",this.defaultActive)
+      // console.log("defaultActive:",this.defaultActive)
     },
 
     routerPush (path) {
-      console.log("routerPush",path);
+      // console.log("routerPush",path);
       if(path.length>0){
         this.$router.push({path: '/' + path})        
       }

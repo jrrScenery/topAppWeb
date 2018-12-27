@@ -62,7 +62,7 @@ export default {
   methods: {
     rowClick (row) {
       console.log(row)
-      this.$router.push({name: 'workBenchPartsOwnListSingle', query: {}})
+      this.$router.push({name: 'workBenchPOPayDetail', query: {}})
     },
   }
 }

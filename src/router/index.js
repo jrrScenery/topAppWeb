@@ -353,14 +353,14 @@ export default new Router({
       component: resolve => require(['@/views/workBench/workBenchPartsSupplierListSingle'], resolve)
     },
     {
-      path: '/workBench/workBenchPartsOwnListSingle',
-      name: 'workBenchPartsOwnListSingle',
-      component: resolve => require(['@/views/workBench/workBenchPartsOwnListSingle'], resolve)
+      path: '/workBench/workBenchPOPayDetail',
+      name: 'workBenchPOPayDetail',
+      component: resolve => require(['@/views/workBench/workBenchPOPayDetail'], resolve)
     },
     {
       path: '/workBench/workBenchPOStaff',
       name: 'workBenchPOStaff',
-      component: resolve => require(['@/views/workBench/workBenchPOStaff'], resolve)
+      component: resolve => require(['@/views/workBench/workBenchPOStaff'], resolve),
     },
     {
       path: '/workBench/workBenchPOParts',

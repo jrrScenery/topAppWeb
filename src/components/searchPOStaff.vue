@@ -3,10 +3,10 @@
   <div class="searchPOStaffView">
     <el-form ref="form" :model="form" label-width="90px">
       <el-form-item label="姓名">
-        <el-input v-model="form.projectNo" class="bInput"></el-input>
+        <el-input v-model="form.supplyName" class="bInput"></el-input>
       </el-form-item>
       <el-form-item label="类型">
-        <el-input v-model="form.projectName" class="bInput"></el-input>
+        <el-input v-model="form.poTypeName" class="bInput"></el-input>
       </el-form-item>
       <el-form-item label="实际支付日期">
         <el-col :span="11">
@@ -39,8 +39,8 @@ export default {
   data () {
     return {
       form: {
-        jobName: '',
-        resourceType: '',
+        poTypeName: '',
+        type: '',
         startTime: '',
         endTime: ''
       },
@@ -57,8 +57,8 @@ export default {
       console.log(res.data);
       this.caseLevelArr = res.data;
     });
-    this.form.jobName = this.queryData.projectNo;
-    this.form.resourceType = this.queryData.projectName;
+    this.form.supplyName = this.queryData.supplyName;
+    this.form.poTypeName = this.queryData.poTypeName;
     this.form.startTime = this.queryData.startTime;
     this.form.endTime = this.queryData.endTime;
   },

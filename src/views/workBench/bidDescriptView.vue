@@ -239,9 +239,15 @@
         <div class="titleInfo" v-if="status!='2'&&(realName==personInfo.salename)||status=='6'">销售确认信息</div>
         <div class="bodyForm" v-if="status!='2'&&(realName==personInfo.salename)||status=='6'">
             <el-form ref="personInfo" :model="personInfo" label-width="1rem">
-                <el-form-item label="入项目">
+                <el-form-item label="入项目" v-if="personInfo.priceTypeData=='人员'">
                     <el-radio-group v-model="personInfo.fitProjectFlg">
-                        <el-radio label="1" @change="isFitProjectFlg('1')" v-if="personInfo.caseType!='5'||personInfo.serviceType!='5'">是</el-radio>
+                        <el-radio label="1" @change="isFitProjectFlg('1')" v-if="personInfo.caseType!='5'&& personInfo.serviceType!='5'">是</el-radio>
+                        <el-radio label="0" @change="isFitProjectFlg('0')">否</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="入项目" v-else>
+                    <el-radio-group v-model="personInfo.fitProjectFlg">
+                        <el-radio label="1" @change="isFitProjectFlg('1')">是</el-radio>
                         <el-radio label="0" @change="isFitProjectFlg('0')">否</el-radio>
                     </el-radio-group>
                 </el-form-item>
