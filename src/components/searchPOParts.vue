@@ -1,4 +1,4 @@
-<!--任务列表查询-->
+<!--PO信息-备件-->
 <template>
   <div class="searchPOPartsView">
     <el-form ref="form" :model="form" label-width="90px">
@@ -30,7 +30,7 @@
 <script>
 import fetch from '../utils/ajax'
 export default {
-  name: 'searchPartsSupplierList',
+  name: 'searchPOParts',
 
   components: {
 

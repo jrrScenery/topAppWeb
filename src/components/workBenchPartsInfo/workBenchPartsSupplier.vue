@@ -93,7 +93,7 @@ export default {
         },
         rowClick (row) {
             console.log(row)
-            this.$router.push({name: 'workBenchPartsSupplierList', query: {}})
+            this.$router.push({name: 'workBenchPartsSupplierList', query: {provinceName:row.PROVINCE_NAME}})
         },
        
     
