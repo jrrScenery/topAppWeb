@@ -3,7 +3,7 @@
   <div class="workBenchPOPartsView">
     <header-base :title="workBenchPOPartsTit" :searchType="searchType" :queryData="searchData"  @searchPro="searchList"></header-base>
     <div style="height: 0.45rem;"></div>
-    <div class="content">
+    <div class="workBenchPOPartsContent">
       <!-- <router-link :to="{name:'workBenchTaskDetailInfo',query:{}}"> -->
         <el-table
           stripe
@@ -60,7 +60,6 @@ export default {
       isSearch:false,
       searchData:{
       },
-      type: this.$route.query.TYPE
     }
   },
   created(){
@@ -69,9 +68,9 @@ export default {
   mounted(){
     this.$nextTick(() => {
       let self = this;
-      this.tableHeight = document.documentElement.clientHeight- ("my"== this.type?45:90);
+      this.tableHeight = document.documentElement.clientHeight- 45;
       window.onresize = function() {
-        self.tableHeight = document.documentElement.clientHeight- ("my"== this.type?45:90);
+        self.tableHeight = document.documentElement.clientHeight- 45;
       }
     })
   },
@@ -136,13 +135,14 @@ export default {
 </script>
 
 <style scoped>
-  .workBenchPOPartsView{width: 100%;}
-  .content{width: 100%; position: absolute; top: 0.45rem;bottom: 0; color: #666666;overflow: scroll;}
-  .content >>> .el-table__body{width: 100%!important}
-  .content >>> .el-table__header{width: 100%!important}
-  .content >>> .el-table{font-size: 0.13rem; text-align: center;}
-  .content >>> .el-table th{text-align: center; background: #f7f7f7; color: #333333}
-  .content >>> .el-table td{border: none}
-  .content >>> .el-table .cell{padding: 0;}
-  .content >>> .el-table__empty-block{position: initial}
+  .workBenchPOPartsView{width: 100%;background: #f7f7f7}
+  .workBenchPOPartsContent{width: 100%; position: absolute; top: 0.45rem;bottom: 0; color: #666666;overflow: scroll;}
+  .workBenchPOPartsContent >>> .el-table__body{width: 100%!important}
+  .workBenchPOPartsContent >>> .el-table__header{width: 100%!important}
+  .workBenchPOPartsContent >>> .el-table{font-size: 0.13rem; text-align: center;}
+  .workBenchPOPartsContent >>> .el-table tr:nth-child(2n){background: #f7f7f7}
+  .workBenchPOPartsContent >>> .el-table th{text-align: center; background: #f7f7f7; color: #333333}
+  .workBenchPOPartsContent >>> .el-table td{border: none}
+  .workBenchPOPartsContent >>> .el-table .cell{padding: 0;}
+  .workBenchPOPartsContent >>> .el-table__empty-block{position: initial}
 </style>

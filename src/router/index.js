@@ -312,16 +312,18 @@ export default new Router({
       name: 'workBenchPeopleInfoOfCitySingle',
       component: resolve => require(['@/views/workBench/workBenchPeopleInfoOfCitySingle'], resolve)
     },
+    //供应商信息
     {
       path: '/workBench/workBenchSupplierInfoOfCity',
       name: 'workBenchSupplierInfoOfCity',
       component: resolve => require(['@/views/workBench/workBenchSupplierInfoOfCity'], resolve)
     },
-    // {
-    //   path: '/workBench/workBenchSupplierInfoOfCitySingle',
-    //   name: 'workBenchSupplierInfoOfCitySingle',
-    //   component: resolve => require(['@/views/workBench/workBenchSupplierInfoOfCitySingle'], resolve)
-    // },
+    //供应商详情
+    {
+      path: '/workBench/workBenchSupplierDetailInfo',
+      name: 'workBenchSupplierDetailInfo',
+      component: resolve => require(['@/views/workBench/workBenchSupplierDetailInfo'], resolve)
+    },
     {
       path: '/workBench/workBenchEventInfo',
       name: 'workBenchEventInfo',

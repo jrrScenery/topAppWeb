@@ -3,13 +3,19 @@
   <div class="searchSupplierOfCityView">
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="供应种类">
-        <el-input v-model="form.projectNo" class="bInput"></el-input>
+        <el-select v-model="form.kindName" placeholder="请选择供应种类" multiple>
+          <el-option v-for="item in kindNameList" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="供应属性">
-        <el-input v-model="form.projectName" class="bInput"></el-input>
+        <el-select v-model="form.attName" placeholder="请选择供应属性" multiple>
+          <el-option v-for="item in attNameList" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="合作属性">
-        <el-input v-model="form.caseNo" class="bInput"></el-input>
+        <el-select v-model="form.cattName" placeholder="请选择合作属性" multiple>
+          <el-option v-for="item in cattNameList" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        </el-select>
       </el-form-item>
       
       <el-form-item class="searchBtn">
@@ -32,11 +38,13 @@ export default {
   data () {
     return {
       form: {
-        jobName: '',
-        resourceType: '',
-        projectDepartment: ''
+        kindName: '',
+        attName: '',
+        cattName: ''
       },
-      caseLevelArr: []
+      kindNameList: [],
+      attNameList:[],
+      cattNameList:[]
     }
   },
 
@@ -47,11 +55,11 @@ export default {
     console.log(this.queryData);
     fetch.get("?action=getDict&type=NT_CASE_LEVEL","").then(res=>{
       console.log(res.data);
-      this.caseLevelArr = res.data;
+      // this.caseLevelArr = res.data;
     });
-    this.form.jobName = this.queryData.projectNo;
-    this.form.resourceType = this.queryData.projectName;
-    this.form.projectDepartment = this.queryData.caseNo;
+    this.form.kindName = this.queryData.kindName;
+    this.form.attName = this.queryData.attName;
+    this.form.cattName = this.queryData.cattName;
   },
 
   methods: {
@@ -76,7 +84,7 @@ export default {
   }
 }
 </script>
-
+ 
 <style scoped>
   .searchSupplierOfCityView{width:80%;background: #ffffff; padding: 0.15rem 0.2rem 0.5rem;position: relative;}
   .searchSupplierOfCityView >>> .el-form-item{margin-bottom: 0.1rem;}

@@ -2,7 +2,7 @@
     <div class="workBenchPOPayDetailView">
         <header-last :title="workBenchPOPayDetailTit"></header-last>
         <div style="height: 0.45rem;"></div>
-        <div class="content">
+        <div class="workBenchPOPayDetailContent">
             <div class="cell">
                 <ul>
                     <li v-for="item in workBenchPOStaffObj" :key="item.id">
@@ -69,24 +69,15 @@ export default {
 
 <style scoped>
   .workBenchPOStaffView{width: 100%;}
-  /* .content{width: 100%; position: absolute; top: 0;bottom: 0; color: #666666;overflow: scroll;}
-  .content >>> .el-table__body{width: 100%!important}
-  .content >>> .el-table__header{width: 100%!important}
-  .content >>> .el-table{font-size: 0.13rem; text-align: center;}
-  .content >>> .el-table th{text-align: center; background: #f7f7f7; color: #333333}
-  .content >>> .el-table td{border: none}
-  .content >>> .el-table .cell{padding: 0;}
-  .content >>> .el-table__empty-block{position: initial} */
-
-  .content{width: 100%; margin-top: 0.05rem; color: #999999; background: #ffffff;}
-  .content .title{line-height: 0.35rem; color: #2698d6; padding-left: 0.25rem; position: relative;}
-  .content .title:before{width: 0.05rem; height: 0.12rem; content: ''; position: absolute; left: 0.1rem; top: 0.11rem; background: #2698d6;}
-  .content ul li{padding: 0 0.25rem;}
-  .content ul li{display: flex; line-height: 0.25rem;}
-  .content ul li:nth-child(2n+1){color: #999999;background: #ffffff;}
-  .content ul li:nth-child(2n){color: #999999;background: #f7f7f7;}
-  .content ul li p:nth-child(1){width: 0.91rem;}
-  .content ul li p:nth-child(2){width: 66%;word-wrap: break-word;}
+  .workBenchPOPayDetailContent{width: 100%; margin-top: 0.05rem; color: #999999; background: #ffffff;}
+  .workBenchPOPayDetailContent .title{line-height: 0.35rem; color: #2698d6; padding-left: 0.25rem; position: relative;}
+  .workBenchPOPayDetailContent .title:before{width: 0.05rem; height: 0.12rem; content: ''; position: absolute; left: 0.1rem; top: 0.11rem; background: #2698d6;}
+  .workBenchPOPayDetailContent ul li{padding: 0 0.25rem;}
+  .workBenchPOPayDetailContent ul li{display: flex; line-height: 0.25rem;}
+  .workBenchPOPayDetailContent ul li:nth-child(2n+1){color: #999999;background: #ffffff;}
+  .workBenchPOPayDetailContent ul li:nth-child(2n){color: #999999;background: #f7f7f7;}
+  .workBenchPOPayDetailContent ul li p:nth-child(1){width: 0.91rem;}
+  .workBenchPOPayDetailContent ul li p:nth-child(2){width: 66%;word-wrap: break-word;}
 </style>
 
 

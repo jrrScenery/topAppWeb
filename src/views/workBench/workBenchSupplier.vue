@@ -74,7 +74,7 @@ export default {
   methods: {
     rowClick (row) {
       console.log(row)
-      this.$router.push({name: 'workBenchSupplierInfoOfCity', query: {}})
+      this.$router.push({name: 'workBenchSupplierInfoOfCity', query: {provinceName:row.AREANAME}})
     },
   }
 }

@@ -3,7 +3,7 @@
   <div class="workBenchPOStaffView">
     <header-base :title="workBenchPOStaffTit" :searchType="searchType" :queryData="searchData"  @searchPro="searchList"></header-base>
     <div style="height: 0.45rem;"></div>
-    <div class="content">
+    <div class="workBenchPOStaffContent">
       <!-- <router-link :to="{name:'workBenchTaskDetailInfo',query:{}}"> -->
         <el-table
           stripe
@@ -59,8 +59,7 @@ export default {
       tableHeight:400,
       isSearch:false,
       searchData:{
-      },
-      type: this.$route.query.TYPE
+      }
     }
   },
   created(){
@@ -69,9 +68,10 @@ export default {
   mounted(){
     this.$nextTick(() => {
       let self = this;
-      this.tableHeight = document.documentElement.clientHeight- ("my"== this.type?45:90);
+      console.log("ssssssss",this.type);
+      this.tableHeight = document.documentElement.clientHeight- 45;
       window.onresize = function() {
-        self.tableHeight = document.documentElement.clientHeight- ("my"== this.type?45:90);
+        self.tableHeight = document.documentElement.clientHeight- 45;
       }
     })
   },
@@ -136,13 +136,14 @@ export default {
 </script>
 
 <style scoped>
-  .workBenchPOStaffView{width: 100%;}
-  .content{width: 100%; position: absolute; top: 0.45rem;bottom: 0; color: #666666;overflow: scroll;}
-  .content >>> .el-table__body{width: 100%!important}
-  .content >>> .el-table__header{width: 100%!important}
-  .content >>> .el-table{font-size: 0.13rem; text-align: center;}
-  .content >>> .el-table th{text-align: center; background: #f7f7f7; color: #333333}
-  .content >>> .el-table td{border: none}
-  .content >>> .el-table .cell{padding: 0;}
-  .content >>> .el-table__empty-block{position: initial}
+  .workBenchPOStaffView{width: 100%;background:#f7f7f7}
+  .workBenchPOStaffContent{width: 100%; position: absolute; top: 0.45rem;bottom: 0; color: #666666;overflow: scroll;}
+  .workBenchPOStaffContent >>> .el-table__body{width: 100%!important}
+  .workBenchPOStaffContent >>> .el-table__header{width: 100%!important}
+  .workBenchPOStaffContent >>> .el-table{font-size: 0.13rem; text-align: center;}
+  .workBenchPOStaffContent >>> .el-table tr:nth-child(2n){background: #f7f7f7}
+  .workBenchPOStaffContent >>> .el-table th{text-align: center; background: #f7f7f7; color: #333333}
+  .workBenchPOStaffContent >>> .el-table td{border: none}
+  .workBenchPOStaffContent >>> .el-table .cell{padding: 0;}
+  .workBenchPOStaffContent >>> .el-table__empty-block{position: initial}
 </style>
