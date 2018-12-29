@@ -50,7 +50,7 @@ export default {
     console.log(this.queryData);
     fetch.get("?action=getDict&type=NT_CASE_LEVEL","").then(res=>{
       console.log(res.data);
-      this.caseLevelArr = res.data;
+      this.partsTypeNameList = res.data;
     });
     this.form.factoryName = this.queryData.factoryName;
     this.form.modelName = this.queryData.modelName;

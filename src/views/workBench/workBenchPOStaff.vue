@@ -106,7 +106,7 @@ export default {
         }
         else{
           this.busy = false;
-          this.page++
+          this.page++ 
         }
       });
     },

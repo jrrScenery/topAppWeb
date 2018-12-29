@@ -72,12 +72,13 @@ export default {
   },
   methods: {
     getSupplierInfoList(){
-      var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize,PROVINCE_NAME:this.$route.query.provinceName};
+      var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize,PROVINCE_NAME:this.$route.query.provinceName,KIND_NAME:this.$route.query.kindName};
       if(this.isSearch){
         params.KIND_NAME = this.searchData.kindName;
         params.ATT_NAME = this.searchData.attName;
         params.C_ATT_NAME = this.searchData.cattName;
       }
+      console.log(params)
       var flag = this.page>1;
       fetch.get("?action=/supplier/GetSupplierList",params).then(res=>{
         console.log("222222",res);

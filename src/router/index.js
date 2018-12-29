@@ -308,9 +308,9 @@ export default new Router({
       component: resolve => require(['@/views/workBench/workBenchPeopleInfoOfCity'], resolve)
     },
     {
-      path: '/workBench/workBenchPeopleInfoOfCitySingle',
-      name: 'workBenchPeopleInfoOfCitySingle',
-      component: resolve => require(['@/views/workBench/workBenchPeopleInfoOfCitySingle'], resolve)
+      path: '/workBench/workBenchPeopleInfoDetail',
+      name: 'workBenchPeopleInfoDetail',
+      component: resolve => require(['@/views/workBench/workBenchPeopleInfoDetail'], resolve)
     },
     //供应商信息
     {
@@ -364,11 +364,6 @@ export default new Router({
       path: '/workBench/workBenchOwnPartsDetail',
       name: 'workBenchOwnPartsDetail',
       component: resolve => require(['@/views/workBench/workBenchOwnPartsDetail'], resolve)
-    },
-    {
-      path: '/workBench/workBenchPartsSupplierListSingle',
-      name: 'workBenchPartsSupplierListSingle',
-      component: resolve => require(['@/views/workBench/workBenchPartsSupplierListSingle'], resolve)
     },
     {
       path: '/workBench/workBenchPOPayDetail',
@@ -495,6 +490,11 @@ export default new Router({
       path: '/mine/mineNotice',
       name: 'mineNotice',
       component: resolve => require(['@/views/mine/mineNotice'], resolve)
+    },
+    {
+      path: '/mine/mineAppFeedBack',
+      name: 'mineAppFeedBack',
+      component: resolve => require(['@/views//mine/mineAppFeedBack'], resolve)
     },
     {
       path: '/mine/mineFeedback',

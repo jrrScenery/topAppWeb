@@ -3,13 +3,22 @@
   <div class="searchOeopleOfCityView">
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="岗位名称">
-        <el-input v-model="form.projectNo" class="bInput"></el-input>
+        <el-select v-model="form.empPositionNm" placeholder="岗位名称" multiple>
+          <el-option v-for="item in empPositionNmList" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        </el-select>
+        <!-- <el-input v-model="form.empPositionNm" class="bInput"></el-input> -->
       </el-form-item>
       <el-form-item label="资源类型">
-        <el-input v-model="form.projectName" class="bInput"></el-input>
+        <el-select v-model="form.resourceType" placeholder="资源类型" multiple>
+          <el-option v-for="item in resourceTypeList" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        </el-select>
+        <!-- <el-input v-model="form.resourceType" class="bInput"></el-input> -->
       </el-form-item>
       <el-form-item label="所属项目部">
-        <el-input v-model="form.caseNo" class="bInput"></el-input>
+        <el-select v-model="form.userQy" placeholder="所属项目部" multiple>
+          <el-option v-for="item in userQyList" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        </el-select>
+        <!-- <el-input v-model="form.userQy" class="bInput"></el-input> -->
       </el-form-item>
       
       <el-form-item class="searchBtn">
@@ -32,11 +41,13 @@ export default {
   data () {
     return {
       form: {
-        jobName: '',
+        empPositionNm: '',
         resourceType: '',
-        projectDepartment: ''
+        userQy: ''
       },
-      caseLevelArr: []
+      empPositionNmList: [],
+      resourceTypeList:[],
+      userQyList:[]
     }
   },
 
@@ -47,11 +58,11 @@ export default {
     console.log(this.queryData);
     fetch.get("?action=getDict&type=NT_CASE_LEVEL","").then(res=>{
       console.log(res.data);
-      this.caseLevelArr = res.data;
+      // this.caseLevelArr = res.data;
     });
-    this.form.jobName = this.queryData.projectNo;
-    this.form.resourceType = this.queryData.projectName;
-    this.form.projectDepartment = this.queryData.caseNo;
+    this.form.empPositionNm = this.queryData.empPositionNm;
+    this.form.resourceType = this.queryData.resourceType;
+    this.form.userQy = this.queryData.userQy;
   },
 
   methods: {

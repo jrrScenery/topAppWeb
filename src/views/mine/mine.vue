@@ -83,7 +83,7 @@ export default {
        this.$router.push({name:'mineNotice',params:{}});
     },
     Feedback(){//:to="{name:'mineFeedbackShow',query:{complantId:scope.row['COMPLANT_ID'],myid:1}}"
-       this.$router.push({name:'tabshowTest',query:{TYPE:'my'}});
+       this.$router.push({name:'mineAppFeedBack',query:{TYPE:'my'}});
     }
   }
 }

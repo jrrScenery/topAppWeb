@@ -76,7 +76,7 @@ export default {
   methods: {
     rowClick (row) {
       console.log(row)
-      this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {}})
+      this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME}})
     },
   }
 }
