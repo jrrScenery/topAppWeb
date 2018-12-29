@@ -128,35 +128,35 @@ export default {
         }
       }
       if(m!=0){
-        this.workBenchObj[0].arr[0] = {imgSrc: require('@/assets/images/workBench_1.png'), text: '我的任务', href: 'workBenchMyTask',params: {type: 'my'},display:false};
-        this.workBenchObj[0].arr[1] = {imgSrc: require('@/assets/images/workBench_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true};
-        this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/workBench_3.png'), text: '我的项目', href: 'workBenchMyPro',params: {type: 'my'},display:true};
+        this.workBenchObj[0].arr[0] = {imgSrc: require('@/assets/images/my_1.png'), text: '我的任务', href: 'workBenchMyTask',params: {type: 'my'},display:false};
+        this.workBenchObj[0].arr[1] = {imgSrc: require('@/assets/images/my_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true};
+        this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/my_3.png'), text: '我的项目', href: 'workBenchMyPro',params: {type: 'my'},display:true};
         if(n!=0){
-          this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_7.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false};
-          this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
-          this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
-          this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
-          this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
+          this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/my_4.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false};
+          this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/my_5.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
+          this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_6.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
+          this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
+          this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
         }else{
-          this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
-          this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
-          this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
-          this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
+          this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/my_5.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
+          this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/my_6.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
+          this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
+          this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
         }
       }else{
-        this.workBenchObj[0].arr[0] = {imgSrc: require('@/assets/images/workBench_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true};
-        this.workBenchObj[0].arr[1] = {imgSrc: require('@/assets/images/workBench_3.png'), text: '我的项目', href: 'workBenchMyPro',params: {type: 'my'},display:true};
+        this.workBenchObj[0].arr[0] = {imgSrc: require('@/assets/images/my_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true};
+        this.workBenchObj[0].arr[1] = {imgSrc: require('@/assets/images/my_3.png'), text: '我的项目', href: 'workBenchMyPro',params: {type: 'my'},display:true};
         if(n!=0){
-          this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/workBench_7.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false};
-          this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
-          this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
-          this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
-          this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
+          this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/my_4.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false};
+          this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/my_5.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
+          this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/my_6.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
+          this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
+          this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
         }else{
-          this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/workBench_8.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true},
-          this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/workBench_9.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
-          this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/workBench_11.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
-          this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/workBench_12.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
+          this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/my_5.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true},
+          this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/my_6.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
+          this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉',href: 'tabshowTest',params: {type: 'my'},display:true};
+          this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
           this.workBenchObj[2].arr = []
         }
       }

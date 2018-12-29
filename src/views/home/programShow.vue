@@ -43,7 +43,7 @@
           </el-row>
           <el-row>
             <el-col :span="12"><span class="tit">项目级别：{{projectInfo.PROJECT_LEVEL}}</span></el-col>
-            <el-col :span="12"><span class="tit">销售姓名：{{projectInfo.SALESMAN_NAME}}</span></el-col>
+            <el-col :span="12"><span class="tit">销售姓名：<el-button type="text" @click.native="roleProjectList(1,projectInfo)" style="margin: 0;padding: 0;">{{projectInfo.SALESMAN_NAME}}</el-button></span></el-col>
           </el-row>
           <el-row>
             <el-col :span="12"><span class="tit">交付类型：{{projectInfo.DELIVERY_TYPE_NAME}}</span></el-col>
@@ -59,7 +59,7 @@
             <!-- <router-link :to="{name:'personnelInfo',query:{USERID: this.personInfo.demandPersion, positionName: '需求销售'}}">
               <el-input v-model="personInfo.demandname" class="roleInfo" disabled></el-input>
             </router-link> -->
-            <el-col :span="12"><span class="tit">PM姓名：{{projectInfo.PM_NAME}}</span></el-col>
+            <el-col :span="12"><span class="tit">PM姓名：<el-button type="text" @click.native="roleProjectList(2,projectInfo)" style="margin: 0;padding: 0;">{{projectInfo.PM_NAME}}</el-button></span></el-col>
           </el-row>
           <el-row>
             <el-col :span="12"><span class="tit">客户名称：{{projectInfo.CUSTOMER_NAME}}</span></el-col>
@@ -200,7 +200,18 @@ export default {
     },
     repairPageChange(val){
       this.needpage["prorepair"] ={page:val,loadall:false}
-    }
+    },
+    roleProjectList(type, col){
+      if (type == 1) {
+        this.$router.push({name: 'workBenchInfoSaleManagement', query: {ROLE_NAME:col.SALESMAN_NAME,SEARCH_EMP_ID:col.SALESMAN_ID,TYPE:type}})
+      }
+      else if (type == 2) {
+        this.$router.push({name: 'workBenchInfoSaleManagement', query: {ROLE_NAME:col.PM_NAME,SEARCH_EMP_ID:col.PM_ID,TYPE:type}})
+      }
+    },
+    // custList(col){
+    //   this.$router.push({name: 'workBenchIndustryCustomerList',query:{BUSINESS_TYPE:col.BUSINESS_TYPE,INDUSTRY_NAME:item.INDUSTRY}})
+    // }
   },
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll,true)

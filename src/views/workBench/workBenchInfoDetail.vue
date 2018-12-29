@@ -1,7 +1,8 @@
 <!--工作台-在保项目信息明细-->
 <template>
   <div class="workBenchInfoDetailView">
-    <header-base-three :title="workBenchInfoDetailTit" :queryData="searchData" @searchPro="getSearParams"></header-base-three>
+    <!-- <header-base-three :title="workBenchInfoDetailTit" :queryData="searchData" @searchPro="getSearParams"></header-base-three> -->
+    <header-last :title="workBenchInfoDetailTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <div class="programCell" v-for="item in programListArr" :key="item.id">
@@ -17,42 +18,45 @@
             </el-row>
           </div>
         </router-link>
-        <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID}}" >
         <div class="cellContent">
+          <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID}}">
           <p>{{item.PROJECT_NAME}}</p>
+          </router-link>
           <el-row>
-            <el-col :span="12"><span class="tit">行业：{{item.INDUSTRY}}</span></el-col>
-            <el-col :span="12"><span class="tit">客户：{{item.CUST_NAME}}</span></el-col>
+            <el-col :span="12"><span class="tit">销售姓名：<el-button type="text" @click.native="roleProjectList(1,item)" style="margin: 0;padding: 0;">{{item.SALE_NAME}}</el-button></span></el-col>
+            <el-col :span="12"><span class="tit">PM姓名：<el-button type="text" @click.native="roleProjectList(2,item)" style="margin: 0;padding: 0;">{{item.MANAGER_NAME}}</el-button></span></el-col>
           </el-row>
+          <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID}}">
           <el-row>
             <el-col :span="12"><span class="tit">服务开始：{{item.PROJECT_START_DATE}}</span></el-col>
             <el-col :span="12"><span class="tit">服务结束：{{item.PROJECT_END_DATE}}</span></el-col>
           </el-row>
+          </router-link>
         </div>
-        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import headerBaseThree from '../header/headerBaseThree'
+import headerLast from '../header/headerLast'
 import fetch from '../../utils/ajax'
 
 export default {
   name: 'workBenchInfoDetail',
 
   components: {
-    headerBaseThree
+    headerLast
   },
 
   data () {
     return {
-      workBenchInfoDetailTit: '在保项目情况明细',
+      workBenchInfoDetailTit: '客户-项目列表',
       programListArr: [],
       searchData:{
         BUSINESS_TYPE: this.$route.query.business,
-        INDUSTRY_NAME: this.$route.query.industry
+        INDUSTRY_NAME: this.$route.query.industry,
+        CUST_NAME: this.$route.query.cust_name
       },
       isSearch:  this.$route.query.isSearch
     }
@@ -66,35 +70,24 @@ export default {
   },
 
   methods: {
-    getSearParams (formData) {
-      console.log(formData);
-      this.searchData.BUSINESS_TYPE= formData.business.join(',');
-      this.searchData.INDUSTRY_NAME = formData.industry.join(',');
-      this.searchData.CUST_NAME= formData.customer;
-      this.searchData.PROJECT_NAME= formData.proName;
-      this.loadList();
-    },
     loadList(){
       let url = "?action=GetProjectStatList";
       let tpmpara ={}
       if(this.isSearch){tpmpara = this.searchData};
       fetch.get(url,tpmpara).then(res => {
-        console.log(res.data);
+        console.log("sssssssssssssss", res.data);
         this.programListArr = res.data
       })
     },
-    // 搜索条件data
-    searchProInfo (data) {
-      this.isSearch = true;
-      console.log(data)
-      data.industry = data.industry.join(',')
-      data.direction = data.direction.join(',')
-      let url = "?action=GetProjectStatList";
-      url +=  "&BUSINESS_TYPE=" +  this.business + "&INDUSTRY_NAME=" + this.industry + {BUSINESS_TYPE: data.direction, INDUSTRY_NAME: data.industry, CUST_NAME: data.customer, PROJECT_NAME: data.proName};
-      fetch.get(url,{}).then(res => {
-        console.log(res)
-        this.programListArr = res.data
-      })
+    roleProjectList(type, col){
+      if (type == 1) {
+        console.log(type, col)
+        this.$router.push({name: 'workBenchInfoSaleManagement', query: {ROLE_NAME:col.SALE_NAME,SEARCH_EMP_ID:col.SALE_ID,TYPE:type}})
+      }
+      else if (type == 2) {
+        console.log(type, col)
+        this.$router.push({name: 'workBenchInfoSaleManagement', query: {ROLE_NAME:col.MANAGER_NAME,SEARCH_EMP_ID:col.MANAGER_ID,TYPE:type}})
+      }
     }
   }
 }

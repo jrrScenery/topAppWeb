@@ -298,6 +298,16 @@ export default new Router({
       component: resolve => require(['@/views/workBench/workBenchInfo'], resolve)
     },
     {
+      path: '/workBench/workBenchIndustryCustomerList',
+      name: 'workBenchIndustryCustomerList',
+      component: resolve => require(['@/views/workBench/workBenchIndustryCustomerList'], resolve)
+    },
+    {
+      path: '/workBench/workBenchInfoSaleManagement',
+      name: 'workBenchInfoSaleManagement',
+      component: resolve => require(['@/views/workBench/workBenchInfoSaleManagement'], resolve)
+    },
+    {
       path: '/workBench/workBenchInfoDetail',
       name: 'workBenchInfoDetail',
       component: resolve => require(['@/views/workBench/workBenchInfoDetail'], resolve)
