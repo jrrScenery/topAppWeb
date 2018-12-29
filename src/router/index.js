@@ -318,9 +318,9 @@ export default new Router({
       component: resolve => require(['@/views/workBench/workBenchPeopleInfoOfCity'], resolve)
     },
     {
-      path: '/workBench/workBenchPeopleInfoOfCitySingle',
-      name: 'workBenchPeopleInfoOfCitySingle',
-      component: resolve => require(['@/views/workBench/workBenchPeopleInfoOfCitySingle'], resolve)
+      path: '/workBench/workBenchPeopleInfoDetail',
+      name: 'workBenchPeopleInfoDetail',
+      component: resolve => require(['@/views/workBench/workBenchPeopleInfoDetail'], resolve)
     },
     //供应商信息
     {
@@ -334,6 +334,7 @@ export default new Router({
       name: 'workBenchSupplierDetailInfo',
       component: resolve => require(['@/views/workBench/workBenchSupplierDetailInfo'], resolve)
     },
+    
     {
       path: '/workBench/workBenchEventInfo',
       name: 'workBenchEventInfo',
@@ -344,25 +345,35 @@ export default new Router({
       name: 'workBenchEventInfoShow',
       component: resolve => require(['@/views/workBench/workBenchEventInfoShow'], resolve)
     },
+    //人员管理
     {
       path: '/workBench/workBenchPeopleInfo',
       name: 'workBenchPeopleInfo',
       component: resolve => require(['@/views/workBench/workBenchPeopleInfo'], resolve)
     },
+    //备件库存
     {
       path: '/workBench/workBenchParts',
       name: 'workBenchParts',
       component: resolve => require(['@/views/workBench/workBenchParts'], resolve)
     },
+    //备件管理列表-自有
     {
       path: '/workBench/workBenchPartsOwnList',
       name: 'workBenchPartsOwnList',
       component: resolve => require(['@/views/workBench/workBenchPartsOwnList'], resolve)
     },
+    //备件管理列表-供应商
     {
-      path: '/workBench/workBenchPartsSupplierListSingle',
-      name: 'workBenchPartsSupplierListSingle',
-      component: resolve => require(['@/views/workBench/workBenchPartsSupplierListSingle'], resolve)
+      path: '/workBench/workBenchSupplierPartsDetail',
+      name: 'workBenchSupplierPartsDetail',
+      component: resolve => require(['@/views/workBench/workBenchSupplierPartsDetail'], resolve)
+    },
+    //备件详情
+    {
+      path: '/workBench/workBenchOwnPartsDetail',
+      name: 'workBenchOwnPartsDetail',
+      component: resolve => require(['@/views/workBench/workBenchOwnPartsDetail'], resolve)
     },
     {
       path: '/workBench/workBenchPOPayDetail',
@@ -489,6 +500,11 @@ export default new Router({
       path: '/mine/mineNotice',
       name: 'mineNotice',
       component: resolve => require(['@/views/mine/mineNotice'], resolve)
+    },
+    {
+      path: '/mine/mineAppFeedBack',
+      name: 'mineAppFeedBack',
+      component: resolve => require(['@/views//mine/mineAppFeedBack'], resolve)
     },
     {
       path: '/mine/mineFeedback',

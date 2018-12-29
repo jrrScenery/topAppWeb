@@ -3,13 +3,16 @@
   <div class="searchPartsOwnListView">
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="厂商">
-        <el-input v-model="form.projectNo" class="bInput"></el-input>
+        <el-input v-model="form.factoryName" class="bInput"></el-input>
       </el-form-item>
       <el-form-item label="设备型号">
-        <el-input v-model="form.projectName" class="bInput"></el-input>
+        <el-input v-model="form.modelName" class="bInput"></el-input>
       </el-form-item>
       <el-form-item label="设备类型">
-        <el-input v-model="form.caseNo" class="bInput"></el-input>
+        <el-select v-model="form.partsTypeName" placeholder="请选择设备类型" multiple>
+          <el-option v-for="item in partsTypeNameList" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        </el-select>
+        <!-- <el-input v-model="form.partsTypeName" class="bInput"></el-input> -->
       </el-form-item>
       
       <el-form-item class="searchBtn">
@@ -32,11 +35,11 @@ export default {
   data () {
     return {
       form: {
-        jobName: '',
-        resourceType: '',
-        projectDepartment: ''
+        factoryName: '',
+        modelName: '',
+        partsTypeName: ''
       },
-      caseLevelArr: []
+      partsTypeNameList: []
     }
   },
 
@@ -47,11 +50,11 @@ export default {
     console.log(this.queryData);
     fetch.get("?action=getDict&type=NT_CASE_LEVEL","").then(res=>{
       console.log(res.data);
-      this.caseLevelArr = res.data;
+      this.partsTypeNameList = res.data;
     });
-    this.form.jobName = this.queryData.projectNo;
-    this.form.resourceType = this.queryData.projectName;
-    this.form.projectDepartment = this.queryData.caseNo;
+    this.form.factoryName = this.queryData.factoryName;
+    this.form.modelName = this.queryData.modelName;
+    this.form.partsTypeName = this.queryData.partsTypeName;
   },
 
   methods: {

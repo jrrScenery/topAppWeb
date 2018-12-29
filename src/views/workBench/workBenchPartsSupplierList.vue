@@ -1,14 +1,17 @@
-<!--工作台-人员信息-->
+<!--工作台-备件管理-供应商-->
 <template>
   <div class="workBenchPartsSupplierListView">
-    <header-base-parts-supplier :title="workBenchPartsSupplierListTit"></header-base-parts-supplier>
+    <header-base-parts-own :title="workBenchPartsSupplierListTit" :queryData="searchData"  @searchPro="searchList"></header-base-parts-own>
     <div style="height: 0.45rem;"></div>
-    <div class="content">
+    <div class="workBenchPartsSupplierListContent">
       <!-- <router-link :to="{name:'workBenchTaskDetailInfo',query:{}}"> -->
       <el-table
         stripe
-        :data="tableData"
         v-loading="busy && !loadall"
+        element-loading-text="正在加载下一页"
+        v-loadmore="loadMore"
+        :data="tableData"
+        :height = "tableHeight"
         @row-click="rowClick"
         style="width: 100%">
         <template v-for="item in workBenchPartsSupplierListObj">
@@ -26,56 +29,116 @@
 </template>
 
 <script>
-import headerBasePartsSupplier from '../header/headerBasePartsSupplier'
-import global_ from '../../components/Global'
+import headerBasePartsOwn from '../header/headerBasePartsOwn'
 import fetch from '../../utils/ajax'
 export default {
   name: 'workBenchPartsSupplierListView',
 
   components: {
-    headerBasePartsSupplier
+    headerBasePartsOwn
   },
 
   data () {
     return {
       workBenchPartsSupplierListTit: '备件管理',
       tableData: [],
-      busy:true,
-      loadall: false,
       workBenchPartsSupplierListObj: [
-        {prop: 'name', label: '供应商', width: '20%'},
-        {prop: 'na', label: '厂商', width: '20%'},
-        {prop: 'res', label: '设备型号', width: '20%'},
-        {prop: 'pro', label: '设备类型', width: '20%'},
-        {prop: 'jin', label: '金额', width: '20%'}
+        {prop: 'SUPPLIER_NAME', label: '供应商', width: '20%'},
+        {prop: 'FACTORY_NM', label: '厂商', width: '20%'},
+        {prop: 'MODEL_NAME', label: '设备型号', width: '20%'},
+        {prop: 'PARTS_TYPE_NAME', label: '设备类型', width: '20%'},
+        {prop: 'PART_AMOUNT', label: '金额', width: '20%'}
       ],
+      page:1,
+      pageSize:30,
+      busy:false,
+      loadall: false,
+      tableHeight:400,
+      isSearch:false,
+      searchData:{
+      }
     }
   },
-  created () {
-    fetch.get("?action=GetPersonStat",{}).then(res=>{
-      this.tableData = res.data;
-      this.busy= false;
-      this.loadall = true;
-      console.log(this.tableData);
-    });
+  created(){
+    this.getPartsSupplierList()
+  },
+  mounted(){
+    this.$nextTick(() => {
+      let self = this;
+      console.log("ssssssss",this.type);
+      this.tableHeight = document.documentElement.clientHeight- 45;
+      window.onresize = function() {
+        self.tableHeight = document.documentElement.clientHeight- 45;
+      }
+    })
   },
   methods: {
-    rowClick (row) {
-      console.log(row)
-      this.$router.push({name: 'workBenchPartsSupplierListSingle', query: {}})
+    getPartsSupplierList(){
+      var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize,TYPE:"1",PARENT_AREA_NAME:this.$route.query.provinceName};
+      console.log(params);
+      if(this.isSearch){
+        params.FACTORY_NAME = this.searchData.factoryName;
+        params.MODEL_NAME = this.searchData.modelName;
+        params.PARTS_TYPE_NAME = this.searchData.partsTypeName;
+      }
+      //console.log(params);
+      var flag = this.page>1;
+      fetch.get("?action=/parts/GetSupplierPartsList",params).then(res=>{
+        console.log("222222",res);
+        if(flag){
+            this.tableData = this.tableData.concat(res.data);
+        }else{
+            this.tableData = res.data;
+        }
+        if(0 == res.data.length || res.data.length<this.pageSize ){
+          this.busy = true;
+          this.loadall = true;
+          this.$message({
+            message:'已加载全部数据',
+            type: 'success',
+            center: true,
+            duration:3000,
+            customClass:'msgdefine'
+          });
+        }
+        else{
+          this.busy = false;
+          this.page++
+        }
+      });
     },
+    rowClick (row) {
+      console.log("row",row)
+      this.$router.push({name: 'workBenchSupplierPartsDetail', query: {singlePartId:row.SINGLEPART_ID}})
+    },
+    loadMore(){
+      if(this.busy){return false}
+      this.busy = true;
+      setTimeout(() => {
+        this.getPartsSupplierList();
+      }, 1000);
+    },
+    searchList(formData){
+      console.log("formData",formData)
+      this.searchData = formData;
+      this.tableData=[];
+      this.isSearch = true;
+      this.page = 1;
+      this.loadall= false;
+      this.loadMore();
+    }
   }
 }
 </script>
 
 <style scoped>
   .workBenchPartsSupplierListView{width: 100%;}
-  .content{margin-top: 0.05rem; color: #666666;}
-  .content >>> .el-table__body{width: 100%!important}
-  .content >>> .el-table__header{width: 100%!important}
-  .content >>> .el-table{font-size: 0.13rem; text-align: center}
-  .content >>> .el-table th{text-align: center; background: #f7f7f7; color: #333333}
-  .content >>> .el-table td{border: none}
-  .content >>> .el-table .cell{padding: 0;}
-  .content >>> .el-table__empty-block{position: initial}
+  .workBenchPartsSupplierListContent{margin-top: 0.05rem; color: #666666;}
+  .workBenchPartsSupplierListContent >>> .el-table__body{width: 100%!important}
+  .workBenchPartsSupplierListContent >>> .el-table__header{width: 100%!important}
+  .workBenchPartsSupplierListContent >>> .el-table{font-size: 0.13rem; text-align: center}
+  .workBenchPartsSupplierListContent >>> .el-table th{text-align: center; background: #f7f7f7; color: #333333}
+  .workBenchPartsSupplierListContent >>> .el-table td{border: none}
+  .workBenchPartsSupplierListContent >>> .el-table .cell{padding: 0;}
+  .workBenchPartsSupplierListContent >>> .el-table__empty-block{position: initial}
 </style>

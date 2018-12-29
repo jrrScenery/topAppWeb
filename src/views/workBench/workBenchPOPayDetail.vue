@@ -5,7 +5,7 @@
         <div class="workBenchPOPayDetailContent">
             <div class="cell">
                 <ul>
-                    <li v-for="item in workBenchPOStaffObj" :key="item.id">
+                    <li v-for="item in workBenchPOPayDetailObj" :key="item.id">
                         <p>{{item.leftTit}}</p><p v-html="item.rightCon"></p>
                     </li>
                 </ul>
@@ -26,18 +26,18 @@ export default {
         return{
             workBenchPOPayDetailTit: 'PO支付详情',
             payPlanId:this.$route.query.payPlanId,
-            workBenchPOStaffObj:[
-                {leftTit: '计划编号：', rightCon: ''},
-                {leftTit: '姓名：', rightCon: ''},
-                {leftTit: '类型：', rightCon: ''},
-                {leftTit: '业务方向：', rightCon: ''},
-                {leftTit: '区域：', rightCon: ''},
-                {leftTit: '制作者：', rightCon: ''},
-                {leftTit: '审批日期：', rightCon: ''},
-                {leftTit: '支付金额：', rightCon: ''},
-                {leftTit: '预计支付：', rightCon: ''},
-                {leftTit: '实际支付：', rightCon: ''},
-                {leftTit: '说明：', rightCon: ''}
+            workBenchPOPayDetailObj:[
+                {leftTit: '', rightCon: ''},
+                {leftTit: '', rightCon: ''},
+                {leftTit: '', rightCon: ''},
+                {leftTit: '', rightCon: ''},
+                {leftTit: '', rightCon: ''},
+                {leftTit: '', rightCon: ''},
+                {leftTit: '', rightCon: ''},
+                {leftTit: '', rightCon: ''},
+                {leftTit: '', rightCon: ''},
+                {leftTit: '', rightCon: ''},
+                {leftTit: '', rightCon: ''}
             ]
         }
     },
@@ -45,21 +45,36 @@ export default {
         fetch.get("?action=/po/GetPODetail&TYPE="+this.$route.query.type+"&PAYPLAN_ID="+this.$route.query.payPlanId,{}).then(res=>{
             console.log("GetPODetail",res);
             for(let i=0;i<res.data.length;i++){
-                this.workBenchPOStaffObj[0].rightCon = res.data[i].PAYPLAN_ID;
-                this.workBenchPOStaffObj[1].rightCon = res.data[i].SUPPLIER_NAME;
-                if(this.$route.query.type=='1'){
-                    this.workBenchPOStaffObj[2].rightCon = "人员";
+                this.workBenchPOPayDetailObj[0].leftTit = '计划编号：';
+                this.workBenchPOPayDetailObj[0].rightCon = res.data[i].PAYPLAN_ID;
+                if(this.$route.query.type == '1'){
+                    this.workBenchPOPayDetailObj[1].leftTit = '姓名：';
                 }else{
-                    this.workBenchPOStaffObj[2].rightCon = "备件";
+                    this.workBenchPOPayDetailObj[1].leftTit = '供应商：';
                 }
-                this.workBenchPOStaffObj[3].rightCon = res.data[i].BUSINESS;
-                this.workBenchPOStaffObj[4].rightCon = res.data[i].AREA_NAME;
-                this.workBenchPOStaffObj[5].rightCon = res.data[i].PAYPLAN_OWNER;
-                this.workBenchPOStaffObj[6].rightCon = res.data[i].APPROVE_DATE;
-                this.workBenchPOStaffObj[7].rightCon = res.data[i].TOTALAMOUNT;
-                this.workBenchPOStaffObj[8].rightCon = res.data[i].PAYPLAN_DATE;
-                this.workBenchPOStaffObj[9].rightCon = res.data[i].PAYPLAN_ACTUALDATE;
-                this.workBenchPOStaffObj[10].rightCon = res.data[i].REMARK;
+                this.workBenchPOPayDetailObj[1].rightCon = res.data[i].SUPPLIER_NAME;
+                this.workBenchPOPayDetailObj[2].leftTit = "类型：";
+                if(this.$route.query.type=='1'){
+                    this.workBenchPOPayDetailObj[2].rightCon = "人员";
+                }else{
+                    this.workBenchPOPayDetailObj[2].rightCon = "备件";
+                }
+                this.workBenchPOPayDetailObj[3].leftTit = "业务方向：";
+                this.workBenchPOPayDetailObj[3].rightCon = res.data[i].BUSINESS;
+                this.workBenchPOPayDetailObj[4].leftTit = "区域：";
+                this.workBenchPOPayDetailObj[4].rightCon = res.data[i].AREA_NAME;
+                this.workBenchPOPayDetailObj[5].leftTit = "制作者：";
+                this.workBenchPOPayDetailObj[5].rightCon = res.data[i].PAYPLAN_OWNER;
+                this.workBenchPOPayDetailObj[6].leftTit = "审批日期：";
+                this.workBenchPOPayDetailObj[6].rightCon = res.data[i].APPROVE_DATE;
+                this.workBenchPOPayDetailObj[7].leftTit = "支付金额：";
+                this.workBenchPOPayDetailObj[7].rightCon = res.data[i].TOTALAMOUNT;
+                this.workBenchPOPayDetailObj[8].leftTit = "预计支付：";
+                this.workBenchPOPayDetailObj[8].rightCon = res.data[i].PAYPLAN_DATE;
+                this.workBenchPOPayDetailObj[9].leftTit = "实际支付：";
+                this.workBenchPOPayDetailObj[9].rightCon = res.data[i].PAYPLAN_ACTUALDATE;
+                this.workBenchPOPayDetailObj[10].leftTit = "说明：";
+                this.workBenchPOPayDetailObj[10].rightCon = res.data[i].REMARK;
             }
         });
     }

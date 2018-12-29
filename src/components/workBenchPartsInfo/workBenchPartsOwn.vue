@@ -84,8 +84,8 @@ export default {
             return sums
         },
         rowClick (row) {
-            console.log(row)
-            this.$router.push({name: 'workBenchPartsOwnList', query: {}})
+          console.log("row",row)
+          this.$router.push({name: 'workBenchPartsOwnList', query: {provinceName:row.PROVINCE_NAME}})
         },
        
     

@@ -1,14 +1,17 @@
 <!--工作台-人员信息-->
 <template>
   <div class="workBenchPeopleInfoOfCityView">
-    <header-base-ten :title="workBenchPeopleInfoTit"></header-base-ten>
+    <header-base-ten :title="workBenchPeopleInfoTit" :queryData="searchData"  @searchPro="searchList"></header-base-ten>
     <div style="height: 0.45rem;"></div>
-    <div class="content">
+    <div class="workBenchPeopleInfoOfCityContent">
       <!-- <router-link :to="{name:'workBenchTaskDetailInfo',query:{}}"> -->
       <el-table
         stripe
-        :data="tableData"
         v-loading="busy && !loadall"
+        element-loading-text="正在加载下一页"
+        v-loadmore="loadMore"
+        :data="tableData"
+        :height = "tableHeight"
         @row-click="rowClick"
         style="width: 100%">
         <template v-for="item in workBenchPeopleInfoOfCityObj">
@@ -27,7 +30,6 @@
 
 <script>
 import headerBaseTen from '../header/headerBaseTen'
-import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
 export default {
   name: 'workBenchPeopleInfo',
@@ -40,41 +42,102 @@ export default {
     return {
       workBenchPeopleInfoTit: '人员信息',
       tableData: [],
-      busy:true,
-      loadall: false,
       workBenchPeopleInfoOfCityObj: [
-        {prop: 'name', label: '姓名', width: '25%'},
-        {prop: 'na', label: '岗位名称', width: '25%'},
-        {prop: 'res', label: '资源类型', width: '25%'},
-        {prop: 'pro', label: '所属项目部', width: '25%'}
+        {prop: 'REALNAME', label: '姓名', width: '25%'},
+        {prop: 'EMP_POSITION_NM', label: '岗位名称', width: '25%'},
+        {prop: 'RESOURCE_TYPE', label: '资源类型', width: '25%'},
+        {prop: 'USER_QY', label: '所属项目部', width: '25%'}
       ],
+      page:1,
+      pageSize:30,
+      busy:false,
+      loadall: false,
+      tableHeight:400,
+      isSearch:false,
+      searchData:{
+      }
     }
   },
-  created () {
-    fetch.get("?action=GetPersonStat",{}).then(res=>{
-      this.tableData = res.data;
-      this.busy= false;
-      this.loadall = true;
-      console.log(this.tableData);
-    });
+  created(){
+    this.getPeopleInfoOfCityList()
+  },
+  mounted(){
+    this.$nextTick(() => {
+      let self = this;
+      console.log("ssssssss",this.type);
+      this.tableHeight = document.documentElement.clientHeight- 45;
+      window.onresize = function() {
+        self.tableHeight = document.documentElement.clientHeight- 45;
+      }
+    })
   },
   methods: {
-    rowClick (row) {
-      console.log(row)
-      this.$router.push({name: 'workBenchPeopleInfoOfCitySingle', query: {}})
+    getPeopleInfoOfCityList(){
+      var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize,TYPE:"1",AREA_NAME:this.$route.query.areaName};
+      console.log(params);
+      if(this.isSearch){
+        params.EMP_POSITION_NM = this.searchData.supplyName;
+        params.RESOURCE_TYPE = this.searchData.poTypeName;
+        params.USER_QY = this.searchData.poTypeName;
+      }
+      //console.log(params);
+      var flag = this.page>1;
+      fetch.get("?action=/person/GetPersonList",params).then(res=>{
+        console.log("222222",res);
+        if(flag){
+            this.tableData = this.tableData.concat(res.data);
+        }else{
+            this.tableData = res.data;
+        }
+        if(0 == res.data.length || res.data.length<this.pageSize ){
+          this.busy = true;
+          this.loadall = true;
+          this.$message({
+            message:'已加载全部数据',
+            type: 'success',
+            center: true,
+            duration:3000,
+            customClass:'msgdefine'
+          });
+        }
+        else{
+          this.busy = false;
+          this.page++ 
+        }
+      });
     },
+    rowClick (row) {
+      console.log("row",row)
+      this.$router.push({name: 'workBenchPeopleInfoDetail', query: {EMPID:row.EMPID}})
+    },
+    loadMore(){
+      if(this.busy){return false}
+      this.busy = true;
+      setTimeout(() => {
+        this.getPeopleInfoOfCityList();
+      }, 1000);
+    },
+    searchList(formData){
+      console.log("formData",formData)
+      this.searchData = formData;
+      this.tableData=[];
+      this.isSearch = true;
+      this.page = 1;
+      this.loadall= false;
+      this.loadMore();
+    }
   }
 }
 </script>
 
 <style scoped>
   .workBenchPeopleInfoOfCityView{width: 100%;}
-  .content{margin-top: 0.05rem; color: #666666;}
-  .content >>> .el-table__body{width: 100%!important}
-  .content >>> .el-table__header{width: 100%!important}
-  .content >>> .el-table{font-size: 0.13rem; text-align: center}
-  .content >>> .el-table th{text-align: center; background: #f7f7f7; color: #333333}
-  .content >>> .el-table td{border: none}
-  .content >>> .el-table .cell{padding: 0;}
-  .content >>> .el-table__empty-block{position: initial}
+  .workBenchPeopleInfoOfCityContent{margin-top: 0.05rem; color: #666666;}
+  .workBenchPeopleInfoOfCityContent >>> .el-table__body{width: 100%!important}
+  .workBenchPeopleInfoOfCityContent >>> .el-table__header{width: 100%!important}
+  .workBenchPeopleInfoOfCityContent >>> .el-table{font-size: 0.13rem; text-align: center}
+  .workBenchPeopleInfoOfCityContent >>> .el-table th{text-align: center; background: #f7f7f7; color: #333333}
+  .workBenchPeopleInfoOfCityContent >>> .el-table td{border: none}
+  .workBenchPeopleInfoOfCityContent >>> .el-table .cell{padding: 0;}
+  .workBenchPeopleInfoOfCityContent >>> .el-table__empty-block{position: initial}
 </style>

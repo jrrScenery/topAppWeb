@@ -8,13 +8,13 @@
         stripe
         :data="tableData"
         v-loading="busy && !loadall"
-        @row-click="rowClick"
+        @cell-click="cellClick"
         style="width: 100%">
-        <el-table-column
-          prop="AREANAME"
-          label="城市"
-          width="24%">
-        </el-table-column>
+          <el-table-column
+            prop="AREANAME"
+            label="城市"
+            width="24%">
+          </el-table-column>
         <el-table-column label="供应商类型">
           <el-table-column
             prop="COUNT1"
@@ -72,9 +72,14 @@ export default {
   },
 
   methods: {
-    rowClick (row) {
-      console.log(row)
-      this.$router.push({name: 'workBenchSupplierInfoOfCity', query: {provinceName:row.AREANAME}})
+    cellClick (row,column) {
+      console.log(row);
+      console.log("column",column);
+      if(column.property=='AREANAME'){
+        this.$router.push({name: 'workBenchSupplierInfoOfCity', query: {provinceName:row.AREANAME}})
+      }else{
+        this.$router.push({name: 'workBenchSupplierInfoOfCity', query: {provinceName:row.AREANAME,kindName:column.label}})
+      }
     },
   }
 }
