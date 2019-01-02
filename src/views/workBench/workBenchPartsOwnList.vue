@@ -39,7 +39,7 @@ export default {
 
   data () {
     return {
-      workBenchPartsOwnListTit: '备件管理',
+      workBenchPartsOwnListTit: '备件信息-自有',
       tableData: [],
       workBenchPartsOwnListObj: [
         {prop: 'INSTOCK_MAIN_CODE', label: '入库单号', width: '20%'},
@@ -78,9 +78,9 @@ export default {
       if(this.isSearch){
         params.FACTORY_NAME = this.searchData.factoryName;
         params.MODEL_NAME = this.searchData.modelName;
-        params.PARTS_TYPE_NAME = this.searchData.partsTypeName;
+        params.PARTS_TYPE_NAME = this.searchData.partsTypeName.join(",");
       }
-      //console.log(params);
+      console.log(params);
       var flag = this.page>1;
       fetch.get("?action=/parts/GetSelfPartsList",params).then(res=>{
         console.log("222222",res);
@@ -121,6 +121,7 @@ export default {
       console.log("formData",formData)
       this.searchData = formData;
       this.tableData=[];
+      this.busy = false;
       this.isSearch = true;
       this.page = 1;
       this.loadall= false;

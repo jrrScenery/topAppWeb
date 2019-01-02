@@ -9,9 +9,9 @@
         <el-input v-model="form.modelName" class="bInput"></el-input>
       </el-form-item>
       <el-form-item label="设备类型">
-        <el-select v-model="form.partsTypeName" placeholder="请选择设备类型" multiple>
-          <el-option v-for="item in partsTypeNameList" :label="item.name" :value="item.value" :key="item.id"></el-option>
-        </el-select>
+        <el-select v-model="form.partsTypeName" placeholder="设备类型" multiple="" collapse-tags>
+          <el-option v-for="item in partsTypeNameArr" :label="item.partsTypeName" :value="item.partsTypeName" :key="item.id"></el-option>
+        </el-select> 
         <!-- <el-input v-model="form.partsTypeName" class="bInput"></el-input> -->
       </el-form-item>
       
@@ -39,7 +39,7 @@ export default {
         modelName: '',
         partsTypeName: ''
       },
-      partsTypeNameList: []
+      partsTypeNameArr: []
     }
   },
 
@@ -48,9 +48,10 @@ export default {
   created () {
     console.log("focus serach view");
     console.log(this.queryData);
-    fetch.get("?action=getDict&type=NT_CASE_LEVEL","").then(res=>{
-      console.log(res.data);
-      this.partsTypeNameList = res.data;
+    fetch.get("?action=/parts/GetPartsTypeList","").then(res=>{
+      console.log(res);
+      this.partsTypeNameArr = res.DATA;
+      console.log(this.partsTypeNameArr);
     });
     this.form.factoryName = this.queryData.factoryName;
     this.form.modelName = this.queryData.modelName;

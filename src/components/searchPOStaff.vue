@@ -3,11 +3,14 @@
   <div class="searchPOStaffView">
     <el-form ref="form" :model="form" label-width="90px">
       <el-form-item label="姓名">
+        <!-- <el-select v-model="form.supplyName" placeholder="供应商" multiple>
+          <el-option v-for="item in supplyNameArr" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        </el-select> -->
         <el-input v-model="form.supplyName" class="bInput"></el-input>
       </el-form-item>
-      <el-form-item label="类型">
+      <!-- <el-form-item label="类型">
         <el-input v-model="form.poTypeName" class="bInput"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="实际支付日期">
         <el-col :span="11">
           <el-date-picker type="date" v-model="form.startTime" style="width: 100%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
@@ -39,12 +42,11 @@ export default {
   data () {
     return {
       form: {
-        poTypeName: '',
-        type: '',
+        supplyName: '',
         startTime: '',
         endTime: ''
       },
-      caseLevelArr: []
+      supplyNameArr: []
     }
   },
 
@@ -53,12 +55,16 @@ export default {
   created () {
     console.log("focus serach view");
     console.log(this.queryData);
-    fetch.get("?action=getDict&type=NT_CASE_LEVEL","").then(res=>{
-      console.log(res.data);
-      this.caseLevelArr = res.data;
-    });
+    // var params = {SUPPLIER_NAME:this.form.poTypeName,TYPE:this.form.type,START_TIME:this.form.startTime,END_TIME:this.form.endTime};
+    // console.log(params);
+    // fetch.get("?action=/po/GetPOList",params).then(res=>{
+    //   console.log("res:",res);
+    // })
+    // fetch.get("?action=getDict&type=NT_CASE_LEVEL","").then(res=>{
+    //   console.log(res.data);
+    //   this.caseLevelArr = res.data;
+    // });
     this.form.supplyName = this.queryData.supplyName;
-    this.form.poTypeName = this.queryData.poTypeName;
     this.form.startTime = this.queryData.startTime;
     this.form.endTime = this.queryData.endTime;
   },
@@ -73,7 +79,6 @@ export default {
     onSearch () {
       let form = this.form
       this.$emit('search', form)
-      // console.log(this.form, '------------------')
       let data = {
         popBg: false
       }

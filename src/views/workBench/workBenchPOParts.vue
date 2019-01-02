@@ -80,8 +80,8 @@ export default {
       console.log(params);
       if(this.isSearch){
         params.SUPPLIER_NAME = this.searchData.supplyName;
-        params.POTYPENAME = this.searchData.poTypeName;
-        // params.POTYPENAME = this.searchData.poTypeName;
+        params.START_TIME = this.searchData.startTime;
+        params.END_TIME = this.searchData.endTime;
       }
       //console.log(params);
       var flag = this.page>1;
@@ -124,6 +124,7 @@ export default {
       console.log("formData",formData)
       this.searchData = formData;
       this.tableData=[];
+      this.busy = false;
       this.isSearch = true;
       this.page = 1;
       this.loadall= false;

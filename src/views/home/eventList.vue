@@ -129,7 +129,7 @@ export default {
         params.START_TIME = this.searchData.startTime;
         params.END_TIME = this.searchData.endTime;
       }
-      //console.log(params);
+      console.log(params);
       var flag = this.page>1;
       fetch.get("?action=GetFocusCase",params).then(res=>{
         console.log(res);
