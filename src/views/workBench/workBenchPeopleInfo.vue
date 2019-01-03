@@ -9,7 +9,7 @@
         stripe
         :data="tableData"
         v-loading="busy && !loadall"
-        @row-click="rowClick"
+        @cell-click="cellClick"
         style="width: 100%">
         <el-table-column
           prop="AREANAME"
@@ -74,9 +74,24 @@ export default {
     });
   },
   methods: {
-    rowClick (row) {
-      console.log(row)
-      this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME}})
+    cellClick (row,column) {
+      console.log("row",row)
+      console.log("column",column);
+      if(column.property=='AREANAME'){
+        this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME}})
+      }else if(column.property=='C1'){
+        this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME,type:'JD'}})
+      }else if(column.property=='C2'){
+        this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME,type:'ZC'}})
+      }else if(column.property=='C3'){
+        this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME,type:'GR'}})
+      }else if(column.property=='C4'){
+        this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME,type:'GS'}})
+      }
+      // else{
+      //   this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME,type:column.label}})
+      // }
+      // this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME}})
     },
   }
 }

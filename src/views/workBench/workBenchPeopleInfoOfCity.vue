@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     getPeopleInfoOfCityList(){
-      var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize,TYPE:"1",AREA_NAME:this.$route.query.areaName};
+      var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize,TYPE:"1",AREA_NAME:this.$route.query.areaName,TYPE:this.$route.query.type};
       console.log(params);
       if(this.isSearch){
         params.EMP_POSITION_NM = this.searchData.supplyName;
