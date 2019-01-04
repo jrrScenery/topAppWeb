@@ -67,7 +67,7 @@ export default {
   .workBenchPeopleInfoDetailContent .title{line-height: 0.35rem; color: #2698d6; padding-left: 0.25rem; position: relative;}
   .workBenchPeopleInfoDetailContent .title:before{width: 0.05rem; height: 0.12rem; content: ''; position: absolute; left: 0.1rem; top: 0.11rem; background: #2698d6;}
   .workBenchPeopleInfoDetailContent ul li{padding: 0 0.25rem;}
-  .workBenchPeopleInfoDetailContent ul li{display: flex; line-height: 0.25rem;}
+  .workBenchPeopleInfoDetailContent ul li{display: flex; line-height: 0.35rem;}
   .workBenchPeopleInfoDetailContent ul li:nth-child(2n+1){color: #999999;background: #ffffff;}
   .workBenchPeopleInfoDetailContent ul li:nth-child(2n){color: #999999;background: #f7f7f7;}
   .workBenchPeopleInfoDetailContent ul li p:nth-child(1){width: 0.91rem;}

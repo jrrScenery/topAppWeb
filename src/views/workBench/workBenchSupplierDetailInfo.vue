@@ -64,7 +64,7 @@ export default {
 .workBenchSupplierDetailContent .title{line-height: 0.35rem; color: #2698d6; padding-left: 0.25rem; position: relative;}
 .workBenchSupplierDetailContent .title:before{width: 0.05rem; height: 0.12rem; content: ''; position: absolute; left: 0.1rem; top: 0.11rem; background: #2698d6;}
 .workBenchSupplierDetailContent ul li{padding: 0 0.25rem;}
-.workBenchSupplierDetailContent ul li{display: flex; line-height: 0.25rem;}
+.workBenchSupplierDetailContent ul li{display: flex; line-height: 0.35rem;}
 .workBenchSupplierDetailContent ul li:nth-child(2n+1){color: #999999;background: #ffffff;}
 .workBenchSupplierDetailContent ul li:nth-child(2n){color: #999999;background: #f7f7f7;}
 .workBenchSupplierDetailContent ul li p:nth-child(1){width: 0.91rem;}

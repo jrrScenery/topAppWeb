@@ -3,11 +3,11 @@
   <div class="searchPOPartsView">
     <el-form ref="form" :model="form" label-width="90px">
       <el-form-item label="供应商">
-        <el-input v-model="form.projectNo" class="bInput"></el-input>
+        <el-input v-model="form.supplyName" class="bInput"></el-input>
       </el-form-item>
-      <el-form-item label="类型">
+      <!-- <el-form-item label="类型">
         <el-input v-model="form.projectName" class="bInput"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="实际支付日期">
         <el-col :span="11">
           <el-date-picker type="date" v-model="form.startTime" style="width: 100%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
@@ -39,26 +39,17 @@ export default {
   data () {
     return {
       form: {
-        jobName: '',
-        resourceType: '',
+        supplyName: '',
         startTime: '',
         endTime: ''
-      },
-      caseLevelArr: []
+      }
     }
   },
 
   watch: {},
 
   created () {
-    console.log("focus serach view");
-    console.log(this.queryData);
-    fetch.get("?action=getDict&type=NT_CASE_LEVEL","").then(res=>{
-      console.log(res.data);
-      this.caseLevelArr = res.data;
-    });
-    this.form.jobName = this.queryData.projectNo;
-    this.form.resourceType = this.queryData.projectName;
+    this.form.supplyName = this.queryData.supplyName;
     this.form.startTime = this.queryData.startTime;
     this.form.endTime = this.queryData.endTime;
   },

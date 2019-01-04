@@ -65,7 +65,7 @@ export default {
   data () {
     return {
       activeName: 'first',
-      workBenchPartsTit: '备件库存',
+      workBenchPartsTit: '备件管理',
       firstTabTit: '自有',
       secondTabTit: '供应商',
       tableData: [],

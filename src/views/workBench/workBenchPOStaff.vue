@@ -1,4 +1,4 @@
-<!--PO管理-人员信息-->
+<!--PO信息-人员-->
 <template>
   <div class="workBenchPOStaffView">
     <header-base :title="workBenchPOStaffTit" :searchType="searchType" :queryData="searchData"  @searchPro="searchList"></header-base>
@@ -81,8 +81,8 @@ export default {
       console.log(params);
       if(this.isSearch){
         params.SUPPLIER_NAME = this.searchData.supplyName;
-        params.POTYPENAME = this.searchData.poTypeName;
-        // params.POTYPENAME = this.searchData.poTypeName;
+        params.START_TIME = this.searchData.startTime;
+        params.END_TIME = this.searchData.endTime;
       }
       //console.log(params);
       var flag = this.page>1;
@@ -115,6 +115,7 @@ export default {
       this.$router.push({name: 'workBenchPOPayDetail', query: {type:"1",payPlanId:row.PAYPLAN_ID}})
     },
     loadMore(){
+      console.log("this.busy:",this.busy)
       if(this.busy){return false}
       this.busy = true;
       setTimeout(() => {
@@ -125,6 +126,7 @@ export default {
       console.log("formData",formData)
       this.searchData = formData;
       this.tableData=[];
+      this.busy = false;
       this.isSearch = true;
       this.page = 1;
       this.loadall= false;

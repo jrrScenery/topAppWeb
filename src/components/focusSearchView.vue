@@ -88,6 +88,7 @@ export default {
     fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
       console.log(res.data);
       this.industryType = res.data;
+      console.log("this.industryType:",this.industryType)
     });
 /*    fetch.get("?action=getDict&type=NT_CASE_TYPE","").then(res=>{
       // console.log(res.data);

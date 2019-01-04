@@ -3,18 +3,18 @@
   <div class="searchSupplierOfCityView">
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="供应种类">
-        <el-select v-model="form.kindName" placeholder="请选择供应种类" multiple>
-          <el-option v-for="item in kindNameList" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        <el-select v-model="form.kindName" placeholder="供应种类" clearable>
+          <el-option v-for="item in kindNameArr" :label="item.name" :value="item.value" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="供应属性">
-        <el-select v-model="form.attName" placeholder="请选择供应属性" multiple>
-          <el-option v-for="item in attNameList" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        <el-select v-model="form.attName" placeholder="供应属性" clearable>
+          <el-option v-for="item in attNameArr" :label="item.name" :value="item.value" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="合作属性">
-        <el-select v-model="form.cattName" placeholder="请选择合作属性" multiple>
-          <el-option v-for="item in cattNameList" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        <el-select v-model="form.cattName" placeholder="合作属性" clearable>
+          <el-option v-for="item in cattNameArr" :label="item.name" :value="item.value" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       
@@ -42,21 +42,28 @@ export default {
         attName: '',
         cattName: ''
       },
-      kindNameList: [],
-      attNameList:[],
-      cattNameList:[]
+      kindNameArr: [
+        {name:"人员",value:"人员"}, 
+        {name:"备件",value:"备件"}, 
+        {name:"物流",value:"物流"}, 
+        {name:"运维分包",value:"运维分包"},
+        {name:"外包分包",value:"外包分包"}
+      ],//供应种类
+      attNameArr:[
+        {name:"原厂",value:"原厂"},
+        {name:"代理",value:"代理"},
+        {name:"第三方",value:"第三方"}
+      ],
+      cattNameArr:[
+        {name:"公司",value:"公司"},
+        {name:"个人",value:"个人"}
+      ]
     }
   },
 
   watch: {},
 
   created () {
-    console.log("focus serach view");
-    console.log(this.queryData);
-    fetch.get("?action=getDict&type=NT_CASE_LEVEL","").then(res=>{
-      console.log(res.data);
-      // this.caseLevelArr = res.data;
-    });
     this.form.kindName = this.queryData.kindName;
     this.form.attName = this.queryData.attName;
     this.form.cattName = this.queryData.cattName;

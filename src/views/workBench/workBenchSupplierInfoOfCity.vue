@@ -115,9 +115,11 @@ export default {
         this.getSupplierInfoList();
       }, 1000);
     },
-    searchList(){
+    searchList(formData){
+      console.log("formData:",formData);
       this.searchData = formData;
       this.tableData=[];
+      this.busy = false;
       this.isSearch = true;
       this.page = 1;
       this.loadall= false;
