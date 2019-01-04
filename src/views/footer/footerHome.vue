@@ -64,7 +64,7 @@ export default {
         if(m!=0){
           this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true};
           this.footerArr[1] = {elType: 2, index: 'focus', text: '关注', className: 'el-icon-bell',display:true};
-          this.footerArr[2] = {elType: 3, index: 'workBench', text: '管理舱', imgSrc: require('../../assets/images/manager.png'),display:false};
+          this.footerArr[2] = {elType: 3, index: 'workBench', text: '管理舱', className: 'el-icon-menu',display:false};
           this.footerArr[3] = {elType: 4, index: 'mine', text: '设置', className: 'el-icon-setting',display:true}
         }else{
           this.footerArr[0] = {elType: 1, index: 'home', text: '首页', className: 'el-icon-footer_1',display:true};
