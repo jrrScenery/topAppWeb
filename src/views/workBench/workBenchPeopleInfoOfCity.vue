@@ -76,9 +76,9 @@ export default {
       var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize,TYPE:"1",AREA_NAME:this.$route.query.areaName,TYPE:this.$route.query.type};
       console.log(params);
       if(this.isSearch){
-        params.EMP_POSITION_NM = this.searchData.supplyName;
-        params.RESOURCE_TYPE = this.searchData.poTypeName;
-        params.USER_QY = this.searchData.poTypeName;
+        params.EMP_POSITION_NM = this.searchData.empPositionNm;
+        params.RESOURCE_TYPE = this.searchData.resourceType;
+        params.USER_QY = this.searchData.userQy;
       }
       //console.log(params);
       var flag = this.page>1;
@@ -121,6 +121,7 @@ export default {
       console.log("formData",formData)
       this.searchData = formData;
       this.tableData=[];
+      this.busy = false;
       this.isSearch = true;
       this.page = 1;
       this.loadall= false;

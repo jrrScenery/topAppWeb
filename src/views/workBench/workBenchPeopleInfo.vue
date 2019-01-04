@@ -88,10 +88,6 @@ export default {
       }else if(column.property=='C4'){
         this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME,type:'GS'}})
       }
-      // else{
-      //   this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME,type:column.label}})
-      // }
-      // this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME}})
     },
   }
 }

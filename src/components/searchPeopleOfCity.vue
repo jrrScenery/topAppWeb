@@ -3,20 +3,20 @@
   <div class="searchOeopleOfCityView">
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="岗位名称">
-        <el-select v-model="form.empPositionNm" placeholder="岗位名称" multiple>
-          <el-option v-for="item in empPositionNmList" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        <el-select v-model="form.empPositionNm" placeholder="岗位名称" clearable="">
+          <el-option v-for="item in empPositionNmArr" :label="item.EMP_POSITION_NM" :value="item.EMP_POSITION_NM" :key="item.id"></el-option>
         </el-select>
         <!-- <el-input v-model="form.empPositionNm" class="bInput"></el-input> -->
       </el-form-item>
       <el-form-item label="资源类型">
-        <el-select v-model="form.resourceType" placeholder="资源类型" multiple>
-          <el-option v-for="item in resourceTypeList" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        <el-select v-model="form.resourceType" placeholder="资源类型" clearable="">
+          <el-option v-for="item in resourceTypeArr" :label="item.name" :value="item.value" :key="item.id"></el-option>
         </el-select>
         <!-- <el-input v-model="form.resourceType" class="bInput"></el-input> -->
       </el-form-item>
       <el-form-item label="所属项目部">
-        <el-select v-model="form.userQy" placeholder="所属项目部" multiple>
-          <el-option v-for="item in userQyList" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        <el-select v-model="form.userQy" placeholder="所属项目部" clearable="">
+          <el-option v-for="item in userQyArr" :label="item.DICTNAME" :value="item.DICTNAME" :key="item.id"></el-option>
         </el-select>
         <!-- <el-input v-model="form.userQy" class="bInput"></el-input> -->
       </el-form-item>
@@ -45,9 +45,12 @@ export default {
         resourceType: '',
         userQy: ''
       },
-      empPositionNmList: [],
-      resourceTypeList:[],
-      userQyList:[]
+      empPositionNmArr: [],
+      resourceTypeArr:[
+        {name:"内部员工",value:"内部"}, 
+        {name:"外部员工",value:"外部"}
+      ],
+      userQyArr:[]
     }
   },
 
@@ -56,9 +59,13 @@ export default {
   created () {
     console.log("focus serach view");
     console.log(this.queryData);
-    fetch.get("?action=getDict&type=NT_CASE_LEVEL","").then(res=>{
-      console.log(res.data);
-      // this.caseLevelArr = res.data;
+    fetch.get("?action=/system/getPositionList","").then(res=>{
+      console.log("res",res);
+      this.empPositionNmArr = res.data;
+    });
+    fetch.get("?action=/system/getDict2&DICT_TYPE=NT_PRO_AREA","").then(res=>{
+      console.log("res",res);
+      this.userQyArr = res.data;
     });
     this.form.empPositionNm = this.queryData.empPositionNm;
     this.form.resourceType = this.queryData.resourceType;
