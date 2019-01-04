@@ -7,28 +7,52 @@
       <div class="searchView">
         <el-form label-width="70px">
           <el-form-item label="行业：">
+            <el-row>
+            <el-col :span="5">
+              <el-checkbox :indeterminate="isIndeterminateH" v-model="checkAllH" @change="handleCheckAllChangeH">全选</el-checkbox>
+            </el-col>
+            <el-col :span="19">
               <el-checkbox-group v-model="checkedH" @change="handleCheckedChangeH" size="mini">
-                <el-checkbox :indeterminate="isIndeterminateH" v-model="checkAllH" @change="handleCheckAllChangeH">全选</el-checkbox>
                 <el-checkbox v-for="h in INDUSTRYS" :label="h" :key="h">{{h}}</el-checkbox>
               </el-checkbox-group>
+            </el-col>
+            </el-row>
           </el-form-item>
           <el-form-item label="厂商：">
+            <el-row>
+            <el-col :span="5">
+              <el-checkbox :indeterminate="isIndeterminateC" v-model="checkAllC" @change="handleCheckAllChangeC">全选</el-checkbox>
+            </el-col>
+            <el-col :span="19">
               <el-checkbox-group v-model="checkedC" @change="handleCheckedChangeC" size="mini">
-                <el-checkbox :indeterminate="isIndeterminateC" v-model="checkAllC" @change="handleCheckAllChangeC">全选</el-checkbox>
-                <el-checkbox v-for="C in FACTORYS" :label="C" :key="C">{{C}}</el-checkbox>
+                <el-checkbox v-for="c in FACTORYS" :label="c" :key="c">{{c}}</el-checkbox>
               </el-checkbox-group>
+            </el-col>
+            </el-row>
           </el-form-item>
           <el-form-item label="事件级别：">
+            <el-row>
+            <el-col :span="5">
+              <el-checkbox :indeterminate="isIndeterminateS" v-model="checkAllS" @change="handleCheckAllChangeS">全选</el-checkbox>
+            </el-col>
+            <el-col :span="19">
               <el-checkbox-group v-model="checkedS" @change="handleCheckedChangeS" size="mini">
-                <el-checkbox :indeterminate="isIndeterminateS" v-model="checkAllS" @change="handleCheckAllChangeS">全选</el-checkbox>
-                <el-checkbox v-for="S in CASE_LEVELS" :label="S" :key="S">{{S}}</el-checkbox>
+                <el-checkbox v-for="s in CASE_LEVELS" :label="s" :key="s">{{s}}</el-checkbox>
               </el-checkbox-group>
+            </el-col>
+            </el-row>
           </el-form-item>
           <el-form-item label="技术方向：">
+            <el-row>
+            <el-col :span="5">
+              <el-checkbox :indeterminate="isIndeterminateJ" v-model="checkAllJ" @change="handleCheckAllChangeJ">全选</el-checkbox>
+            </el-col>
+            <el-col :span="19">
               <el-checkbox-group v-model="checkedJ" @change="handleCheckedChangeJ" size="mini">
-                <el-checkbox :indeterminate="isIndeterminateJ" v-model="checkAllJ" @change="handleCheckAllChangeJ">全选</el-checkbox>
-                <el-checkbox v-for="J in TECHS" :label="J" :key="J">{{J}}</el-checkbox>
+                <el-checkbox v-for="j in TECHS" :label="j" :key="j">{{j}}</el-checkbox>
               </el-checkbox-group>
+            </el-col>
+            </el-row>
           </el-form-item>
           <el-form-item label="时间：">
           <el-col :span="8">
@@ -44,7 +68,7 @@
           </el-col>
           <el-col :span="2">
             <el-form-item>
-              <el-button @click="searchInfo">查询</el-button>
+              <el-button type="primary" @click="searchInfo">查询</el-button>
             </el-form-item>
           </el-col>
           </el-form-item>
@@ -77,6 +101,11 @@
 import headerLast from '../header/headerLast'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
+const I = ['移动', '联通', '电信', '金融', '政府', '企事业', '其他'];
+const F = ['IBM', 'HP', 'DELL', 'EMC', 'H3C', '其他'];
+const C = ['一级', '二级', '三级', '四级'];
+const T = ['小型机', 'X86刀片', '交换机', 'PC服务器', '存储磁盘', '其他'];
+
 export default {
   name: 'workBenchEventInfo',
 
@@ -96,10 +125,14 @@ export default {
       checkAllS: false,
       checkAllJ: false,
       INDUSTRYS_toID: {'移动': '001', '联通': '002', '电信': '003', '金融': '004', '政府': '005', '企事业': '006', '其他': '007'},
-      INDUSTRYS: ['移动', '联通', '电信', '金融', '政府', '企事业', '其他'],
-      FACTORYS: ['IBM', 'HP', 'DELL', 'EMC', 'H3C', '其他'],
-      CASE_LEVELS: ['一级', '二级', '三级', '四级'],
-      TECHS: ['PC服务器', '存储磁盘', '小型机', '交换机', 'X86刀片', '其他'],
+      // INDUSTRYS: ['移动', '联通', '电信', '金融', '政府', '企事业', '其他'],
+      // FACTORYS: ['IBM', 'HP', 'DELL', 'EMC', 'H3C', '其他'],
+      // CASE_LEVELS: ['一级', '二级', '三级', '四级'],
+      // TECHS: ['小型机', 'X86刀片', '交换机', 'PC服务器', '存储磁盘', '其他'],
+      INDUSTRYS: I,
+      FACTORYS: F,
+      CASE_LEVELS: C,
+      TECHS: T,
       checkedH: ['移动', '联通', '电信', '金融', '其他'],
       checkedC: ['IBM'],
       checkedS: ['二级', '三级'],
@@ -240,29 +273,31 @@ export default {
         return ids
     },
     handleCheckAllChangeH(val) {
-        this.checkedH = val ? this.INDUSTRYS : [];
+        console.log(val)
+        this.checkedH = val ? I : [];
         this.isIndeterminateH = false;
         console.log(this.checkedH)
       },
     handleCheckedChangeH(value) {
+      console.log("111", value)
       let checkedCount = value.length;
       this.checkAllH = checkedCount === this.INDUSTRYS.length;
       this.isIndeterminateH = checkedCount > 0 && checkedCount < this.INDUSTRYS.length;
-      console.log(this.checkedH)
       },
     handleCheckAllChangeC(val) {
-        this.checkedC = val ? this.FACTORYS : [];
-        console.log(this.checkedC)
+        console.log(val)
+        this.checkedC = val ? F : [];
         this.isIndeterminateC = false;
+        console.log(this.checkedC)
       },
     handleCheckedChangeC(value) {
-      console.log(value)
+      console.log("222", value)
       let checkedCount = value.length;
       this.checkAllC = checkedCount === this.FACTORYS.length;
       this.isIndeterminateC = checkedCount > 0 && checkedCount < this.FACTORYS.length;
       },
     handleCheckAllChangeS(val) {
-        this.checkedS = val ? this.CASE_LEVELS : [];
+        this.checkedS = val ? C : [];
         this.isIndeterminateS = false;
       },
     handleCheckedChangeS(value) {
@@ -271,7 +306,7 @@ export default {
       this.isIndeterminateS = checkedCount > 0 && checkedCount < this.CASE_LEVELS.length;
       },
     handleCheckAllChangeJ(val) {
-        this.checkedJ = val ? this.TECHS : [];
+        this.checkedJ = val ? T : [];
         this.isIndeterminateJ = false;
       },
     handleCheckedChangeJ(value) {
@@ -284,19 +319,21 @@ export default {
 </script>
 
 <style scoped>
-  .workBenchEventInfoView{width: 100%; text-align: center;}
+  .workBenchEventInfoView{width: 100%;}
   .workBenchEventInfoView .content{margin-top: 0.05rem; background: #ffffff;}
-  .searchView{padding: 0.15rem 0.25rem;}
+  /* .searchView{padding: 0.15rem 0.25rem;} */
   .searchView >>> .el-form{height: 0.4rem;}
   .searchView >>> .el-input__icon{display: none}
   .searchView >>> .el-input__prefix{display: none;}
+  .searchView >>> .el-checkbox__label{line-height: 0.4rem;}
+  /* .searchView >>> .el-form-item__content{line-height: 30px;} */
   .searchView >>> .el-input--prefix .el-input__inner{padding: 0; text-align: center;}
   .searchView >>> .el-col-1{text-align: center; line-height: 0.4rem}
   .searchView >>> .el-form .line{text-align: center; line-height: 0.4rem}
-  .searchView >>> .el-checkbox+.el-checkbox{margin-left: 2px}
-  .searchView >>> .el-checkbox-group{line-height: 1}
+  .searchView >>> .el-checkbox+.el-checkbox{margin-left: 0px}
+  .searchView >>> .el-checkbox-group{line-height: 1; text-align: left}
   .searchView >>> .el-form-item{margin-bottom: 10px}
-  .searchView >>> .el-form-item__label{padding: 0 0 0 0; text-align: center}
+  .searchView >>> .el-form-item__label{padding: 0 0 0 0; color: #409EFF; text-align: center;}
   .searchView >>> .el-button{padding: 6px 10px}
   .tableView >>> .el-table th{border-top: 0.01rem solid #e1e1e1; line-height: 0.25rem; color: #333333;}
   .tableView >>> .el-table .cell{text-align: center; padding: 0}
