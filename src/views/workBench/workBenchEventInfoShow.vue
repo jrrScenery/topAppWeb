@@ -80,7 +80,11 @@ export default {
         disabledDate: (time) => {
           return time.getTime() < this.value1 || time.getTime() > Date.now();
         }
-      }
+      },
+      industryName: this.$route.query.INDUSTRY_NAME,
+      caseLevel: this.$route.query.CASE_LEVEL,
+      techName: this.$route.query.TECH_NAME,
+      factoryName: this.$route.query.FACTORY_NAME,
     }
   },
   created () {
@@ -95,7 +99,9 @@ export default {
   },
   methods: {
     returnList () {
-      fetch.get("?action=GetCaseStatList",{START_TIME:this.form.date1, END_TIME: this.form.date2, INDUSTRY_NAME: this.$route.query.industry}).then(res=>{
+      console.log({INDUSTRY_NAME: this.industryName, CASE_LEVEL: this.caseLevel, TECH_NAME: this.techName, FACTORY_NAME: this.factoryName, START_TIME:this.form.date1, END_TIME: this.form.date2})
+      // fetch.get("?action=GetCaseStatList",{INDUSTRY_NAME: this.INDUSTRY_NAME, CASE_LEVEL: this.CASE_LEVEL, TECH_NAME: this.TECH_NAME, FACTORY_NAME: this.FACTORY_NAME, START_TIME:this.form.date1, END_TIME: this.form.date2, INDUSTRY_NAME: this.$route.query.industry}).then(res=>{
+      fetch.get("?action=GetCaseStatList",{INDUSTRY_NAME: this.industryName, CASE_LEVEL: this.caseLevel, TECH_NAME: this.techName, FACTORY_NAME: this.factoryName, START_TIME:this.form.date1, END_TIME: this.form.date2}).then(res=>{
         this.tableData = res.data
         console.log(res.data)
         let _this = this
@@ -158,7 +164,8 @@ export default {
         type = '1,2,4'
       }
       console.log(row);
-      this.$router.push({name: 'workBenchMyEventAll', query: {custid: row.CUSTOMER_ID,isSearch:1, type: type, industry:this.$route.query.industry,startDate:this.form.date1,endDate:this.form.date2}})
+      console.log("zzzzzzzzzzzzzzzz", {factoryName: this.factoryName, techName: this.techName, caseLevel: this.caseLevel, industryName: this.industryName, CUST_NAME: row.CUST_NAME, custid: row.CUSTOMER_ID,isSearch:1, type: type, industry:this.$route.query.industry,startDate:this.form.date1,endDate:this.form.date2})
+      this.$router.push({name: 'workBenchMyEventAll', query: {factoryName: this.factoryName, techName: this.techName, caseLevel: this.caseLevel, industryName: this.industryName, CUST_NAME: row.CUST_NAME, custid: row.CUSTOMER_ID,isSearch:1, type: type, industry:this.$route.query.industry,startDate:this.form.date1,endDate:this.form.date2}})
     }
   }
 }

@@ -99,6 +99,10 @@ export default {
       loadall: false,
       tab_box: 1,
       searchData:{
+        FACTORY_NAME: this.$route.query.factoryName,
+        TECH_NAME: this.$route.query.techName,
+        CASE_LEVEL: this.$route.query.caseLevel,
+        INDUSTRY_NAME: this.$route.query.industryName,
         industry: this.$route.query.industry? this.$route.query.industry.split(','):[],
         custid:  this.$route.query.custid,
         type:this.$route.query.type? this.$route.query.type.split(','):["1","2"],
@@ -111,6 +115,7 @@ export default {
     }
   },
   created () {
+    console.log("ccccccccccccc", this.$route.query.custid)
     
   },
   activated(){
@@ -131,7 +136,6 @@ export default {
   },
   methods: {
     tabClick (e) {
-      console.log("tabclick");
       var objnowpage = this.objpages[this.activeName];
       this.loadall= objnowpage.loadall;
       if(this.isSearch != objnowpage.isSearch ){
@@ -169,9 +173,12 @@ export default {
       let strurl = "?action=GetCaseList&TYPE=all";
       let params = {CASE_TYPEID:"1,2",PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, IF_CLOSE: objnowpage.IF_CLOSE}
       if(this.isSearch){
-        console.log(this.searchData);
-        if(this.searchData.custid){params.CUST_ID = this.searchData.custid;}
-        params.INDUSTRY_NAME = this.searchData.industry.join(",");
+        params.CUST_ID = this.$route.query.custid;
+        params.INDUSTRY_NAME = this.searchData.INDUSTRY_NAME;
+        params.TECH_NAME = this.searchData.TECH_NAME;
+        params.CASE_LEVEL = this.searchData.CASE_LEVEL;
+        params.FACTORY_NAME = this.searchData.FACTORY_NAME;
+        // params.INDUSTRY_NAME = this.searchData.industry.join(",");
         params.CASE_TYPEID = this.searchData["type"].join(",");
         params.CUST_NAME = this.searchData.customer;
         params.PROJECT_NAME = this.searchData.proName;
@@ -182,10 +189,10 @@ export default {
         params.START_TIME = this.searchData.startTime;
         params.END_TIME = this.searchData.endTime;
       }
-      console.log(params);
 
 
       fetch.get(strurl,params).then(res => {
+        console.log(res)
         if('0'== res.STATUSCODE){
           
           let obj = this.opinionTab[objnowpage.idx].eventListArr;
@@ -195,6 +202,7 @@ export default {
           
         }
         else{
+
 
         }
       });
@@ -213,7 +221,6 @@ export default {
     },
 
     getSearParams (searchData) {
-      console.log(searchData);
       this.activeName="third";
       this.objpages["third"]["page"] = 1;
       this.objpages["third"]["loadall"]= false;

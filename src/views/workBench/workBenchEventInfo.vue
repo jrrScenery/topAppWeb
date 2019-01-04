@@ -7,27 +7,27 @@
       <div class="searchView">
         <el-form label-width="70px">
           <el-form-item label="行业：">
-              <el-checkbox-group v-model="checkedH" @change="handleCheckedCitiesChangeH" size="mini">
+              <el-checkbox-group v-model="checkedH" @change="handleCheckedChangeH" size="mini">
                 <el-checkbox :indeterminate="isIndeterminateH" v-model="checkAllH" @change="handleCheckAllChangeH">全选</el-checkbox>
-                <el-checkbox v-for="h in hangye" :label="h" :key="h">{{h}}</el-checkbox>
+                <el-checkbox v-for="h in INDUSTRYS" :label="h" :key="h">{{h}}</el-checkbox>
               </el-checkbox-group>
           </el-form-item>
           <el-form-item label="厂商：">
-              <el-checkbox-group v-model="checkedC" @change="handleCheckedCitiesChangeC" size="mini">
+              <el-checkbox-group v-model="checkedC" @change="handleCheckedChangeC" size="mini">
                 <el-checkbox :indeterminate="isIndeterminateC" v-model="checkAllC" @change="handleCheckAllChangeC">全选</el-checkbox>
-                <el-checkbox v-for="C in changshang" :label="C" :key="C">{{C}}</el-checkbox>
+                <el-checkbox v-for="C in FACTORYS" :label="C" :key="C">{{C}}</el-checkbox>
               </el-checkbox-group>
           </el-form-item>
           <el-form-item label="事件级别：">
-              <el-checkbox-group v-model="checkedS" @change="handleCheckedCitiesChangeS" size="mini">
+              <el-checkbox-group v-model="checkedS" @change="handleCheckedChangeS" size="mini">
                 <el-checkbox :indeterminate="isIndeterminateS" v-model="checkAllS" @change="handleCheckAllChangeS">全选</el-checkbox>
-                <el-checkbox v-for="S in shijian" :label="S" :key="S">{{S}}</el-checkbox>
+                <el-checkbox v-for="S in CASE_LEVELS" :label="S" :key="S">{{S}}</el-checkbox>
               </el-checkbox-group>
           </el-form-item>
           <el-form-item label="技术方向：">
-              <el-checkbox-group v-model="checkedJ" @change="handleCheckedCitiesChangeJ" size="mini">
+              <el-checkbox-group v-model="checkedJ" @change="handleCheckedChangeJ" size="mini">
                 <el-checkbox :indeterminate="isIndeterminateJ" v-model="checkAllJ" @change="handleCheckAllChangeJ">全选</el-checkbox>
-                <el-checkbox v-for="J in jishu" :label="J" :key="J">{{J}}</el-checkbox>
+                <el-checkbox v-for="J in TECHS" :label="J" :key="J">{{J}}</el-checkbox>
               </el-checkbox-group>
           </el-form-item>
           <el-form-item label="时间：">
@@ -95,19 +95,30 @@ export default {
       checkAllC: false,
       checkAllS: false,
       checkAllJ: false,
-      hangye: ['移动', '联通', '电信', '金融', '政府', '企事业', '其他'],
-      changshang: ['IBM', 'HP', 'DELL', 'EMC', 'H3C', '其他'],
-      shijian: ['一级', '二级', '三级', '四级'],
-      jishu: ['PC服务器', '存储磁盘', '小型机', '交换机', 'X86刀片', '其他'],
-      checkedH: ['移动'],
-      checkedC: ['HP'],
-      checkedS: ['三级'],
-      checkedJ: ['交换机'],
+      INDUSTRYS_toID: {'移动': '001', '联通': '002', '电信': '003', '金融': '004', '政府': '005', '企事业': '006', '其他': '007'},
+      INDUSTRYS: ['移动', '联通', '电信', '金融', '政府', '企事业', '其他'],
+      FACTORYS: ['IBM', 'HP', 'DELL', 'EMC', 'H3C', '其他'],
+      CASE_LEVELS: ['一级', '二级', '三级', '四级'],
+      TECHS: ['PC服务器', '存储磁盘', '小型机', '交换机', 'X86刀片', '其他'],
+      checkedH: ['移动', '联通', '电信', '金融', '其他'],
+      checkedC: ['IBM'],
+      checkedS: ['二级', '三级'],
+      checkedJ: ['PC服务器'],
+      // checkedH: '',
+      // checkedC: '',
+      // checkedS: '',
+      // checkedJ: '',
       isIndeterminateH: true,
       isIndeterminateC: true,
       isIndeterminateS: true,
       isIndeterminateJ: true,
       tableData: [],
+
+      checkI: "",
+      checkS: "",
+      checkJ: "",
+      checkC: "",
+
       workBenchEventInfoObj: [
         {prop: 'INDUSTRY', label: '行业', width: '25%'},
         {prop: 'FAULT_NUM', label: '故障类', width: '25%'},
@@ -136,7 +147,12 @@ export default {
   },
   methods: {
     returnList () {
-      fetch.get("?action=GetCaseStat",{START_TIME: this.form.date1, END_TIME: this.form.date2}).then(res=>{
+      this.checkI = this.industryId().join(",")
+      this.checkS = this.checkedS.join(',')
+      this.checkJ = this.checkedJ.join(',')
+      this.checkC = this.checkedC.join(',')
+      let params = {INDUSTRY_NAME: this.checkI, CASE_LEVEL: this.checkS, TECH_NAME: this.checkJ, FACTORY_NAME: this.checkC, START_TIME: this.form.date1, END_TIME: this.form.date2}
+      fetch.get("?action=GetCaseStat",params).then(res=>{
         this.tableData = res.data
         console.log(res.data)
         let _this = this
@@ -159,7 +175,6 @@ export default {
       const { columns, data } = param
       const sums = []
       columns.forEach((column, index) => {
-        // console.log("1111111111111111", param, column, index)
         if (index === 0) {
           sums[index] = '合计'
           return
@@ -183,7 +198,8 @@ export default {
     },
     // 跳转链接
     rowClick (row) {
-      this.$router.push({name: 'workBenchEventInfoShow', query: {complantId: row.COMPLANT_ID,industry: row.INDUSTRY_ID,industryName: row.INDUSTRY,date1:this.form.date1,date2:this.form.date2}})
+      console.log("aaaaaaaaaaaaa", row)
+      this.$router.push({name: 'workBenchEventInfoShow', query: {INDUSTRY_NAME: row.INDUSTRY_ID, CASE_LEVEL: this.checkS, TECH_NAME: this.checkJ, FACTORY_NAME: this.checkC,date1:this.form.date1,date2:this.form.date2}})
     },
     searchInfo () {
       this.returnList()
@@ -216,41 +232,52 @@ export default {
     noKeyword () {
       document.activeElement.blur()
     },
+    industryId () {
+        let ids = []
+        for (var i=0;i<this.checkedH.length;i++){
+            ids.push(this.INDUSTRYS_toID[this.checkedH[i]])
+        }
+        return ids
+    },
     handleCheckAllChangeH(val) {
-        this.checkedH = val ? this.hangye : [];
+        this.checkedH = val ? this.INDUSTRYS : [];
         this.isIndeterminateH = false;
+        console.log(this.checkedH)
       },
-    handleCheckedCitiesChangeH(value) {
+    handleCheckedChangeH(value) {
       let checkedCount = value.length;
-      this.checkAllH = checkedCount === this.hangye.length;
-      this.isIndeterminateH = checkedCount > 0 && checkedCount < this.hangye.length;
+      this.checkAllH = checkedCount === this.INDUSTRYS.length;
+      this.isIndeterminateH = checkedCount > 0 && checkedCount < this.INDUSTRYS.length;
+      console.log(this.checkedH)
       },
     handleCheckAllChangeC(val) {
-        this.checkedC = val ? this.changshang : [];
+        this.checkedC = val ? this.FACTORYS : [];
+        console.log(this.checkedC)
         this.isIndeterminateC = false;
       },
-    handleCheckedCitiesChangeC(value) {
+    handleCheckedChangeC(value) {
+      console.log(value)
       let checkedCount = value.length;
-      this.checkAllC = checkedCount === this.changshang.length;
-      this.isIndeterminateC = checkedCount > 0 && checkedCount < this.shangchang.length;
+      this.checkAllC = checkedCount === this.FACTORYS.length;
+      this.isIndeterminateC = checkedCount > 0 && checkedCount < this.FACTORYS.length;
       },
     handleCheckAllChangeS(val) {
-        this.checkedS = val ? this.shijian : [];
+        this.checkedS = val ? this.CASE_LEVELS : [];
         this.isIndeterminateS = false;
       },
-    handleCheckedCitiesChangeS(value) {
+    handleCheckedChangeS(value) {
       let checkedCount = value.length;
-      this.checkAllS = checkedCount === this.shijian.length;
-      this.isIndeterminateS = cheSkedCount > 0 && checkedCount < this.shijian.length;
+      this.checkAllS = checkedCount === this.CASE_LEVELS.length;
+      this.isIndeterminateS = checkedCount > 0 && checkedCount < this.CASE_LEVELS.length;
       },
     handleCheckAllChangeJ(val) {
-        this.checkedJ = val ? this.jishu : [];
+        this.checkedJ = val ? this.TECHS : [];
         this.isIndeterminateJ = false;
       },
-    handleCheckedCitiesChangeJ(value) {
+    handleCheckedChangeJ(value) {
       let checkedCount = value.length;
-      this.checkAllJ = checkedCount === this.jishu.length;
-      this.isIndeterminateJ = checkedCount > 0 && checkedCount < this.jishu.length;
+      this.checkAllJ = checkedCount === this.TECHS.length;
+      this.isIndeterminateJ = checkedCount > 0 && checkedCount < this.TECHS.length;
       },
   }
 }
