@@ -250,12 +250,13 @@ export default {
         sender.Address=this.maininput.customerAddress;
         kd.Sender=sender;
         var receiver ={};
-        receiver.Name=this.recycleInfoinput.recyclePerson;
+        receiver.Name=this.recycleInfoinput.recyclePerson+"(神州数码公司)";
         receiver.Mobile=this.recycleInfoinput.recycleContact;
         receiver.ProvinceName=this.recycleInfoinput.recycyleProvince;
         receiver.CityName=this.recycleInfoinput.recycleCity;
         receiver.Address=this.recycleInfoinput.recycleAddr;
-        kd.Receiver=receiver
+        kd.Receiver=receiver;
+        kd.Remark = "收件公司名称：神州数码公司"
         var commodity=[];
         var c={};
         c.GoodsName="电子产品",

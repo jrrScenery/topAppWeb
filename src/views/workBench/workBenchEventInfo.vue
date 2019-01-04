@@ -332,7 +332,7 @@ export default {
   .searchView >>> .el-form .line{text-align: center; line-height: 0.4rem}
   .searchView >>> .el-checkbox+.el-checkbox{margin-left: 0px}
   .searchView >>> .el-checkbox-group{line-height: 1; text-align: left}
-  .searchView >>> .el-form-item{margin-bottom: 10px}
+  .searchView >>> .el-form-item{margin-bottom: 0rem}
   .searchView >>> .el-form-item__label{padding: 0 0 0 0; color: #409EFF; text-align: center;}
   .searchView >>> .el-button{padding: 6px 10px}
   .tableView >>> .el-table th{border-top: 0.01rem solid #e1e1e1; line-height: 0.25rem; color: #333333;}
