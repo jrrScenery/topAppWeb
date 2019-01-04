@@ -322,16 +322,17 @@ export default {
   .workBenchEventInfoView{width: 100%;}
   .workBenchEventInfoView .content{margin-top: 0.05rem; background: #ffffff;}
   /* .searchView{padding: 0.15rem 0.25rem;} */
-  .searchView >>> .el-form{height: 0.4rem;}
+  .searchView >>> .el-form{height: 0.3rem;}
+  .searchView >>> .el-form-item__label{line-height: 0.25rem;margin-top: 0rem}
   .searchView >>> .el-input__icon{display: none}
   .searchView >>> .el-input__prefix{display: none;}
-  .searchView >>> .el-checkbox__label{line-height: 0.4rem;}
+  .searchView >>> .el-checkbox__label{line-height: 0.25rem;}
   /* .searchView >>> .el-form-item__content{line-height: 30px;} */
   .searchView >>> .el-input--prefix .el-input__inner{padding: 0; text-align: center;}
   .searchView >>> .el-col-1{text-align: center; line-height: 0.4rem}
   .searchView >>> .el-form .line{text-align: center; line-height: 0.4rem}
-  .searchView >>> .el-checkbox+.el-checkbox{margin-left: 0px}
-  .searchView >>> .el-checkbox-group{line-height: 1; text-align: left}
+   .searchView >>> .el-checkbox{margin:0rem;height: 100%}
+  .searchView >>> .el-checkbox-group{line-height: 0.1rem; text-align: left}
   .searchView >>> .el-form-item{margin-bottom: 0rem}
   .searchView >>> .el-form-item__label{padding: 0 0 0 0; color: #409EFF; text-align: center;}
   .searchView >>> .el-button{padding: 6px 10px}
@@ -341,3 +342,7 @@ export default {
   .tableView >>> .el-table tr:nth-child(2n+1){background: #f7f7f7;}
   .tableView >>> .el-table tr:nth-child(2n){background: #ffffff;}
 </style>
+<style>
+.searchView .el-row .el-col{line-height:0.25rem}
+</style>
+
