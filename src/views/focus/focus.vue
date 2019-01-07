@@ -3,7 +3,7 @@
   <div class="focusView">
     <div class="content">
 
-        <div class="notice">
+      <div class="notice">
         <div class="title">
           <div class="titleLeft">
             <router-link :to="{name:'mineNotice',params:{}}">
@@ -16,17 +16,18 @@
         </div>
         <div>
           <ul class="noticeTem" v-if="noticeData.length!=0" v-for="item in noticeData" :key="item.id">
-            <el-row>
-              <el-col><span>{{item.SEND_NAME}}</span><span>于</span>
-              <span>{{item.CREATE_ON}}</span><span>{{item.BIZ_NAME}}</span><span>，</span><span>触发原因：</span>
-              <span>{{item.TITLE}}</span></el-col>
-            </el-row>
+            <router-link :to="{name:'mineNotice',params:{}}">
+              <li class="li_focusView">    
+                <template>
+                  <span>{{item.SEND_NAME}} 于{{item.CREATE_ON}}{{item.BIZ_NAME}}，触发原因：<br/>{{item.TITLE}}</span>    
+                </template>      
+              </li>
+            </router-link>
           </ul>
         </div>
       </div>
 
-
-      <div class="event">
+      <div class="event" v-loading="busy && !loadall" element-loading-text="加载中">
         <div class="title">
           <div class="titleLeft">
             <router-link :to="{name:'focusEventList'}">
@@ -37,8 +38,7 @@
             <div class="titleRight">{{more}}</div>
           </router-link>
         </div>
-        <div>
-          
+        <div>         
           <ul class="tem" v-if="caseData.length!=0" v-for="item in caseData" :key="item.id">
             <router-link :to="{name:'eventShow',query:{caseId:item.CASEID}}">
               <li class="li_focusView" :key="item.id">    
@@ -48,8 +48,7 @@
                 </template>      
               </li>
             </router-link>
-          </ul>
-          
+          </ul>          
         </div>
       </div>
 
@@ -77,7 +76,6 @@
           </ul>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -101,7 +99,9 @@ export default {
       more: '更多',
       caseData: [],
       projData:[],
-      noticeData:[]     
+      noticeData:[],
+      busy:true,
+      loadall: false     
     }
   },
 
@@ -113,6 +113,8 @@ export default {
     fetchData:function(){
       fetch.get("?action=GetFocusCase&PAGE_NUM=1&PAGE_TOTAL=2","").then(res=>{
         // console.log("res",res.data);
+        this.busy = true;
+        this.loadall = true;
         this.caseData = res.data;
       }); 
       fetch.get("?action=GetFocusProject&PAGE_NUM=1&PAGE_TOTAL=1",{}).then(res=>{
@@ -170,6 +172,8 @@ export default {
   },
   activated(){
     if(!this.$route.meta.isUseCache){
+      this.busy = true;
+      this.loadall = false;
       this.caseData = [];
       this.projData = [];
       fetch.get("?action=checkSession",{}).then(res=>{
