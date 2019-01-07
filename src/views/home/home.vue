@@ -20,10 +20,10 @@
         </template>
       </ul>
     </div>
-    <div class="newInfo">
+    <div class="newInfo" v-loading="busy && !loadall" element-loading-text="加载中">
       <img src='../../assets/images/new.jpg' alt="">
       <div style="width:80%">
-        <ul class="ul_mineView" v-loading="busy && !loadall" element-loading-text="加载中">
+        <ul class="ul_mineView">
           <div v-for="item in eventListArr" :key="item.id">
             <router-link :to="{name:'mineNotice',params:{}}">
               <li class="li_mineView" >
