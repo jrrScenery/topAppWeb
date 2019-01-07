@@ -20,10 +20,10 @@
         </template>
       </ul>
     </div>
-    <div class="newInfo">
+    <div class="newInfo" v-loading="busy && !loadall" element-loading-text="加载中">
       <img src='../../assets/images/new.jpg' alt="">
       <div style="width:80%">
-        <ul class="ul_mineView" >
+        <ul class="ul_mineView">
           <div v-for="item in eventListArr" :key="item.id">
             <router-link :to="{name:'mineNotice',params:{}}">
               <li class="li_mineView" >
@@ -91,7 +91,9 @@ export default {
       caseData:[],
       projData:[],
       page:1,
-      pageSize:1
+      pageSize:1,
+      busy:true,
+      loadall: false
     }
   },
   activated(){
@@ -103,6 +105,8 @@ export default {
     ];
     this.getWorkBenchObj();  
     if(!this.$route.meta.isUseCache){
+      this.busy = true;
+      this.loadall = false;
       this.caseData = [];
       fetch.get("?action=checkSession",{}).then(res=>{
         this.getEventList();
@@ -163,6 +167,11 @@ export default {
     },
 
     getEventList(flag){
+      // const loading = this.$loading({
+      //   lock: true,
+      //   text: '加载中……',
+      //   background: 'rgba(0, 0, 0, 0)'
+      // })
       let url = "?action=GetTaskMessage&PAGE_NUM="+this.page+"&PAGE_TOTAL="+this.pageSize;
       fetch.get(url,"").then(res=>{
         // console.log("eventListArr:",res);
@@ -171,6 +180,9 @@ export default {
 
       fetch.get("?action=GetFocusCase&PAGE_NUM=1&PAGE_TOTAL=1","").then(res=>{
         // console.log("caseData:",res);
+        // loading.close();
+        this.busy = true;
+        this.loadall = true;
         this.caseData = res.data;
       });
 

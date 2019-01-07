@@ -5,7 +5,7 @@
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <div class="searchView">
-        <el-form label-width="70px">
+        <el-form label-width="80px">
           <el-form-item label="行业：">
             <el-row>
             <el-col :span="5">
@@ -322,7 +322,7 @@ export default {
   .workBenchEventInfoView{width: 100%;}
   .workBenchEventInfoView .content{margin-top: 0.05rem; background: #ffffff;}
   /* .searchView{padding: 0.15rem 0.25rem;} */
-  .searchView >>> .el-form{height: 0.3rem;}
+  .searchView >>> .el-form{height: 0.3rem;margin-bottom:0.3rem}
   .searchView >>> .el-form-item__label{line-height: 0.25rem;margin-top: 0rem}
   .searchView >>> .el-input__icon{display: none}
   .searchView >>> .el-input__prefix{display: none;}
@@ -334,7 +334,7 @@ export default {
    .searchView >>> .el-checkbox{margin:0rem;height: 100%}
   .searchView >>> .el-checkbox-group{line-height: 0.1rem; text-align: left}
   .searchView >>> .el-form-item{margin-bottom: 0rem}
-  .searchView >>> .el-form-item__label{padding: 0 0 0 0; color: #409EFF; text-align: center;}
+  .searchView >>> .el-form-item__label{padding: 0 0 0 0; color: #666666; text-align: center;}
   .searchView >>> .el-button{padding: 6px 10px}
   .tableView >>> .el-table th{border-top: 0.01rem solid #e1e1e1; line-height: 0.25rem; color: #333333;}
   .tableView >>> .el-table .cell{text-align: center; padding: 0}

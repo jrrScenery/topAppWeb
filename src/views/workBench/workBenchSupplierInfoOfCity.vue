@@ -8,7 +8,7 @@
       <el-table
         stripe
         v-loading="busy && !loadall"
-        element-loading-text="正在加载下一页"
+        element-loading-text="加载中"
         v-loadmore="loadMore"
         :data="tableData"
         :height = "tableHeight"
@@ -50,7 +50,7 @@ export default {
       ],
       page:1,
       pageSize:30,
-      busy:false,
+      busy:true,
       loadall: false,
       tableHeight:400,
       isSearch:false,
