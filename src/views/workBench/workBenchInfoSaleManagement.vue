@@ -104,7 +104,7 @@ export default {
     },
     rowClick (row) {
         console.log("row",row)
-        this.$router.push({name: 'programShow', query: {projectId:row.PROJECT_ID}})
+        this.$router.push({name: 'programShow', query: {projectId:row.PROJECT_ID,type:'manager_module'}})
     },
     currentData () {
         var date = new Date();

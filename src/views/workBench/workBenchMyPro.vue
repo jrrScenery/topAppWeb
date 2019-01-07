@@ -8,7 +8,7 @@
         <template v-for="item in workBenchMyProTab">
           <el-tab-pane :label="item.label+'('+totalData[item.numname]+')'" :name="item.name" :key="item.id">
             <div class="programCell" v-for="info in item.programListArr" :key="info.id">
-              <router-link :to="{name:'programShow',query:{projectId:info.PROJECT_ID}}">
+              <router-link :to="{name:'programShow',query:{projectId:info.PROJECT_ID,type:'home_page'}}">
               <div class="cellTop">
                 <el-row>
                   <el-col :span="9">
