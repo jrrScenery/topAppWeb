@@ -33,24 +33,11 @@ export default new Router({
             keepAlive: true          
           }        
         },
-        // {
-        //   path: '/approve',
-        //   name: 'approve',
-        //   component: resolve => require(['@/views/approve/approve'], resolve)
-        // },
         {
           path: '/workBench',
           name: 'workBench',
           component: resolve => require(['@/views/workBench/workBench'], resolve)
         },
-        // {
-        //   path: '/managementModule',
-        //   name: 'managementModule',
-        //   component: resolve => require(['@/views/managementModule/managementModule'], resolve)
-        //   path: '/reportform',
-        //   name: 'reportForm',
-        //   component: resolve => require(['@/views/reportform/reportForm'], resolve)
-        // },
         {
           path: '/mine',
           name: 'mine',
@@ -79,7 +66,7 @@ export default new Router({
         keepAlive: true
       }
     },
-    //首页我的项目
+    //首页我的项目->项目列表
     {
       path: '/workBench/workBenchMyPro',
       name: 'workBenchMyPro',
@@ -89,11 +76,35 @@ export default new Router({
         keepAlive: true
       }
     },
-    //首页单次报价
+    //首页我的项目->项目列表->项目详情
+    {
+      path: '/home/programShow',
+      name: 'programShow',
+      component: resolve => require(['@/views/home/programShow'], resolve)
+    },
+    //首页单次报价->我的报价列表
     {
       path: '/workBench/bidClass',
       name: 'bidClass',
       component: resolve => require(['@/views/workBench/bidClass'], resolve)
+    },
+    //首页单次报价->我的报价列表->单次报价列表
+    {
+      path: '/workBench/bid',
+      name: 'bid',
+      component: resolve => require(['@/views/workBench/bid'], resolve)
+    },
+    //首页单次报价->我的报价列表->单次报价列表->单次报价详情
+    {
+      path: '/workBench/bidDescriptView',
+      name: 'bidDescriptView',
+      component: resolve => require(['@/views/workBench/bidDescriptView'], resolve)
+    },
+    //首页单次报价->我的报价列表->单次报价列表->单次报价进展
+    {
+      path: '/workBench/bidPriceProgress',
+      name: 'bidPriceProgress',
+      component: resolve => require(['@/views/workBench/bidPriceProgress'], resolve)
     },
     //首页事件总览
     {
@@ -189,7 +200,7 @@ export default new Router({
       name: 'workBenchPartRecycle',
       component: resolve => require(['@/views/workBench/workBenchPartRecycle'], resolve)
     },
-
+    //首页关注->需关注事件列表
     {
       path: '/home/eventList',
       name: 'focusEventList',
@@ -199,49 +210,49 @@ export default new Router({
         keepAlive: true
       }
     },
+    //首页关注->需关注事件列表->事件详情
     {
       path: '/home/eventShow',
       name: 'eventShow',
       component: resolve => require(['@/views//home/eventShow'], resolve)
     },
-
+    //首页关注->需关注事件列表->事件详情->补充说明
+    {
+      path: '/home/eventReplenish',
+      name: 'eventReplenish',
+      component: resolve => require(['@/views/home/eventReplenish'], resolve)
+    },
+    //首页关注->需关注事件列表->事件详情->意见反馈
     {
       path: '/home/eventFeedback',
       name: 'eventFeedback',
       component: resolve => require(['@/views/home/eventFeedback'], resolve)
     },
+    //首页关注->需关注事件列表->事件详情->服务评价
+    {
+      path: '/home/eventEvaluation',
+      name: 'eventEvaluation',
+      component: resolve => require(['@/views/home/eventEvaluation'], resolve)
+    },
+    //首页关注->需关注事件列表->事件详情->相关人员
     {
       path: '/home/eventPeople',
       name: 'eventPeople',
       component: resolve => require(['@/views/home/eventPeople'], resolve)
     },
+    //首页关注->需关注事件列表->事件详情->相关报修
     {
       path: '/home/eventRepair',
       name: 'eventRepair',
       component: resolve => require(['@/views/home/eventRepair'], resolve)
     },
+    //首页关注->需关注事件列表->事件详情->SLA反馈
     {
       path: '/home/eventSLAInfo',
       name: 'eventSLAInfo',
       component: resolve => require(['@/views/home/eventSLAInfo'], resolve)
     },
-    
-    {
-      path: '/workBench/bidDescriptView',
-      name: 'bidDescriptView',
-      component: resolve => require(['@/views/workBench/bidDescriptView'], resolve)
-    },
-    
-    {
-      path: '/workBench/bidPriceProgress',
-      name: 'bidPriceProgress',
-      component: resolve => require(['@/views/workBench/bidPriceProgress'], resolve)
-    },
-    {
-      path: '/workBench/bid',
-      name: 'bid',
-      component: resolve => require(['@/views/workBench/bid'], resolve)
-    },
+     
     {
       path: '/workBench/personnelInfo',
       name: 'personnelInfo',
@@ -252,16 +263,7 @@ export default new Router({
       name: 'addParts',
       component: resolve => require(['@/views/home/addParts'], resolve)
     },
-    {
-      path: '/home/eventReplenish',
-      name: 'eventReplenish',
-      component: resolve => require(['@/views/home/eventReplenish'], resolve)
-    },
-    {
-      path: '/home/eventEvaluation',
-      name: 'eventEvaluation',
-      component: resolve => require(['@/views/home/eventEvaluation'], resolve)
-    },
+    
     {
       path: '/home/eventEvaluationEditor',
       name: 'eventEvaluationEditor',
@@ -280,11 +282,6 @@ export default new Router({
         isUseCache: false,
         keepAlive: true
       }
-    },
-    {
-      path: '/home/programShow',
-      name: 'programShow',
-      component: resolve => require(['@/views/home/programShow'], resolve)
     },
     
     {
@@ -312,29 +309,9 @@ export default new Router({
       name: 'workBenchInfoDetail',
       component: resolve => require(['@/views/workBench/workBenchInfoDetail'], resolve)
     },
-    {
-      path: '/workBench/workBenchPeopleInfoOfCity',
-      name: 'workBenchPeopleInfoOfCity',
-      component: resolve => require(['@/views/workBench/workBenchPeopleInfoOfCity'], resolve)
-    },
-    {
-      path: '/workBench/workBenchPeopleInfoDetail',
-      name: 'workBenchPeopleInfoDetail',
-      component: resolve => require(['@/views/workBench/workBenchPeopleInfoDetail'], resolve)
-    },
-    //供应商信息
-    {
-      path: '/workBench/workBenchSupplierInfoOfCity',
-      name: 'workBenchSupplierInfoOfCity',
-      component: resolve => require(['@/views/workBench/workBenchSupplierInfoOfCity'], resolve)
-    },
-    //供应商详情
-    {
-      path: '/workBench/workBenchSupplierDetailInfo',
-      name: 'workBenchSupplierDetailInfo',
-      component: resolve => require(['@/views/workBench/workBenchSupplierDetailInfo'], resolve)
-    },
     
+    
+   
     {
       path: '/workBench/workBenchEventInfo',
       name: 'workBenchEventInfo',
@@ -345,70 +322,96 @@ export default new Router({
       name: 'workBenchEventInfoShow',
       component: resolve => require(['@/views/workBench/workBenchEventInfoShow'], resolve)
     },
-    //人员管理
+    //首页人员管理
     {
       path: '/workBench/workBenchPeopleInfo',
       name: 'workBenchPeopleInfo',
       component: resolve => require(['@/views/workBench/workBenchPeopleInfo'], resolve)
     },
-    //备件库存
+    //首页人员管理->人员信息
+    {
+      path: '/workBench/workBenchPeopleInfoOfCity',
+      name: 'workBenchPeopleInfoOfCity',
+      component: resolve => require(['@/views/workBench/workBenchPeopleInfoOfCity'], resolve)
+    },
+    //首页人员管理->人员信息->单个人员信息
+    {
+      path: '/workBench/workBenchPeopleInfoDetail',
+      name: 'workBenchPeopleInfoDetail',
+      component: resolve => require(['@/views/workBench/workBenchPeopleInfoDetail'], resolve)
+    },
+    //首页备件管理
     {
       path: '/workBench/workBenchParts',
       name: 'workBenchParts',
       component: resolve => require(['@/views/workBench/workBenchParts'], resolve)
     },
-    //备件管理列表-自有
+    //首页备件管理列表->备件信息（自有）
     {
       path: '/workBench/workBenchPartsOwnList',
       name: 'workBenchPartsOwnList',
       component: resolve => require(['@/views/workBench/workBenchPartsOwnList'], resolve)
     },
-    //备件管理列表-供应商
-    {
-      path: '/workBench/workBenchSupplierPartsDetail',
-      name: 'workBenchSupplierPartsDetail',
-      component: resolve => require(['@/views/workBench/workBenchSupplierPartsDetail'], resolve)
-    },
-    //备件详情
+    //首页备件管理列表-备件信息（自有）->备件详情(自有)
     {
       path: '/workBench/workBenchOwnPartsDetail',
       name: 'workBenchOwnPartsDetail',
       component: resolve => require(['@/views/workBench/workBenchOwnPartsDetail'], resolve)
     },
-    {
-      path: '/workBench/workBenchPOPayDetail',
-      name: 'workBenchPOPayDetail',
-      component: resolve => require(['@/views/workBench/workBenchPOPayDetail'], resolve)
-    },
-    {
-      path: '/workBench/workBenchPOStaff',
-      name: 'workBenchPOStaff',
-      component: resolve => require(['@/views/workBench/workBenchPOStaff'], resolve),
-    },
-    {
-      path: '/workBench/workBenchPOParts',
-      name: 'workBenchPOParts',
-      component: resolve => require(['@/views/workBench/workBenchPOParts'], resolve)
-    },
-    // {
-    //   path: '/workBench/workBenchManagementModule',
-    //   name: 'workBenchManagementModule',
-    //   component: resolve => require(['@/views/workBench/workBenchManagementModule'], resolve)
-    // },
+   
+    //首页备件管理列表->备件信息（供应商）  
     {
       path: '/workBench/workBenchPartsSupplierList',
       name: 'workBenchPartsSupplierList',
       component: resolve => require(['@/views/workBench/workBenchPartsSupplierList'], resolve)
     },
+     //首页备件管理列表->备件信息（供应商）->备件详情（供应商）
+     {
+      path: '/workBench/workBenchSupplierPartsDetail',
+      name: 'workBenchSupplierPartsDetail',
+      component: resolve => require(['@/views/workBench/workBenchSupplierPartsDetail'], resolve)
+    },
+    //首页供应商管理
     {
       path: '/workBench/workBenchSupplier',
       name: 'workBenchSupplier',
       component: resolve => require(['@/views/workBench/workBenchSupplier'], resolve)
     },
+    //首页供应商管理->供应商信息
+    {
+      path: '/workBench/workBenchSupplierInfoOfCity',
+      name: 'workBenchSupplierInfoOfCity',
+      component: resolve => require(['@/views/workBench/workBenchSupplierInfoOfCity'], resolve)
+    },
+    //首页供应商管理->供应商信息->供应商详情
+    {
+      path: '/workBench/workBenchSupplierDetailInfo',
+      name: 'workBenchSupplierDetailInfo',
+      component: resolve => require(['@/views/workBench/workBenchSupplierDetailInfo'], resolve)
+    },
+    //首页管理仓->PO管理
     {
       path: '/workBench/workBenchPOinfo',
       name: 'workBenchPOinfo',
       component: resolve => require(['@/views/workBench/workBenchPOinfo'], resolve)
+    },
+    //首页管理仓->PO管理->PO信息-人员
+    {
+      path: '/workBench/workBenchPOStaff',
+      name: 'workBenchPOStaff',
+      component: resolve => require(['@/views/workBench/workBenchPOStaff'], resolve),
+    },
+    //首页管理仓->PO管理->PO信息-备件
+    {
+      path: '/workBench/workBenchPOParts',
+      name: 'workBenchPOParts',
+      component: resolve => require(['@/views/workBench/workBenchPOParts'], resolve)
+    },
+    //首页管理仓->PO管理->PO信息-PO支付详情
+    {
+      path: '/workBench/workBenchPOPayDetail',
+      name: 'workBenchPOPayDetail',
+      component: resolve => require(['@/views/workBench/workBenchPOPayDetail'], resolve)
     },
     {
       path: '/workBench/workBenchQualityControl',
@@ -501,10 +504,17 @@ export default new Router({
       name: 'mineNotice',
       component: resolve => require(['@/views/mine/mineNotice'], resolve)
     },
+    //设置-反馈建议（App）
     {
       path: '/mine/mineAppFeedBack',
       name: 'mineAppFeedBack',
       component: resolve => require(['@/views//mine/mineAppFeedBack'], resolve)
+    },
+    //设置-修改密码
+    {
+      path: '/mine/changePwd',
+      name: 'changePwd',
+      component: resolve => require(['@/views//mine/changePwd'], resolve)
     },
     {
       path: '/mine/mineFeedback',

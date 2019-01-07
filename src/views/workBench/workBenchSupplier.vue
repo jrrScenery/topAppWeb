@@ -55,7 +55,7 @@ export default {
 
   data () {
     return {
-      workBenchSupplierTit: '供应商信息',
+      workBenchSupplierTit: '供应商管理',
       tableData: [],
       busy:true,
       loadall: false

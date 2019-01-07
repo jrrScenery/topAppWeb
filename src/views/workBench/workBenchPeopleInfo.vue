@@ -59,7 +59,7 @@ export default {
 
   data () {
     return {
-      workBenchPeopleInfoTit: '人员信息',
+      workBenchPeopleInfoTit: '人员管理',
       tableData: [],
       busy:true,
       loadall: false
