@@ -99,6 +99,13 @@ export default {
         let flag = this.page>1;
         fetch.get(url, params).then(res => {
             this.workBenchInfoSaleManagementListObj = res.data;
+            this.$message({
+                message:'已加载全部数据',
+                type: 'success',
+                center: true,
+                duration:3000,
+                customClass:'msgdefine'
+            });
         })
     },
     rowClick (row) {

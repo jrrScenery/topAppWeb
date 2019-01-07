@@ -74,6 +74,7 @@
           </el-form-item>
         </el-form>
       </div>
+      <div style="height: 1.6rem;"></div>
       <div class="tableView">
         <el-table
           :data="tableData"
@@ -327,10 +328,10 @@ export default {
   .searchView >>> .el-input__icon{display: none}
   .searchView >>> .el-input__prefix{display: none;}
   .searchView >>> .el-checkbox__label{line-height: 0.25rem;}
-  /* .searchView >>> .el-form-item__content{line-height: 30px;} */
+  .searchView >>> .el-form-item__content{line-height: 0px;}
   .searchView >>> .el-input--prefix .el-input__inner{padding: 0; text-align: center;}
   .searchView >>> .el-col-1{text-align: center; line-height: 0.4rem}
-  .searchView >>> .el-form .line{text-align: center; line-height: 0.4rem}
+  .searchView >>> .el-form .line{text-align: center; line-height: 0.3rem}
    .searchView >>> .el-checkbox{margin:0rem;height: 100%}
   .searchView >>> .el-checkbox-group{line-height: 0.1rem; text-align: left}
   .searchView >>> .el-form-item{margin-bottom: 0rem}
