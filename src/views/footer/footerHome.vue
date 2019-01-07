@@ -6,12 +6,12 @@
       mode="horizontal"
       @select="select">
     <template v-for="item in footerArr">
-      <el-menu-item v-if="footerArr.length == 4" style="width: 25%;" :index="item.index" :key="item.id">
+      <el-menu-item v-if="footerArr.length == 4" style="width: 25%;" :index="item.index" :key="item.elType">
         <!-- <img v-if="item.elType === 3" :src="item.imgSrc" class="workImg" /> -->
         <i :class="item.className"></i>
         <span>{{ item.text }}</span>
       </el-menu-item>
-      <el-menu-item v-if="footerArr.length == 3" style="width: 33.3%;" :index="item.index" :key="item.id">
+      <el-menu-item v-if="footerArr.length == 3" style="width: 33.3%;" :index="item.index" :key="item.elType">
         <i :class="item.className"></i>
         <span>{{ item.text }}</span>
       </el-menu-item>
@@ -32,15 +32,17 @@ export default {
     }
   },
   activated(){
+    this.footerArr = this.getFooterArr();
   },
 
   created () { 
-    this.getFooterArr(); 
+    this.footerArr = this.getFooterArr(); 
   },
 
   methods: {
     getFooterArr(){
       this.footerArr = [];
+      console.log("AAAAAAAAAAAAAAAAA")
       let permissions = JSON.parse(localStorage.getItem("userPermission"));
       if(permissions==null||permissions.length==0){
         this.footerArr[0] = {elType: 1, index: '/home', text: '首页', className: 'el-icon-footer_1',display:true};
@@ -64,8 +66,10 @@ export default {
           this.footerArr[2] = {elType: 3, index: '/mine', text: '设置', className: 'el-icon-setting',display:true}
         }
       }
+      return this.footerArr
     },
     select (index, indexPath, e) {   
+      console.log(this.footerArr)
       localStorage.setItem('footerSelectObj', index.split('/')[1])
       let path = localStorage.getItem('footerSelectObj') || JSON.stringify({})
       this.$router.push({path: '/' + path})
