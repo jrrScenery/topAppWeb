@@ -15,7 +15,6 @@
         style="width: 100%">
         <template v-for="item in IndustryCustomerTable">
           <el-table-column
-            :fixed="item.fixed"
             :key="item.id"
             :prop="item.prop"
             :label="item.label"
@@ -61,19 +60,19 @@ export default {
         {
           prop: 'CUST_NAME',
           label: '客户名称',
-          fixed: true,
+          // fixed: true,
           width: '33%'
         },
         {
           prop: 'PRO_NUM',
           label: '项目数量',
-          fixed: true,
+          // fixed: true,
           width: '33%'
         },
         {
           prop: 'AMOUNT',
           label: '合同规模',
-          fixed: true,
+          // fixed: true,
           width: '34%'
         }
       ],
@@ -146,7 +145,7 @@ export default {
 </script>
 
 <style scoped>
-  .workBenchIndustryCustomerView{width: 100%; color: #999999; line-height: 0.3rem;}
+  .workBenchIndustryCustomerView{width: 100%; background:#f7f7f7;}
   .workBenchIndustryCustomerContent{width: 100%; position: absolute; top: 0.45rem;bottom: 0; color: #666666;overflow: scroll;}
   .workBenchIndustryCustomerContent >>> .el-table__body{width: 100%!important}
   .workBenchIndustryCustomerContent >>> .el-table__header{width: 100%!important}

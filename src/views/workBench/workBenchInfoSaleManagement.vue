@@ -14,7 +14,6 @@
         <!-- <el-table-column type="index" width="50"></el-table-column> -->
         <template v-for="item in SaleManagementTable">
           <el-table-column
-            :fixed="item.fixed"
             :key="item.id"
             :prop="item.prop"
             :label="item.label"
@@ -55,25 +54,25 @@ export default {
         {
           prop: 'CUST_NAME',
           label: '客户名称',
-          fixed: true,
+          // fixed: true,
           width: '20%'
         },
         {
           prop: 'PROJECT_NAME',
           label: '项目名称',
-          fixed: true,
+          // fixed: true,
           width: '20%'
         },
         {
           prop: 'PROJECT_STATUS',
           label: '项目状态',
-          fixed: true,
+          // fixed: true,
           width: '20%'
         },
         {
           prop: 'HEALTH_CURRENT_VALUE',
           label: '项目健康度',
-          fixed: true,
+          // fixed: true,
           width: '20%'
         }
       ],
@@ -118,7 +117,7 @@ export default {
 </script>
 
 <style scoped>
-  .workBenchInfoSaleManagementView{width: 100%; color: #999999; line-height: 0.3rem;}
+  .workBenchInfoSaleManagementView{width: 100%; background:#f7f7f7;}
   .workBenchInfoSaleManagementContent{width: 100%; position: absolute; top: 0.45rem;bottom: 0; color: #666666;overflow: scroll;}
   .workBenchInfoSaleManagementContent >>> .el-table__body{width: 100%!important}
   .workBenchInfoSaleManagementContent >>> .el-table__header{width: 100%!important}
