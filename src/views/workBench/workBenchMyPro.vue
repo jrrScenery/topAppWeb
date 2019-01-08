@@ -13,7 +13,7 @@
                 <el-row>
                   <el-col :span="9">
                     <div class="cellTopNum">{{info.PROJECT_CODE}}</div>
-                  </el-col>
+                  </el-col> 
                   <el-col :span="8">
                     <div class="cellTopColor">
                       <span v-if="info.BASE_COLOR == 0"></span>

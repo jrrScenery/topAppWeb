@@ -1,7 +1,7 @@
 <!--填写搜索的tab数据，反馈数据给父组件(即表弹出)-->
 <template>
   <div class="searchView">
-    <el-form ref="form" :model="form" label-width="65px">
+    <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="行业">
         <el-select v-model="form.industry" placeholder="请选择行业" clearable>
           <el-option v-for="item in industryType" :label="item.name" :value="item.name" :key="item.id"></el-option>
@@ -135,7 +135,7 @@ export default {
 
 <style scoped>
   .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0.5rem; position: relative;}
-  .searchView >>> .el-form-item{margin-bottom: 0.1rem;}
+  .searchView >>> .el-form-item{margin-bottom: 0.05rem;}
   .searchView >>> .el-select{width: 80%;}
   .searchView >>> .el-input__inner{padding: 0 0.05rem}
   .searchView >>> .el-select .el-input__inner:focus{border-color: #dcdfe6;}

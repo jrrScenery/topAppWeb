@@ -95,8 +95,8 @@ export default {
 }
 </script>
 
-<style scoped>
-  .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0.5rem; position: relative;overflow: auto}
+<style scoped> 
+  .searchView{width:80%;background: #ffffff; padding: 0.15rem 0.2rem 0.5rem; position: relative;overflow: auto}
   .searchView >>> .el-form-item{margin-bottom: 0.05rem;}
   .searchView >>> .el-select{width: 80%;}
   .searchView >>> .el-select .el-input__inner:focus{border-color: #dcdfe6;}
