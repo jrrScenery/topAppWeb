@@ -205,7 +205,7 @@ export default {
   .homeView .newInfo img{width: 0.6rem; height: 0.6rem; border-radius: 50%; }
   /* .workBenchView .newInfo .newImg img{height:100%;width: 100%;} */
   .homeView .ul_mineView{}
-  .homeView .ul_mineView .li_mineView{display: flex; justify-content: space-between; align-items: center;height: 100%; background: #ffffff; border-bottom: 0.01rem solid #e5e5e5; font-size: 0.12rem; line-height: 0.2rem; padding: 0.05rem 0.2rem;}
+  .homeView .ul_mineView .li_mineView{display: flex; justify-content: space-between; align-items: center;height: 100%; background: #ffffff; border-bottom: 0.01rem solid #e5e5e5; font-size: 0.14rem; line-height: 0.2rem; padding: 0.05rem 0.2rem;}
   .homeView .ul_mineView .li_mineView:nth-child(4){margin-top: 0.1rem; border-top: 0.01rem solid #e5e5e5;}
   .homeView .ul_mineView .li_mineView img{width: 0.24rem; height: 0.24rem; margin-right: 0.15rem;}
   .homeView .ul_mineView .li_mineView span{width: 100%; text-align: left; color: #262626;}
