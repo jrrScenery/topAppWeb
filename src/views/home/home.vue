@@ -11,12 +11,6 @@
               </router-link>
               <span>{{item.text}}</span>
             </li>
-            <!-- <li v-else class="li_workBench" :key="item.id" style="display:none">
-              <router-link :to="{name:item.href,params:item.params}" >
-                <img :src="item.imgSrc" alt=""  >
-              </router-link>
-              <span>{{item.text}}</span>
-            </li> -->
         </template>
       </ul>
     </div>
@@ -60,15 +54,6 @@
         </ul>
       </div>
     </div>
-    
-    <!--<template>-->
-      <!--<mt-datetime-picker-->
-            <!--ref="picker"-->
-            <!--type="date"-->
-            <!--v-model="pickerValue">-->
-          <!--</mt-datetime-picker>-->
-    <!--</template>-->
-    <!-- <input type="button" @click="aaa" value="aaaaa"> -->
   </div>
 </template>
 
@@ -215,7 +200,6 @@ export default {
   .homeView .ul_workBench .li_workBench{display: flex; flex-direction: column; align-content: space-around; justify-content: space-around; width: 33%; height: 0.55rem; text-align: center;}
   .homeView .ul_workBench .li_workBench:nth-child(n+5){margin-top: 0.15rem;}
   .homeView img{ width: 0.3rem; height: 0.3rem; margin: auto;}
-
   .homeView .newInfo{display:flex;margin-top: 0.15rem;background:#ffffff}
   .homeView .newInfo .newImg{width:20%;text-align: center;}
   .homeView .newInfo img{width: 0.6rem; height: 0.6rem; border-radius: 50%; }
@@ -224,5 +208,13 @@ export default {
   .homeView .ul_mineView .li_mineView{display: flex; justify-content: space-between; align-items: center;height: 100%; background: #ffffff; border-bottom: 0.01rem solid #e5e5e5; font-size: 0.12rem; line-height: 0.2rem; padding: 0.05rem 0.2rem;}
   .homeView .ul_mineView .li_mineView:nth-child(4){margin-top: 0.1rem; border-top: 0.01rem solid #e5e5e5;}
   .homeView .ul_mineView .li_mineView img{width: 0.24rem; height: 0.24rem; margin-right: 0.15rem;}
-  .homeView .ul_mineView .li_mineView span{width: 100%; text-align: left; color: #262626}
+  .homeView .ul_mineView .li_mineView span{width: 100%; text-align: left; color: #262626;}
+  .homeView .ul_mineView .li_mineView span{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    /*! autoprefixer: off */
+    -webkit-box-orient: vertical;
+  }
 </style>
