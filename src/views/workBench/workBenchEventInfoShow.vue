@@ -32,7 +32,7 @@
           @cell-click="tdClick"
           show-summary
           style="width: 100%;">
-          <el-table-column :label="this.$route.query.industryName">
+          <!-- <el-table-column :label="this.$route.query.industryName"> -->
             <template v-for="item in workBenchEventInfoObj">
               <el-table-column
                 :key="item.id"
@@ -41,7 +41,7 @@
                 :min-width="item.width">
               </el-table-column>
             </template>
-          </el-table-column>
+          <!-- </el-table-column> -->
         </el-table>
       </div>
     </div>
