@@ -5,7 +5,7 @@
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <div class="searchView">
-        <el-form label-width="80px">
+        <el-form label-width="100px">
           <el-form-item label="行业：">
             <el-row>
             <el-col :span="5">
