@@ -65,8 +65,8 @@ export default {
       tableData: [
       ],
       qualityTableObj: [
-        {prop: 'ZBX', label: '指标项', width: '35%'},
-        {prop: 'FJMBZ', label: '分解目标值', width: '15%'},
+        {prop: 'ZBX', label: '指标项', width: '30%'},
+        {prop: 'FJMBZ', label: '分解目标值', width: '20%'},
         {prop: 'ZBDCQK', label: '达成情况', width: '20%'},
         {prop: 'KFX', label: '扣分项', width: '12%'},
 
