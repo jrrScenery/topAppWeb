@@ -1,7 +1,7 @@
 <!--我的项目、所有项目查询-->
 <template>
   <div class="searchView">
-    <el-form ref="form" :model="form" label-width="65px">
+    <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="业务方向">
         <el-select v-model="form.business" placeholder="请选择业务方向">
           <el-option v-for="item in businessType" :label="item.name" :value="item.value" :key="item.id"></el-option>
@@ -96,8 +96,8 @@ export default {
 </script>
 
 <style scoped>
-  .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0.5rem; position: relative;}
-  .searchView >>> .el-form-item{margin-bottom: 0.1rem;}
+  .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0.5rem; position: relative;overflow: auto}
+  .searchView >>> .el-form-item{margin-bottom: 0.05rem;}
   .searchView >>> .el-select{width: 80%;}
   .searchView >>> .el-select .el-input__inner:focus{border-color: #dcdfe6;}
   .searchView >>> .el-form-item__label{text-align: left; color: #999999; font-size: 0.13rem;}
@@ -105,7 +105,7 @@ export default {
   .searchView >>> .bInput .el-input__inner:focus{border-color: #dcdfe6;}
   .searchView >>> .el-select-dropdown__item.selected{color: #2698d6;}
   .searchView >>> .el-select-dropdown__item span{color: #2698d6!important;}
-  .searchView >>> .searchBtn{position: absolute; bottom: -0.15rem; left: 0; right: 0; height: 0.4rem;}
+  .searchView >>> .searchBtn{position: absolute; bottom: 0; left: 0; right: 0; height: 0.4rem;}
   .searchView >>> .searchBtn .el-button{width: 50%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
   .searchView >>> .searchBtn .el-button:hover{background: #ffffff;}
   .searchView >>> .searchBtn .searchBtnCell:hover{background: #2698d6;}

@@ -1,7 +1,7 @@
 <!--事件详情搜索&意见和投诉查询&我的事件、所有事件查询-->
 <template>
   <div class="searchView">
-    <el-form ref="form" :model="form" label-width="65px">
+    <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="行业">
         <el-select v-model="form.industry" placeholder="请选择行业" multiple>
           <el-option v-for="item in industryType" :label="item.name" :value="item.value" :key="item.id"></el-option>
@@ -33,7 +33,7 @@
       <el-form-item label="关键词">
         <el-input v-model="form.keyWord" class="bInput"></el-input>
       </el-form-item>
-      <el-form-item label="创建时间" style="margin-bottom: 0.3rem">
+      <el-form-item label="创建时间" style="margin-bottom: 0.15rem">
         <el-col :span="11">
           <el-date-picker type="date" placeholder="开始日期" v-model="form.startTime" style="width: 100%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
         </el-col>
@@ -132,8 +132,8 @@ export default {
 </script>
 
 <style scoped>
-  .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0.5rem; position: relative;}
-  .searchView >>> .el-form-item{margin-bottom: 0.1rem;}
+  .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0.5rem; position: relative;overflow: auto;}
+  .searchView >>> .el-form-item{margin-bottom: 0.05rem;}
   .searchView >>> .el-select{width: 80%;}
   .searchView >>> .el-input__inner{padding: 0 0.05rem}
   .searchView >>> .el-select .el-input__inner:focus{border-color: #dcdfe6;}
@@ -147,7 +147,7 @@ export default {
   .searchView >>> .el-input__prefix{display: none;}
   .searchView >>> .el-input--prefix .el-input__inner{padding: 0; text-align: center;}
   .searchView >>> .el-col-2{text-align: center;}
-  .searchView >>> .searchBtn{position: absolute; bottom: -0.15rem; left: 0; right: 0; height: 0.4rem;}
+  .searchView >>> .searchBtn{position: absolute; bottom: 0; left: 0; right: 0; height: 0.4rem;}
   .searchView >>> .searchBtn .el-button{width: 50%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
   .searchView >>> .searchBtn .el-button:hover{background: #ffffff;}
   .searchView >>> .searchBtn .searchBtnCell:hover{background: #2698d6;}
