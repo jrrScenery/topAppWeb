@@ -113,7 +113,7 @@ export default {
 
     freshCharts(params){
       // let params = {timeStart:this.form.startTime,timeEnd:this.form.endTime,PROJECT_NAME:this.form.custom,CUST_NAME:this.form.program,INDUSTRY:this.form.industry}
-      console.log(params)
+      console.log("freshCharts",params)
       this.fetch1(params);
       this.fetch2(params);
       this.fetch3(params);
@@ -125,7 +125,7 @@ export default {
     
     firstFreshCharts(){
       let params = {timeStart:this.form.startTime,timeEnd:this.form.endTime,PROJECT_NAME:this.form.custom,CUST_NAME:this.form.program,INDUSTRY:this.form.industry}
-      console.log(params)
+      console.log("firstFreshCharts",params)
       this.fetch1(params);
       this.fetch2(params);
       this.fetch3(params);
@@ -173,6 +173,7 @@ export default {
     fetch1(params){
       var url = "?action=GetStatisticsCaseData&dimensionType=date&timeRangeType=month";
       fetch.get(url,params).then(res=>{
+        console.log("fetch1",res)
         var reportData = res.DATA;
         var dataArray = [];
         var dataArrayX = [];
@@ -188,6 +189,7 @@ export default {
     fetch2(params){
       let url = "?action=GetStatisticsCaseData&dimensionType=factory&timeRangeType=month";
       fetch.get(url,params).then(res=>{
+        console.log("fetch2",res)
         var reportData = res.DATA;
         var dataArray = [];
         var dataArrayX = [];
@@ -205,6 +207,7 @@ export default {
     fetch5(params){
       let url = "?action=GetStatisticsCaseData&dimensionType=deviceType&timeRangeType=month";
       fetch.get(url,params).then(res=>{
+        console.log("fetch5",res)
         var reportData = res.DATA;
         var dataArray = [];
         for(var i=0;i<reportData.length;i++){
@@ -266,6 +269,7 @@ export default {
       console.log("ASDFGHASDFG")
       let url = "?action=/report/GetStatisticsSLA";
       fetch.get(url,params).then(res=>{
+        console.log("fetch7:",res);
         var reportData = res.data;
         var xData = [], xLabel = [], xLabels = [], xConcat = [], yData = [];
         for(var i=reportData.length-1;i>=0;i--){

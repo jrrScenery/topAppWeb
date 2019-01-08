@@ -4,7 +4,7 @@
     <el-form ref="form" :model="form" label-width="65px">
       <el-form-item label="行业">
         <el-select v-model="form.industry" placeholder="请选择行业" clearable>
-          <el-option v-for="item in industryType" :label="item.name" :value="item.value" :key="item.id"></el-option>
+          <el-option v-for="item in industryType" :label="item.name" :value="item.name" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="客户">
@@ -68,23 +68,18 @@ export default {
 
   created () {
     fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
-      // console.log("2222", res.data);
+      console.log("2222", res.data);
       this.industryType = res.data;
     });
-    // fetch.get("?action=getDict&type=NT_CASE_TYPE","").then(res=>{
-    //   // console.log(res.data);
-    //   this.Type = res.data;
-    // });
-
 
     this.form.industry = this.queryData.industry;
     this.form.custom = this.queryData.custom;
     this.form.sale = this.queryData.sale;
     this.form.PM = this.queryData.PM;
     this.form.program = this.queryData.program; 
-    this.form.startTime = this.queryData.startTime;
-    this.form.endTime = this.queryData.endTime;
-    // console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", this.queryData, this.form);
+    // this.form.startTime = this.queryData.startTime;
+    // this.form.endTime = this.queryData.endTime;
+    console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", this.queryData, this.form);
   },
 
   methods: {

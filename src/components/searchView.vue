@@ -33,7 +33,7 @@
       <el-form-item label="关键词">
         <el-input v-model="form.keyWord" class="bInput"></el-input>
       </el-form-item>
-      <el-form-item label="创建时间" style="margin-bottom: 0.15rem">
+      <el-form-item label="创建时间">
         <el-col :span="11">
           <el-date-picker type="date" placeholder="开始日期" v-model="form.startTime" style="width: 100%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
         </el-col>
