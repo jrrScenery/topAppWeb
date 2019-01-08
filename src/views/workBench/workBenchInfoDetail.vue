@@ -6,7 +6,7 @@
     <div style="height: 0.45rem;"></div>
     <div class="content">
       <div class="programCell" v-for="item in programListArr" :key="item.id">
-        <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID}}" >
+        <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID,type:'manager_module'}}" >
           <div class="cellTop">
             <el-row>
               <el-col :span="12">
@@ -19,14 +19,14 @@
           </div>
         </router-link>
         <div class="cellContent">
-          <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID}}">
+          <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID,type:'manager_module'}}">
           <p>{{item.PROJECT_NAME}}</p>
           </router-link>
           <el-row>
             <el-col :span="12"><span class="tit">销售姓名：<el-button type="text" @click.native="roleProjectList(1,item)" style="margin: 0;padding: 0;">{{item.SALE_NAME}}</el-button></span></el-col>
             <el-col :span="12"><span class="tit">PM姓名：<el-button type="text" @click.native="roleProjectList(2,item)" style="margin: 0;padding: 0;">{{item.MANAGER_NAME}}</el-button></span></el-col>
           </el-row>
-          <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID}}">
+          <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID,type:'manager_module'}}">
           <el-row>
             <el-col :span="12"><span class="tit">服务开始：{{item.PROJECT_START_DATE}}</span></el-col>
             <el-col :span="12"><span class="tit">服务结束：{{item.PROJECT_END_DATE}}</span></el-col>

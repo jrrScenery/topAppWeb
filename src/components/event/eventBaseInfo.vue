@@ -45,14 +45,14 @@
           <div>
             <p style="font-size: 0.14rem">
               {{item.name}}<br>
-              <a @click="sendCall(item.phone)" v-bind:href="'tel:'+item.phone" style="font-size: 0.13em; color: #2698d6;"> {{item.phone}} </a>
+              <a @click="sendCall(item.phone)" v-bind:href="'tel:'+item.phone" style="color: #2698d6;"> {{item.phone}} </a>
             </p>
             <span style="font-size: 0.1rem; color: #999999">{{item.position}}</span></div>
         </div>
       </div>
       <ul class="eventBaseInfoCell">
         <li v-for="(item,i) in baseInfoArr" :key="'inf'+i"><span>{{item.tit}}</span>{{item.desc}}
-          <a  @click="sendCall(item.phone)" v-bind:href="'tel:'+item.phone"  style="font-size: 0.13em; color: #2698d6;"> {{item.phone}} </a>
+          <a  @click="sendCall(item.phone)" v-bind:href="'tel:'+item.phone"  style="color: #2698d6;"> {{item.phone}} </a>
         </li>
       </ul>
       <div class="resolvent">

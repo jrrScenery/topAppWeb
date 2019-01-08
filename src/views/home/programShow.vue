@@ -50,7 +50,7 @@
             <el-col :span="12"><span class="tit">交付类型：{{projectInfo.DELIVERY_TYPE_NAME}}</span></el-col>
             <el-col :span="12">
               <span class="tit">销售电话：
-              <a  @click="sendCall(projectInfo.SALESMAN_MOBILE)" v-bind:href="'tel:'+projectInfo.SALESMAN_MOBILE" style="font-size: 0.13em; color: #2698d6;">{{projectInfo.SALESMAN_MOBILE}}
+              <a  @click="sendCall(projectInfo.SALESMAN_MOBILE)" v-bind:href="'tel:'+projectInfo.SALESMAN_MOBILE" style="color: #2698d6;">{{projectInfo.SALESMAN_MOBILE}}
               </a>
               </span>
             </el-col>
@@ -67,7 +67,7 @@
             <el-col :span="12"><span class="tit">客户名称：{{projectInfo.CUSTOMER_NAME}}</span></el-col>
             <el-col :span="12">
               <span class="tit">PM电话：
-                <a  @click="sendCall(projectInfo.PM_MOBILE)" v-bind:href="'tel:'+projectInfo.PM_MOBILE"  style="font-size: 0.13em; color: #2698d6;">{{projectInfo.PM_MOBILE}}
+                <a  @click="sendCall(projectInfo.PM_MOBILE)" v-bind:href="'tel:'+projectInfo.PM_MOBILE"  style="color: #2698d6;">{{projectInfo.PM_MOBILE}}
                 </a>
             </span></el-col>
           </el-row>
