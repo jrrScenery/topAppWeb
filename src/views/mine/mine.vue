@@ -8,17 +8,12 @@
     </div>
       <ul class="ul_mineView" >
         <li class="li_mineView" v-for="item in liObj" :key="item.id">
-           <!-- <template v-else-if="item.action == 'mineNotice'">
-            <img :src="item.imgSrc" alt="">
-            <span v-on:click="mineNotice">{{item.text}}</span>
-            <i class="el-icon-arrow-right"></i>
-          </template> -->
           <template v-if="item.action == 'Feedback'">
             <span v-on:click="Feedback">{{item.text}}</span>
             <i class="el-icon-arrow-right"></i>
           </template>
-          <template v-else-if="item.action == 'ChangePd'">
-            <span>{{item.text}}</span>
+          <template v-if="item.action == 'ChangePd'">
+            <span v-on:click="ChangePd">{{item.text}}</span>
             <i class="el-icon-arrow-right"></i>
           </template>
         </li>
@@ -79,10 +74,10 @@ export default {
 
       });
     },
-    mineNotice(){
-       this.$router.push({name:'mineNotice',params:{}});
+    ChangePd(){
+       this.$router.push({name:'changePwd',params:{}});
     },
-    Feedback(){//:to="{name:'mineFeedbackShow',query:{complantId:scope.row['COMPLANT_ID'],myid:1}}"
+    Feedback(){
        this.$router.push({name:'mineAppFeedBack',query:{TYPE:'my'}});
     }
   }

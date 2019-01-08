@@ -18,6 +18,7 @@
 
 <script>
 import headerLast from '../header/headerLast'
+import fetch from '../../utils/ajax'
 export default {
     name:'mineAppFeedBack',
     components: {
@@ -33,6 +34,19 @@ export default {
         }
     },
     methods:{
+        check(loading){
+            if(this.formData.article == ""){
+                this.$message({
+                    message:'请输入内容!',
+                    type: 'warning',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
+            return true;
+        },
         submitForm (formName) {
             const loading = this.$loading({
                 lock: true,
@@ -43,30 +57,30 @@ export default {
             let vm= this;
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                let params = "&CONTENT="+window.encodeURI(this.formData.article);
-                fetch.get("?action=UpdateSuggest"+params,"").then(res=>{
-
-                    loading.close();
-                    if(res.STATUSCODE=="0"){
-                        this.$message({
-                            message:'提交成功',
-                            type: 'success',
+                    if(!vm.check(loading)) return;
+                    let params = "&EMP_NAME="+ localStorage.getItem("empId") +"&CONTENT="+window.encodeURI(this.formData.article);
+                    fetch.get("?action=/case/insertSuggest"+params,"").then(res=>{
+                        console.log("res",res);
+                        loading.close();
+                        if(res.STATUSCODE=="0"){
+                            this.$message({
+                                message:'提交成功',
+                                type: 'success',
+                                center: true,
+                                customClass: 'msgdefine'
+                            });
+                            setTimeout(function(){vm.$router.push({ name: 'mine',query:{}})},1000);
+                        }
+                        else{
+                            this.$message({
+                            message:res.MESSAGE+"发生错误",
+                            type: 'error',
                             center: true,
                             customClass: 'msgdefine'
-                        });
-                        let nowcaseid = vm.caseId;
-                        setTimeout(function(){vm.$router.push({ name: 'eventShow',query:{caseId:nowcaseid}})},1000);
-                    }
-                    else{
-                        this.$message({
-                        message:res.MESSAGE+"发生错误",
-                        type: 'error',
-                        center: true,
-                        customClass: 'msgdefine'
-                        });
-                    }
-                    
-                });
+                            });
+                        }
+                        
+                    });
                 } else {
                 this.$message({
                         message:"请正确填写",

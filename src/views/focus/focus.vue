@@ -14,12 +14,12 @@
             <div class="titleRight">{{more}}</div>
           </router-link>
         </div>
-        <div>
+        <div class="rowDiv">
           <ul class="noticeTem" v-if="noticeData.length!=0" v-for="item in noticeData" :key="item.id">
             <router-link :to="{name:'mineNotice',params:{}}">
               <li class="li_focusView">    
                 <template>
-                  <span>{{item.SEND_NAME}} 于{{item.CREATE_ON}}{{item.BIZ_NAME}}，触发原因：<br/>{{item.TITLE}}</span>    
+                  <span>{{item.SEND_NAME}} 于{{item.CREATE_ON}}{{item.BIZ_NAME}}，触发原因：{{item.TITLE}}</span>    
                 </template>      
               </li>
             </router-link>
@@ -43,7 +43,7 @@
             <router-link :to="{name:'eventShow',query:{caseId:item.CASEID}}">
               <li class="li_focusView" :key="item.id">    
                 <template>
-                  <span>{{item.CODE}} 关注原因:{{item.ITEM.split(",")[0]}}<br/> 客户名称：{{item.CUSTOM}}</span>    
+                  <span>{{item.CODE}} 关注原因:{{item.ITEM.split(",")[0]}} 客户名称：{{item.CUSTOM}}</span>    
                   <i class="el-icon-arrow-right"></i>
                 </template>      
               </li>
@@ -188,18 +188,19 @@ export default {
 
 <style scoped>
   .focusView{width: 100%;}
-  .content .title{display: flex; justify-content: space-between;height: 0.33rem; line-height: 0.33rem;font-size: 0.15rem;padding:0 0.1rem;}
-  .content .notice .title{display: flex; justify-content: space-between;height: 0.33rem; line-height: 0.33rem;font-size: 0.15rem;}
+  .content .title{display: flex; justify-content: space-between;height: 0.33rem; line-height: 0.33rem;font-size: 0.13rem;padding:0 0.1rem;}
+  .content .notice .title{display: flex; justify-content: space-between;height: 0.33rem; line-height: 0.33rem;font-size: 0.13rem;}
   .content .title a{color: black; font-weight: bold}
   .content .title span{color: red; font-size:0.04rem ;border-left: 5px}
   .content .title .titleRight{font-size: 0.13rem;margin-right: 0.1rem}
   .event, .notice, .program{background-color: #ffffff;margin-bottom: 0.2rem;}
-  .tem{border-top: 0.01rem solid #e5e5e5;;height:100%;}
-  .noticeTem{padding:0 0.1rem;}
+  .tem{border-top: 0.01rem solid #e5e5e5;height:100%;}
+  .noticeTem{padding:0 0.1rem;border-top: 0.01rem solid #e5e5e5;}
   .event span, .notice span, .program span{line-height: 0.25rem;height: 0.25rem;font-size: 0.13rem;color: #000;}
   .tem .li_focusView{height:100%;display: flex; justify-content: space-between; align-items: center;background: #ffffff; border-bottom: 0rem solid #e5e5e5; font-size: 0.14rem; line-height: 0.5rem; padding: 0.01rem 0.2rem;}
   .tem .li_focusView:nth-child(1){border-top: 0 solid #e5e5e5;}
   .tem .li_focusView img{width: 0.24rem; height: 0.24rem; margin-right: 0.15rem;}
   .tem .li_focusView span{width: 100%;height: 100%; text-align: left; color: #262626;margin-bottom: 0.02rem}
+  .rowDiv{overflow:hidden;display:-webkit-box;text-overflow:ellipsis;-webkit-line-clamp:2; -webkit-box-orient:vertical; word-break: break-all;}
 </style>
 
