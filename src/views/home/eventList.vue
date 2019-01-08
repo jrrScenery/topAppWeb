@@ -8,17 +8,17 @@
         <router-link :to="{name:'eventShow',query:{caseId:item.CASEID}}">
         <div class="cellTop">
           <el-row>
-            <el-col :span="11">
+            <el-col :span="10">
               <span class="spheathcolor" :class="'spheathcolor'+item.CASEHEALTH"  ></span>  {{item.CODE}}
             </el-col>
-            <el-col :span="2">
+            <el-col :span="4">
               <span class="speventlevel" v-if="item.CASELEVEL==='一级'" :class="'speventlevelcolor'+1">{{item.CASELEVEL}}</span>
                  <span class="speventlevel" v-if="item.CASELEVEL==='二级'" :class="'speventlevelcolor'+2" >{{item.CASELEVEL}}</span>
                  <span class="speventlevel" v-if="item.CASELEVEL==='三级'" :class="'speventlevelcolor'+3" >{{item.CASELEVEL}}</span>
                  <span class="speventlevel" v-if="item.CASELEVEL==='四级'" :class="'speventlevelcolor'+4" >{{item.CASELEVEL}}</span>
                  <span class="speventlevel" v-if="item.CASELEVEL==='五级'" :class="'speventlevelcolor'+5" >{{item.CASELEVEL}}</span>
             </el-col>
-            <el-col :span="11">
+            <el-col :span="10">
               <div class="cellTopTime"><span>{{item.DATE_TIME}}</span><span style="margin-left: 0.05rem;"></span></div>
             </el-col>
           </el-row>
