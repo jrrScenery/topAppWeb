@@ -78,7 +78,7 @@ export default {
       console.log("row",row)
       console.log("column",column);
       if(column.property=='AREANAME'){
-        this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME}})
+        this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME,type:''}})
       }else if(column.property=='C1'){
         this.$router.push({name: 'workBenchPeopleInfoOfCity', query: {areaName:row.AREANAME,type:'JD'}})
       }else if(column.property=='C2'){

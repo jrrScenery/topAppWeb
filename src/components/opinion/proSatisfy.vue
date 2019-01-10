@@ -125,7 +125,9 @@ export default {
           this.$message({
             message:'已加载全部数据',
             type: 'success',
-            center: true
+            center: true,
+            duration:1000,
+            customClass:'msgdefine'
           });
         }
         else{

@@ -96,7 +96,7 @@ export default {
             message:'已加载全部数据',
             type: 'success',
             center: true,
-            duration:3000,
+            duration:1000,
             customClass:'msgdefine'
           });
         }
