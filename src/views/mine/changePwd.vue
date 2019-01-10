@@ -2,7 +2,7 @@
     <div class="changePwdView">
         <header-last :title="changePwdTit"></header-last>
         <div style="height: 0.45rem;"></div>
-        <div class="content">
+        <div class="changePwdContent">
             <el-form :model="formData" label-width="0.9rem" ref="formData">
                 <el-form-item label="输入旧密码：">
                     <el-input v-model="formData.oldPwd" placeholder="请输入"></el-input>
@@ -135,11 +135,11 @@ export default {
 
 <style scoped>
 .changePwdView{}
-.content{margin-top: 0.05rem; background: #ffffff;}
-.content >>> .el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
-.content >>> .el-form-item__label{font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.1rem; text-align: left;}
-.content >>> .el-input__inner{border: none; color: #333333;}
-.content >>> .el-input__inner::placeholder{font-size: 0.13rem; color: #acacac}
+.changePwdContent{margin-top: 0.05rem; background: #ffffff;}
+.changePwdContent >>> .el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
+.changePwdContent >>> .el-form-item__label{font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.1rem; text-align: left;}
+.changePwdContent >>> .el-input__inner{border: none; color: #333333;}
+.changePwdContent >>> .el-input__inner::placeholder{font-size: 0.13rem; color: #acacac}
 .submitBtn >>> .el-form-item__content{margin: 0!important;}
 .submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;}
 </style>
