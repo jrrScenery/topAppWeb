@@ -15,7 +15,17 @@
           </router-link>
         </div>
         <div>
-          <ul class="noticeTem" v-if="noticeData.length!=0" v-for="item in noticeData" :key="item.id">
+          <ul class="tem" v-if="noticeData.length!=0" v-for="item in noticeData" :key="item.id">
+            <router-link :to="{name:'mineNotice',params:{}}">
+              <li class="li_focusView">    
+                <template>
+                  <span>{{item.SEND_NAME}} 于{{item.CREATE_ON}}{{item.BIZ_NAME}}，触发原因：{{item.TITLE}}</span>    
+                  <i class="el-icon-arrow-right"></i>
+                </template>      
+              </li>
+            </router-link>
+          </ul>   
+          <!-- <ul class="noticeTem" v-if="noticeData.length!=0" v-for="item in noticeData" :key="item.id">
             <router-link :to="{name:'mineNotice',params:{}}">
               <li class="li_focusView">    
                 <template>
@@ -23,7 +33,7 @@
                 </template>      
               </li>
             </router-link>
-          </ul>
+          </ul> -->
         </div>
       </div>
 
@@ -162,13 +172,13 @@ export default {
   .content .title .titleRight{font-size: 0.14rem;margin-right: 0.1rem}
   .event, .notice, .program{background-color: #ffffff;margin-bottom: 0.2rem;}
   .tem{border-top: 0.01rem solid #e5e5e5;height:100%;}
-  .noticeTem{padding:0 0.1rem;border-top: 0.01rem solid #e5e5e5;}
+  /* .noticeTem{padding:0 0.1rem;border-top: 0.01rem solid #e5e5e5;} */
   .event span, .notice span, .program span{line-height: 0.25rem;height: 0.25rem;font-size: 0.14rem;color: #000;}
-  .tem .li_focusView{display: flex; justify-content: space-between; align-items: center;background: #ffffff; border-bottom: 0rem solid #e5e5e5; font-size: 0.14rem; line-height: 0.5rem; padding: 0.01rem 0.1rem;}
+  .tem .li_focusView{display: flex; justify-content: space-between; align-items: center;background: #ffffff; border-bottom: 0rem solid #e5e5e5; font-size: 0.14rem; line-height: 0.5rem; padding: 0.03rem 0.1rem;}
   .tem .li_focusView:nth-child(1){border-top: 0 solid #e5e5e5;}
   .tem .li_focusView img{width: 0.24rem; height: 0.24rem; margin-right: 0.15rem;}
   .tem .li_focusView span{width: 100%;height: 100%; text-align: left; color: #262626;margin-bottom: 0.02rem}
-  .noticeTem,.tem .li_focusView span{
+  .tem .li_focusView span{
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
