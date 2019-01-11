@@ -3,14 +3,14 @@
   <div class="eventBaseInfoView">
     <div class="baseInfoTop">
       <el-row>
-        <el-col :span="11">
+        <el-col :span="10">
           <span v-if="CASEHEALTH == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></span>
           <span v-if="CASEHEALTH == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></span>
           <span v-if="CASEHEALTH == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ffff00;"></span>
           <span v-if="CASEHEALTH == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></span>
           <span v-if="CASEHEALTH == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span> {{eventNum}}
         </el-col>
-        <el-col :span="2">
+        <el-col :span="3">
             <span v-if="caseLevel == '一级' || caseLevel == '二级'" style="color: #ff0000;">{{caseLevel}}</span>
             <span v-if="caseLevel == '三级'" style="color: #ff9900;">{{caseLevel}}</span>
             <span v-if="caseLevel == '四级'" style="color: #ffff00;">{{caseLevel}}</span>
@@ -139,7 +139,7 @@ export default {
 
 <style scoped>
   .eventBaseInfoView{padding: 0 0.12rem; margin-bottom: 0.5rem}
-  .baseInfoTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
+  .baseInfoTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;font-size: 0.13rem;}
   .baseInfoTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
   .baseInfoTop .cellTopNum span{display: inline-block; height: 0.19rem; width: 0.19rem; border-radius: 50%; vertical-align: text-top; margin-right: 0.03rem; text-align: center; line-height: 0.2rem;}
   .baseInfoTop .cellTopColor{width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0.15rem 0 0 -0.03rem; text-align: right}

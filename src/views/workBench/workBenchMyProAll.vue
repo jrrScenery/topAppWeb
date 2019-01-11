@@ -13,10 +13,10 @@
               <router-link :to="{name:'programShow',query:{projectId:info.PROJECT_ID,type:'home_page'}}">
               <div class="cellTop">
                 <el-row>
-                  <el-col :span="9">
+                  <el-col :span="11">
                     <div class="cellTopNum">{{info.PROJECT_CODE}}</div>
                   </el-col>
-                  <el-col :span="8">
+                  <el-col :span="5">
                     <div class="cellTopColor">
                       <span v-if="info.BASE_COLOR == 0"></span>
                       <span v-if="info.BASE_COLOR == 1" style="background: #ff0000"></span>
@@ -28,7 +28,7 @@
                       <span v-if="info.NOW_COLOR == 3" style="background: #009900"></span>{{info.HEALTH_CURRENT_VALUE}}
                     </div>
                   </el-col>
-                  <el-col :span="7">
+                  <el-col :span="8">
                     <div class="cellTopState" v-if="info.PROJECT_STATUS">状态：<span>{{info.PROJECT_STATUS}}</span></div>
                   </el-col>
                 </el-row>
@@ -234,6 +234,7 @@ export default {
   .programCell .cellTop .cellTopColor span{display: inline-block; width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0 0.03rem;}
   .programCell .cellTop .cellTopState{text-align: right; color: #333333;}
   .programCell .cellTop .cellTopState span{color: #999999;}
-  .programCell .cellContent p{line-height: 0.3rem; color: #333333; font-size: 0.15rem;}
+  .programCell .cellContent p{line-height: 0.3rem; color: #333333; font-size: 0.14rem;}
+  .programCell .cellContent .tit{font-size: 0.13rem}
   .programCell .cellContent .el-col{line-height: 0.25rem; color: #999999;}
 </style>

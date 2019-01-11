@@ -9,10 +9,10 @@
         <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID,type:'manager_module'}}" >
           <div class="cellTop">
             <el-row>
-              <el-col :span="12">
+              <el-col :span="11">
                 <div class="cellTopNum">{{item.PROJECT_CODE}}</div>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="13">
                 <div class="cellTopState">合同规模：<span>{{item.CONTRACT_AMOUNT}}</span></div>
               </el-col>
             </el-row>
@@ -95,10 +95,11 @@ export default {
 
 <style scoped>
   .workBenchInfoDetailView{width: 100%;}
-  .programCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-top: 0.05rem;}
+  .programCell{padding: 0 0.1rem 0.1rem; background: #ffffff; margin-top: 0.05rem;}
   .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
   .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
   .programCell .cellTop .cellTopState{text-align: right; color: #999999;}
-  .programCell .cellContent p{line-height: 0.3rem; color: #333333; font-size: 0.15rem;}
+  .programCell .cellContent p{line-height: 0.3rem; color: #333333; font-size: 0.14rem;}
+  .programCell .cellContent .tit{font-size: 0.13rem}
   .programCell .cellContent .el-col{line-height: 0.25rem; color: #999999;}
 </style>

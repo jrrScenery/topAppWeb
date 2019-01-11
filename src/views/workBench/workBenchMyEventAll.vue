@@ -15,14 +15,14 @@
                   <el-col :span="1">
                     <span class="spheathcolor" :class="'spheathcolor'+info.CASE_HEALTH" ></span>
                   </el-col>
-                  <el-col :span="13">
+                  <el-col :span="12">
                     <div class="cellTopNum">
                       {{info.CASE_NO}}
                       <span class="speventlevel" :class="'speventlevelcolor'" >{{info.CASE_LEVEL}}</span>
                     </div>
                   </el-col>
                   
-                  <el-col :span="10">
+                  <el-col :span="11">
                     <div class="cellTopTime"><span>{{info.CREATE_DATE}}</span></div>
                   </el-col>
                 </el-row>
@@ -261,6 +261,7 @@ export default {
   .eventCell .cellTop .cellTopTime{text-align: right; color: #999999;}
   .eventCell .cellContent .el-col{line-height: 0.25rem; color: #333333;}
   .eventCell .cellContent .el-col .tit{line-height: 0.25rem; color: #999999;}
+  .eventCell .cellContent .el-col span{font-size: 0.13rem}
   .speventlevel{}
   .speventlevelcolor1{ background:#ff0000; }
   .speventlevelcolor2{ background:#ff0000; }

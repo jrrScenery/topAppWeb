@@ -7,10 +7,10 @@
       <div class="programCell" v-for="item in programListArr" :key="item.PROJECT_CODE">
         <div class="cellTop">
           <el-row>
-            <el-col :span="8">
+            <el-col :span="11">
               <div class="cellTopNum">{{projectInfo.PROJECT_CODE}}</div>
             </el-col>
-            <el-col :span="9">
+            <el-col :span="5">
               <div class="cellTopColor">
                   <span v-if="projectInfo.BASE_COLOR == 0"></span>
                   <span v-if="projectInfo.BASE_COLOR == 1" style="background: #ff0000"></span>
@@ -26,7 +26,7 @@
                                   
               </div>
             </el-col>
-            <el-col :span="7">
+            <el-col :span="8">
               <div class="cellTopState">状态：<span>{{projectInfo.PROJECT_STATUS}}</span></div>
             </el-col>
           </el-row>
@@ -229,13 +229,13 @@ export default {
 </script>
 
 <style scoped>
-  .programCell{padding: 0 0.15rem 0.1rem; margin-top: 0.1rem;}
+  .programCell{padding: 0 0.1rem 0.1rem; margin-top: 0.1rem;}
   .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
   .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
   .programCell .cellTop .cellTopColor span{display: inline-block; width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin-right: 0.05rem;}
-  .programCell .cellTop .cellTopState{text-align: right; color: #333333;}
+  .programCell .cellTop .cellTopState{text-align: right; color: #333333;font-size: 0.14rem}
   .programCell .cellTop .cellTopState span{color: #999999;}
-  .programCell .cellContent p{line-height: 0.3rem; color: #333333; font-size: 0.15rem;}
+  .programCell .cellContent p{line-height: 0.3rem; color: #333333; font-size: 0.14rem;}
   .programCell .cellContent .tit{font-size: 0.13rem}
   .programCell .cellContent .el-col{line-height: 0.25rem; color: #999999;}
   .programShowView{ height: 100%; overflow: scroll;}
