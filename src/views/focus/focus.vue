@@ -117,10 +117,10 @@ export default {
         this.loadall = true;
         this.caseData = res.data;
       }); 
-      fetch.get("?action=GetFocusProject&PAGE_NUM=1&PAGE_TOTAL=1",{}).then(res=>{
+      fetch.get("?action=GetFocusProject&PAGE_NUM=1&PAGE_TOTAL=2",{}).then(res=>{
         this.projData = res.data;
       });
-      fetch.get("?action=GetTaskMessage&PAGE_NUM=1&PAGE_TOTAL=1",{}).then(res=>{
+      fetch.get("?action=GetTaskMessage&PAGE_NUM=1&PAGE_TOTAL=2",{}).then(res=>{
         this.noticeData = res.data;
       });
     }

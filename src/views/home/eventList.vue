@@ -201,7 +201,7 @@ export default {
   .speventlevelcolor1{ color:#ff0000; }
   .speventlevelcolor2{ color:#ff0000; }
   .speventlevelcolor3{ color:#ff9900; }
-  .speventlevelcolor4{ color:#ffff00; }
+  .speventlevelcolor4{ color:#009900; }/* 修改之前#ffff00 */
   .speventlevelcolor5{ color:#1ca2a5; }
 
 </style>

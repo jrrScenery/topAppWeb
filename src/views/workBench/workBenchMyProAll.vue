@@ -10,7 +10,7 @@
             
             <div style="overflow:auto">
             <div class="programCell" v-for="info in item.programListArr" :key="info.id">
-              <router-link :to="{name:'programShow',query:{projectId:info.PROJECT_ID}}">
+              <router-link :to="{name:'programShow',query:{projectId:info.PROJECT_ID,type:'home_page'}}">
               <div class="cellTop">
                 <el-row>
                   <el-col :span="9">

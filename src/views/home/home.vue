@@ -23,7 +23,7 @@
               <li class="li_mineView" >
                 <template>
                   <span style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;background: #ff0000;"></span>
-                  <span>{{item.TITLE}}</span>
+                  <span>最新通知：{{item.TITLE}}</span>
                   <i class="el-icon-arrow-right"></i>
                 </template>
               </li>
@@ -34,7 +34,7 @@
               <li class="li_mineView">
                 <template>
                   <span style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;background: #ff0000;"></span>
-                  <span>{{item.CODE}} {{item.CUSTOM}} {{item.ITEM}} </span>
+                  <span>最新需关注事件：{{item.CODE}} {{item.CUSTOM}} {{item.ITEM}} </span>
                   <i class="el-icon-arrow-right"></i>
                 </template>
               </li>
@@ -45,7 +45,7 @@
               <li class="li_mineView">
                 <template>
                   <span style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;background: #ff0000;"></span>
-                  <span>{{item.PROJECT_NAME}} {{item.START_DATE}} {{item.END_DATE}} </span>
+                  <span>最新需关注项目：{{item.PROJECT_NAME}} {{item.START_DATE}} {{item.END_DATE}} </span>
                   <i class="el-icon-arrow-right"></i>
                 </template>
               </li>
