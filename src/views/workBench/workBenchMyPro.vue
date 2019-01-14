@@ -1,20 +1,20 @@
 <!--工作台-我的项目-->
-<template>
+<template> 
   <div class="workBenchMyProView">
-    <header-base-five :title="workBenchMyProTit"  :queryData="searchData" @searchPro="getSearParams"></header-base-five>
+    <header-base-five :title="workBenchMyProTit" :queryData="searchData" @searchPro="getSearParams"></header-base-five>
     <div style="height: 0.45rem;"></div>
-    <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+    <div class="workBenchMyProContent" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <el-tabs v-model="activeName" @tab-click="tabClick">
         <template v-for="item in workBenchMyProTab">
           <el-tab-pane :label="item.label+'('+totalData[item.numname]+')'" :name="item.name" :key="item.id">
             <div class="programCell" v-for="info in item.programListArr" :key="info.id">
               <router-link :to="{name:'programShow',query:{projectId:info.PROJECT_ID,type:'home_page'}}">
               <div class="cellTop">
-                <el-row>
-                  <el-col :span="9">
+                <el-row> 
+                  <el-col :span="11">
                     <div class="cellTopNum">{{info.PROJECT_CODE}}</div>
                   </el-col> 
-                  <el-col :span="8">
+                  <el-col :span="5">
                     <div class="cellTopColor">
                       <span v-if="info.BASE_COLOR == 0"></span>
                       <span v-if="info.BASE_COLOR == 1" style="background: #ff0000"></span>
@@ -26,7 +26,7 @@
                       <span v-if="info.NOW_COLOR == 3" style="background: #009900"></span>{{info.HEALTH_CURRENT_VALUE}}
                     </div>
                   </el-col>
-                  <el-col :span="7">
+                  <el-col :span="8">
                     <div class="cellTopState" v-if="info.PROJECT_STATUS">状态：<span>{{info.PROJECT_STATUS}}</span></div>
                   </el-col>
                 </el-row>
@@ -220,19 +220,20 @@ export default {
 </script>
 
 <style scoped>
+
   .workBenchMyProView{width: 100%;}
-  .content{width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
-  .content >>> .el-tabs__header{margin: 0; background: #ffffff}
-  .content >>> .el-tabs__nav{width: 100%}
-  .content >>> .el-tabs__active-bar{background: #2698d6}
-  .content >>> .el-tabs__nav .el-tabs__item{width: 33%; text-align: center; padding: 0; color: #999999}
-  .content >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}
+  .workBenchMyProContent{width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
+  .workBenchMyProContent >>> .el-tabs__header{margin: 0; background: #ffffff}
+  .workBenchMyProContent >>> .el-tabs__nav{width: 100%}
+  .workBenchMyProContent >>> .el-tabs__active-bar{background: #2698d6}
+  .workBenchMyProContent >>> .el-tabs__nav .el-tabs__item{width: 33.3333333%; text-align: center; padding: 0; color: #999999}
+  .workBenchMyProContent >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}
   .programCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-bottom: 0.05rem;}
   .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.2rem;}/*line-height: 0.37rem; */
   .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6; word-break:break-all;}
   .programCell .cellTop .cellTopColor span{display: inline-block; width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0 0.03rem;}
-  .programCell .cellTop .cellTopState{text-align: right; color: #333333;}
+  .programCell .cellTop .cellTopState{text-align: right; color: #333333;font-size: 0.14rem}
   .programCell .cellTop .cellTopState span{color: #999999;}
-  .programCell .cellContent p{line-height: 0.3rem; color: #333333; font-size: 0.15rem;}
-  .programCell .cellContent .el-col{line-height: 0.25rem; color: #999999;}
+  .programCell .cellContent p{line-height: 0.3rem; color: #333333; font-size: 0.14rem;}
+  .programCell .cellContent .el-col{line-height: 0.25rem; color: #999999;font-size: 0.13rem}
 </style>

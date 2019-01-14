@@ -6,55 +6,55 @@
     <div class="content">
       <div class="searchView">
         <el-form label-width="100px">
-          <el-form-item label="行业：">
+          <el-form-item label="行业：" label-width="0.8rem">
             <el-row>
-            <el-col :span="5">
+            <el-col :span="6">
               <el-checkbox :indeterminate="isIndeterminateH" v-model="checkAllH" @change="handleCheckAllChangeH">全选</el-checkbox>
             </el-col>
-            <el-col :span="19">
+            <el-col :span="18">
               <el-checkbox-group v-model="checkedH" @change="handleCheckedChangeH" size="mini">
                 <el-checkbox v-for="h in INDUSTRYS" :label="h" :key="h">{{h}}</el-checkbox>
               </el-checkbox-group>
             </el-col>
             </el-row>
           </el-form-item>
-          <el-form-item label="厂商：">
+          <el-form-item label="厂商：" label-width="0.8rem">
             <el-row>
-            <el-col :span="5">
+            <el-col :span="6">
               <el-checkbox :indeterminate="isIndeterminateC" v-model="checkAllC" @change="handleCheckAllChangeC">全选</el-checkbox>
             </el-col>
-            <el-col :span="19">
+            <el-col :span="18">
               <el-checkbox-group v-model="checkedC" @change="handleCheckedChangeC" size="mini">
                 <el-checkbox v-for="c in FACTORYS" :label="c" :key="c">{{c}}</el-checkbox>
               </el-checkbox-group>
             </el-col>
             </el-row>
           </el-form-item>
-          <el-form-item label="事件级别：">
+          <el-form-item label="事件级别：" label-width="0.8rem">
             <el-row>
-            <el-col :span="5">
+            <el-col :span="6">
               <el-checkbox :indeterminate="isIndeterminateS" v-model="checkAllS" @change="handleCheckAllChangeS">全选</el-checkbox>
             </el-col>
-            <el-col :span="19">
+            <el-col :span="18">
               <el-checkbox-group v-model="checkedS" @change="handleCheckedChangeS" size="mini">
                 <el-checkbox v-for="s in CASE_LEVELS" :label="s" :key="s">{{s}}</el-checkbox>
               </el-checkbox-group>
             </el-col>
             </el-row>
           </el-form-item>
-          <el-form-item label="技术方向：">
+          <el-form-item label="技术方向：" label-width="0.8rem">
             <el-row>
-            <el-col :span="5">
+            <el-col :span="6">
               <el-checkbox :indeterminate="isIndeterminateJ" v-model="checkAllJ" @change="handleCheckAllChangeJ">全选</el-checkbox>
             </el-col>
-            <el-col :span="19">
+            <el-col :span="18">
               <el-checkbox-group v-model="checkedJ" @change="handleCheckedChangeJ" size="mini">
                 <el-checkbox v-for="j in TECHS" :label="j" :key="j">{{j}}</el-checkbox>
               </el-checkbox-group>
             </el-col>
             </el-row>
           </el-form-item>
-          <el-form-item label="时间：">
+          <el-form-item label="时间：" label-width="0.8rem">
           <el-col :span="8">
             <el-form-item prop="date1">
               <el-date-picker size="mini" type="date" placeholder="请选择日期" v-model="form.date1" style="width: 90%;" :picker-options="pickerOptions" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
@@ -324,22 +324,24 @@ export default {
   .workBenchEventInfoView .content{margin-top: 0.05rem; background: #ffffff;}
   /* .searchView{padding: 0.15rem 0.25rem;} */
   .searchView >>> .el-form{height: 0.3rem;margin-bottom:0.3rem}
-  .searchView >>> .el-form-item__label{line-height: 0.25rem;margin-top: 0rem}
+  .searchView >>> .el-form-item__label{line-height: 0.25rem;margin-top: 0rem;font-size: 0.13rem;}
   .searchView >>> .el-input__icon{display: none}
   .searchView >>> .el-input__prefix{display: none;}
   .searchView >>> .el-checkbox__label{line-height: 0.25rem;}
+  /* .searchView >>> .el-checkbox{text-align: left} */
   .searchView >>> .el-form-item__content{line-height: 0px;}
   .searchView >>> .el-input--prefix .el-input__inner{padding: 0; text-align: center;}
+  .searchView >>> .el-col{text-align: left;font-size: 0.13rem}
   .searchView >>> .el-col-1{text-align: center; line-height: 0.4rem}
   .searchView >>> .el-form .line{text-align: center; line-height: 0.3rem}
    .searchView >>> .el-checkbox{margin:0rem;height: 100%}
   .searchView >>> .el-checkbox-group{line-height: 0.1rem; text-align: left}
   .searchView >>> .el-form-item{margin-bottom: 0rem}
-  .searchView >>> .el-form-item__label{padding: 0 0 0 0; color: #666666; text-align: center;}
+  .searchView >>> .el-form-item__label{padding: 0 0 0 0.1rem; color: #666666; text-align: left;}
   .searchView >>> .el-button{padding: 6px 10px}
-  .tableView >>> .el-table th{border-top: 0.01rem solid #e1e1e1; line-height: 0.25rem; color: #333333;}
+  .tableView >>> .el-table th{border-top: 0.01rem solid #e1e1e1; line-height: 0.25rem; color: #333333;font-size: 0.13rem}
   .tableView >>> .el-table .cell{text-align: center; padding: 0}
-  .tableView >>> .el-table tr{line-height: 0.25rem; color: #666666}
+  .tableView >>> .el-table tr{line-height: 0.25rem; color: #666666;font-size: 0.13rem}
   .tableView >>> .el-table tr:nth-child(2n+1){background: #f7f7f7;}
   .tableView >>> .el-table tr:nth-child(2n){background: #ffffff;}
 </style>

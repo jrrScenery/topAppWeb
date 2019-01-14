@@ -9,11 +9,11 @@
         <router-link :to="{name:'eventShow',query: {caseId:info.CASE_ID}}">
         <div class="cellTop">
           <el-row> 
-            <el-col :span="11">
+            <el-col :span="10">
               <span class="spheathcolor"></span>{{info.CASE_NO}}
               <!-- <span class="spheathcolor" :class="'spheathcolor'+info.CASE_TYPEID" ></span>{{info.CASE_NO}} -->
             </el-col>
-            <el-col :span="2">
+            <el-col :span="3">
               <!-- <div class="cellTopNum"> -->
                 <span class="speventlevel" v-if="info.CASE_LEVEL=='一级'" :class="'speventlevelcolor'+1" >{{info.CASE_LEVEL}}</span>
                 <span class="speventlevel" v-if="info.CASE_LEVEL=='二级'" :class="'speventlevelcolor'+2" >{{info.CASE_LEVEL}}</span>
@@ -139,11 +139,12 @@ export default {
   .proRepairView >>> .el-input__inner{border-color: #e1e1e1;  background: #f5f5f9}
   .eventCell{padding: 0 0rem 0.1rem; background: #ffffff; margin-bottom: 0.05rem;}
   .eventCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
+  .eventCell .cellTop .el-col{font-size: 0.14rem}
   .eventCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
   .eventCell .cellTop .cellTopNum span{display: inline-block; height: 0.19rem; width: 0.19rem; vertical-align: text-top; margin-right: 0.08rem; color: #ffffff; text-align: center; line-height: 0.2rem;}
   .eventCell .cellTop .cellTopColor{width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0.15rem 0; text-align: right}
   .eventCell .cellTop .cellTopTime{text-align: right; color: #999999;}
-  .eventCell .cellContent .el-col{line-height: 0.25rem; color: #333333;}
+  .eventCell .cellContent .el-col{line-height: 0.25rem; color: #333333; font-size: 0.13rem}
   .eventCell .cellContent .el-col .tit{line-height: 0.25rem; color: #999999;}
   .speventlevel{}
   .speventlevelcolor1{ color:#ffffff; }

@@ -2,12 +2,12 @@
 <template>
   <div class="searchView">
     <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="行业">
+      <el-form-item label="行业" label-width="0.8rem">
         <el-select v-model="form.industry" placeholder="请选择行业" multiple>
           <el-option v-for="item in industryType" :label="item.name" :value="item.value" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="事件类型" style="position: relative">
+      <el-form-item label="事件类型" style="position: relative" label-width="0.8rem">
         <template>
           <div style="position: absolute; top: 0.25rem; left: -0.65rem; color: #999999; font-size: 0.1rem">可多选</div>
           <el-checkbox-group v-model="form.type" size="small">
@@ -15,25 +15,25 @@
           </el-checkbox-group>
         </template>
       </el-form-item>
-      <el-form-item label="客户">
+      <el-form-item label="客户" label-width="0.8rem">
         <el-input v-model="form.customer" class="bInput"></el-input>
       </el-form-item>
-      <el-form-item label="项目名称">
+      <el-form-item label="项目名称" label-width="0.8rem">
         <el-input v-model="form.proName" class="bInput"></el-input>
       </el-form-item>
-      <el-form-item label="销售">
+      <el-form-item label="销售" label-width="0.8rem">
         <el-input v-model="form.sale" class="bInput"></el-input>
       </el-form-item>
-      <el-form-item label="PM">
+      <el-form-item label="PM" label-width="0.8rem">
         <el-input v-model="form.PM" class="bInput"></el-input>
       </el-form-item>
-      <el-form-item label="事件编号">
+      <el-form-item label="事件编号" label-width="0.8rem">
         <el-input v-model="form.eventNum" class="bInput"></el-input>
       </el-form-item>
-      <el-form-item label="关键词">
+      <el-form-item label="关键词" label-width="0.8rem">
         <el-input v-model="form.keyWord" class="bInput"></el-input>
       </el-form-item>
-      <el-form-item label="创建时间">
+      <el-form-item label="创建时间" label-width="0.8rem">
         <el-col :span="11">
           <el-date-picker type="date" placeholder="开始日期" v-model="form.startTime" style="width: 100%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
         </el-col>
@@ -132,9 +132,9 @@ export default {
 </script>
 
 <style scoped>
-  .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0.5rem; position: relative;overflow: auto;}
+  .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0; position: relative;overflow: scroll;height:70%}
   .searchView >>> .el-form-item{margin-bottom: 0.05rem;}
-  .searchView >>> .el-select{width: 80%;}
+  .searchView >>> .el-select{width: 80%;} 
   .searchView >>> .el-input__inner{padding: 0 0.05rem}
   .searchView >>> .el-select .el-input__inner:focus{border-color: #dcdfe6;}
   .searchView >>> .el-form-item__label{text-align: left; color: #999999; font-size: 0.13rem;}
@@ -147,7 +147,7 @@ export default {
   .searchView >>> .el-input__prefix{display: none;}
   .searchView >>> .el-input--prefix .el-input__inner{padding: 0; text-align: center;}
   .searchView >>> .el-col-2{text-align: center;}
-  .searchView >>> .searchBtn{position: absolute; bottom: 0; left: 0; right: 0; height: 0.4rem;}
+  .searchView >>> .searchBtn{position: relative;margin-top: 0.2rem; bottom: 0; left: 0; right: 0; height: 0.4rem;}
   .searchView >>> .searchBtn .el-button{width: 50%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
   .searchView >>> .searchBtn .el-button:hover{background: #ffffff;}
   .searchView >>> .searchBtn .searchBtnCell:hover{background: #2698d6;}

@@ -15,14 +15,14 @@
                   <el-col :span="1">
                     <span class="spheathcolor" :class="'spheathcolor'+info.CASE_HEALTH" ></span>
                   </el-col>
-                  <el-col :span="13">
+                  <el-col :span="12">
                     <div class="cellTopNum">
                       {{info.CASE_NO}}
                       <span class="speventlevel" :class="'speventlevelcolor'" >{{info.CASE_LEVEL}}</span>
                     </div>
                   </el-col>
                   
-                  <el-col :span="10">
+                  <el-col :span="11">
                     <div class="cellTopTime"><span>{{info.CREATE_DATE}}</span></div>
                   </el-col>
                 </el-row>
@@ -254,13 +254,14 @@ export default {
   .content >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}
   .eventCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-bottom: 0.05rem;}
   .eventCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
-  .eventCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}
+  .eventCell .cellTop .cellTopNum{font-size: 0.13rem; color: #2698d6;}
   /* .eventCell .cellTop .cellTopNum span{display: inline-block; height: 0.19rem; width: 0.19rem; border-radius: 50%; vertical-align: text-top; margin-right: 0.08rem; color: #ffffff; text-align: center; line-height: 0.2rem;} */
-  .eventCell .cellTop .cellTopNum span{display: inline-block;  height: 0.19rem; vertical-align: text-top; margin-left: 0.05rem;  text-align: center; line-height: 0.2rem; color: #666;}
+  .eventCell .cellTop .cellTopNum span{display: inline-block;font-size: 0.13rem;  height: 0.19rem; vertical-align: text-top; margin-left: 0.05rem;  text-align: center; line-height: 0.2rem; color: #666;}
   .eventCell .cellTop .cellTopColor{width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0.15rem 0; text-align: right}
-  .eventCell .cellTop .cellTopTime{text-align: right; color: #999999;}
+  .eventCell .cellTop .cellTopTime{text-align: right; color: #999999;font-size: 0.13rem;}
   .eventCell .cellContent .el-col{line-height: 0.25rem; color: #333333;}
   .eventCell .cellContent .el-col .tit{line-height: 0.25rem; color: #999999;}
+  .eventCell .cellContent .el-col span{font-size: 0.13rem}
   .speventlevel{}
   .speventlevelcolor1{ background:#ff0000; }
   .speventlevelcolor2{ background:#ff0000; }
