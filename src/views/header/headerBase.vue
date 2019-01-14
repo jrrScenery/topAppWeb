@@ -19,7 +19,7 @@
         </template>
         <template v-else-if="searchType=='focusEvent'">
           <focus-search-view @change="updatePopBg" @search="searchData" :queryData="queryData"></focus-search-view>
-        </template>
+        </template> 
 
         <template v-else-if="searchType=='POStaffInfo'">
           <search-p-o-staff @change="updatePopBg" @search="searchData" :queryData="queryData"></search-p-o-staff>
@@ -42,6 +42,7 @@ import focusSearchView from '@/components/focusSearchView'
 import searchComplaintView from '@/components/searchCompaintView'
 import searchPOStaff from '@/components/searchPOStaff'
 import searchPOParts from '@/components/searchPOParts'
+import searchMyProView from '@/components/searchMyProView'
 export default {
   name: 'headerBase',
 
@@ -50,7 +51,8 @@ export default {
     focusSearchView,
     searchComplaintView,
     searchPOStaff,
-    searchPOParts
+    searchPOParts,
+    searchMyProView
   },
 
   data () {
@@ -95,3 +97,4 @@ export default {
   .headerLeft i{font-size: 0.2rem;}
   .popBg{background: rgba(0,0,0,0.5); position: fixed;top: 0.45rem; bottom: 0; z-index: 999; padding: 0 0.25rem;}
 </style>
+ 

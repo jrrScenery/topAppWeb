@@ -1,9 +1,9 @@
 <!--工作台-所有项目-->
 <template>
-  <div class="workBenchMyProView">
+  <div class="workBenchMyProAllView">
     <header-base-five :title="workBenchMyProTit"  :queryData="searchData"  @searchPro="getSearParams"></header-base-five>
     <!-- <div style="height: 0.45rem;"></div> -->
-    <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+    <div class="workBenchMyProAllContent" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <el-tabs v-model="activeName" @tab-click="tabClick">
         <template v-for="item in workBenchMyProTab">
           <el-tab-pane :label="item.label+'('+totalData[item.numname]+')'" :name="item.name" :key="item.id">
@@ -221,20 +221,19 @@ export default {
 </script>
 
 <style scoped>
-  .workBenchMyProView{width: 100%;}
+  .workBenchMyProAllView{width: 100%;}
   .content{width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
-  .workBenchMyProView >>> .el-tabs__header{margin-bottom: 0.46rem; background: #ffffff;}
-  .content >>> .el-tabs__nav{width: 100%;position: fixed;background:#fff;top: 0.45rem;}
-  .content >>> .el-tabs__active-bar{background: #2698d6}
-  .content >>> .el-tabs__nav .el-tabs__item{width: 33%; text-align: center; padding: 0; color: #999999}
-  .content >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}
+  .workBenchMyProAllView >>> .el-tabs__header{margin-bottom: 0.46rem; background: #ffffff;}
+  .workBenchMyProAllContent >>> .el-tabs__nav{width: 100%;position: fixed;background:#fff;top: 0.45rem;}
+  .workBenchMyProAllContent >>> .el-tabs__active-bar{background: #2698d6}
+  .workBenchMyProAllContent >>> .el-tabs__nav .el-tabs__item{width: 33.33333333%; text-align: center; padding: 0; color: #999999}
+  .workBenchMyProAllContent >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}
   .programCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-bottom: 0.05rem;}
   .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.2rem;}
   .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6; word-break:break-all;}
   .programCell .cellTop .cellTopColor span{display: inline-block; width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0 0.03rem;}
-  .programCell .cellTop .cellTopState{text-align: right; color: #333333;}
+  .programCell .cellTop .cellTopState{text-align: right; color: #333333;font-size: 0.14rem}
   .programCell .cellTop .cellTopState span{color: #999999;}
   .programCell .cellContent p{line-height: 0.3rem; color: #333333; font-size: 0.14rem;}
-  .programCell .cellContent .tit{font-size: 0.13rem}
-  .programCell .cellContent .el-col{line-height: 0.25rem; color: #999999;}
+  .programCell .cellContent .el-col{line-height: 0.25rem; color: #999999;font-size: 0.13rem}
 </style>
