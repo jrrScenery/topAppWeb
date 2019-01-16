@@ -179,6 +179,7 @@ export default {
       }
       console.log("SSS_params", params);
       fetch.get(strurl,params).then(res => {
+        console.log(res);
         if('0'== res.STATUSCODE){
           let obj = this.opinionTab[objnowpage.idx].eventListArr;
           this.opinionTab[objnowpage.idx].eventListArr = this.returnList(flag, res, obj)
@@ -235,11 +236,11 @@ export default {
   .content >>> .el-tabs__active-bar{background: #2698d6}
   .content >>> .el-tabs__nav .el-tabs__item{width: 33.3333333%; text-align: center; padding: 0; color: #999999}
   .content >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}
-  .eventCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-bottom: 0.05rem;}
-  .eventCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
+  .eventCell{padding: 0 0.18rem 0.1rem; background: #ffffff; margin-bottom: 0.05rem;}
+  .eventCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.3rem;}
   .eventCell .cellTop .cellTopNum{font-size: 0.13rem; color: #2698d6;}
   /* .eventCell .cellTop .cellTopNum span{display: inline-block; height: 0.19rem; width: 0.19rem; border-radius: 50%; vertical-align: text-top; margin-right: 0.08rem; color: #ffffff; text-align: center; line-height: 0.2rem;} */
-  .eventCell .cellTop .cellTopNum span{display: inline-block;font-size: 0.13rem;  height: 0.19rem; vertical-align: text-top; margin-left: 0.05rem;  text-align: center; line-height: 0.2rem; color: #666;}
+  .eventCell .cellTop .cellTopNum span{display: inline-block;font-size: 0.13rem;  height: 0.19rem; vertical-align: text-top; margin-left: 0.03rem;  text-align: center; line-height: 0.2rem; color: #666;}
   .eventCell .cellTop .cellTopColor{width: 0.15rem; height: 0.08rem; border-radius: 0.04rem; margin: 0.15rem 0; text-align: right}
   .eventCell .cellTop .cellTopTime{text-align: right; color: #999999;font-size: 0.13rem;}
   .eventCell .cellContent .el-col{line-height: 0.25rem; color: #333333;font-size: 0.13rem;}

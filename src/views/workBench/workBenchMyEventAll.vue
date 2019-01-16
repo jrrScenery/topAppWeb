@@ -15,14 +15,14 @@
                   <el-col :span="1">
                     <span class="spheathcolor" :class="'spheathcolor'+info.CASE_HEALTH" ></span>
                   </el-col>
-                  <el-col :span="12">
+                  <el-col :span="10">
                     <div class="cellTopNum">
                       {{info.CASE_NO}}
                       <span class="speventlevel" :class="'speventlevelcolor'" >{{info.CASE_LEVEL}}</span>
                     </div>
                   </el-col>
                   
-                  <el-col :span="11">
+                  <el-col :span="13">
                     <div class="cellTopTime"><span>{{info.CREATE_DATE}}</span></div>
                   </el-col>
                 </el-row>
