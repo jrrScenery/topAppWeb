@@ -202,7 +202,8 @@ export default {
           ],
           yAxis: [
             {
-              type: 'value'
+              type: 'value',
+              boundaryGap: [1,4]
             }
           ],
           series: [
@@ -224,6 +225,7 @@ export default {
       else {
         let myChartBox = document.getElementById('myChartOne')
         myChartBox.innerText = "当前时间段内无项目记录"
+        myChartBox.style.cssText = "width: '100%', height: '0.5rem'"
       }
     },
     drawLineTwo () {
@@ -268,6 +270,7 @@ export default {
       else {
         let myChartBox = document.getElementById('myChartTwo')
         myChartBox.innerText = "当前时间段内无项目记录"
+        myChartBox.style.cssText = "width: '100%', height: '0.5rem'"
       }
     },
     drawLineFive () {
@@ -307,6 +310,7 @@ export default {
       else {
         let myChartBox = document.getElementById('myChartFive')
         myChartBox.innerText = "当前时间段内无项目记录"
+        myChartBox.style.cssText = "width: '100%', height: '0.5rem'"
       }
     },
     drawLineFour () {
@@ -325,7 +329,7 @@ export default {
           },
           xAxis: {
             type: 'value',
-            boundaryGap: [0, 0.01]
+            boundaryGap: [1,4]
           },
           yAxis: {
             type: 'category',
@@ -354,6 +358,7 @@ export default {
       else {
         let myChartBox = document.getElementById('myChartFour')
         myChartBox.innerText = "当前时间段内无项目记录"
+        myChartBox.style.cssText = "width: '100%', height: '0.5rem'"
       }
     },
     drawLineThree () {
@@ -403,6 +408,7 @@ export default {
       else {
         let myChartBox = document.getElementById('myChartThree')
         myChartBox.innerText = "当前时间段内无项目记录"
+        myChartBox.style.cssText = "width: '100%', height: '0.5rem'"
       }
     },
     drawLineSix () {
@@ -431,7 +437,8 @@ export default {
           ],
           yAxis: [
             {
-              type: 'value'
+              type: 'value',
+              boundaryGap: [1,4]
             }
           ],
           series: [
@@ -453,6 +460,7 @@ export default {
       else {
         let myChartBox = document.getElementById('myChartSix')
         myChartBox.innerText = "当前时间段内无项目记录"
+        myChartBox.style.cssText = "width: '100%', height: '0.5rem'"
       }
     },
     drawLine () {
