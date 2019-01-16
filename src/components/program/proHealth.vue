@@ -8,7 +8,7 @@
         <ul class="tableTh">
           <li style="background: #fafafa!important;">
             <span>检查项</span>
-            <span>数量</span>
+            <span>内容</span>
             <span>加减分</span></li>
         </ul>
       </div>
@@ -91,13 +91,13 @@ export default {
   .proHealthCell .proHealthTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
   .proHealthCell .proHealthTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
   .tableTh li{display: flex; line-height: 0.3rem; font-size: 0.14rem; padding: 0 0.2rem; color: #000000; background: #ffffff!important;}
-  .tableTh span{width: 25%; text-align: center;}
-  .tableTh span:nth-child(1){width: 50%}
-  .tableTh span:nth-child(2){width: 25%}
+  .tableTh span{width: 20%; text-align: center;}
+  .tableTh span:nth-child(1){width: 40%}
+  .tableTh span:nth-child(2){width: 40%}
   .tableTd li{display: flex; line-height: 0.3rem; padding: 0 0.2rem; color: #666666;}
-  .tableTd span{width: 25%; text-align: center;}
-  .tableTd span:nth-child(1){width: 50%; text-align: center;}
-  .tableTd span:nth-child(2){width: 25%;}
+  .tableTd span{width: 20%; text-align: center;}
+  .tableTd span:nth-child(1){width: 40%; text-align: center;}
+  .tableTd span:nth-child(2){width: 40%;}
   /*.tableTd li:nth-child(2n+1){background: #fafafa}*/
   .content:nth-child(2n+1){background: #fafafa}
 </style>
