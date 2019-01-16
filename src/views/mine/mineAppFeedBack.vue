@@ -67,6 +67,7 @@ export default {
                                 message:'提交成功',
                                 type: 'success',
                                 center: true,
+                                duration: 1000,
                                 customClass: 'msgdefine'
                             });
                             setTimeout(function(){vm.$router.push({ name: 'mine',query:{}})},1000);

@@ -59,7 +59,7 @@ export default {
         orderNum: '',
         place: ''
       },
-      infoon: true,
+      infoon: false,
       detailData:{},
       workerData:[],
       bmapmarks:[],
@@ -208,7 +208,7 @@ export default {
   #peopleAllMap{}
 
   .peopleinfo{position: absolute;   left: 0; right: 0; bottom:0;  max-height: 0.3rem; overflow: hidden;  background: #fff; transition: all 0.3s;}
-  .infoon{ max-height:2.1rem; }
+  .infoon{ min-height:2.1rem; }
   .peopleinfo  strong{font-weight: bold;}
   .peopleinfo .infoh{ line-height: 0.3rem;text-align: center;background: #2698d6; color: #fff; position: relative; }
   .peopleinfo  .infoh i{ position: relative; display: inline-block; content: " "; background: url(../../assets/images/rightarrwhite.png) no-repeat;
