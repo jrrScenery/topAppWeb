@@ -271,7 +271,7 @@ export default {
   #partsAllMap{}
 
   .partsinfo{position: absolute;   left: 0; right: 0; bottom:0;  height: 0.3rem; overflow: hidden;  background: #fff; transition: all 0.3s;}
-  .infoon{ height:2.1rem; }
+  .infoon{ max-height:2.1rem; }
   .partsinfo  strong{font-weight: bold;}
   .partsinfo .infoh{ line-height: 0.3rem;text-align: center;background: #2698d6; color: #fff; position: relative; }
   .partsinfo  .infoh i { position: absolute;  content: " "; background: url(../../assets/images/rightarrwhite.png) no-repeat; 
