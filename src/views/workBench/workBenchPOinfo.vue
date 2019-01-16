@@ -8,9 +8,13 @@
         <template v-for="item in POinfoTab">
           <el-tab-pane :label="item.label" :name="item.name" :key="item.id">
             <el-table
+              stripe
+              v-loading="busy && !loadall"
+              element-loading-text="正在加载下一页"
+              v-loadmore="loadMore"
               :data="item.tableData"
               @row-click="rowClick"
-              v-loading="busy && !loadall"
+              :height = "tableHeight"
               style="width: 100%; border: 0.01rem solid #e1e1e1">
               <template v-for="info in POinfotable">
                 <el-table-column
@@ -79,21 +83,78 @@ export default {
           width: '33%'
         }
       ],
-      busy:true,
-      loadall: false
+      page:1,
+      pageSize:20,
+      busy:false,
+      loadall: false,
+      tableHeight:400,
     }
   },
   created () {
-    fetch.get("?action=GetPoPerson",{}).then(res=>{
-      this.POinfoTab[0].tableData = res.data;
-    });
-    fetch.get("?action=GetPoParts",{}).then(res=>{
-      this.POinfoTab[1].tableData = res.data;
-      this.busy= false;
-      this.loadall = true;
-    });
+    this.getPOInfoList()
+    // var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
+    // fetch.get("?action=GetPoPerson",params).then(res=>{
+    //   this.POinfoTab[0].tableData = res.data;
+    // });
+    // fetch.get("?action=GetPoParts",params).then(res=>{
+    //   this.POinfoTab[1].tableData = res.data;
+    //   this.busy= false;
+    //   this.loadall = true;
+    // });
+  },
+  mounted(){
+    this.$nextTick(() => {
+      let self = this;
+      console.log("ssssssss",this.type);
+      this.tableHeight = document.documentElement.clientHeight- 45;
+      window.onresize = function() {
+        self.tableHeight = document.documentElement.clientHeight- 45;
+      }
+    })
   },
   methods: {
+    getPOInfoList(){
+      var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
+      console.log("params:",params);
+      var flag = this.page>1;
+      fetch.get("?action=GetPoPerson",params).then(res=>{
+        if(flag){
+          this.POinfoTab[0].tableData = this.POinfoTab[0].tableData.concat(res.data);
+        }else{
+          this.POinfoTab[0].tableData = res.data;
+        }
+        if(0 == res.data.length || res.data.length<this.pageSize ){
+          this.busy = true;
+          this.loadall = true;
+          this.$message({
+            message:'已加载全部数据',
+            type: 'success',
+            center: true,
+            duration:1000,
+            customClass:'msgdefine'
+          });
+        }
+        else{
+          this.busy = false;
+          this.page++ 
+        }
+      });
+      fetch.get("?action=GetPoParts",params).then(res=>{
+        if(flag){
+          this.POinfoTab[1].tableData = this.POinfoTab[1].tableData.concat(res.data);
+        }else{
+          this.POinfoTab[1].tableData = res.data;
+        }
+      });
+    },
+    loadMore(){
+      console.log("this.busy:",this.busy)
+      if(this.busy){return false}
+      this.busy = true;
+      setTimeout(() => {
+        this.getPOInfoList();
+      }, 1000);
+    },
     rowClick (row) {
       console.log("111111111111", row)
       if (row.__ob__.value.KIND == 0){

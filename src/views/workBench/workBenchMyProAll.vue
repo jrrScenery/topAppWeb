@@ -222,7 +222,7 @@ export default {
 
 <style scoped>
   .workBenchMyProAllView{width: 100%;}
-  .content{width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
+  .workBenchMyProAllContent{width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
   .workBenchMyProAllView >>> .el-tabs__header{margin-bottom: 0.46rem; background: #ffffff;}
   .workBenchMyProAllContent >>> .el-tabs__nav{width: 100%;position: fixed;background:#fff;top: 0.45rem;}
   .workBenchMyProAllContent >>> .el-tabs__active-bar{background: #2698d6}
