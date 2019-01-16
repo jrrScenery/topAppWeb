@@ -77,6 +77,7 @@ export default {
                     message:'加载完毕',
                     type: 'success',
                     center: true,
+                    duration:1000,
                     customClass: 'msgdefine'
                 });
             };

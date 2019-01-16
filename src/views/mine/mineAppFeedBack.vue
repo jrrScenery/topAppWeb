@@ -40,6 +40,7 @@ export default {
                     message:'请输入内容!',
                     type: 'warning',
                     center: true,
+                    duration:1000,
                     customClass:'msgdefine'
                 });
                 loading.close();
@@ -67,6 +68,7 @@ export default {
                                 message:'提交成功',
                                 type: 'success',
                                 center: true,
+                                duration:1000,
                                 customClass: 'msgdefine'
                             });
                             setTimeout(function(){vm.$router.push({ name: 'mine',query:{}})},1000);
@@ -76,6 +78,7 @@ export default {
                             message:res.MESSAGE+"发生错误",
                             type: 'error',
                             center: true,
+                            duration:1000,
                             customClass: 'msgdefine'
                             });
                         }
@@ -86,6 +89,7 @@ export default {
                         message:"请正确填写",
                         type: 'error',
                         center: true,
+                        duration:1000,
                         customClass: 'msgdefine'
                         });
                 return false

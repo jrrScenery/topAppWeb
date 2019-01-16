@@ -2,7 +2,7 @@
 <template>
   <div class="workBenchMyProAllView">
     <header-base-five :title="workBenchMyProTit"  :queryData="searchData"  @searchPro="getSearParams"></header-base-five>
-    <!-- <div style="height: 0.45rem;"></div> -->
+    <div style="height: 0.45rem;"></div>
     <div class="workBenchMyProAllContent" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <el-tabs v-model="activeName" @tab-click="tabClick">
         <template v-for="item in workBenchMyProTab">
@@ -177,7 +177,7 @@ export default {
         urlparam.PM_NAME = this.searchData["PM"]
         urlparam.SALE_NAME = this.searchData["sale"]
       }
-
+      console.log(urlparam);
       fetch.get(strurl,urlparam).then(res => {
         console.log(res);
         this.totalData= res.totalData;
