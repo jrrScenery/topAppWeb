@@ -11,8 +11,8 @@
           element-loading-text="正在加载下一页"
           v-loadmore="loadMore"
           :data="tableData"
-          :height = "tableHeight"
           @row-click="rowClick"
+          :height = "tableHeight"
           style="width: 100%">
           <template v-for="item in workBenchPOStaffObj">
               <el-table-column
