@@ -3,8 +3,8 @@
   <div class="workBenchPOinfoView">
     <header-last :title="workBenchPOinfoTit"></header-last>
     <div style="height: 0.45rem;"></div>
-    <div class="content">
-      <el-tabs v-model="activeName">
+    <div class="workBenchPOinfoContent">
+      <el-tabs v-model="activeName" style="overflow:scroll">
         <template v-for="item in POinfoTab">
           <el-tab-pane :label="item.label" :name="item.name" :key="item.id">
             <el-table
@@ -18,7 +18,6 @@
               style="width: 100%; border: 0.01rem solid #e1e1e1">
               <template v-for="info in POinfotable">
                 <el-table-column
-                  :fixed="info.fixed"
                   :key="info.id"
                   :prop="info.prop"
                   :label="info.label"
@@ -84,10 +83,10 @@ export default {
         }
       ],
       page:1,
-      pageSize:20,
+      pageSize:30,
       busy:false,
       loadall: false,
-      tableHeight:400,
+      tableHeight:400
     }
   },
   created () {
@@ -105,11 +104,11 @@ export default {
   mounted(){
     this.$nextTick(() => {
       let self = this;
-      console.log("ssssssss",this.type);
       this.tableHeight = document.documentElement.clientHeight- 45;
       window.onresize = function() {
         self.tableHeight = document.documentElement.clientHeight- 45;
       }
+      console.log("ssssssss",self.tableHeight);
     })
   },
   methods: {
@@ -170,14 +169,17 @@ export default {
 
 <style scoped>
   .workBenchPOinfoView{width: 100%;}
-  .content{margin-top: 0.05rem; text-align: center; color: #666666; background: #ffffff;}
-  .content >>> .el-table th{text-align: center; color: #333333; background: #f7f7f7}
-  .content >>> .el-table tr:nth-child(2n){background: #f7f7f7}
-  .content >>> .el-table td:nth-child(2){text-align: right}
-  .content >>> .el-table td:nth-child(3){text-align: right}
-  .content >>> .el-tabs__header{margin: 0;}
-  .content >>> .el-tabs__nav{width: 100%}
-  .content >>> .el-tabs__nav .el-tabs__item{width: 50%}
-  .content >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}
-  .content >>> .el-tabs__active-bar{background: #2698d6}
+  .workBenchPOinfoContent{width: 100%; position: absolute; top: 0.45rem;bottom: 0; text-align: center; color: #666666; background: #ffffff;}
+  /* overflow: scroll */
+  .workBenchPOinfoContent >>> .el-table{overflow: scroll}
+  .workBenchPOinfoContent >>> .el-table th{text-align: center; color: #333333; background: #f7f7f7}
+  .workBenchPOinfoContent >>> .el-table tr:nth-child(2n){background: #f7f7f7}
+  .workBenchPOinfoContent >>> .el-table td:nth-child(2){text-align: right}
+  .workBenchPOinfoContent >>> .el-table td:nth-child(3){text-align: right}
+  .workBenchPOinfoContent >>> .el-tabs__header{margin: 0;}
+  .workBenchPOinfoContent >>> .el-tabs__nav{width: 100%}
+  .workBenchPOinfoContent >>> .el-tabs__nav .el-tabs__item{width: 50%}
+  .workBenchPOinfoContent >>> .el-tabs__nav .el-tabs__item.is-active{color: #2698d6}
+  .workBenchPOinfoContent >>> .el-tabs__active-bar{background: #2698d6}
+  .workBenchPOinfoContent >>> .el-table__empty-block{position: initial}
 </style>

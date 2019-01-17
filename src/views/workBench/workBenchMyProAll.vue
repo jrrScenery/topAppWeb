@@ -171,7 +171,7 @@ export default {
 
       if(this.searchData){
         urlparam.BUSINESS_TYPE = this.searchData["business"]
-        urlparam.INDUSTRY_NAME = this.searchData["industry"].join(",")
+        urlparam.INDUSTRY = this.searchData["industry"].join(",")
         urlparam.PROJECT_NAME = this.searchData["proName"]
         urlparam.CUST_NAME = this.searchData["customer"]
         urlparam.PM_NAME = this.searchData["PM"]
