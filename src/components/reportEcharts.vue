@@ -229,7 +229,12 @@ export default {
       }
     },
     drawLineTwo () {
-      if ( this.factoryData.length != 0 ) {
+      if ( this.factoryData.length == 1 && this.factoryData[0].name == "其他" && this.factoryData[0].value == null ) {
+        let myChartBox = document.getElementById('myChartTwo')
+        myChartBox.innerText = "当前时间段内无项目记录"
+        myChartBox.style.cssText = "width: '100%', height: '0.5rem'"
+      }
+      else if ( this.factoryData.length != 0 ) {
         console.log("222222222222222", this.factoryData, this.factoryData.length)
         let myChartBox = document.getElementById('myChartTwo')
         myChartBox.style.width = window.innerWidth - 10  + 'px'
@@ -274,7 +279,12 @@ export default {
       }
     },
     drawLineFive () {
-      if ( this.deviceTypeData.length != 0 ) {
+      if ( this.deviceTypeData.length == 1 && this.deviceTypeData[0].name == "其他" && this.deviceTypeData[0].value == null ) {
+        let myChartBox = document.getElementById('myChartFive')
+        myChartBox.innerText = "当前时间段内无项目记录"
+        myChartBox.style.cssText = "width: '100%', height: '0.5rem'"
+      }
+      else if ( this.deviceTypeData.length != 0 ) {
         console.log("3333333333333", this.deviceTypeData, this.deviceTypeData.length)
         let myChartBox = document.getElementById('myChartFive')
         myChartBox.style.width = window.innerWidth - 30  + 'px'
@@ -307,16 +317,21 @@ export default {
           ]
         })
       }
-      else {
+      else{
         let myChartBox = document.getElementById('myChartFive')
         myChartBox.innerText = "当前时间段内无项目记录"
         myChartBox.style.cssText = "width: '100%', height: '0.5rem'"
       }
     },
     drawLineFour () {
-      if ( this.deviceModelXData.length != 0 ){
+      if ( this.deviceModelXData.length == 1 && this.deviceModelXData[0] == "其他" ) {
         let myChartBox = document.getElementById('myChartFour')
-        console.log("444444444444444444", this.deviceModelXData, this.deviceModelXData.length)
+        myChartBox.innerText = "当前时间段内无项目记录"
+        myChartBox.style.cssText = "width: '100%', height: '0.5rem'"
+      }
+      else if ( this.deviceModelXData.length != 0 ){
+        let myChartBox = document.getElementById('myChartFour')
+        console.log("444444444444444444", this.deviceModelXData[0], this.deviceModelXData.length)
         myChartBox.style.width = window.innerWidth - 30  + 'px'
         this.myChartFour = echarts.init(myChartBox)
         this.myChartFour.setOption({
