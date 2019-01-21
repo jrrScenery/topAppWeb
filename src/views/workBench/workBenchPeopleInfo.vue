@@ -43,6 +43,8 @@
       </el-table>
       <!-- </router-link> -->
     </div>
+    <div style="height:0.45rem"></div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -50,11 +52,13 @@
 import headerLast from '../header/headerLast'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'workBenchPeopleInfo',
 
   components: {
-    headerLast
+    headerLast,
+    footerHome
   },
 
   data () {
@@ -95,7 +99,7 @@ export default {
 
 <style scoped>
   .workBenchPeopleInfoView{width: 100%;}
-  .content{margin-top: 0.05rem; color: #666666;}
+  .content{margin-top: 0.05rem; color: #666666;bottom: 0.45rem}
   .content >>> .el-table__body{width: 100%!important}
   .content >>> .el-table__header{width: 100%!important}
   .content >>> .el-table{font-size: 0.13rem; text-align: center}

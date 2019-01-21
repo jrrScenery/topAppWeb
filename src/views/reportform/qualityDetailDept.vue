@@ -38,17 +38,20 @@
         
       </el-table>
     </div>
+    <div style="height:0.45rem"></div>
+    <footer-home></footer-home>
   </div>
 </template>
 
 <script>
 import fetch from '../../utils/ajax'
 import headerLast from '../header/headerLast'
-
+import footerHome from '../footer/footerHome'
 export default {
   name: 'quality',
   components: {
-    headerLast
+    headerLast,
+    footerHome
   },
   data () {
     return {
@@ -96,7 +99,7 @@ export default {
   .qualityView .headtit{ margin-top:0.45rem; background: #fff; padding: 0.08rem; color: #333;}
   .qualityView .headtit strong{font-weight:  bold;}
   .qualityView .headtit span{ margin-right: 0.1rem;}
-  .qualityView .qualityTable{  }
+  .qualityView .qualityTable{}
   .qualityView{ color: #999999; width: 100%;; text-align: left;}
   .qualityView .qualityTop{display: flex; justify-content: space-between;}
   .qualityView .qualityTable  span{display: inline-block; height: 0.4rem; line-height: 0.4rem; margin-top: 0.15rem;}

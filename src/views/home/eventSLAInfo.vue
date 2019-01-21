@@ -35,8 +35,9 @@
                 </ul>
             </div>
         </div>
-
         <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
+        <div style="height:0.45rem"></div>
+        <footer-home></footer-home>
     </div>
 </template>
 
@@ -44,6 +45,7 @@
 import headerLast from '../header/headerLast'
 import fetch from '../../utils/ajax'
 import loadingtmp from '@/components/load/loading'
+import footerHome from '../footer/footerHome'
 let caseId;
 let slaLevel;
 let caseLevel;
@@ -52,7 +54,8 @@ export default {
     name: 'eventSLAInfo',
     components: {
         headerLast,
-        loadingtmp
+        loadingtmp,
+        footerHome
     },
     data(){
         return{

@@ -44,6 +44,8 @@
         </el-table-column>
       </el-table> -->
     </div>
+    <div style="height:0.45rem"></div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -53,13 +55,15 @@ import workBenchPartsOwn from '../../components/workBenchPartsInfo/workBenchPart
 import headerLast from '../header/headerLast'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'workBenchParts',
 
   components: {
     workBenchPartsSupplier,
     workBenchPartsOwn,
-    headerLast
+    headerLast,
+    footerHome
   },
 
   data () {

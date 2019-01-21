@@ -49,6 +49,7 @@
         </template>
       </el-tabs>
     </div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -57,12 +58,14 @@ import headerBase from '../header/headerBase'
 import loadingtmp from '@/components/load/loading'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'workBenchMyEvent',
 
   components: {
     headerBase,
-    loadingtmp
+    loadingtmp,
+    footerHome
   },
 
   data () {
@@ -109,6 +112,19 @@ export default {
     
   },
   activated(){ 
+    this.searchData={
+      customer:'',
+      endTime:'',
+      eventNum:'',
+      industry:[],
+      keyWord:'',
+      PM:'',
+      proName:'',
+      sale:'',
+      startTime:'',
+      type:this.$route.query.type? this.$route.query.type.split(','):["1","2"],
+    }
+    this.isSearch = 0;
     if(!this.$route.meta.isUseCache){
       this.busy= false;
       this.loadall= false;
@@ -165,13 +181,12 @@ export default {
       let params = {PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, IF_CLOSE: objnowpage.IF_CLOSE}
 
       if(this.isSearch){
-        console.log("searchData", this.searchData);
         params.INDUSTRY_NAME = this.searchData.industry.join(",");
-        params.CASE_TYPEID = this.searchData["type"].join(",");
-        params.CUST_NAME = this.searchData.customer;
+        params.CASE_TYPE = this.searchData["type"].join(",");
+        params.CUSTOMER_NAME = this.searchData.customer;
         params.PROJECT_NAME = this.searchData.proName;
         params.PM_NAME = this.searchData.PM;
-        params.CASE_CD = this.searchData.eventNum;
+        params.CASE_NO = this.searchData.eventNum;
         params.KEYWORD = this.searchData.keyWord;
         params.SALE_NAME = this.searchData.sale;
         params.START_TIME = this.searchData.startTime;
@@ -224,13 +239,28 @@ export default {
       this.objpages["second"]["loadall"]=false
       this.opinionTab[1].eventListArr = [];
     }
+  },
+  //在页面离开时记录滚动位置
+  beforeRouteLeave (to, from, next) {
+    if (to.name == 'eventShow') {
+      this.scrollTop = document.querySelector('.content').scrollTop;
+    }   
+    next();
+  },
+  //进入该页面时，用之前保存的滚动位置赋值
+  beforeRouteEnter (to, from, next) {
+    console.log("next:",next);
+    next(vm => {
+      console.log("vmvmvm",vm.scrollTop);
+      document.querySelector('.content').scrollTop = vm.scrollTop
+    })
   }
 }
 </script>
 
 <style scoped>
   .workBenchMyEventView{width: 100%;}
-  .content{width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
+  .content{width: 100%; position: absolute; top: 0.45rem; bottom: 0.45rem;overflow: scroll;}
   .content >>> .el-tabs__header{margin: 0; background: #ffffff}
   .content >>> .el-tabs__nav{width: 100%}
   .content >>> .el-tabs__active-bar{background: #2698d6}

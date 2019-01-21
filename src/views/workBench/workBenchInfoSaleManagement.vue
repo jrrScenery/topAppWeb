@@ -116,8 +116,12 @@ export default {
         var date = new Date();
         return date.getFullYear();
     }
-      
-
+  },
+  beforeRouteLeave( to, from,next){
+    if (to.name == 'workBenchInfoDetail') {
+        to.meta.isUseCache = true;    
+    }        
+    next();
   }
 }
 

@@ -45,6 +45,8 @@
         </el-table>
       </div>
     </div>
+    <div style="height:0.45rem"></div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -52,12 +54,13 @@
 import headerLast from '../header/headerLast'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
-
+import footerHome from '../footer/footerHome'
 export default {
   name: 'workBenchEventInfoShow',
 
   components: {
-    headerLast
+    headerLast,
+    footerHome
   },
 
   data () {

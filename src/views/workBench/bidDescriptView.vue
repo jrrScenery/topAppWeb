@@ -2,8 +2,6 @@
     <div class="bidDescriptView">
         <header-last :title="bidDescriptTit"></header-last>
         <div style="height: 0.45rem;"></div>
-
-
         <div class="titleInfo">基本信息</div>
         <div class="bodyForm">
             <el-form ref="personInfo" :model="personInfo" label-width="1rem">
@@ -26,8 +24,6 @@
                 </router-link>
             </el-form>
         </div>
-
-
         <div class="titleInfo">参与人员</div>
         <div class="bodyForm">
             <el-form ref="personInfo" :model="personInfo" label-width="1rem">
@@ -68,8 +64,6 @@
                 </el-form-item>
             </el-form>
         </div>
-
-
         <div class="titleInfo">报价信息</div>
         <div class="bodyForm">
             <template ref="personInfo" :model="personInfo">
@@ -184,8 +178,6 @@
             </el-form-item>
           </el-form>
         </div>
-
-
         <div class="titleInfo">WBM报价</div>
         <div class="bodyForm">
             <template v-if="personInfo.priceTypeData=='人员'">
@@ -234,8 +226,6 @@
                 </el-table>
             </template>
         </div>
-
-
         <div class="titleInfo" v-if="status!='2'&&(realName==personInfo.salename)||status=='6'">销售确认信息</div>
         <div class="bodyForm" v-if="status!='2'&&(realName==personInfo.salename)||status=='6'">
             <el-form ref="personInfo" :model="personInfo" label-width="1rem">
@@ -346,8 +336,6 @@
                 </el-form-item>
             </el-form>
         </div>
-
-
         <div class="titleInfo" v-if="status!='2'&&(realName==personInfo.productname)||status=='6'">分摊确认信息</div>
         <div class="bodyForm" v-if="status!='2'&&(realName==personInfo.productname)||status=='6'">
             <template v-if="personInfo.PayWayData=='分摊'">
@@ -370,10 +358,8 @@
             </el-form>
             </template>
         </div>
-
-            
-    
-
+        <div style="height:0.45rem"></div>
+        <footer-home></footer-home>
     </div>
 </template>
 
@@ -381,11 +367,13 @@
 import headerLast from "../header/headerLast";
 import loadingtmp from "@/components/load/loading";
 import fetch from "../../utils/ajax";
+import footerHome from '../footer/footerHome'
 export default {
   name: "bidDescriptView",
   components: {
     headerLast,
-    loadingtmp
+    loadingtmp,
+    footerHome
   },
   data() {
     return {
@@ -1234,7 +1222,12 @@ export default {
       }
       return true;
     },
-
+  },
+  beforeRouteLeave( to, from,next){
+    if (to.name == 'bid') {
+        to.meta.isUseCache = true;    
+    }        
+    next();
   }
 };
 </script>

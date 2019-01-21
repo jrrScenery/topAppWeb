@@ -57,7 +57,7 @@ export default {
   },
 
   watch: {},
-
+  
   created () {
     fetch.get("?action=getDict&type=PRO_BUSINESS_TYPE","").then(res=>{
       this.businessType = res.data;

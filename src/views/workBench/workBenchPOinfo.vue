@@ -32,6 +32,8 @@
         </template>
       </el-tabs>
     </div>
+    <div style="height:0.45rem"></div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -39,11 +41,13 @@
 import global_ from '../../components/Global'
 import headerLast from '../header/headerLast'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'workBenchPOinfo',
 
   components: {
-    headerLast
+    headerLast,
+    footerHome
   },
 
   data () {
@@ -169,9 +173,9 @@ export default {
 
 <style scoped>
   .workBenchPOinfoView{width: 100%;}
-  .workBenchPOinfoContent{width: 100%; position: absolute; top: 0.45rem;bottom: 0; text-align: center; color: #666666; background: #ffffff;}
+  .workBenchPOinfoContent{width: 100%; position: absolute; top: 0.45rem;bottom: 0.45rem; text-align: center; color: #666666; background: #ffffff;overflow: scroll}
   /* overflow: scroll */
-  .workBenchPOinfoContent >>> .el-table{overflow: scroll}
+  .workBenchPOinfoContent >>> .el-table{}
   .workBenchPOinfoContent >>> .el-table th{text-align: center; color: #333333; background: #f7f7f7}
   .workBenchPOinfoContent >>> .el-table tr:nth-child(2n){background: #f7f7f7}
   .workBenchPOinfoContent >>> .el-table td:nth-child(2){text-align: right}

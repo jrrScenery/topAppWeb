@@ -25,6 +25,7 @@
         </template>
       </el-table>
     </div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -32,11 +33,13 @@
 import global_ from '../../components/Global'
 import headerLast from '../header/headerLast'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
   export default {
     name: 'eventEvaluation',
 
     components: {
-      headerLast
+      headerLast,
+      footerHome
     },
 
     data () {
@@ -127,7 +130,7 @@ import fetch from '../../utils/ajax'
 </script>
 
 <style scoped>
-  .content{margin-top: 0.05rem; background: #ffffff;}
+  .content{margin-top: 0.05rem; background: #ffffff;bottom: 0.45rem}
   .content >>> .el-table th{background-color:#f5f5f9 !important;color: #333333; text-align: center; padding: 0; font-size: 0.13rem;}
   .content >>> .el-table th>.cell{line-height: 0.3rem; padding: 0}
   .content >>> .el-table td{padding: 0; text-align: center; color: #666666; font-size: 0.13rem;}

@@ -7,22 +7,27 @@
       <div class="cell" v-for="item in mineFeedbackShowObj" :key="item.id">
         <div class="title">{{item.title}}</div>
         <ul>
-          <li v-for="info in item.cellObj" :key="info.id"  v-if="info.rightCon!=null">
-            <p>{{info.leftTit}}</p><p v-html="info.rightCon"></p>
-          </li>
+          <div v-for="info in item.cellObj" :key="info.id" >
+            <li v-if="info.rightCon!=null">
+              <p>{{info.leftTit}}</p><p v-html="info.rightCon"></p>
+            </li>
+          </div>
         </ul>
       </div>
     </div>
+    <footer-home></footer-home>
   </div>
 </template>
 
 <script>
 import headerLast from '../header/headerLast'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'mineFeedbackShow',
   components: {
-    headerLast
+    headerLast,
+    footerHome
   },
 
   data () {
@@ -104,7 +109,7 @@ export default {
 
 <style scoped>
   .mineFeedbackShowView{ width: 100%;}
-  .content{width: 100%; margin-top: 0.05rem; color: #999999; background: #ffffff;}
+  .content{width: 100%; margin-top: 0.05rem;bottom: 0.45rem; color: #999999; background: #ffffff;}
   .content .title{line-height: 0.35rem; color: #2698d6; padding-left: 0.25rem; position: relative;}
   .content .title:before{width: 0.05rem; height: 0.12rem; content: ''; position: absolute; left: 0.1rem; top: 0.11rem; background: #2698d6;}
   .content ul li{padding: 0 0.25rem;}

@@ -35,18 +35,20 @@
         </div>
       </div>
     </div>
+    <footer-home></footer-home>
   </div>
 </template>
 
 <script>
 import headerLast from '../header/headerLast'
 import fetch from '../../utils/ajax'
-
+import footerHome from '../footer/footerHome'
 export default {
   name: 'workBenchInfoDetail',
 
   components: {
-    headerLast
+    headerLast,
+    footerHome
   },
 
   data () {
@@ -64,7 +66,7 @@ export default {
   beforeCreate(){
     
   },
-  created () {
+  activated () {
     console.log(this.$route.query.business)
     this.loadList();
   },
@@ -89,12 +91,29 @@ export default {
         this.$router.push({name: 'workBenchInfoSaleManagement', query: {ROLE_NAME:col.MANAGER_NAME,SEARCH_EMP_ID:col.MANAGER_ID,TYPE:type}})
       }
     }
+  },
+  //在页面离开时记录滚动位置
+  beforeRouteLeave (to, from, next) {
+    if (to.name == 'workBenchInfoSaleManagement') {
+      this.scrollTop = document.querySelector('.content').scrollTop;
+      console.log("scrollTop:",this.scrollTop)
+    }   
+    next();
+  },
+  //进入该页面时，用之前保存的滚动位置赋值
+  beforeRouteEnter (to, from, next) {
+    console.log("next:",next);
+    next(vm => {
+      console.log("vmvmvm",vm.scrollTop);
+      document.querySelector('.content').scrollTop = vm.scrollTop
+    })
   }
 }
 </script>
 
 <style scoped>
   .workBenchInfoDetailView{width: 100%;}
+  .content{width: 100%; position: absolute; top: 0.45rem; bottom: 0.45rem;overflow: scroll;}
   .programCell{padding: 0 0.1rem 0.1rem; background: #ffffff; margin-top: 0.05rem;}
   .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
   .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}

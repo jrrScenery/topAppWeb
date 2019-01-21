@@ -93,15 +93,14 @@ export default {
     });
 
 
-    this.form.type = this.queryData['type'];
     this.form.industry = this.queryData.industry;
+    this.form.type = this.queryData['type'];
     this.form.customer = this.queryData.customer;
     this.form.proName = this.queryData.proName;
     this.form.sale = this.queryData.sale;
     this.form.PM = this.queryData.PM;
     this.form.eventNum = this.queryData.eventNum;
     this.form.keyWord = this.queryData.keyWord;
-    this.form.industry = this.queryData.industry;
     this.form.startTime = this.queryData.startTime;
     this.form.endTime = this.queryData.endTime;
     console.log("HHHHHHHDDDDDDDDDDDJJJJJJJJJJJJ", this.queryData);

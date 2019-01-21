@@ -52,6 +52,7 @@
         </template>
       </el-tabs>
     </div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -60,11 +61,13 @@ import headerBaseFive from '../header/headerBaseFive'
 import loadingtmp from '@/components/load/loading'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'workBenchMyProAll',
   components: {
     headerBaseFive,
-    loadingtmp
+    loadingtmp,
+    footerHome
   },
 
   data () {
@@ -111,6 +114,14 @@ export default {
   },
 
   activated(){ 
+    this.searchData={
+      business:'',
+      customer:'',
+      industry:[],
+      PM:'',
+      proName:'',
+      sale:''
+    }
     if(!this.$route.meta.isUseCache){
       this.busy= false;
       this.loadall= false;
@@ -214,15 +225,30 @@ export default {
       this.objpages["second"]["isSearch"]=0
       this.objpages["second"]["loadall"]=false
       this.workBenchMyProTab[1].programListArr = [];
-    }
-
-  }
+    },
+  },
+  //在页面离开时记录滚动位置
+  beforeRouteLeave (to, from, next) {
+    if (to.name == 'programShow') {
+      this.scrollTop = document.querySelector('.workBenchMyProAllContent').scrollTop;
+      console.log("scrollTop:",this.scrollTop)
+    }   
+    next();
+  },
+  //进入该页面时，用之前保存的滚动位置赋值
+  beforeRouteEnter (to, from, next) {
+    console.log("next:",next);
+    next(vm => {
+      console.log("vmvmvm",vm.scrollTop);
+      document.querySelector('.workBenchMyProAllContent').scrollTop = vm.scrollTop
+    })
+  },
 }
 </script>
 
 <style scoped>
   .workBenchMyProAllView{width: 100%;}
-  .workBenchMyProAllContent{width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
+  .workBenchMyProAllContent{width: 100%; position: absolute; top: 0.45rem; bottom: 0.45rem;overflow: scroll;}
   .workBenchMyProAllView >>> .el-tabs__header{margin-bottom: 0.46rem; background: #ffffff;}
   .workBenchMyProAllContent >>> .el-tabs__nav{width: 100%;position: fixed;background:#fff;top: 0.45rem;}
   .workBenchMyProAllContent >>> .el-tabs__active-bar{background: #2698d6}

@@ -11,15 +11,19 @@
                 </ul>
             </div>
         </div>
+        <div style="height:0.45rem"></div>
+        <footer-home></footer-home>
     </div>
 </template>
 <script>
 import headerLast from '../header/headerLast'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
     name: 'workBenchOwnPartsDetail',
     components: {
-        headerLast
+        headerLast,
+        footerHome
     },
     data(){
         return{
@@ -67,7 +71,7 @@ export default {
 </script>
 <style scoped>
   .workBenchOwnPartsDetailView{width: 100%;}
-  .workBenchOwnPartsDetailContent{width: 100%; margin-top: 0.05rem; color: #999999; background: #ffffff;}
+  .workBenchOwnPartsDetailContent{width: 100%; margin-top: 0.05rem;color: #999999; background: #ffffff;overflow: scroll;}
   .workBenchOwnPartsDetailContent .title{line-height: 0.35rem; color: #2698d6; padding-left: 0.25rem; position: relative;}
   .workBenchOwnPartsDetailContent .title:before{width: 0.05rem; height: 0.12rem; content: ''; position: absolute; left: 0.1rem; top: 0.11rem; background: #2698d6;}
   .workBenchOwnPartsDetailContent ul li{padding: 0 0.25rem;}

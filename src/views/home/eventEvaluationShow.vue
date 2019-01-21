@@ -89,9 +89,6 @@
             </div>
           </div>
         </div>
-
-
-
         <ul class="signature">
           <li class="lisign">
             <span>客户签字</span>
@@ -107,6 +104,8 @@
         </ul>
       </div>
     </div>
+    <div style="height:0.45rem"></div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -114,11 +113,13 @@
 import global_ from '../../components/Global'
 import headerLast from '../header/headerLast'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'eventEvaluationShow',
 
   components: {
-    headerLast
+    headerLast,
+    footerHome
   },
 
   data () {

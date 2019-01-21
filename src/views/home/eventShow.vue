@@ -102,7 +102,7 @@ export default {
     });
   },
   beforeRouteLeave( to, from,next){
-    if (to.name == 'focusEventList') {
+    if (to.name == 'focusEventList'||to.name=='workBenchMyEventAll'||to.name=='workBenchMyEvent'||to.name=="eventList") {
         to.meta.isUseCache = true;    
     }        
     next();

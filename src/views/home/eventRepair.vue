@@ -45,6 +45,7 @@
       </div>
       <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
     </div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -53,6 +54,7 @@ import global_ from '../../components/Global'
 import loadingtmp from '@/components/load/loading'
 import fetch from '../../utils/ajax'
 import HeaderLast from '../header/headerLast'
+import footerHome from '../footer/footerHome'
 let caseId ,projectId;
 
 export default {
@@ -60,7 +62,8 @@ export default {
 
   components: {
     loadingtmp,
-    HeaderLast
+    HeaderLast,
+    footerHome
   },
 
   data () {
@@ -130,7 +133,7 @@ export default {
 </script>
 
 <style scoped>
-  .content{position: absolute; left: 0; right: 0; top: 1.07rem; bottom: 0; overflow: scroll;}
+  .content{position: absolute; left: 0; right: 0; top: 1.07rem; bottom: 0.45rem; overflow: scroll;}
   .proRepairView{padding: 0 0.15rem;}
   .proRepairView >>> .el-input{padding: 0.1rem 0; border-bottom: 0.01rem solid #e1e1e1}
   .proRepairView >>> .el-input__icon{width: 0.4rem;font-size: 0.2rem}

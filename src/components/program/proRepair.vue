@@ -79,13 +79,10 @@ export default {
   methods: {
 
     loadrepair(flag){
-      console.log(this.projectId);
       let url = "?action=GetRelateCaseOfProject&PROJECT_ID="+this.projectId;
      //url += "&PAGE_NUM="+this.page+"&PAGE_TOTAL="+this.pageSize;
       let param = {PAGE_NUM:this.prorepairpage,PAGE_TOTAL:this.pageSize,KEYWORD:this.value};
-      console.log(param);
       fetch.get(url,param).then(res=>{
-        console.log(res.data);
         var tmpar= res.data;
         tmpar = tmpar.map(function(item){
           if(item.PROBLEM_DETAIL){

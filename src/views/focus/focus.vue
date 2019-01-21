@@ -15,15 +15,17 @@
           </router-link>
         </div>
         <div>
-          <ul class="tem" v-if="noticeData.length!=0" v-for="item in noticeData" :key="item.id">
-            <router-link :to="{name:'mineNotice',params:{}}">
-              <li class="li_focusView">    
-                <template>
-                  <span>{{item.SEND_NAME}} 于{{item.CREATE_ON}}{{item.BIZ_NAME}}，触发原因：{{item.TITLE}}</span>    
-                  <i class="el-icon-arrow-right"></i>
-                </template>      
-              </li>
-            </router-link>
+          <ul class="tem" v-for="item in noticeData" :key="item.id">
+            <div v-if="noticeData.length!=0" >
+              <router-link :to="{name:'mineNotice',params:{}}">
+                <li class="li_focusView">    
+                  <template>
+                    <span>{{item.SEND_NAME}} 于{{item.CREATE_ON}}{{item.BIZ_NAME}}，触发原因：{{item.TITLE}}</span>    
+                    <i class="el-icon-arrow-right"></i>
+                  </template>      
+                </li>
+              </router-link>
+            </div>
           </ul>   
           <!-- <ul class="noticeTem" v-if="noticeData.length!=0" v-for="item in noticeData" :key="item.id">
             <router-link :to="{name:'mineNotice',params:{}}">
@@ -49,15 +51,17 @@
           </router-link>
         </div>
         <div>         
-          <ul class="tem" v-if="caseData.length!=0" v-for="item in caseData" :key="item.id">
-            <router-link :to="{name:'eventShow',query:{caseId:item.CASEID}}">
-              <li class="li_focusView" :key="item.id">    
-                <template>
-                  <span>{{item.CODE}} 关注原因:{{item.ITEM.split(",")[0]}} 客户名称：{{item.CUSTOM}}</span>    
-                  <i class="el-icon-arrow-right"></i>
-                </template>      
-              </li>
-            </router-link>
+          <ul class="tem" v-for="item in caseData" :key="item.id">
+            <div v-if="caseData.length!=0" >
+              <router-link :to="{name:'eventShow',query:{caseId:item.CASEID}}">
+                <li class="li_focusView" :key="item.id">    
+                  <template>
+                    <span>{{item.CODE}} 关注原因:{{item.ITEM.split(",")[0]}} 客户名称：{{item.CUSTOM}}</span>    
+                    <i class="el-icon-arrow-right"></i>
+                  </template>      
+                </li>
+              </router-link>
+            </div>
           </ul>          
         </div>
       </div>
@@ -74,15 +78,17 @@
           </router-link>
         </div>
         <div>
-          <ul class="tem" v-if="projData.length!=0" v-for="item in projData" :key="item.id">
-            <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID}}">
-              <li class="li_focusView" :key="item.id">    
-                <template>
-                  <span>{{item.PROJECT_NAME}}</span>    
-                  <i class="el-icon-arrow-right"></i>
-                </template>      
-              </li>
-            </router-link>
+          <ul class="tem" v-for="item in projData" :key="item.id">
+            <div v-if="projData.length!=0" >
+              <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID}}">
+                <li class="li_focusView" :key="item.id">    
+                  <template>
+                    <span>{{item.PROJECT_NAME}}</span>    
+                    <i class="el-icon-arrow-right"></i>
+                  </template>      
+                </li>
+              </router-link>
+            </div>
           </ul>
         </div>
       </div>

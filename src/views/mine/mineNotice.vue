@@ -17,10 +17,9 @@
           </div>
         </li>
       </ul>
-
       <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
-
     </div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -28,11 +27,13 @@
 import headerBaseSix from '../header/headerBaseSix'
 import fetch from '../../utils/ajax'
 import loadingtmp from '@/components/load/loading'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'mineNotice',
   components: {
     headerBaseSix,
-    loadingtmp
+    loadingtmp,
+    footerHome
   },
 
   data () {
@@ -120,7 +121,7 @@ export default {
 
 <style scoped>
   .mineNoticeView{ width: 100%; height: 100%;}
-  .content{width: 100%;  background: #ffffff; color: #999999;overflow-y: scroll; position: absolute; left: 0; top: 0.5rem; bottom: 0; overflow-x: hidden;}
+  .content{width: 100%;  background: #ffffff; color: #999999;overflow-y: scroll; position: absolute; left: 0; top: 0.5rem; bottom: 0.45rem; overflow-x: hidden;}
   .content ul{padding: 0 0.2rem;}
   .content ul li{display: flex; padding: 0.07rem 0; border-bottom: 0.01rem solid #e6e6e6;}
   .content ul li .div_Img{padding: 0.05rem 0; width: 0.4rem; margin-right: 0.15rem; text-align: center}

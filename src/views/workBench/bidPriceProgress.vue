@@ -15,6 +15,7 @@
         </el-collapse>
         <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
     </div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -22,12 +23,14 @@
 import fetch from '../../utils/ajax'
 import HeaderLast from "../header/headerLast";
 import loadingtmp from '@/components/load/loading';
+import footerHome from '../footer/footerHome'
 export default {
     name: 'applicationEventProgress',
 
     components: {
         HeaderLast,
         loadingtmp,
+        footerHome
     },
 
     data () {
@@ -89,7 +92,7 @@ export default {
 </script>
 <style scoped>
   /* .applicationEventProgress{margin: 0 0; background: #ffffff;position:fixed} */
-  .bidProgressTabs{padding: 0 0.25rem;background: #ffffff; width: 86%; position: absolute; top: 0.45rem; bottom: 0;overflow-y: auto}
+  .bidProgressTabs{padding: 0 0.25rem;background: #ffffff; width: 86%; position: absolute; top: 0.45rem; bottom: 0.45rem;overflow-y: auto}
   /* .bidProgressTabs{background: #ffffff;width:100%;position: relative;padding: 0 0.25rem; bottom: 0;overflow: scroll} */
   .bidProgressTabs:before{position: absolute; top: 0; left: 0.34rem; width: 0.02rem; height: 100%; bottom: 0; background: #999999; content: '';}
   .bidProgressTabs .titleImg{width: 0.2rem; height: 0.2rem;position: absolute; top: 0.15rem; left: -0.43rem;background: white}

@@ -92,7 +92,11 @@ export default new Router({
     {
       path: '/workBench/bid',
       name: 'bid',
-      component: resolve => require(['@/views/workBench/bid'], resolve)
+      component: resolve => require(['@/views/workBench/bid'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
     },
     //首页单次报价->我的报价列表->单次报价列表->单次报价详情
     {
@@ -307,11 +311,12 @@ export default new Router({
     {
       path: '/workBench/workBenchInfoDetail',
       name: 'workBenchInfoDetail',
-      component: resolve => require(['@/views/workBench/workBenchInfoDetail'], resolve)
-    },
-    
-    
-   
+      component: resolve => require(['@/views/workBench/workBenchInfoDetail'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
+    },  
     {
       path: '/workBench/workBenchEventInfo',
       name: 'workBenchEventInfo',
@@ -393,7 +398,11 @@ export default new Router({
     {
       path: '/workBench/workBenchPOinfo',
       name: 'workBenchPOinfo',
-      component: resolve => require(['@/views/workBench/workBenchPOinfo'], resolve)
+      component: resolve => require(['@/views/workBench/workBenchPOinfo'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
     },
     //首页管理仓->PO管理->PO信息-人员
     {

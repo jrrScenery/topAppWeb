@@ -3,7 +3,7 @@
   <div class="programShowView"  v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
     <header-last :title="programShowTit"></header-last>
     <div style="height: 0.45rem;"></div>
-    <div class="content" >
+    <div class="programShowContent" >
       <div class="programCell" v-for="item in programListArr" :key="item.PROJECT_CODE">
         <div class="cellTop">
           <el-row>
@@ -94,6 +94,8 @@
         </el-tabs>
       </div>
     </div>
+    <div style="height:0.45rem"></div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -109,6 +111,7 @@ import proFileDown from '../../components/program/proFileDown'
 import proSatisfy from '../../components/program/proSatisfy'
 import proFeedback from '../../components/program/proFeedback'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'programShow',
 
@@ -121,7 +124,8 @@ export default {
     proReport,
     proFileDown,
     proSatisfy,
-    proFeedback
+    proFeedback,
+    footerHome
   },
 
   data () {
@@ -220,7 +224,7 @@ export default {
     window.removeEventListener('scroll', this.handleScroll,true)
   },
   beforeRouteLeave( to, from,next){
-    if (to.name == 'programList' || to.name=='home') {
+    if (to.name == 'programList'|| to.name=='home'||to.name=='workBenchMyProAll'||to.name=='workBenchMyPro' ) {
         to.meta.isUseCache = true;    
     }        
     next();

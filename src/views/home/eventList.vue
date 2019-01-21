@@ -48,6 +48,7 @@
       </div>
       <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
     </div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -56,13 +57,14 @@ import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
 import headerBase from '../header/headerBase'
 import loadingtmp from '@/components/load/loading'
-
+import footerHome from '../footer/footerHome'
 export default {
   name: 'eventList',
 
   components: {
     headerBase,
-    loadingtmp
+    loadingtmp,
+    footerHome
   },
 
   data () {
@@ -103,7 +105,20 @@ export default {
     }
   },
   activated(){
-    console.log(this.$route.meta.savedPosition)
+    this.searchData={
+      customer:'',
+      endTime:'',
+      eventNum:'',
+      industry:[],
+      keyWord:'',
+      PM:'',
+      proName:'',
+      sale:'',
+      startTime:'',
+      type:[]
+    }
+    this.isSearch = false;
+    console.log("vvvvvvvvvvvv",this.searchData);
     if(!this.$route.meta.isUseCache){
       this.eventListArr = [];
       this.page =1;
@@ -129,10 +144,8 @@ export default {
         params.START_TIME = this.searchData.startTime;
         params.END_TIME = this.searchData.endTime;
       }
-      console.log(params);
       var flag = this.page>1;
       fetch.get("?action=GetFocusCase",params).then(res=>{
-        console.log(res);
         this.totalData = res.total;
         if(flag){
             this.eventListArr = this.eventListArr.concat(res.data);
@@ -160,7 +173,6 @@ export default {
     },
 
     searchList(formData){
-      console.log("formData",formData)
       this.searchData = formData;
       this.eventListArr=[];
       this.isSearch = true;
@@ -172,18 +184,30 @@ export default {
   created(){
 
   },
-  beforeRouteLeave( to, from,next){
+  //在页面离开时记录滚动位置
+  beforeRouteLeave (to, from, next) {
+    if (to.name == 'eventShow') {
+      this.scrollTop = document.querySelector('.content').scrollTop;
+      console.log("scrollTop:",this.scrollTop)
+    }   
     if (to.name == 'home') {
         to.meta.isUseCache = true;    
-    }        
+    } 
     next();
-  }
-
+  },
+  //进入该页面时，用之前保存的滚动位置赋值
+  beforeRouteEnter (to, from, next) {
+    console.log("next:",next);
+    next(vm => {
+      console.log("vmvmvm",vm.scrollTop);
+      document.querySelector('.content').scrollTop = vm.scrollTop
+    })
+  },
 }
 </script>
 
 <style scoped>
-  .content{ width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
+  .content{ width: 100%; position: absolute; top: 0.45rem; bottom: 0.45rem;overflow: scroll;}
   .eventCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-top: 0.05rem;}
   .eventCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
   .eventCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}

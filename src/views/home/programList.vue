@@ -47,6 +47,7 @@
       </div>
       <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
     </div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -55,12 +56,14 @@ import global_ from '../../components/Global'
 import headerBaseFive from '../header/headerBaseFive'
 import loadingtmp from '@/components/load/loading'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'programList',
 
   components: {
     headerBaseFive,
-    loadingtmp
+    loadingtmp,
+    footerHome
   },
 
   data () {
@@ -93,7 +96,17 @@ export default {
     }
   },
   activated(){
-    console.log(this.$route.meta.scrollTop)
+    this.searchData={
+      business:'',
+      customer:'',
+      industry:'',
+      PM:'',
+      proName:'',
+      sale:''
+    }
+    this.isSearch = false;
+    console.log("searchData",this.searchData)
+    console.log("isSearch:"+this.isSearch);
     if(!this.$route.meta.isUseCache){
       this.programListArr = [];
       this.loadall= false;
@@ -155,17 +168,30 @@ export default {
   },
   created () {
   },
-  beforeRouteLeave( to, from,next){
+  //在页面离开时记录滚动位置
+  beforeRouteLeave (to, from, next) {
+    if (to.name == 'programShow') {
+      this.scrollTop = document.querySelector('.content').scrollTop;
+      console.log("scrollTop:",this.scrollTop)
+    }   
     if (to.name == 'home') {
         to.meta.isUseCache = true;    
-    }        
+    } 
     next();
-  }
+  },
+  //进入该页面时，用之前保存的滚动位置赋值
+  beforeRouteEnter (to, from, next) {
+    console.log("next:",next);
+    next(vm => {
+      console.log("vmvmvm",vm.scrollTop);
+      document.querySelector('.content').scrollTop = vm.scrollTop
+    })
+  },
 }
 </script>
 
 <style scoped>
-  .content{ width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
+  .content{ width: 100%; position: absolute; top: 0.45rem; bottom: 0.45rem;overflow: scroll;}
   .programCell{padding: 0 0.2rem 0.1rem; background: #ffffff; margin-top: 0.05rem;}
   .programCell .cellTop{border-bottom: 0.01rem solid #dbdbdb; line-height: 0.37rem;}
   .programCell .cellTop .cellTopNum{font-size: 0.14rem; color: #2698d6;}

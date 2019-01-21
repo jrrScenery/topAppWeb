@@ -341,10 +341,14 @@ export default {
         },
         noKeyword () {
             document.activeElement.blur()
-        },
-    
+        }, 
+    },
+    beforeRouteLeave( to, from,next){
+        if (to.name == 'workBenchTaskList') {
+            to.meta.isUseCache = true;    
+        }        
+        next();
     }
-
 }
 
 </script>

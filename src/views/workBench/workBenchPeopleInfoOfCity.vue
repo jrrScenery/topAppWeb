@@ -25,17 +25,21 @@
       </el-table>
       <!-- </router-link> -->
     </div>
+    <div style="height:0.45rem"></div>
+    <footer-home></footer-home>
   </div>
 </template>
 
 <script>
 import headerBaseTen from '../header/headerBaseTen'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'workBenchPeopleInfo',
 
   components: {
-    headerBaseTen
+    headerBaseTen,
+    footerHome
   },
 
   data () {

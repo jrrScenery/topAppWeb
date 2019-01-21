@@ -41,7 +41,7 @@ export default {
     },
     beforeRouteLeave( to, from,next){
         if (to.name == 'serviceList') {
-            to.meta.isUseCache = false;    
+            to.meta.isUseCache = true;    
         }        
         next();
     },

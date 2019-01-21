@@ -1,18 +1,19 @@
 <!--工作台-->
 <template>
   <div class="homeView">
-    <div style="text-align:center;margin-top:0.1rem" v-for="items in workBenchObj" :key="items.id" v-if="items.arr.length!=0">
-
-      <ul class="ul_workBench" >
-          <template v-for="item in items.arr">
-            <li class="li_workBench" :key="item.id">
-              <router-link :to="{name:item.href,params:item.params}" >
-                <img  :src="item.imgSrc" alt="">
-              </router-link>
-              <span>{{item.text}}</span>
-            </li>
-        </template>
-      </ul>
+    <div style="text-align:center;margin-top:0.1rem" v-for="items in workBenchObj" :key="items.id" >
+      <div v-if="items.arr.length!=0">
+        <ul class="ul_workBench" >
+            <template v-for="item in items.arr">
+              <li class="li_workBench" :key="item.id">
+                <router-link :to="{name:item.href,params:item.params}" >
+                  <img  :src="item.imgSrc" alt="">
+                </router-link>
+                <span>{{item.text}}</span>
+              </li>
+          </template>
+        </ul>
+      </div>
     </div>
     <div class="newInfo" v-loading="busy && !loadall" element-loading-text="加载中">
       <img src='../../assets/images/new.jpg' alt="">
@@ -22,7 +23,7 @@
             <router-link :to="{name:'mineNotice',params:{}}">
               <li class="li_mineView" >
                 <template>
-                  <span style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;background: #ff0000;"></span>
+                  <span style="display: inline-block; width: 0.1rem; height: 0.1rem; border-radius: 50%;background: #ff0000;margin-right:0.05rem"></span>
                   <span>最新通知：{{item.TITLE}}</span>
                   <i class="el-icon-arrow-right"></i>
                 </template>
@@ -33,7 +34,7 @@
             <router-link :to="{name:'eventShow',query:{caseId:item.CASEID}}">
               <li class="li_mineView">
                 <template>
-                  <span style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;background: #ff0000;"></span>
+                  <span style="display: inline-block; width: 0.1rem; height: 0.1rem; border-radius: 50%;background: #ff0000;margin-right:0.05rem"></span>
                   <span>最新需关注事件：{{item.CODE}} {{item.CUSTOM}} {{item.ITEM}} </span>
                   <i class="el-icon-arrow-right"></i>
                 </template>

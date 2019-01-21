@@ -26,6 +26,8 @@
                 </li>
             </router-link>
         </ul>
+        <div style="height:0.45rem"></div>
+        <footer-home></footer-home>
     </div>
 </template>
 
@@ -37,8 +39,7 @@ export default {
     name: 'bidClass',
     components: {
         headerLast,
-    
-        
+        footerHome   
     },
     data(){
         return{
@@ -97,6 +98,7 @@ export default {
 </script>
 
 <style scoped>
+.bidClassView{overflow: auto}
 .ul_myView .li_myView{display: flex; justify-content: space-between; align-items: center;height: 0.5rem; border-bottom: 0.01rem solid #e5e5e5; font-size: 0.14rem; line-height: 0.5rem; padding: 0 0.2rem;}
 .ul_myView .li_myView img{width: 0.24rem; height: 0.24rem; margin-right: 0.15rem;}
 .ul_myView .li_myView span{width: 100%; text-align: left; color: #262626}

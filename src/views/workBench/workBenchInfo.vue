@@ -18,12 +18,12 @@
           <span>{{item.CUST_NUM}}</span>
           <span>{{item.PRO_NUM}}</span>
           <span>{{item.AMOUNT}}</span>         
-        </router-link>
-        
-      </div>
-      
+        </router-link>       
+      </div>      
     </div>
     <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
+    <div style="height:0.45rem"></div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -32,12 +32,14 @@ import headerLast from '../header/headerLast'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
 import loadingtmp from '@/components/load/loading'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'workBenchInfo',
 
   components: {
     headerLast,
-    loadingtmp
+    loadingtmp,
+    footerHome
   },
 
   data () {

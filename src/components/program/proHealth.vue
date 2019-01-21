@@ -96,8 +96,8 @@ export default {
   .tableTh span:nth-child(2){width: 40%}
   .tableTd li{display: flex; line-height: 0.3rem; padding: 0 0.2rem; color: #666666;}
   .tableTd span{width: 20%; text-align: center;}
-  .tableTd span:nth-child(1){width: 40%; text-align: left;}
-  .tableTd span:nth-child(2){width: 40%; text-align: left;}
+  .tableTd span:nth-child(1){width: 40%; text-align: center;}
+  .tableTd span:nth-child(2){width: 40%; text-align: center;}
   /*.tableTd li:nth-child(2n+1){background: #fafafa}*/
   .content:nth-child(2n+1){background: #fafafa}
 </style>

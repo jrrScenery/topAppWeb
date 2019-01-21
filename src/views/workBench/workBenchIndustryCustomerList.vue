@@ -26,6 +26,7 @@
         </template>
       </el-table>
     </div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -34,12 +35,14 @@ import headerLast from '../header/headerLast'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
 import loadingtmp from '@/components/load/loading'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'workBenchIndustryCustomerList',
 
   components: {
     headerLast,
-    loadingtmp
+    loadingtmp,
+    footerHome
   },
 
   data () {
@@ -146,7 +149,7 @@ export default {
 
 <style scoped>
   .workBenchIndustryCustomerView{width: 100%; background:#f7f7f7;}
-  .workBenchIndustryCustomerContent{width: 100%; position: absolute; top: 0.45rem;bottom: 0; color: #666666;overflow: scroll;}
+  .workBenchIndustryCustomerContent{width: 100%; position: absolute; top: 0.45rem;bottom: 0.45rem; color: #666666;overflow: scroll;}
   .workBenchIndustryCustomerContent >>> .el-table__body{width: 100%!important}
   .workBenchIndustryCustomerContent >>> .el-table__header{width: 100%!important}
   .workBenchIndustryCustomerContent >>> .el-table{font-size: 0.13rem; text-align: center;}

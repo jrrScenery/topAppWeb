@@ -51,6 +51,7 @@
         </template>
       </el-tabs>
     </div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -59,12 +60,14 @@ import headerBase from '../header/headerBase'
 import loadingtmp from '@/components/load/loading'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'workBenchMyEventAll',
 
   components: {
     headerBase,
-    loadingtmp
+    loadingtmp,
+    footerHome
   },
 
   data () {
@@ -99,15 +102,8 @@ export default {
       loadall: false,
       tab_box: 1,
       searchData:{
-        FACTORY_NAME: this.$route.query.factoryName,
-        TECH_NAME: this.$route.query.techName,
-        CASE_LEVEL: this.$route.query.caseLevel,
-        INDUSTRY_NAME: this.$route.query.industryName,
-        industry: this.$route.query.industry? this.$route.query.industry.split(','):[],
-        custid:  this.$route.query.custid,
-        type:this.$route.query.type? this.$route.query.type.split(','):["1","2"],
-        startTime: this.$route.query.startDate,
-        endTime: this.$route.query.endDate,
+        industry:[],
+        type:[]
       },
       objpages:{"first":{page:1,loadall:false, IF_CLOSE:'N',idx:0,isSearch:0},"second":{page:1,loadall:false,IF_CLOSE:'Y',idx:1,isSearch:0},
       "third":{page:1,loadall:false,IF_CLOSE:'',idx:2,isSearch:0}},
@@ -115,10 +111,22 @@ export default {
     }
   },
   created () {
-    console.log("ccccccccccccc", this.$route.query.custid)
-    
   },
   activated(){
+    console.log("searchData:",this.searchData);
+    this.searchData={
+      customer:'',
+      endTime:'',
+      eventNum:'',
+      industry:[],
+      keyWord:'',
+      PM:'',
+      proName:'',
+      sale:'',
+      startTime:'',
+      type:this.$route.query.type? this.$route.query.type.split(','):["1","2"],
+    }
+    this.isSearch = false;
     if(!this.$route.meta.isUseCache){
       this.busy= false;
       this.loadall= false;
@@ -173,38 +181,27 @@ export default {
       let strurl = "?action=GetCaseList&TYPE=all";
       let params = {CASE_TYPEID:"1,2",PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, IF_CLOSE: objnowpage.IF_CLOSE}
       if(this.isSearch){
-        params.CUST_ID = this.$route.query.custid;
-        params.INDUSTRY_NAME = this.searchData.INDUSTRY_NAME;
-        params.TECH_NAME = this.searchData.TECH_NAME;
-        params.CASE_LEVEL = this.searchData.CASE_LEVEL;
-        params.FACTORY_NAME = this.searchData.FACTORY_NAME;
-        // params.INDUSTRY_NAME = this.searchData.industry.join(",");
-        params.CASE_TYPEID = this.searchData["type"].join(",");
-        params.CUST_NAME = this.searchData.customer;
-        params.PROJECT_NAME = this.searchData.proName;
-        params.PM_NAME = this.searchData.PM;
-        params.CASE_CD = this.searchData.eventNum;
-        params.KEYWORD = this.searchData.keyWord;
+        params.INDUSTRY_NAME = this.searchData.industry.join(",");//行业
+        params.TYPE = this.searchData["type"].join(",");//事件类型
+        params.CUSTOMER_NAME = this.searchData.customer;//客户
+        params.PROJECT_NAME = this.searchData.proName;//项目名称
         params.SALE_NAME = this.searchData.sale;
-        params.START_TIME = this.searchData.startTime;
-        params.END_TIME = this.searchData.endTime;
+        params.PM_NAME = this.searchData.PM;
+        params.CASE_NO = this.searchData.eventNum;//事件编号
+        params.KEYWORD = this.searchData.keyWord;//关键词
+        params.START_TIME = this.searchData.startTime;//事件创建时间的开始时间
+        params.END_TIME = this.searchData.endTime;//时间创建时间的结束时间
       }
 
-
+      console.log("workBunchMyEventAll:",params);
       fetch.get(strurl,params).then(res => {
         console.log(res)
-        if('0'== res.STATUSCODE){
-          
+        if('0'== res.STATUSCODE){         
           let obj = this.opinionTab[objnowpage.idx].eventListArr;
           this.opinionTab[objnowpage.idx].eventListArr = this.returnList(flag, res, obj)
-
-          this.totalData= res.totalData;
-          
+          this.totalData= res.totalData;    
         }
-        else{
-
-
-        }
+        else{}
       });
       
       
@@ -238,14 +235,29 @@ export default {
       this.objpages["second"]["isSearch"]=0
       this.objpages["second"]["loadall"]=false
       this.opinionTab[1].eventListArr = [];
-    }
-  }
+    },
+  },
+  //在页面离开时记录滚动位置
+  beforeRouteLeave (to, from, next) {
+    if (to.name == 'eventShow') {
+      this.scrollTop = document.querySelector('.content').scrollTop;
+    }   
+    next();
+  },
+  //进入该页面时，用之前保存的滚动位置赋值
+  beforeRouteEnter (to, from, next) {
+    console.log("next:",next);
+    next(vm => {
+      console.log("vmvmvm",vm.scrollTop);
+      document.querySelector('.content').scrollTop = vm.scrollTop
+    })
+  },
 }
 </script>
 
 <style scoped>
   .workBenchMyEventView{width: 100%;}
-  .content{width: 100%; position: absolute; top: 0.45rem; bottom: 0;overflow: scroll;}
+  .content{width: 100%; position: absolute; top: 0.45rem; bottom: 0.45rem;overflow: scroll;}
   .content >>> .el-tabs{ }
   .content >>> .el-tabs__header{margin-bottom: 0.45rem; background: #ffffff}
   .content >>> .el-tabs__nav{width: 100%;position: fixed;background:#ffffff; top: 0.45rem;}

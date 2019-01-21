@@ -95,6 +95,8 @@
         </el-table>
       </div>
     </div>
+    <div style="height:0.45rem"></div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -102,6 +104,7 @@
 import headerLast from '../header/headerLast'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 const I = ['移动', '联通', '电信', '金融', '政府', '企事业', '其他'];
 const F = ['IBM', 'HP', 'DELL', 'EMC', 'H3C', '其他'];
 const C = ['一级', '二级', '三级', '四级'];
@@ -111,7 +114,8 @@ export default {
   name: 'workBenchEventInfo',
 
   components: {
-    headerLast
+    headerLast,
+    footerHome
   },
   data () {
     
@@ -321,7 +325,7 @@ export default {
 
 <style scoped>
   .workBenchEventInfoView{width: 100%;}
-  .workBenchEventInfoView .content{margin-top: 0.05rem; background: #ffffff;}
+  .workBenchEventInfoView .content{margin-top: 0.05rem; background: #ffffff;bottom: 0.45rem}
   /* .searchView{padding: 0.15rem 0.25rem;} */
   .searchView >>> .el-form{height: 0.3rem;margin-bottom:0.3rem}
   .searchView >>> .el-form-item__label{line-height: 0.25rem;margin-top: 0rem;font-size: 0.13rem;}

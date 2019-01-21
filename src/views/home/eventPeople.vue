@@ -27,18 +27,21 @@
         <a v-show="chkPeople.MOBILE"  @click="sendCall(chkPeople.MOBILE)" v-bind:href="'tel:'+chkPeople.MOBILE" ><span>手机</span>{{chkPeople.MOBILE}}</a>
       </div>
     </div>
+    <footer-home></footer-home>
   </div>
 </template>
 
 <script>
 import headerLast from '../header/headerLast'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 let caseId;
 export default {
   name: 'eventPeople',
 
   components: {
-    headerLast
+    headerLast,
+    footerHome
   },
 
   data () {
@@ -71,7 +74,7 @@ export default {
 
 <style scoped>
   .eventPeopleView{ width: 100%; height: 100%; position: relative}
-  .content{margin-top: 0.05rem; background: #ffffff;}
+  .content{margin-top: 0.05rem; background: #ffffff;bottom: 0.45rem}
   .eventPeopleCell{display: flex; margin: 0 0.25rem; padding: 0.15rem 0; border-bottom: 0.01rem solid #cccccc}
   .eventPeopleCell:last-child{border-bottom: none}
   .eventPeopleCell .cellLeft{width: 0.75rem; height: 0.75rem; margin-right: 0.25rem;}

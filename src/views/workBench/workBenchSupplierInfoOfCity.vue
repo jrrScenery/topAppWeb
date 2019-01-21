@@ -25,17 +25,21 @@
       </el-table>
       <!-- </router-link> -->
     </div>
+    <!-- <div style="height:0.45rem"></div> -->
+    <footer-home></footer-home>
   </div>
 </template>
 
 <script>
 import headerBaseEleven from '../header/headerBaseEleven'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'workBenchSupplierInfoOfCity',
 
   components: {
-    headerBaseEleven
+    headerBaseEleven,
+    footerHome
   },
 
   data () {
@@ -131,7 +135,7 @@ export default {
 
 <style scoped>
   .workBenchSupplierInfoOfCityView{width: 100%;}
-  .content{width: 100%; position: absolute; top: 0.45rem;bottom: 0; color: #666666;overflow: scroll;}
+  .content{width: 100%; position: absolute; top: 0.45rem;bottom: 0.45rem; color: #666666;overflow: scroll;}
   .content >>> .el-table__body{width: 100%!important}
   .content >>> .el-table__header{width: 100%!important}
   .content >>> .el-table{font-size: 0.13rem; text-align: center}

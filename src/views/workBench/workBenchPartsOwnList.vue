@@ -24,17 +24,21 @@
       </el-table>
       <!-- </router-link> -->
     </div>
+    <div style="height:0.45rem"></div>
+    <footer-home></footer-home>
   </div>
 </template>
 
 <script>
 import headerBasePartsOwn from '../header/headerBasePartsOwn'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'workBenchPartsOwnListView',
 
   components: {
-    headerBasePartsOwn
+    headerBasePartsOwn,
+    footerHome
   },
 
   data () {

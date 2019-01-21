@@ -8,19 +8,22 @@
         <el-tab-pane label="质量" name="first"><quality></quality></el-tab-pane>
       </el-tabs>
     </div>
+    <div style="height:0.45rem"></div>
+    <footer-home></footer-home>
   </div>
 </template>
 
 <script>
 import quality from '../../components/form/quality'
 import headerLast from '../header/headerLast'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'reportForm',
 
   components: {
     headerLast,
     quality,
-
+    footerHome
   },
 
   data () {

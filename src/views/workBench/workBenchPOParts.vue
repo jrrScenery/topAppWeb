@@ -25,6 +25,7 @@
         </el-table>
       <!-- </router-link> -->
     </div>
+    <footer-home></footer-home>
   </div>
 </template>
 
@@ -33,12 +34,14 @@ import headerBase from '../header/headerBase'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
 import loadingtmp from '@/components/load/loading'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'workBenchPOParts',
 
   components: {
     headerBase,
-    loadingtmp
+    loadingtmp,
+    footerHome
   },
 
   data () {
@@ -137,7 +140,7 @@ export default {
 
 <style scoped>
   .workBenchPOPartsView{width: 100%;background: #f7f7f7}
-  .workBenchPOPartsContent{width: 100%; position: absolute; top: 0.45rem;bottom: 0; color: #666666;overflow: scroll;}
+  .workBenchPOPartsContent{width: 100%; position: absolute; top: 0.45rem;bottom: 0.45rem; color: #666666;overflow: scroll;}
   .workBenchPOPartsContent >>> .el-table__body{width: 100%!important}
   .workBenchPOPartsContent >>> .el-table__header{width: 100%!important}
   .workBenchPOPartsContent >>> .el-table{font-size: 0.13rem; text-align: center;}

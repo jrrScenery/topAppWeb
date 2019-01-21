@@ -12,6 +12,8 @@
         </el-tabs>
       </div>
     </div>
+    <div style="height:0.45rem"></div>
+    <footer-home></footer-home>
   </div>
 </template>
 <script>
@@ -21,6 +23,7 @@ import complaintList from '../../components/opinion/complaintList'
 import proSatisfy from '../../components/opinion/proSatisfy'
 import caseEvaluate from '../../components/opinion/caseEvaluate'
 import fetch from '../../utils/ajax'
+import footerHome from '../footer/footerHome'
 export default {
   name: 'programShow',
 
@@ -28,7 +31,8 @@ export default {
     headerLast,
     complaintList,
     proSatisfy,
-    caseEvaluate
+    caseEvaluate,
+    footerHome
   },
 
   data () {
