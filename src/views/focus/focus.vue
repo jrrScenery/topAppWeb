@@ -139,7 +139,7 @@ export default {
       fetch.get("?action=GetTaskMessage&PAGE_NUM=1&PAGE_TOTAL=2",{}).then(res=>{
         this.noticeData = res.data;
       });
-    }
+    }   
     
   },
   beforeCreate:function(){

@@ -103,7 +103,7 @@ export default {
       tab_box: 1,
       searchData:{
         industry:[],
-        type:[]
+        INDUSTRY_NAME: this.$route.query.industryName,
       },
       objpages:{"first":{page:1,loadall:false, IF_CLOSE:'N',idx:0,isSearch:0},"second":{page:1,loadall:false,IF_CLOSE:'Y',idx:1,isSearch:0},
       "third":{page:1,loadall:false,IF_CLOSE:'',idx:2,isSearch:0}},
@@ -113,20 +113,19 @@ export default {
   created () {
   },
   activated(){
-    console.log("searchData:",this.searchData);
     this.searchData={
       customer:'',
-      endTime:'',
       eventNum:'',
-      industry:[],
+      industry: this.$route.query.industry? this.$route.query.industry.split(','):[],
       keyWord:'',
       PM:'',
       proName:'',
       sale:'',
-      startTime:'',
+      startTime:this.$route.query.startDate,
+      endTime:this.$route.query.endDate,
       type:this.$route.query.type? this.$route.query.type.split(','):["1","2"],
     }
-    this.isSearch = false;
+    this.isSearch = this.$route.query.isSearch;
     if(!this.$route.meta.isUseCache){
       this.busy= false;
       this.loadall= false;
@@ -134,8 +133,10 @@ export default {
       this.objpages["first"]["page"] = 1;
       this.objpages["first"]["loadall"]=false
       this.opinionTab[0].eventListArr = [];
+      this.objpages["second"]["page"] = 1;
       this.objpages["second"]["loadall"]=false
       this.opinionTab[1].eventListArr = [];
+      this.objpages["third"]["page"] = 1;
       this.objpages["third"]["loadall"]= false;
       this.opinionTab[2].eventListArr = [];
       this.loadMore();
@@ -181,6 +182,12 @@ export default {
       let strurl = "?action=GetCaseList&TYPE=all";
       let params = {CASE_TYPEID:"1,2",PAGE_NUM: objnowpage.page, PAGE_TOTAL: this.pageSize, IF_CLOSE: objnowpage.IF_CLOSE}
       if(this.isSearch){
+        params.CUST_ID = this.$route.query.custid;
+        params.TECH_NAME = this.$route.query.techName;
+        params.CASE_LEVEL = this.$route.query.caseLevel;
+        params.FACTORY_NAME = this.$route.query.factoryName;
+        params.CUST_NAME = this.$route.query.CUST_NAME;
+
         params.INDUSTRY_NAME = this.searchData.industry.join(",");//行业
         params.TYPE = this.searchData["type"].join(",");//事件类型
         params.CUSTOMER_NAME = this.searchData.customer;//客户

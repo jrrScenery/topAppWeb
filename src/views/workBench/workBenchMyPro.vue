@@ -50,7 +50,7 @@
       </el-tabs>
     </div>
     <footer-home></footer-home>
-  </div>
+  </div> 
 </template>
 
 <script>

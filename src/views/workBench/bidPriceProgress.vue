@@ -87,6 +87,12 @@ export default {
                 this.getEventList();
             }, 500);
         },
+    },
+    beforeRouteLeave( to, from,next){
+        if (to.name == 'bid') {
+            to.meta.isUseCache = true;    
+        }        
+        next();
     }
 }
 </script>

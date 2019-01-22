@@ -191,7 +191,7 @@ export default {
     },
     //在页面离开时记录滚动位置
     beforeRouteLeave (to, from, next) {
-        if (to.name == 'bidDescriptView') {
+        if (to.name == 'bidDescriptView' ||to.name == 'bidPriceProgress') {
         this.scrollTop = document.querySelector('.content').scrollTop;
         console.log("scrollTop:",this.scrollTop)
         }   
