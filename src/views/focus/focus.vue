@@ -2,95 +2,122 @@
 <template>
   <div class="focusView">
     <div class="content">
-
-      <div class="notice">
+      <div class="event">
         <div class="title">
           <div class="titleLeft">
+            <img src="../../assets/images/index_3.png" alt="">
             <router-link :to="{name:'mineNotice',params:{}}">
-              <a>{{noticeTitle}}</a>
+              {{noticeTitle+'('+noticeTotal+')'}}
             </router-link>
           </div>
           <router-link :to="{name:'mineNotice',params:{}}">
             <div class="titleRight">{{more}}</div>
           </router-link>
         </div>
-        <div>
-          <ul class="tem" v-for="item in noticeData" :key="item.id">
-            <div v-if="noticeData.length!=0" >
-              <router-link :to="{name:'mineNotice',params:{}}">
-                <li class="li_focusView">    
-                  <template>
-                    <span>{{item.SEND_NAME}} 于{{item.CREATE_ON}}{{item.BIZ_NAME}}，触发原因：{{item.TITLE}}</span>    
-                    <i class="el-icon-arrow-right"></i>
-                  </template>      
-                </li>
-              </router-link>
-            </div>
-          </ul>   
-          <!-- <ul class="noticeTem" v-if="noticeData.length!=0" v-for="item in noticeData" :key="item.id">
-            <router-link :to="{name:'mineNotice',params:{}}">
-              <li class="li_focusView">    
-                <template>
-                  <span>{{item.SEND_NAME}} 于{{item.CREATE_ON}}{{item.BIZ_NAME}}，触发原因：{{item.TITLE}}</span>    
-                </template>      
-              </li>
-            </router-link>
-          </ul> -->
-        </div>
+        <el-table
+          :data="noticeData" 
+          style="width: 100%; max-height:1.85rem; border: 0.01rem solid #e1e1e1">
+          <template v-for="item in noticeTable">
+            <el-table-column
+              :fixed="item.fixed"
+              :key="item.id"
+              :prop="item.prop"
+              :label="item.label"
+              :min-width="item.width">
+              <template slot-scope="scope">
+                <template v-if="item.prop == 'CASEHEALTH'">
+                  <span v-if="scope.row[item.prop] == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></span>
+                  <span v-if="scope.row[item.prop] == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></span>
+                  <span v-if="scope.row[item.prop] == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ffff00;"></span>
+                  <span v-if="scope.row[item.prop] == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></span>
+                  <span v-if="scope.row[item.prop] == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span>
+                </template>
+                <router-link v-else :to="{name:'eventShow',query:{caseId:scope.row['CASEID']}}">
+                  <span  class="table_name">{{scope.row[item.prop]}}</span>
+                </router-link>
+              </template>
+            </el-table-column>
+          </template>
+        </el-table>
       </div>
-
-      <div class="event" v-loading="busy && !loadall" element-loading-text="加载中">
+      <div class="event">
         <div class="title">
           <div class="titleLeft">
+            <img src="../../assets/images/index_1.png" alt="">
             <router-link :to="{name:'focusEventList'}">
-              <a>{{eventTitle}}</a>
+              {{eventTitle+'('+eventTitleTotal+')'}}
             </router-link>
           </div>
           <router-link :to="{name:'focusEventList'}">
             <div class="titleRight">{{more}}</div>
           </router-link>
         </div>
-        <div>         
-          <ul class="tem" v-for="item in caseData" :key="item.id">
-            <div v-if="caseData.length!=0" >
-              <router-link :to="{name:'eventShow',query:{caseId:item.CASEID}}">
-                <li class="li_focusView" :key="item.id">    
-                  <template>
-                    <span>{{item.CODE}} 关注原因:{{item.ITEM.split(",")[0]}} 客户名称：{{item.CUSTOM}}</span>    
-                    <i class="el-icon-arrow-right"></i>
-                  </template>      
-                </li>
-              </router-link>
-            </div>
-          </ul>          
-        </div>
+        <el-table
+          :data="caseData" 
+          style="width: 100%; max-height:1.85rem; border: 0.01rem solid #e1e1e1">
+          <template v-for="item in eventTable">
+            <el-table-column
+              :fixed="item.fixed"
+              :key="item.id"
+              :prop="item.prop"
+              :label="item.label"
+              :min-width="item.width">
+              <template slot-scope="scope">
+                <template v-if="item.prop == 'CASEHEALTH'">
+                  <span v-if="scope.row[item.prop] == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></span>
+                  <span v-if="scope.row[item.prop] == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></span>
+                  <span v-if="scope.row[item.prop] == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ffff00;"></span>
+                  <span v-if="scope.row[item.prop] == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></span>
+                  <span v-if="scope.row[item.prop] == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></span>
+                </template>
+                <router-link v-else :to="{name:'eventShow',query:{caseId:scope.row['CASEID']}}">
+                  <span  class="table_name">{{scope.row[item.prop]}}</span>
+                </router-link>
+              </template>
+            </el-table-column>
+          </template>
+        </el-table>
       </div>
-
       <div class="program">
         <div class="title">
           <div class="titleLeft">
+            <img src="../../assets/images/index_2.png" alt="">
             <router-link :to="{name:'programList'}">
-            <a>{{programTitle}}</a><span>健康度小于80分</span>
+              {{programTitle+'('+programTitleTotal+')'}}
             </router-link>
           </div>
           <router-link :to="{name:'programList'}">
             <div class="titleRight">{{more}}</div>
           </router-link>
         </div>
-        <div>
-          <ul class="tem" v-for="item in projData" :key="item.id">
-            <div v-if="projData.length!=0" >
-              <router-link :to="{name:'programShow',query:{projectId:item.PROJECT_ID}}">
-                <li class="li_focusView" :key="item.id">    
-                  <template>
-                    <span>{{item.PROJECT_NAME}}</span>    
-                    <i class="el-icon-arrow-right"></i>
-                  </template>      
-                </li>
-              </router-link>
-            </div>
-          </ul>
-        </div>
+        <el-table
+          :data="projData"
+          style="width: 100%; border: 0.01rem solid #e1e1e1">
+          <template v-for="item in programTable">
+            <el-table-column
+              :fixed="item.fixed"
+              :key="item.id"
+              :prop="item.prop"
+              :label="item.label"
+              :min-width="item.width">
+              <template slot-scope="scope">
+                <template v-if="item.prop == 'NOW_COLOR'">
+                <!-- 1 #ff0000 红，2 #ff9900 橙，3 #ffff00 黄，4 #009900 绿 -->                  
+                <div>
+                    <i v-if="scope.row[item.prop] == 0" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem;"></i>
+                    <i v-if="scope.row[item.prop] == 1" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff0000;"></i>
+                    <i v-if="scope.row[item.prop] == 2" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ff9900;"></i>
+                    <i v-if="scope.row[item.prop] == 3" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #ffff00;"></i>
+                    <i v-if="scope.row[item.prop] == 4" style="display: inline-block; width: 0.14rem; height: 0.07rem; border-radius: 0.035rem; background: #009900;"></i>
+                  </div>
+                </template>
+                <router-link v-else :to="{name:'programShow',query:{projectId:scope.row['PROJECT_ID']}}">
+                  <span class="table_name">{{scope.row[item.prop]}}</span>
+                </router-link>
+              </template>
+            </el-table-column>
+          </template>
+        </el-table>
       </div>
     </div>
   </div>
@@ -114,10 +141,89 @@ export default {
       programTitle: '需关注项目',
       more: '更多',
       caseData: [],
+      eventTable:[
+        {
+          prop: 'CASEHEALTH',
+          label: '',
+          fixed: true,
+          width: '5%'
+        },
+        {
+          prop: 'CODE',
+          label: '事件编号',
+          fixed: true,
+          width: '35px'
+        },
+        {
+          prop: 'ITEM',
+          label: '关注原因',
+          fixed: true,
+          width: '35%'
+        },
+        {
+          prop: 'CUSTOM',
+          label: '客户名称',
+          fixed: true,
+          width: '35%'
+        }
+      ],
       projData:[],
+      programTable:[
+        {
+          prop: 'NOW_COLOR',
+          label: '',
+          fixed: true,
+          width: '5%'
+        },
+        {
+          prop: 'PROJECT_NAME',
+          label: '项目名称',
+          fixed: true,
+          width: '35px'
+        },
+        {
+          prop: 'START_DATE',
+          label: '开始日期',
+          fixed: true,
+          width: '35%'
+        },
+        {
+          prop: 'END_DATE',
+          label: '结束日期',
+          fixed: true,
+          width: '35%'
+        }
+      ],
       noticeData:[],
-      busy:true,
-      loadall: false     
+      noticeTable:[
+        {
+          prop: 'CASEHEALTH',
+          label: '',
+          fixed: true,
+          width: '5%'
+        },
+        {
+          prop: 'BIZ_NAME',
+          label: '业务类型',
+          fixed: true,
+          width: '35px'
+        },
+        {
+          prop: 'CREATE_ON',
+          label: '标题',
+          fixed: true,
+          width: '35%'
+        },
+        {
+          prop: 'TITLE',
+          label: '客户名称',
+          fixed: true,
+          width: '35%'
+        }
+      ],
+      eventTitleTotal:0,
+      programTitleTotal:0,
+      noticeTotal:0
     }
   },
 
@@ -127,24 +233,26 @@ export default {
 
   methods:{
     fetchData:function(){
-      fetch.get("?action=GetFocusCase&PAGE_NUM=1&PAGE_TOTAL=2","").then(res=>{
-        // console.log("res",res.data);
-        this.busy = true;
-        this.loadall = true;
+      fetch.get("?action=GetFocusCase&PAGE_NUM=1&PAGE_TOTAL=3","").then(res=>{
+        console.log(res.data);
         this.caseData = res.data;
-      }); 
-      fetch.get("?action=GetFocusProject&PAGE_NUM=1&PAGE_TOTAL=2",{}).then(res=>{
-        this.projData = res.data;
+        this.eventTitleTotal = res.total;
       });
-      fetch.get("?action=GetTaskMessage&PAGE_NUM=1&PAGE_TOTAL=2",{}).then(res=>{
+      fetch.get("?action=GetFocusProject&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
+        console.log("GetFocusProject:",res)
+        this.projData = res.data;
+        this.programTitleTotal = res.total;
+      });
+      fetch.get("?action=GetTaskMessage&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
         this.noticeData = res.data;
+        this.noticeTotal = res.total;
+        console.log("GetTaskMessage:",res);
       });
     }   
     
   },
   beforeCreate:function(){
-    this.$router.replace(location);
-    
+    this.$router.replace(location);    
     history.pushState(null, null, document.url);
     window.onpopstate = () => {
       history.go(1)
@@ -152,8 +260,7 @@ export default {
   },
   activated(){
     if(!this.$route.meta.isUseCache){
-      this.busy = true;
-      this.loadall = false;
+      this.noticeData = [];
       this.caseData = [];
       this.projData = [];
       fetch.get("?action=checkSession",{}).then(res=>{
@@ -171,26 +278,21 @@ export default {
 
 <style scoped>
   .focusView{width: 100%;}
-  .content .title{display: flex; justify-content: space-between;height: 0.33rem; line-height: 0.33rem;font-size: 0.14rem;padding:0 0.1rem;}
-  .content .notice .title{display: flex; justify-content: space-between;height: 0.33rem; line-height: 0.33rem;font-size: 0.14rem;}
-  .content .title a{color: black; font-weight: bold}
-  .content .title span{color: red; font-size:0.04rem ;border-left: 5px}
-  .content .title .titleRight{font-size: 0.14rem;margin-right: 0.1rem}
-  .event, .notice, .program{background-color: #ffffff;margin-bottom: 0.2rem;}
-  .tem{border-top: 0.01rem solid #e5e5e5;height:100%;}
-  /* .noticeTem{padding:0 0.1rem;border-top: 0.01rem solid #e5e5e5;} */
-  .event span, .notice span, .program span{line-height: 0.25rem;height: 0.25rem;font-size: 0.14rem;color: #000;}
-  .tem .li_focusView{display: flex; justify-content: space-between; align-items: center;background: #ffffff; border-bottom: 0rem solid #e5e5e5; font-size: 0.14rem; line-height: 0.5rem; padding: 0.03rem 0.1rem;}
-  .tem .li_focusView:nth-child(1){border-top: 0 solid #e5e5e5;}
-  .tem .li_focusView img{width: 0.24rem; height: 0.24rem; margin-right: 0.15rem;}
-  .tem .li_focusView span{width: 100%;height: 100%; text-align: left; color: #262626;margin-bottom: 0.02rem}
-  .tem .li_focusView span{
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    /*! autoprefixer: off */
-    -webkit-box-orient: vertical;
-  }
+  .content{margin: 0 0.14rem; display: block;}
+  .content .title{display: flex; justify-content: space-between;height: 0.33rem; line-height: 0.33rem; font-size: 0.14rem; color: #2698d6;}
+  .content .title a{color: #2698d6;}
+  .content .title .titleRight{font-size: 0.13rem; color: #999999;}
+  .content .title img{width: 0.18rem; height: 0.18rem; vertical-align: text-bottom; margin-right: 0.08rem;}
+  .content >>> .el-table td{height: 0.3rem!important; box-sizing: border-box; margin: 0; padding: 0; text-align: center}
+  .content >>> .event .el-table td:nth-child(1) .cell{padding: 0}
+  .content >>> .program .el-table td:nth-child(1) .cell{padding: 0}
+  .content >>> .event .el-table td:nth-child(3){text-align: left}
+  .content >>> .event .el-table td:nth-child(4){text-align: left}
+  .content >>> .program .el-table td:nth-child(2){text-align: left}
+  .content >>> .opinion .el-table td:nth-child(1){text-align: left}
+  .content >>> .el-table th{height: 0.3rem!important; box-sizing: border-box; margin: 0; text-align: center; padding: 0;}
+  .content >>> .el-table td>.cell{color: #666666; padding: 0 0.02rem}
+  .content >>> .el-table th>.cell{color: #333333; padding: 0 0.02rem;}
+  .event .table_name{display: block; width: 100%; height: 0.3rem; line-height: 0.3rem; overflow: hidden; text-overflow: ellipsis;white-space: nowrap;}
 </style>
 

@@ -54,7 +54,7 @@ export default {
       ],
       page:1,
       pageSize:30,
-      busy:true,
+      busy:false,
       loadall: false,
       tableHeight:400,
       isSearch:false,

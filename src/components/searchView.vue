@@ -92,7 +92,6 @@ export default {
       this.Type = res.data;
     });
 
-
     this.form.industry = this.queryData.industry;
     this.form.type = this.queryData['type'];
     this.form.customer = this.queryData.customer;

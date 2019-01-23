@@ -10,7 +10,7 @@
             <el-table
               stripe
               v-loading="busy && !loadall"
-              element-loading-text="正在加载下一页"
+              element-loading-text="加载中"
               v-loadmore="loadMore"
               :data="item.tableData"
               @row-click="rowClick"
@@ -93,8 +93,19 @@ export default {
       tableHeight:400
     }
   },
+  activated(){
+    if(!this.$route.meta.isUseCache){
+      this.busy= false;
+      this.loadall= false;
+      this.page =1;
+      this.POinfoTab[0].tableData = [];
+      this.POinfoTab[1].tableData = [];
+      this.loadMore();
+    }
+    this.$route.meta.isUseCache = false;
+  },
   created () {
-    this.getPOInfoList()
+    // this.getPOInfoList()
     // var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
     // fetch.get("?action=GetPoPerson",params).then(res=>{
     //   this.POinfoTab[0].tableData = res.data;

@@ -1,7 +1,7 @@
 <!--工作台-在保项目信息-->
 <template>
   <div class="workBenchInfoView">
-    <header-last :title="workBenchInfoTit"></header-last>
+    <header-base-five :title="workBenchInfoTit"  :queryData="searchData"  @searchPro="getSearParams"></header-base-five>
     <div style="height: 0.45rem;"></div>
     <div class="tableTh"><span>行业</span><span>客户数量</span><span>项目数量</span><span>合同规模</span></div>
     <div class="tableTd" v-for="items in workBenchInfoObj" :key="items.name"  >
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import headerLast from '../header/headerLast'
+import headerBaseFive from '../header/headerBaseFive'
 import global_ from '../../components/Global'
 import fetch from '../../utils/ajax'
 import loadingtmp from '@/components/load/loading'
@@ -37,7 +37,7 @@ export default {
   name: 'workBenchInfo',
 
   components: {
-    headerLast,
+    headerBaseFive,
     loadingtmp,
     footerHome
   },
@@ -47,52 +47,83 @@ export default {
       workBenchInfoTit: '在保项目信息',
       workBenchInfoObj: [],
       busy:true,
-      loadall: false
+      loadall: false,
+      isSearch:false,
+      searchData: {
+        industry:[]
+      },
     }
   },
   created () {
-    
+    this.getProjectStat();
   },
   mounted(){
-    fetch.get('?action=GetProjectStat',{}).then(res => {
-      // let math = require('mathjs');
-      console.log(res.data)
-      if("0"== res.STATUSCODE){
+    // fetch.get('?action=GetProjectStat',{}).then(res => {
+    //   console.log(res.data)
+    //   if("0"== res.STATUSCODE){
 
-        let logData = res.data;
-        let temparr= [] ;
-        let tempTypeId = -1;
-        logData.forEach(function(v,i,ar){
-          // console.log(v)
-          // console.log(i)
-          // console.log(ar)
-          if(0 == temparr.length || v.BTSORT!= temparr[temparr.length-1]["typeid"] ){
-            temparr.push({"typeid":v.BTSORT,"inx":i,"name":v.BUSINESS_TYPE,arr:[]});
-            console.log(temparr[temparr.length-1]["typeid"])
-          }
-          temparr[temparr.length-1]["arr"].push(v);
-        })
-        // logData.forEach(function(v,i,ar){
-        //   if(0 == temparr.length || v.INDUSTRY!= temparr[temparr.length-1]["type"] ){
-        //     temparr.push({"type":v.INDUSTRY,"inx":i,"name":v.BUSINESS_TYPE,arr:[]});
-        //     console.log(temparr[temparr.length-1]["type"])
-        //   }
-        //   temparr[temparr.length-1]["arr"].push(v);
-        // })
-        console.log(temparr);
-        this.workBenchInfoObj= temparr;
+    //     let logData = res.data;
+    //     let temparr= [] ;
+    //     let tempTypeId = -1;
+    //     logData.forEach(function(v,i,ar){
+    //       if(0 == temparr.length || v.BTSORT!= temparr[temparr.length-1]["typeid"] ){
+    //         temparr.push({"typeid":v.BTSORT,"inx":i,"name":v.BUSINESS_TYPE,arr:[]});
+    //         console.log(temparr[temparr.length-1]["typeid"])
+    //       }
+    //       temparr[temparr.length-1]["arr"].push(v);
+    //     })
+    //     console.log(temparr);
+    //     this.workBenchInfoObj= temparr;
 
         
-      }
-      this.busy = false;
-      this.loadall = true;
+    //   }
+    //   this.busy = false;
+    //   this.loadall = true;
 
-    })
+    // })
   },
   methods: {
-    
-
-  }
+    getProjectStat(){
+      let urlparam = {};
+      if(this.searchData){
+        urlparam.BUSINESS_TYPE = this.searchData["business"]
+        urlparam.INDUSTRY = this.searchData["industry"].join(",")
+        urlparam.PROJECT_NAME = this.searchData["proName"]
+        urlparam.CUST_NAME = this.searchData["customer"]
+        urlparam.PM_NAME = this.searchData["PM"]
+        urlparam.SALE_NAME = this.searchData["sale"]
+      }
+      console.log("urlparam",urlparam)
+      fetch.get('?action=GetProjectStat',urlparam).then(res => {
+        console.log(res.data)
+        if("0"== res.STATUSCODE){
+          let logData = res.data;
+          let temparr= [] ;
+          let tempTypeId = -1;
+          logData.forEach(function(v,i,ar){
+            if(0 == temparr.length || v.BTSORT!= temparr[temparr.length-1]["typeid"] ){
+              temparr.push({"typeid":v.BTSORT,"inx":i,"name":v.BUSINESS_TYPE,arr:[]});
+              console.log(temparr[temparr.length-1]["typeid"])
+            }
+            temparr[temparr.length-1]["arr"].push(v);
+          })
+          console.log(temparr);
+          this.workBenchInfoObj= temparr;
+        }
+        this.busy = false;
+        this.loadall = true;
+      })
+    },
+    getSearParams (searchData) {
+      this.searchData = searchData;  
+      this.busy = false;
+      this.isSearch = true;
+      this.page = 1;
+      this.loadall= false;
+      this.workBenchInfoObj = [];
+      this.getProjectStat();
+    },
+  },
 }
 
 </script>

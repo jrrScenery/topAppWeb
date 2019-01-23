@@ -200,18 +200,15 @@ export default {
         params.END_TIME = this.searchData.endTime;//时间创建时间的结束时间
       }
 
-      console.log("workBunchMyEventAll:",params);
       fetch.get(strurl,params).then(res => {
-        console.log(res)
+        console.log("workBunchMyEventAll",res)
         if('0'== res.STATUSCODE){         
           let obj = this.opinionTab[objnowpage.idx].eventListArr;
           this.opinionTab[objnowpage.idx].eventListArr = this.returnList(flag, res, obj)
           this.totalData= res.totalData;    
         }
         else{}
-      });
-      
-      
+      });          
     },
 
     loadMore(){
