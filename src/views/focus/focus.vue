@@ -210,13 +210,13 @@ export default {
         },
         {
           prop: 'CREATE_ON',
-          label: '标题',
+          label: '时间',
           fixed: true,
           width: '35%'
         },
         {
           prop: 'TITLE',
-          label: '客户名称',
+          label: '内容',
           fixed: true,
           width: '35%'
         }
