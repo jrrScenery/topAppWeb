@@ -15,6 +15,16 @@
           </el-checkbox-group>
         </template>
       </el-form-item>
+      <el-form-item label="是否单次" label-width="0.8rem">
+        <el-select v-model="single" clearable placeholder="请选择">
+          <el-option
+            v-for="item in SingleChoise"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+            </el-option>
+          </el-select>
+      </el-form-item>
       <el-form-item label="客户" label-width="0.8rem">
         <el-input v-model="form.customer" class="bInput"></el-input>
       </el-form-item>
@@ -74,7 +84,10 @@ export default {
         endTime: ''
       },
       industryType: [],
-      Type: []
+      Type: [],
+      single: "",
+      SingleChoise: [{value: "Y", label: "是"}, {value: "N", label: "否"}]
+
     }
   },
 
@@ -113,6 +126,7 @@ export default {
       this.$emit('change', data)
     },
     onSearch () {
+      this.form.IF_ONCE = this.single;
       let form = this.form
       console.log("DADADADADAADADADD", form)
       this.$emit('search', form)

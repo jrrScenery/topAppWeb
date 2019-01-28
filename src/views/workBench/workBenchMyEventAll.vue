@@ -198,6 +198,7 @@ export default {
         params.KEYWORD = this.searchData.keyWord;//关键词
         params.START_TIME = this.searchData.startTime;//事件创建时间的开始时间
         params.END_TIME = this.searchData.endTime;//时间创建时间的结束时间
+        params.IF_ONCE = this.searchData.IF_ONCE;
       }
 
       fetch.get(strurl,params).then(res => {

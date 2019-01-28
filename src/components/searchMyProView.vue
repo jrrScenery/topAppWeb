@@ -61,9 +61,11 @@ export default {
   created () {
     fetch.get("?action=getDict&type=PRO_BUSINESS_TYPE","").then(res=>{
       this.businessType = res.data;
+      console.log("2222", this.businessType)
     });
     fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
       this.industryType = res.data;
+      console.log("1111", this.industryType)
     });
 
     this.form.business = this.queryData.business;
@@ -84,6 +86,7 @@ export default {
     },
     onSearch () {
       let form = this.form
+      console.log(form)
       this.$emit('search', form)
       // console.log(this.form, '------------------')
       let data = {

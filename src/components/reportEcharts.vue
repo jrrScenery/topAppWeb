@@ -178,9 +178,10 @@ export default {
 
     drawLineOne () {
       if ( this.oneData.length != 0 ) {
-        console.log("1111111111111111111", this.oneData, this.oneData.length)
         let myChartBox = document.getElementById('myChartOne')
+        myChartBox.removeAttribute('_echarts_instance_');
         myChartBox.style.width = window.innerWidth - 30  + 'px'
+        myChartBox.style.height = window.innerWidth/2 +50  + 'px'
         this.myChartOne = echarts.init(myChartBox)
         this.myChartOne.setOption({
           color: ['#3398DB'],
@@ -231,12 +232,12 @@ export default {
     drawLineTwo () {
       if ( this.factoryData.length == 1 && this.factoryData[0].name == "其他" && this.factoryData[0].value == null ) {
         let myChartBox = document.getElementById('myChartTwo')
-        myChartBox.innerText = "当前时间段内无项目记录"
+        myChartBox.textContent = "当前时间段内无项目记录"
         myChartBox.style.cssText = "width: '100%', height: '0.5rem'"
       }
       else if ( this.factoryData.length != 0 ) {
-        console.log("222222222222222", this.factoryData, this.factoryData.length)
         let myChartBox = document.getElementById('myChartTwo')
+        myChartBox.removeAttribute('_echarts_instance_');
         myChartBox.style.width = window.innerWidth - 10  + 'px'
         myChartBox.style.height = window.innerWidth/2 +50  + 'px'
         this.myChartTwo = echarts.init(myChartBox)
@@ -285,9 +286,10 @@ export default {
         myChartBox.style.cssText = "width: '100%', height: '0.5rem'"
       }
       else if ( this.deviceTypeData.length != 0 ) {
-        console.log("3333333333333", this.deviceTypeData, this.deviceTypeData.length)
         let myChartBox = document.getElementById('myChartFive')
+        myChartBox.removeAttribute('_echarts_instance_');
         myChartBox.style.width = window.innerWidth - 30  + 'px'
+        myChartBox.style.height = window.innerWidth/2 +50  + 'px'
         this.myChartFive = echarts.init(myChartBox)
         this.myChartFive.setOption({
           series: [
@@ -331,8 +333,9 @@ export default {
       }
       else if ( this.deviceModelXData.length != 0 ){
         let myChartBox = document.getElementById('myChartFour')
-        console.log("444444444444444444", this.deviceModelXData[0], this.deviceModelXData.length)
+        myChartBox.removeAttribute('_echarts_instance_'); 
         myChartBox.style.width = window.innerWidth - 30  + 'px'
+        myChartBox.style.height = window.innerWidth/2 +50  + 'px'
         this.myChartFour = echarts.init(myChartBox)
         this.myChartFour.setOption({
           grid: {
@@ -378,9 +381,10 @@ export default {
     },
     drawLineThree () {
       if ( this.caseLevelData.length != 0 ){
-        console.log("555555555555555555555", this.caseLevelData, this.caseLevelData.length)
         let myChartBox = document.getElementById('myChartThree')
+        myChartBox.removeAttribute('_echarts_instance_');
         myChartBox.style.width = window.innerWidth - 30  + 'px'
+        myChartBox.style.height = window.innerWidth/2 +50  + 'px'
         this.myChartThree = echarts.init(myChartBox)
         this.myChartThree.setOption({
           series: [
@@ -428,9 +432,10 @@ export default {
     },
     drawLineSix () {
       if ( this.sixData.length != 0 ) {
-        console.log("666666666666666666666", this.sixData, this.sixData.length)
         let myChartBox = document.getElementById('myChartSix')
+        myChartBox.removeAttribute('_echarts_instance_');
         myChartBox.style.width = window.innerWidth - 30  + 'px'
+        myChartBox.style.height = window.innerWidth/2 +50  + 'px'
         this.myChartSix = echarts.init(myChartBox)
         this.myChartSix.setOption({
           color: ['red'],
