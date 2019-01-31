@@ -2,7 +2,7 @@
 <template>
   <div class="homeView">
     <div class="swiper">
-      <el-carousel trigger="click" arrow="never" width="100%" height="1.2rem">
+      <el-carousel arrow="always" width="100%" height="1.2rem">
         <el-carousel-item v-for="item in imgObj" :key="item.id">
           <img :src="item.imgSrc" alt="">
         </el-carousel-item>
