@@ -3,7 +3,7 @@
   <div class="workBenchInfoView">
     <header-base-five :title="workBenchInfoTit"  :queryData="searchData"  @searchPro="getSearParams"></header-base-five>
     <div style="height: 0.45rem;"></div>
-    <div class="tableTh"><span>行业</span><span>客户数量</span><span>项目数量</span><span>合同规模</span></div>
+    <div class="tableTh"><span>客户</span><span>客户数量</span><span>项目数量</span><span>合同规模</span></div>
     <div class="tableTd" v-for="items in workBenchInfoObj" :key="items.name"  >
       <div class="tableTitle">{{items.name}}</div>
       <div class="divTable" v-for="item in items.arr" :key="item.id">
@@ -44,7 +44,7 @@ export default {
 
   data () {
     return {
-      workBenchInfoTit: '在保项目信息',
+      workBenchInfoTit: '项目管理',
       workBenchInfoObj: [],
       busy:true,
       loadall: false,
@@ -121,7 +121,9 @@ export default {
       this.page = 1;
       this.loadall= false;
       this.workBenchInfoObj = [];
-      this.getProjectStat();
+      this.$router.push({name:'workBunchInfoQueryResult',query:{business:searchData.business,industry:searchData["industry"].join(","),
+        proName:searchData.proName,customer:searchData.customer,PM:searchData.PM,sale:searchData.sale}})
+      // this.getProjectStat();
     },
   },
 }

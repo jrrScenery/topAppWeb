@@ -1,7 +1,7 @@
 <!--工作台-所有事件-->
 <template>
   <div class="workBenchMyEventView">
-    <header-base   :title="workBenchMyEventTit"  :queryData="searchData" @searchPro="getSearParams"></header-base>
+    <header-base :title="workBenchMyEventTit"  :queryData="searchData" @searchPro="getSearParams"></header-base>
     <div style="height: 0.45rem;"></div>
     <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <el-tabs v-model="activeName" @tab-click="tabClick">
@@ -200,7 +200,7 @@ export default {
         params.END_TIME = this.searchData.endTime;//时间创建时间的结束时间
         params.IF_ONCE = this.searchData.IF_ONCE;
       }
-
+      console.log("params",params)
       fetch.get(strurl,params).then(res => {
         console.log("workBunchMyEventAll",res)
         if('0'== res.STATUSCODE){         

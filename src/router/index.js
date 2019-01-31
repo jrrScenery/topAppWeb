@@ -299,6 +299,15 @@ export default new Router({
       component: resolve => require(['@/views/workBench/workBenchInfo'], resolve)
     },
     {
+      path: '/workBench/workBunchInfoQueryResult',
+      name: 'workBunchInfoQueryResult',
+      component: resolve => require(['@/views/workBench/workBunchInfoQueryResult'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
+    },
+    {
       path: '/workBench/workBenchIndustryCustomerList',
       name: 'workBenchIndustryCustomerList',
       component: resolve => require(['@/views/workBench/workBenchIndustryCustomerList'], resolve)
