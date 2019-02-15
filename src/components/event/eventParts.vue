@@ -292,7 +292,7 @@ export default {
   .ulparts li .txtbox .workstatus{ position: absolute; right: 0.1rem; top: 0.0rem; }
   .ulparts li .txtbox .workerstatus{ position: absolute; right: 0.1rem; top: 0.18rem; }
   .ulparts li .txtbox .orderid{ color: #2698d6; }
-  .delivercon{ padding: 0.1rem 0.1rem 0.2rem; max-height: 1.6rem; overflow: scroll;}
+  .delivercon{ padding: 0.1rem 0.1rem 0.2rem; max-height: 2.5rem; overflow: scroll;}
   .uldetailtree{ position: relative; padding-left: 0.1rem; }
   .uldetailtree:before{ position: absolute;content:" "; width: 0.02rem; top: 0; bottom: 0; left: 0; background: #aaa;}
   .uldetailtree dd{ position: relative; margin-bottom: 0.1rem;}
