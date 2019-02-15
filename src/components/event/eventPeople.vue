@@ -2,7 +2,7 @@
 <template>
   <div class="eventPeopleView" id="content">
 
-    <div id="peopleAllMap"></div>
+    <div id="peopleAllMap" ></div>
 
     <div class="peopleinfo" :class="{infoon: infoon}">
       <div class="infoh" @click="infoon=(workerData.length==0?infoon:(!infoon))">
@@ -91,7 +91,7 @@ export default {
             this.peoheight=140
           }
           else{
-            this.peoheight=210
+            this.peoheight=250
           }
           this.drawmap();
         }
@@ -104,14 +104,16 @@ export default {
     drawmap(){
       var vm=this;
       this.peoheight= this.peoheight
+      console.log(this.peoheight)
       console.log(document.querySelector(".peopleinfo").clientHeight);
       if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
             let winHeight = document.documentElement.clientHeight
             let mapHeight = document.getElementById('peopleAllMap')
             let contentHeight = document.getElementById('content')
-            mapHeight.style.height = winHeight - 95- (this.infoon ?this.peoheight:0) + 'px'
-            contentHeight.style.height = winHeight - 95 + 'px'
+            mapHeight.style.height = winHeight - 95- (this.infoon ?this.peoheight:0) + 'px'//地图高度
+            contentHeight.style.height = winHeight - 95 + 'px'  //整个content高度
             console.log(mapHeight.style.height)
+            console.log(contentHeight.style.height)
           }
 
           let map = new BMap.Map('peopleAllMap')
@@ -188,6 +190,8 @@ export default {
   },
   watch:{
     infoon(curVal,oldVal){
+      console.log("curVal:",curVal)
+      console.log("oldVal:",oldVal)
       this.drawmap();
     }
   }
@@ -196,7 +200,7 @@ export default {
 </script>
 
 <style scoped>
-  .ashowcpoint{ position: absolute; right:0.1rem; bottom: 0; line-height: 0.3rem;color: #fff;}
+  .ashowcpoint{ position: absolute; right:0.1rem; bottom: 0; line-height: 0.45rem;color: #fff;}
   .eventPeopleView{padding: 0 0.15rem;}
   .searchBox{width: 100%; height: 0.5rem; background: #175a91}
   .searchBox >>> .el-form-item{margin: 0 -0.01rem; display: inline-block}
@@ -207,18 +211,18 @@ export default {
   .searchBox >>> .el-button{padding: 0; background: #169ad6}
   #peopleAllMap{}
 
-  .peopleinfo{position: absolute;   left: 0; right: 0; bottom:0;  max-height: 0.3rem; overflow: hidden;  background: #fff; transition: all 0.3s;}
-  .infoon{ min-height:2.1rem; }
+  .peopleinfo{position: absolute; left: 0; right: 0; bottom:0; max-height: 0.45rem; overflow: hidden;  background: #fff; transition: all 0.3s;}
+  .infoon{ min-height:3rem; }
   .peopleinfo  strong{font-weight: bold;}
-  .peopleinfo .infoh{ line-height: 0.3rem;text-align: center;background: #2698d6; color: #fff; position: relative; }
+  .peopleinfo .infoh{ line-height: 0.45rem;text-align: center;background: #2698d6; color: #fff; position: relative; }
   .peopleinfo  .infoh i{ position: relative; display: inline-block; content: " "; background: url(../../assets/images/rightarrwhite.png) no-repeat;
-  width: 0.29rem; height: 0.29rem; vertical-align: top; background-position: center; background-size: 16px; transition: all 0.3s;}
+  width: 0.29rem; height: 0.29rem; vertical-align:middle; background-position: center; background-size: 16px; transition: all 0.3s;}
   .infoon .infoh i{ transform: rotate(90deg);}
-  .peopleinfo ul{max-height: 1.9rem; overflow: scroll;}
-  .ulpeoinfo{  }
+  .peopleinfo ul{max-height: 2.6rem; overflow: scroll;}
+  .ulpeoinfo{}
   .ulpeoinfo li{ overflow: hidden; padding:0.1rem 0 0.1rem; color: #666; line-height: 0.18rem;border-bottom: 1px solid #e2e2e2;}
   .ulpeoinfo li .imgbox{ width: 0.6rem; float: left; position: relative;}
-  .ulpeoinfo li .imgbox img{ width: 0.4rem; display: block; margin: 0.2rem auto 0.05rem;}
+  .ulpeoinfo li .imgbox img{ width: 0.5rem; display: block; margin: 0.2rem auto 0.05rem;}
   .ulpeoinfo li .imgbox i{ position: absolute; left: 6%; top: 0.1rem; font-style: normal;}
   .ulpeoinfo li .imgbox .name{ text-align: center;}
   .ulpeoinfo li .txtbox{ margin-left: 0.6rem; position: relative;}

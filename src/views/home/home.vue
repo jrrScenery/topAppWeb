@@ -11,13 +11,13 @@
     <div style="text-align:center;margin-top:0.1rem" v-for="items in workBenchObj" :key="items.id" >
       <div v-if="items.arr.length!=0">
         <ul class="ul_workBench" >
-            <template v-for="item in items.arr">
-              <li class="li_workBench" :key="item.id">
-                <router-link :to="{name:item.href,params:item.params}" >
-                  <img  :src="item.imgSrc" alt="">
-                </router-link>
-                <span>{{item.text}}</span>
-              </li>
+          <template v-for="item in items.arr">
+            <li class="li_workBench" :key="item.id">
+              <router-link :to="{name:item.href,params:item.params}">
+                <img  :src="item.imgSrc" alt="">
+              </router-link>
+              <span>{{item.text}}</span>
+            </li>
           </template>
         </ul>
       </div>
