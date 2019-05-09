@@ -250,13 +250,73 @@ export default new Router({
       name: 'eventRepair',
       component: resolve => require(['@/views/home/eventRepair'], resolve)
     },
-    //首页关注->需关注事件列表->事件详情->SLA反馈
+    //首页关注->需关注事件列表->事件详情->SLA信息
     {
       path: '/home/eventSLAInfo',
       name: 'eventSLAInfo',
       component: resolve => require(['@/views/home/eventSLAInfo'], resolve)
     },
-     
+     //首页关注->需关注事件列表->事件详情->SLA反馈
+    {
+      path: '/home/eventSLAfeedBack',
+      name: 'eventSLAfeedBack',
+      component: resolve => require(['@/views/home/eventSLAfeedBack'], resolve)
+    },
+     //首页关注->需关注事件列表->事件详情->过程记录
+     {
+      path: '/home/processRecord',
+      name: 'processRecord',
+      component: resolve => require(['@/views/home/processRecord'], resolve)
+    },
+    //首页关注->需关注事件列表->事件详情->分析诊断
+    {
+      path: '/home/eventAnalysis',
+      name: 'eventAnalysis',
+      component: resolve => require(['@/views/home/eventAnalysis'], resolve)
+    },
+    //首页关注->需关注事件列表->事件详情->风险提示
+    {
+      path: '/home/eventRiskWarn',
+      name: 'eventRiskWarn',
+      component: resolve => require(['@/views/home/eventRiskWarn'], resolve)
+    },
+    //首页关注->需关注事件列表->事件详情->备件需求
+    {
+      path: '/home/eventPartRequire',
+      name: 'eventPartRequire',
+      component: resolve => require(['@/views/home/eventPartRequire'], resolve),
+    },
+    //首页关注->需关注事件列表->事件详情->备件需求
+    {
+      path: '/home/eventPartRequireList',
+      name: 'eventPartRequireList',
+      component: resolve => require(['@/views/home/eventPartRequireList'], resolve),
+    },
+    
+    //首页关注->需关注事件列表->事件详情->备件需求->新增/编辑
+    {
+      path: '/home/eventPartRequireDetail',
+      name: 'eventPartRequireDetail',
+      component: resolve => require(['@/views/home/eventPartRequireDetail'], resolve)
+    },
+    //首页关注->需关注事件列表->事件详情->人员需求
+    {
+      path: '/home/eventPersonRequire',
+      name: 'eventPersonRequire',
+      component: resolve => require(['@/views/home/eventPersonRequire'], resolve)
+    },
+     //首页关注->需关注事件列表->事件详情->人员需求
+     {
+      path: '/home/eventPersonRequireList',
+      name: 'eventPersonRequireList',
+      component: resolve => require(['@/views/home/eventPersonRequireList'], resolve),
+    },
+    //首页关注->需关注事件列表->事件详情->人员需求->新增/编辑
+    {
+      path: '/home/eventPersonRequireDetail',
+      name: 'eventPersonRequireDetail',
+      component: resolve => require(['@/views/home/eventPersonRequireDetail'], resolve)
+    },
     {
       path: '/workBench/personnelInfo',
       name: 'personnelInfo',

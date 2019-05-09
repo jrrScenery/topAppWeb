@@ -13,31 +13,36 @@
     </div>
     <div class="eventShowFooter" v-if="activeName!='third'&& activeName!='fourth'" >
       <el-row>
-        <el-col :span="7">
-          <router-link :to="{name:'eventReplenish',query:{caseId:this.caseId}}">
+        <div v-if="orgType=='kh'">
+          <el-col :span="7">
+            <router-link :to="{name:'eventReplenish',query:{caseId:this.caseId}}">
+              <div>
+                <img src="../../assets/images/eventBaseInfo_1.png" style="width: 0.11rem; height: 0.135rem;" alt="">
+                <span>补充说明</span>
+              </div>
+            </router-link>
+          </el-col>
+          <el-col :span="7">
+            <router-link :to="{name:'eventFeedback',query:{caseId:this.caseId,projectId:this.projectId}}">
             <div>
-              <img src="../../assets/images/eventBaseInfo_1.png" style="width: 0.11rem; height: 0.135rem;" alt="">
-              <span>补充说明</span>
+              <img src="../../assets/images/eventBaseInfo_2.png" style="width: 0.15rem; height: 0.135rem;" alt="">
+              <span>意见反馈</span>
             </div>
-          </router-link>
-        </el-col>
-        <el-col :span="7">
-          <router-link :to="{name:'eventFeedback',query:{caseId:this.caseId,projectId:this.projectId}}">
-          <div>
-            <img src="../../assets/images/eventBaseInfo_2.png" style="width: 0.15rem; height: 0.135rem;" alt="">
-            <span>意见反馈</span>
-          </div>
-          </router-link>
-        </el-col>
-        <el-col :span="7">
-          <router-link :to="{name:'eventEvaluation',query:{caseId:this.caseId}}">
-            <div>
-              <img src="../../assets/images/eventBaseInfo_3.png" style="width: 0.145rem; height: 0.145rem;" alt="">
-              <span>服务评价</span>
-            </div>
-          </router-link>
-        </el-col>
-        <el-col :span="3"><div class="el-icon-more" @click.stop="popBg=!popBg"></div></el-col>
+            </router-link>
+          </el-col>
+          <el-col :span="7">
+            <router-link :to="{name:'eventEvaluation',query:{caseId:this.caseId}}">
+              <div>
+                <img src="../../assets/images/eventBaseInfo_3.png" style="width: 0.145rem; height: 0.145rem;" alt="">
+                <span>服务评价</span>
+              </div>
+            </router-link>
+          </el-col>
+          <el-col :span="3"><div class="el-icon-more" @click.stop="popBg=!popBg"></div></el-col>
+        </div>
+        <div style="margin-right:0.2rem;float:right" v-else>
+          <el-col><div class="el-icon-more" @click.stop="popBg=!popBg"></div></el-col>
+        </div>
       </el-row>
     </div>
     <div v-if="popBg" class="popBg" @click.stop="popBg=!popBg">
@@ -51,6 +56,26 @@
         <router-link :to="{name:'eventSLAInfo',query:{caseId:this.caseId,caseLevel:this.caseLevel,slaLevel:this.slaLevel,createDate:this.createDate}}">
         <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/sla.png" alt="">SLA信息</li>
         </router-link>
+        <div v-if="exFlag">         
+          <router-link :to="{name:'eventSLAfeedBack',query:{caseId:this.caseId}}">
+            <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/slafeedback.png" alt="">SLA反馈</li>
+          </router-link>
+          <router-link :to="{name:'eventAnalysis',query:{caseId:this.caseId}}">
+            <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/eventAnalysis.png" alt="">分析诊断</li>
+          </router-link>
+          <router-link :to="{name:'processRecord',query:{caseId:this.caseId}}">
+            <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/processRecord.png" alt="">过程记录</li>
+          </router-link>
+          <router-link :to="{name:'eventRiskWarn',query:{caseId:this.caseId}}">
+            <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/riskWarn.png" alt="">风险提示</li>
+          </router-link>
+          <router-link :to="{name:'eventPartRequireList',query:{caseId:this.caseId}}">
+            <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/eventPartRequire.png" alt="">备件需求</li>
+          </router-link>
+          <router-link :to="{name:'eventPersonRequireList',query:{caseId:this.caseId}}">
+            <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/eventPersonRequire.png" alt="">人员需求</li>
+          </router-link>
+        </div>
       </ul>
     </div>
   </div>
@@ -83,7 +108,9 @@ export default {
       projectId: this.$route.query.projectId,
       slaLevel:'',
       caseLevel:'',
-      createDate:''
+      createDate:'',
+      exFlag:false,
+      orgType:'',
     }
   },
 
@@ -91,6 +118,14 @@ export default {
 
   },
   created:function(){
+    let userRole = JSON.parse(localStorage.getItem("userRole"));
+    this.orgType = localStorage.getItem("orgType");
+    for(let i =0;i<userRole.length;i++){
+      if(userRole[i].ROLE_CODE=='line2_engineer'||userRole[i].ROLE_CODE=='line2_engineer_virtual'||userRole[i].ROLE_CODE=='CMO'){
+        this.exFlag = true
+      }
+    }
+    console.log("userRole",userRole);
     fetch.get("?action=GetCaseInfo&CASE_ID="+this.$route.query.caseId,{}).then(res=>{
       console.log(res.data);
       let baseInfo = res.data;
@@ -118,7 +153,7 @@ export default {
   .eventShowTabs >>> .el-tabs__nav{width: 100%; text-align: center;}
   .eventShowTabs >>> .el-tabs__item{width: 25%; padding: 0; font-size: 0.14rem; color: #666666;}
   .eventShowFooter{position: absolute; left: 0; right: 0; bottom: 0; height: 0.5rem; background: #ffffff;}
-  .eventShowFooter .el-row{}
+  /* .eventShowFooter .el-row{} */
   .eventShowFooter .el-row .el-col{line-height: 0.5rem; text-align: center; color: #000000;}
   .eventShowFooter .el-row .el-col img{vertical-align: sub;}
   .eventShowFooter .el-row .el-col .el-icon-more{width: 100%; line-height: 0.5rem; font-size: 0.16rem; color: #b9c5cf;}

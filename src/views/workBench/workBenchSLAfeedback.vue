@@ -4,38 +4,33 @@
     <header-last :title="SLAfeedbackTit"></header-last>
     <div style="height: 0.45rem;"></div>
     <div class="content">
-    <div class="tabheader">
-      <el-row>
-        <el-col :span="7" style="text-align:left"> 反馈项</el-col>
-        <el-col :span="8">反馈时间</el-col>
-        <el-col :span="6">说明</el-col>
-        <el-col :span="3">状态</el-col>
-      </el-row>
-    </div>
-    <div class="tabdetail">
-      <el-row v-for="item in SLAObj" :key="item.slaTypeId"><!--这几条数据在一个json数组slaStatus中，workid相同。-->
-        <el-col :span="7"><div style="text-align:left">{{item.slaType}}</div></el-col>
-        <el-col :span="8"><div style="font-size:0.13rem;line-height:0.2rem;">{{item.operateDate}}</div></el-col>
-        <el-col :span="6" style="word-wrap: break-word;font-size:0.13rem;padding-right:5px;line-height:0.2rem;">{{item.feedbackDescription}}</el-col><!--反馈说明-->
-        <el-col :span="3" style="float:right;color:#2698d6" >
-          <!-- <div v-if="item.slaTypeId==8||item.slaTypeId==10&&item.ifFeedback==0" @click="dialogVisible=true">反馈</div>
-          <div v-else-if="item.ifFeedback!=0">已反馈</div>
-          <div v-else @click="dialogVisible=true">反馈</div> -->
-          <div v-if="item.ifFeedback==0" @click="dialogopen(item.slaTypeId)">反馈</div>
-          <div v-if="item.ifFeedback!=0" style="color:#666666" >已反馈</div>
-        </el-col>
-      </el-row>
-    </div>
+      <div class="tabheader">
+        <el-row>
+          <el-col :span="7" style="text-align:left"> 反馈项</el-col>
+          <el-col :span="8">反馈时间</el-col>
+          <el-col :span="6">说明</el-col>
+          <el-col :span="3">状态</el-col>
+        </el-row>
+      </div>
+      <div class="tabdetail">
+        <el-row v-for="item in SLAObj" :key="item.slaTypeId"><!--这几条数据在一个json数组slaStatus中，workid相同。-->
+          <el-col :span="7"><div style="text-align:left">{{item.slaType}}</div></el-col>
+          <el-col :span="8" v-if="item.operateDate!=null"><div style="font-size:0.13rem;line-height:0.2rem;">{{item.operateDate}}</div></el-col>
+          <el-col :span="8" v-else><div style="font-size:0.13rem;line-height:0.2rem;">无</div></el-col>
+          <el-col :span="6"><div style="word-wrap: break-word;font-size:0.13rem;padding-right:5px;line-height:0.2rem;">{{item.feedbackDescription}}</div></el-col><!--反馈说明-->
+          <el-col :span="3" style="float:right;color:#2698d6" >
+            <div v-if="item.ifFeedback==0" @click="dialogopen(item.slaTypeId)">反馈</div>
+            <div v-if="item.ifFeedback!=0" style="color:#666666" >已反馈</div>
+          </el-col>
+        </el-row>
+      </div>
     </div>
     <div class="SLAdialog">
-    <el-dialog :visible.sync="dialogVisible0" width="70%" :show-close=false class="dialog">
-              <el-form class="form1" style="color:#333333">
+      <el-dialog :visible.sync="dialogVisible0" width="70%" :show-close=false class="dialog">
+        <el-form class="form1" style="color:#333333">
           <el-form-item label="反馈时间">
             <el-input class="input1" :value="date" style="font-size:6px" :disabled="true"></el-input>
           </el-form-item>
-          <!-- <el-form-item :prop="item">
-            <el-input class="input1" :value="item.slaTypeId"></el-input>
-          </el-form-item> -->
           <el-form-item>
              <el-input v-if="typeid==6" type="textarea" :rows="4" placeholder="请简要描述所做操作及处理结果。例如，更换25盘柜上的13号硬盘后，存储状态恢复正常。" v-model="form.des1" style="font-size:6px"></el-input>
             <el-input v-else  type="textarea" placeholder="请填写说明" v-model="form.des1" style="font-size:6px"></el-input>
@@ -45,13 +40,10 @@
           <el-button type="primary" class="onsubmit" @click="onSubmit">提交</el-button>
           </el-form-item>
         </el-form>
-        <!-- <div style="text-align:center">
-          
-        </div> -->
-    </el-dialog>
+      </el-dialog>
     </div>
     <div class="SLAdialog">
-    <el-dialog title="任务反馈" :visible.sync="dialogVisible1" width="70%">
+      <el-dialog title="任务反馈" :visible.sync="dialogVisible1" width="70%">
         <el-form class="form1">
           <!-- <el-form-item></el-form-item> -->
           <el-form-item  label="原因">
@@ -72,10 +64,7 @@
           <el-button type="primary"  class="onsubmit"  @click="onSubmit">提 交</el-button>
           </el-form-item>
         </el-form>
-        <!-- <div style="text-align:center">
-          
-        </div> -->
-    </el-dialog>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -114,18 +103,12 @@ export default {
 
   created: function() {
     this.getWorkInfo();
-    // fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res => {
-    //   console.log(res);
-    //   // console.log("1111111")
-    //   let baseInfo = res.DATA[0];
-    //   this.SLAObj = baseInfo.slaStatus;
-    // });
   },
   
   methods: {
     getWorkInfo:function(){
       fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res => {
-        console.log(res);
+        console.log("getWorkInfo",res);
         // console.log("1111111")
         let baseInfo = res.DATA[0];
         this.SLAObj = baseInfo.slaStatus;

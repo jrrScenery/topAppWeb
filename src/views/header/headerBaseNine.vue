@@ -18,7 +18,7 @@
 <script>
 import fetch from '../../utils/ajax'
 export default {
-  name: 'headerLast',
+  name: 'headerBaseNine',
 
   data () {
     return {

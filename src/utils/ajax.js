@@ -125,7 +125,7 @@ export default {
             reject(err)
           })
         })
-      }
+      },
 
       /*    get(url, params) {
         return instance.get(url, params).then(function (data) {

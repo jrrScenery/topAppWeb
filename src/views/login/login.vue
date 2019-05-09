@@ -103,9 +103,11 @@ console.log(res);
               localStorage.setItem("realName", res.data.userInfo[0].REALNAME);
               localStorage.setItem("mobile", res.data.userInfo[0].MOBILE);
               localStorage.setItem("email", res.data.userInfo[0].EMAIL);
+              localStorage.setItem("orgType", res.data.userInfo[0].ORGTYPE);
               console.log(JSON.stringify(res.data.userPermission));
               // localStorage.removeItem("userPermission");
               localStorage.setItem("userPermission", JSON.stringify(res.data.userPermission));
+              localStorage.setItem("userRole", JSON.stringify(res.data.userRole));
               localStorage.setItem("userName", this.ruleForm.userName);
 
               

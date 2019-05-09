@@ -88,6 +88,8 @@ export default {
       baseInfoArr: [
         {tit: 'PM：', desc: '',phone:''},
         {tit: '销售：', desc: '',phone:''},
+        {tit: '客户申报人：', desc: '',phone:''},
+        {tit: '处理联系人：', desc: '',phone:''},
         {tit: '所属区域：', desc: ''},
         {tit: '城市：', desc: ''},
         {tit: '地址：', desc: ''}
@@ -100,8 +102,8 @@ export default {
     
   },
   created:function(){
-
     let url = "?action=GetCaseInfo&CASE_ID="+this.$route.query.caseId;
+    
     fetch.get(url,"").then(res=>{
       console.log(res.data);
       let baseInfo = res.data;
@@ -123,9 +125,14 @@ export default {
       this.baseInfoArr[0].phone = baseInfo.PM_MOBILE;
       this.baseInfoArr[1].desc = baseInfo.SALE_NAME;
       this.baseInfoArr[1].phone = baseInfo.SALE_MOBILE;
-      this.baseInfoArr[2].desc = baseInfo.QY_NAME;
-      this.baseInfoArr[3].desc = baseInfo.CASE_LOCATION;
-      this.baseInfoArr[4].desc = baseInfo.CASE_ADDRESS;
+      this.baseInfoArr[2].desc = baseInfo.REPORTER_NAME;
+      this.baseInfoArr[2].phone = baseInfo.REPORTER_MOBILE;
+      this.baseInfoArr[3].desc = baseInfo.CONTACT_NAME;
+      this.baseInfoArr[3].phone = baseInfo.CONTACT_MOBILE;
+
+      this.baseInfoArr[4].desc = baseInfo.QY_NAME;
+      this.baseInfoArr[5].desc = baseInfo.CASE_LOCATION;
+      this.baseInfoArr[6].desc = baseInfo.CASE_ADDRESS;
       this.resolventObj.time = baseInfo.SOLVING_TIME;
       this.resolventObj.desc = baseInfo.FINAL_SOLUTION;
       this.caseLevel = baseInfo.CASE_LEVEL;
@@ -159,7 +166,7 @@ export default {
   .baseInfoBottom .resolvent span{color: #999999}
   .baseInfoBottom .resolvent .desc{color: #999999}
   .eventBaseInfoCell{padding: 0 0.1rem 0.05rem; color: #262626; border-bottom: 0.01rem solid #e1e1e1}
-  .eventBaseInfoCell span{width: 0.65rem; color: #999999; display: inline-block;}
+  .eventBaseInfoCell span{width: 0.8rem; color: #999999; display: inline-block;}
   .baseInfoBottom .speed >>> .el-step__head.is-process{color:#409EFF;border-color:#409EFF;}
   .baseInfoBottom .speed >>> .el-step__title.is-process{font-weight:800;color:#409EFF;font-size: 16px}
 </style>

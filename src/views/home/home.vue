@@ -117,7 +117,51 @@ export default {
     window.onpopstate = () => {
       history.go(1)
     }
+    window.scanResult = (res) =>{
+      let objtmp={};
+      let strscan = res;
+      let ar= []
+      ar = strscan.split("|");
+      alert(ar);
+      // this.$message({
+      //   message:ar,
+      //   type: 'info',
+      //   center: true,
+      //   customClass: 'msgdefine'
+      // });
+      if(ar.length){
+        ar.forEach(element => {
+          if(element.length){
+            let arsub = element.split("：")
+            if('厂商'==arsub[0] ){
+              objtmp.factory = arsub.length>1? arsub[1]:''
+            }
+            if('型号'== arsub[0]){
+              objtmp.xinghao = arsub.length>1? arsub[1]:''
+            }
+            if('SN'== arsub[0]){
+              objtmp.sn = arsub.length>1? arsub[1]:''
+            }
+            if('城市'== arsub[0]){
+              objtmp.city = arsub.length>1? arsub[1]:''
+            }
+          }
+        });
+      }
+          // this.$message({
+          //   message:ar[0].split("：")[1],
+          //   type: 'info',
+          //   center: true,
+          //   customClass: 'msgdefine'
+          // });
+          if(ar[0].split("：")[1]=='jingrr'){
+            this.$router.push({name:"workBenchDeclare" , query:{num:objtmp.sn, type:objtmp.xinghao, firm:objtmp.factory,cityname:objtmp.city }})
+          }
+      // this.$router.push({name:"workBenchDeclare" , query:{num:objtmp.sn, type:objtmp.xinghao, firm:objtmp.factory,cityname:objtmp.city }})
+
+    }
   },
+  
   deactivated(){
     console.log('移除');
     window.onpopstate = null

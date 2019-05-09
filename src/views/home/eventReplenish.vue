@@ -118,8 +118,6 @@ export default {
         this.opinionTab[0].data = res.data;
       });
 
-      
-
       fetch.get("?action=UpdateProcessInfo&CASE_ID="+this.caseid+"&REMARK="+this.form.desc,"").then(res=>{
         if(res.STATUSCODE=="0"){
           this.$message({
@@ -200,6 +198,7 @@ export default {
       data.append("FILE",'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==')
       data.append("FILE", photodata)
       fetch.post("?action=upload",data).then(res=>{
+        console.log("aaaaaaaaaaa");
         console.log(res)
         if(res['STATUSCODE'] == '0'){
           this.form.docId= res.data.docId
