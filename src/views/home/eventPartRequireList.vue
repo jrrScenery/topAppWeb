@@ -79,6 +79,7 @@
             </div>
             <div style="text-align:center;font-size:0.13rem;padding:0.15rem 0;color: #acacac" v-else>暂无备件需求信息</div>
         </div>
+        <footer-home></footer-home>
     </div>
 </template>
 <script>

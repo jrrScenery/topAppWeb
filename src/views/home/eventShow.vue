@@ -40,6 +40,35 @@
           </el-col>
           <el-col :span="3"><div class="el-icon-more" @click.stop="popBg=!popBg"></div></el-col>
         </div>
+        <div v-else-if='exFlag'>
+          <el-col :span="7">
+            <router-link :to="{name:'eventSLAfeedBack',query:{caseId:this.caseId}}">
+              <div>
+                <img style="width: 0.15rem; height: 0.135rem;" src="../../assets/images/slafeedback.png" alt="">
+                <span>SLA反馈</span>
+              </div>
+            </router-link>
+          </el-col>
+          <el-col :span="7">
+            <router-link :to="{name:'eventAnalysis',query:{caseId:this.caseId}}">
+              <div>
+                <img style="width: 0.15rem; height: 0.135rem;" src="../../assets/images/eventAnalysis.png" alt="">
+                <span>分析诊断</span>
+              </div>
+            </router-link>
+          </el-col>
+          <el-col :span="7">
+            <router-link :to="{name:'processRecord',query:{caseId:this.caseId}}">
+              <div>
+                <img style="width: 0.15rem; height: 0.135rem;" src="../../assets/images/processRecord.png" alt="">
+                <span>过程记录</span>
+              </div>
+            </router-link>
+          </el-col>
+          <div style="margin-right:0.2rem;float:right">
+            <el-col><div class="el-icon-more" @click.stop="popBg=!popBg"></div></el-col>
+          </div>
+        </div>
         <div style="margin-right:0.2rem;float:right" v-else>
           <el-col><div class="el-icon-more" @click.stop="popBg=!popBg"></div></el-col>
         </div>
@@ -47,6 +76,15 @@
     </div>
     <div v-if="popBg" class="popBg" @click.stop="popBg=!popBg">
       <ul>
+        <router-link :to="{name:'eventPartRequireList',query:{caseId:this.caseId}}">
+          <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/eventPartRequire.png" alt="">备件需求</li>
+        </router-link>
+        <router-link :to="{name:'eventPersonRequireList',query:{caseId:this.caseId}}">
+          <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/eventPersonRequire.png" alt="">人员需求</li>
+        </router-link>
+        <router-link :to="{name:'eventRiskWarn',query:{caseId:this.caseId}}">
+          <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/riskWarn.png" alt="">风险提示</li>
+        </router-link>
         <router-link :to="{name:'eventPeople',query:{caseId:this.caseId}}">
         <li><img src="../../assets/images/eventBaseInfo_4.png" alt="">相关人员</li>
         </router-link>
@@ -57,24 +95,15 @@
         <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/sla.png" alt="">SLA信息</li>
         </router-link>
         <div v-if="exFlag">         
-          <router-link :to="{name:'eventSLAfeedBack',query:{caseId:this.caseId}}">
+          <!-- <router-link :to="{name:'eventSLAfeedBack',query:{caseId:this.caseId}}">
             <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/slafeedback.png" alt="">SLA反馈</li>
           </router-link>
           <router-link :to="{name:'eventAnalysis',query:{caseId:this.caseId}}">
             <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/eventAnalysis.png" alt="">分析诊断</li>
-          </router-link>
-          <router-link :to="{name:'processRecord',query:{caseId:this.caseId}}">
+          </router-link> -->
+          <!-- <router-link :to="{name:'processRecord',query:{caseId:this.caseId}}">
             <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/processRecord.png" alt="">过程记录</li>
-          </router-link>
-          <router-link :to="{name:'eventRiskWarn',query:{caseId:this.caseId}}">
-            <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/riskWarn.png" alt="">风险提示</li>
-          </router-link>
-          <router-link :to="{name:'eventPartRequireList',query:{caseId:this.caseId}}">
-            <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/eventPartRequire.png" alt="">备件需求</li>
-          </router-link>
-          <router-link :to="{name:'eventPersonRequireList',query:{caseId:this.caseId}}">
-            <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/eventPersonRequire.png" alt="">人员需求</li>
-          </router-link>
+          </router-link> -->            
         </div>
       </ul>
     </div>

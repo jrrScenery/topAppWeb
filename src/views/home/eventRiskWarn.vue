@@ -90,7 +90,7 @@ export default {
         },
         getRiskType(){
             fetch.get("?action=getDict&type=NT_CASE_RISK_TYPE","").then(res=>{
-                // console.log(res);
+                console.log(res);
                 if(res.STATUSCODE=='0'){
                     this.riskType = res.data;
                 }

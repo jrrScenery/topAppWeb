@@ -4,9 +4,14 @@
         <div style="height: 0.45rem;"></div>
         <div class="eventPersonRequireDetailContent">
             <el-form :model="formData" label-width="1.5rem" ref="formData">
-                <el-form-item label="工单编号：">
+                <el-form-item label="事件编号：">
                     <el-col :span="20">
                         <el-input size='mini' v-model="formData.workinfoDetail.caseNo" disabled></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="工单编号：">
+                    <el-col :span="20">
+                        <el-input size='mini' v-model="formData.workinfoDetail.workNo" disabled></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="负责人：" >
@@ -44,14 +49,6 @@
                             <el-option v-for="item in groupNameArr" :label="item.modelgroupName" :value="item.modelgroupId" :key="item.modelgroupId">
                             </el-option>
                         </el-select>
-                        <!-- <el-autocomplete class="el-input"
-                            v-model="formData.workinfoDetail.modelgroupName" 
-                            :value="formData.workinfoDetail.modelgroupName"
-                            :fetch-suggestions="querySearchMN"
-                            placeholder="请输入型号组" 
-                            :trigger-on-focus="false"
-                            @select="getModelName">
-                        </el-autocomplete>  -->
                     </el-col>
                 </el-form-item>
                 <el-form-item label="标准任务项：">
@@ -60,14 +57,6 @@
                             <el-option v-for="item in abilitiesArr" :label="item.abilityContent" :value="item.abilityId" :key="item.abilityId">
                             </el-option>
                         </el-select>
-                        <!-- <el-autocomplete class="el-input"
-                            v-model="formData.workinfoDetail.abilityContent" 
-                            :value="formData.workinfoDetail.abilityContent"
-                            :fetch-suggestions="querySearchAC"
-                            placeholder="请输入标准任务项" 
-                            :trigger-on-focus="false"
-                            @select="getAbilityContent">
-                        </el-autocomplete>  -->
                     </el-col>
                 </el-form-item>
                 <el-form-item label="工作类型">
@@ -88,14 +77,14 @@
                         <el-input size='mini' v-model="formData.workinfoDetail.standardHours" disabled></el-input>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="调整工作量：" >
+                <el-form-item label="调整工作量：">
                     <el-col :span="20">
-                        <el-input size='mini' v-model="formData.workinfoDetail.expectWorkHours"></el-input>
+                        <el-input size='mini' v-model="formData.workinfoDetail.expectWorkHours" @input="changeDate()"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="路途工作量：" >
                     <el-col :span="20">
-                        <el-input size='mini' v-model="formData.workinfoDetail.wayWorkload"></el-input>
+                        <el-input size='mini' v-model="formData.workinfoDetail.wayWorkload" @input="changeDate()"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="到场SLA截止时间：" >
@@ -110,8 +99,22 @@
                             type="datetime"
                             value-format="yyyy-MM-dd HH:mm:ss"
                             placeholder="请选择时间"
-                            style="width:100%">
+                            style="width:100%"
+                            @input="changeDate()">
                         </el-date-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="预计结束时间" >
+                    <el-col :span="20">
+                        <div class="block">
+                            <el-date-picker
+                                v-model="formData.workinfoDetail.expectEnd"
+                                type="datetime"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="请选择时间"
+                                style="width:100%">
+                            </el-date-picker>
+                        </div>
                     </el-col>
                 </el-form-item>
                 <div style="height:0.5rem"></div>
@@ -135,7 +138,8 @@ export default {
             eventPersonRequireDetailTit:"编辑人员需求",
             formData:{
                 workinfoDetail:{
-                    abilityContent:''
+                    abilityContent:'',
+                    expectEnd:''
                 }
             },
             factoryNameArr:[],
@@ -144,12 +148,10 @@ export default {
             abilitiesArr:[],
             workTypeArr:[],
             caseId:this.$route.query.caseId,
-            workId:this.$route.query.workId
+            workId:this.$route.query.workId,
         }
     },
     created(){
-        console.log("caseId",this.caseId);
-        console.log("workId",this.workId);
         if(this.workId){
             this.getWorkinfoList();           
         }else{
@@ -169,6 +171,9 @@ export default {
                 console.log("queryWorkinfoList",res);
                 if(res.STATUSCODE=="1"){
                     this.formData.workinfoDetail = res.data[0];
+                    // if(this.formData.workinfoDetail.expectEnd == null){
+                    //     this.formData.workinfoDetail.expectEnd = res.taskinfo.requireArriveTime;
+                    // }
                     this.getModelName();
                     this.getAbilityContent();
                 }
@@ -179,9 +184,11 @@ export default {
                 console.log("queryWorkTask",res);
                 if(res.STATUSCODE=="1"){
                     this.formData.workinfoDetail = res.taskinfo;
-                    this.formData.workinfoDetail.factoryNm = res.taskinfo.factorySn;
+                    this.formData.workinfoDetail.factoryNm = res.taskinfo.factorySn;   
+                    this.formData.workinfoDetail.workRequire = '';  
                     this.getModelName();
                     this.getAbilityContent();
+                    this.changeDate();
                 }
             })
         },
@@ -264,35 +271,7 @@ export default {
                     }
                 }
             })
-            // if(this.formData.workinfoDetail.modelgroupName){
-            //     for(let i=0;i<this.groupNameArr.length;i++){
-            //         if(this.groupNameArr[i].modelgroupName == this.formData.workinfoDetail.modelgroupName){
-            //             this.formData.workinfoDetail.modelgroupId = this.groupNameArr[i].modelgroupId;
-            //             this.formData.workinfoDetail.modelgroupName = this.groupNameArr[i].modelgroupName;                       
-            //         }
-            //     }
-            // }
         },
-        // querySearchMN(queryString, cb){
-        //     fetch.get("?action=/secondline/queryModelGroup&equipTypeId="+this.formData.workinfoDetail.equipTypeId+"&factoryId="+this.formData.workinfoDetail.factoryId).then(res=>{
-        //         console.log("queryModelGroup",res);
-        //         if(res.STATUSCODE=='1'){
-        //             this.groupNameArr = res.data;
-        //             if(res.data.length==0){
-        //                 this.formData.workinfoDetail.modelgroupName = '';
-        //             }
-        //             let groupNameArr = [];
-        //             for(let i=0;i<res.data.length;i++){
-        //             groupNameArr.push({'modelgroupId':res.data[i].modelgroupId,'modelgroupName':res.data[i].modelgroupName,'value':res.data[i].modelgroupName})
-        //             }
-        //             let results = queryString ? groupNameArr.filter(this.createStateFilter(queryString)) : groupNameArr;
-        //             clearTimeout(this.timeout);
-        //             this.timeout = setTimeout(() => {
-        //                 cb(results);
-        //             }, 1000 * Math.random());
-        //         }
-        //     })
-        // },
         getAbilityContent(){
             let abilityContent = '';
             if(this.formData.workinfoDetail.abilityContent){
@@ -304,7 +283,6 @@ export default {
                 console.log("queryAbilities",res);
                 if(res.STATUSCODE=='1'){
                     this.abilitiesArr = res.data;
-                    console.log(this.formData.workinfoDetail.abilityId);
                     if(res.data.length==0){
                         this.formData.workinfoDetail.abilityContent = '';
                     }else{
@@ -317,54 +295,55 @@ export default {
                                 this.formData.workinfoDetail.difficultyRatio = this.abilitiesArr[i].difficultyratio;
                             }
                         }
-                        // console.log("abilitiesArr",this.formData.workinfoDetail);
                     }
                 }
             })
         },
-        // getAbilityContent(){
-        //     if(this.formData.workinfoDetail.abilityContent){
-        //         for(let i=0;i<this.abilitiesArr.length;i++){
-        //             if(this.abilitiesArr[i].abilityContent == this.formData.workinfoDetail.abilityContent){
-        //                 this.formData.workinfoDetail.abilityId = this.abilitiesArr[i].abilityId;
-        //                 this.formData.workinfoDetail.abilityContent = this.abilitiesArr[i].abilityContent;
-        //                 this.formData.workinfoDetail.standardHours = this.abilitiesArr[i].abilityTime;
-        //                 this.formData.workinfoDetail.difficultyLevel = this.abilitiesArr[i].difficultyLevel;
-        //                 this.formData.workinfoDetail.difficultyRatio = this.abilitiesArr[i].difficultyratio;
-        //             }
-        //         }
-        //     }
-        // },
-
-        // querySearchAC(queryString, cb){
-        //     let param = "&equipTypeId="+this.formData.workinfoDetail.equipTypeId+"&factoryId="+this.formData.workinfoDetail.factoryId+"&modelgroupId="+this.formData.workinfoDetail.modelgroupId+"&ablityName="+this.formData.workinfoDetail.abilityContent
-        //     console.log("param",param);
-        //    fetch.get("?action=/secondline/queryAbilities"+param).then(res=>{
-        //         console.log("queryAbilities",res);
-        //         if(res.STATUSCODE=='1'){
-        //             this.abilitiesArr = res.data;
-        //             if(res.data.length==0){
-        //                 this.formData.workinfoDetail.abilityContent = '';
-        //             }
-        //             let abilitiesArr = [];
-        //             for(let i=0;i<res.data.length;i++){
-        //             abilitiesArr.push({'modelgroupId':res.data[i].modelgroupId,'factoryId':res.data[i].factoryId,'equipTypeId':res.data[i].equipTypeId,
-        //                 "abilityId":res.data[i].abilityId,"abilityContent":res.data[i].abilityContent,'value':res.data[i].abilityContent})
-        //             }
-        //             let results = queryString ? abilitiesArr.filter(this.createStateFilter(queryString)) : abilitiesArr;
-        //             clearTimeout(this.timeout);
-        //             this.timeout = setTimeout(() => {
-        //                 cb(results);
-        //             }, 1000 * Math.random());
-        //         }
-        //     })
-        // },
         createStateFilter(queryString) {
             return (modelName) => {
                 return (modelName.value.toLowerCase().indexOf(queryString.toLowerCase()) !== -1);
             };
         },
-
+        changeDate(){
+            let vm= this;
+            let requireArriveTime = this.formData.workinfoDetail.requireArriveTime;
+            if(!requireArriveTime){
+                requireArriveTime = this.formData.workinfoDetail.expectStart
+            }
+            let expectWorkHours = this.formData.workinfoDetail.expectWorkHours;
+            let wayWorkload = this.formData.workinfoDetail.wayWorkload;
+            if(!expectWorkHours){
+                expectWorkHours = 0;
+            }
+            if(!wayWorkload){
+                wayWorkload = 0
+            }
+            let expectEnd = new Date(requireArriveTime).getTime()+expectWorkHours*60*60*1000+wayWorkload*60*60*1000*0.5;
+            let year = new Date(expectEnd).getFullYear();
+            let month = new Date(expectEnd).getMonth()+1;
+            if(month>=1&&month<=9){
+                month = "0"+month
+            }
+            let date = new Date(expectEnd).getDate();
+            if(date<=9){
+                date = "0"+date
+            }
+            let hours = new Date(expectEnd).getHours();
+            if(hours<=9){
+                hours="0"+hours
+            }
+            let min = new Date(expectEnd).getMinutes()
+            if(min<=9){
+                min="0"+min
+            }
+            let sec = new Date(expectEnd).getSeconds()
+            if(sec<=9){
+                sec="0"+sec
+            }
+            vm.formData.workinfoDetail.expectEnd = year +"-"+month+"-"+date+" "+hours+":"+min+":"+sec;
+            console.log("requireArriveTime",vm.formData.workinfoDetail.requireArriveTime);
+            console.log("000000",vm.formData.workinfoDetail.expectEnd);
+        },
         submitForm (formName) {
             const loading = this.$loading({
                 lock: true,
@@ -462,7 +441,7 @@ export default {
                         dataObj.difficultyLevel = vm.formData.workinfoDetail.difficultyLevel;
                         dataObj.difficultyRatio = vm.formData.workinfoDetail.difficultyRatio;
                         dataObj.expectTravelHours = vm.formData.workinfoDetail.wayWorkload;
-                        // data.expectEnd = vm.tableData[i].expectEnd;
+                        dataObj.expectEnd = vm.formData.workinfoDetail.expectEnd;
                         dataObj.abilityId = vm.formData.workinfoDetail.abilityId;
                         dataObj.effectiveWorkEquivalent = vm.formData.workinfoDetail.effectiveWorkEquivalent;//空的
                         // data.supportMode = vm.tableData[i].supportMode;//先不传

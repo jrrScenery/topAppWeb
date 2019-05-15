@@ -8,8 +8,12 @@
                     <router-link :to="{name:'eventPersonRequireDetail',query:{caseId:item.caseId,workId:item.workId}}">
                         <ul class="tableTd">
                             <li>
-                                <span>工单编号</span>  
+                                <span>事件编号</span>  
                                 <span style="color:#2698d6">{{item.caseNo}}</span>
+                            </li>
+                            <li>
+                                <span>工单编号</span>  
+                                <span style="color:#2698d6">{{item.workNo}}</span>
                             </li>
                             <li>
                                 <span>负责人</span>  
