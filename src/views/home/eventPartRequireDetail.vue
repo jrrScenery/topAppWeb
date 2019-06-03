@@ -172,7 +172,7 @@ export default {
     methods:{
         getSupplyType(){
             fetch.get("?action=getDict&type=NT_SUPPLY_TYPE","").then(res=>{
-                console.log(res.data);
+                console.log("getSupplyType",res.data);
                 this.supplyType = res.data;
             });
         },

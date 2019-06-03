@@ -1,19 +1,19 @@
 <template>
-  <!-- <div id="app">
+  <div id="app">
     <keep-alive>      
         <router-view v-if="$route.meta.keepAlive"/>    
     </keep-alive>    
     <router-view v-if="!$route.meta.keepAlive"/>
 
-  </div> -->
-  <div id="app"  >
+  </div>
+  <!-- <div id="app"  >
     <v-touch v-on:swiperight="onSwipeRight"  v-bind:swipe-options="{ direction: 'right',threshold: 100  }" class="touchwrap" style=" ">
       <keep-alive>      
           <router-view v-if="$route.meta.keepAlive"/>    
       </keep-alive>    
       <router-view v-if="!$route.meta.keepAlive"/>
     </v-touch>
-  </div>
+  </div> -->
 
 </template>
 

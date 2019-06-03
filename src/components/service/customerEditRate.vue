@@ -28,7 +28,7 @@
                     </div>
                     <div style="margin:0.1rem">客户签名</div>
                     <div v-if="formData.data.imgStr">
-                        <img style="height:1.5rem;" v-bind:src="formData.data.imgStr" alt="">
+                        <img style="height:2.5rem;" v-bind:src="formData.data.imgStr" alt="">
                     </div>
                     <div v-else><img style="height:0.5rem;" src="" alt=""></div>
                     <add-signature :title="addSignatureTit" :queryData="searchData" @searchPro="signature"></add-signature>

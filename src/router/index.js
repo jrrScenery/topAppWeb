@@ -203,6 +203,12 @@ export default new Router({
       path: '/workBench/workBenchPartRecycle',
       name: 'workBenchPartRecycle',
       component: resolve => require(['@/views/workBench/workBenchPartRecycle'], resolve)
+    },    
+    //首页值班信息
+    {
+      path: '/workBench/workBenchWorkInfo',
+      name: 'workBenchPartRecycle',
+      component: resolve => require(['@/views/workBench/workBenchWorkInfo'], resolve)
     },
     //首页关注->需关注事件列表
     {

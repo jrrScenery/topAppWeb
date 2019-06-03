@@ -146,7 +146,7 @@
                 <div style="margin:0 0.1rem">神州数码工程师已按规范要求就本次服务内容、影响和风险与用户进行了沟通，同意神州数码工程师开始服务实施。</div>
                 <div style="margin:0.1rem">用户确认</div>
                 <div v-if="formData.caseServiceQuestion.imgStrQuestion">
-                    <img id="imgStrQuestion" style="height:1.5rem;" v-bind:src="formData.caseServiceQuestion.imgStrQuestion" alt="">
+                    <img id="imgStrQuestion" style="height:2.5rem;" v-bind:src="formData.caseServiceQuestion.imgStrQuestion" alt="">
                 </div>
                 <div v-else><img style="height:0.5rem;" src="" alt=""></div>
                 <add-signature :title="addSignatureTit" :queryData="searchData" @searchPro="signature"></add-signature>

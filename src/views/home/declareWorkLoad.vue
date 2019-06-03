@@ -5,8 +5,17 @@
     <div style="height: 0.45rem;"></div>
       <div class="content">
           <el-form ref="form" :model="form" label-width="0.9rem">
-            <el-form-item label="派工者">
-              <el-input v-model="form.creatorRolename" class="bInput"></el-input>
+            <el-form-item label="派工者" label-width="1.3rem" style="background: #f7f7f7">
+              <el-input v-model="form.creatorRolename" class="bInput" :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="标准工作量" label-width="1.3rem" style="background: #f7f7f7">
+              <el-input v-model="pgstandardWorkload" class="bInput" :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="调整工作量" label-width="1.3rem" style="background: #f7f7f7">
+              <el-input v-model="expectWorkload" class="bInput" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="路途工作量(派工)" label-width="1.3rem" style="background: #f7f7f7">
+              <el-input v-model="pgwayWorkload" class="bInput" disabled></el-input>
             </el-form-item>
             <!-- <hr class="secondBoundaries"></hr> -->
             <el-form-item label="开始时间">
@@ -37,6 +46,7 @@
                 <el-button></el-button>
               </el-tooltip>
             </el-form-item>
+            
             <el-form-item label="路途工作量">
               <el-input placeholder="请输入路途工作量 (单位小时，如：1.5)" v-model="form.wayWorkload" class="bInput"></el-input>
             </el-form-item>
@@ -71,7 +81,10 @@ export default {
         creatorRolename: '',
         standardWorkload: '',
         wayWorkload: ''
-      }
+      },
+      pgstandardWorkload:this.$route.query.standardWorkload,
+      expectWorkload:this.$route.query.expectWorkload,
+      pgwayWorkload:this.$route.query.wayWorkload
     }
   },
   created (){
@@ -79,7 +92,6 @@ export default {
     this.form.expectEnd = this.$route.query.expectEnd;
     this.form.creatorRolename = this.$route.query.creatorRolename;
     this.form.standardWorkload = this.$route.query.standardWorkload;
-    this.form.wayWorkload = this.$route.query.wayWorkload;
     this.form.caseId = this.$route.query.caseId;
     this.form.workId = this.$route.query.workId;
   },
@@ -99,7 +111,7 @@ export default {
           console.log("form", this.form)
           let params = "&START_TIME="+this.form.expectStart+"&END_TIME="+this.form.expectEnd+"&CASE_ID="+this.form.caseId+"&WORK_ID="+this.form.workId+"&NORMAL_WORKLOAD="+this.form.standardWorkload+"&EXTRA_WORKLOAD="+this.form.wayWorkload;
           fetch.get("?action=/work/DeclareWorkload"+params,"").then(res=>{
-
+              console.log(res)
               loading.close();
               if(res.STATUSCODE=="0"){
                 this.$message({
@@ -161,7 +173,7 @@ export default {
   .content >>> .el-form-item__label{font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.25rem; text-align: left}
   .content >>> .el-input__inner{border: none; color: #333333;}
   .content >>> .el-input__inner::placeholder{font-size: 0.13rem; color: #acacac}
-  .content >>> .el-input.is-disabled .el-input__inner{background: #ffffff}
+  /* .content >>> .el-input.is-disabled .el-input__inner{background: #f7f7f7} */
    
   .submitBtn >>> .el-form-item__content{margin: 0!important;}
   .submitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;}

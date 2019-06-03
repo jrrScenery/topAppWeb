@@ -128,12 +128,7 @@
         
     </div>
 </template>
-
-
-
-
 <script>
-// import headerLast from '../header/headerLast'
 import loadingtmp from '@/components/load/loading'
 import fetch from '../../utils/ajax'
 export default {

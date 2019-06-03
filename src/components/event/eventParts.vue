@@ -107,6 +107,7 @@ export default {
         let contentHeight = document.querySelector(".eventPartsView")
         mapHeight.style.height = winHeight - 100- (this.infoon ?this.partsheight:0) + 'px'
         contentHeight.style.height = winHeight - 95 + 'px'
+        console.log("contentHeight:",contentHeight.style.height)
         console.log(mapHeight.style.height)
       }
     },
