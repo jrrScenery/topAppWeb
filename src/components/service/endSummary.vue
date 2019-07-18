@@ -136,7 +136,8 @@ export default {
             caseId:this.$route.query.caseId,
             taskId:this.$route.query.taskId,
             serviceId:this.$route.query.serviceId,
-            serviceType:this.$route.query.serviceType
+            serviceType:this.$route.query.serviceType,
+            type:this.$route.query.type
         }
     },
     created:function(){
@@ -316,6 +317,7 @@ export default {
                     let nowWorkId = vm.workId;
                     let nowCaseId = vm.caseId;
                     let nowtaskId = vm.taskId;
+                    let type = vm.type;
                     if(vm.serviceType==2){
                         fetch.post("?action=/work/UpdateSceneServiceFormInfo",data).then(res=>{
                             console.log(res);    
@@ -327,7 +329,11 @@ export default {
                                 center: true,
                                 customClass: 'msgdefine'
                                 });
-                                setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                                if(vm.type=='SLA'){
+                                    setTimeout(function(){vm.$router.push({ name: 'workBenchSLAfeedback',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId,type:type}})},1000);
+                                }else{
+                                    setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                                }
                             }else{
                                 this.$message({
                                 message:res.MESSAGE+"发生错误",
@@ -348,7 +354,11 @@ export default {
                                 center: true,
                                 customClass: 'msgdefine'
                                 });
-                                setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                                if(vm.type=='SLA'){
+                                    setTimeout(function(){vm.$router.push({ name: 'workBenchSLAfeedback',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId,type:type}})},1000);
+                                }else{
+                                    setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                                }
                             }else{
                                 this.$message({
                                 message:res.MESSAGE+"发生错误",

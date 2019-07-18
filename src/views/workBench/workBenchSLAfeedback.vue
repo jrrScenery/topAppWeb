@@ -37,7 +37,7 @@
           </el-form-item>
           <el-form-item class="submit">
             <el-button @click="dialogVisible0 = false">取消</el-button>
-          <el-button type="primary" class="onsubmit" @click="onSubmit">提交</el-button>
+            <el-button type="primary" class="onsubmit" @click="onSubmit">提交</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -45,7 +45,6 @@
     <div class="SLAdialog">
       <el-dialog title="任务反馈" :visible.sync="dialogVisible1" width="80%">
         <el-form class="form1">
-          <!-- <el-form-item></el-form-item> -->
           <el-form-item  label="原因">
             <el-radio-group v-model="form.des2" style="font-size:6px">
               <el-radio :label="1">故障定位不准确</el-radio><br>
@@ -67,15 +66,6 @@
       </el-dialog>
     </div>
     <div class="dialogdc">
-      <!-- <template>
-        <div class="self-modal" v-show='showModal' v-bind:style="styleObj" @touchmove.stop.prevent> -->
-          <!-- 自定义内容 -->
-          <!-- <img :src="require('../../assets/images/'+bgDef)" alt="" style="background-repeat: no-repeat;background-size:100% auto;"> -->
-          <!-- <div><img :src="require('../../assets/images/'+bgDef)" alt="" style="background-repeat:no-repeat;background-size：contain;display:block"></div> -->
-          <!-- <div :style="{'height':clientHeight,'width':'100%','background': 'url('+require('../../assets/images/'+bgDef)+') no-repeat center center','background-size': 'auto auto'}"></div>
-          <slot></slot>
-        </div>
-      </template> -->
       <el-dialog
         top="5%"
         width="100%"
@@ -83,6 +73,9 @@
         :show-close="false"
         :fullscreen="true"
         center>
+        <div class="countDiv">
+          <button class="countButton">{{seconds}}</button>
+        </div>
         <div><img :src="require('../../assets/images/'+bgDef)" alt="" style="background-repeat:no-repeat;background-size:contain;display:block"></div>
       </el-dialog>
     </div>
@@ -152,6 +145,33 @@
         </el-form>
       </el-dialog>
     </div>
+    <!-- 离场弹框 -->
+    <div class="dialogdc">
+      <el-dialog
+        :visible.sync="leaveVisible"
+        :show-close="false"
+        width="80%"
+        center>
+        <el-form>
+          <el-form-item label="请选择创建以下何种类型服务单" class="radioView">
+            <el-radio-group v-model="form.leaveradio" @change="leaveRadio()">
+                <div style="line-height:0.3rem">
+                  <el-radio :label="2">创建现场服务单</el-radio>
+                </div>
+                <div style="line-height:0.3rem">
+                  <el-radio :label="1">创建case故障服务单</el-radio>
+                </div>
+                <div style="line-height:0.3rem">
+                  <el-radio :label="3">客户不在实施现场</el-radio>
+                </div>
+            </el-radio-group>
+            <div style="line-height:0.2rem;margin-right:0.1rem;margin-bottom:0.1rem">注：未完成的服务单请在服务单列表进入完成</div>
+          </el-form-item>
+          <!-- <el-form-item>
+          </el-form-item> -->
+        </el-form>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -175,20 +195,25 @@ export default {
       checkdcFlag:false,//问题显示
       warnVisible:false,//答错问题提示
       showModal: false,//图片显示
+      leaveVisible:false,
+      sendPhone:false,
       radio: 0,
       typeid: "",
       form:{
         des1:"",
         des2:"",
         des3:"",
-        option:[]
-        },
+        option:[],
+        leaveradio:0
+      },
       date:"",
       status: "",
       SLAObj: [],
       workInfo:{},
       differDistance:0,
       workId:this.$route.query.workId,
+      caseId:this.$route.query.caseId,
+      taskId:this.$route.query.taskId,
       clientHeight:'',
       checkedCities1: ['上海', '北京'],
       cities: cityOptions,
@@ -199,7 +224,11 @@ export default {
       selectAnwser:0,
       noQuestionIds:'',
       wrongMessage:'',
-      requestNum:0
+      requestNum:0,
+      requireArriveTime:'',
+      seconds:5,
+      type:this.$route.query.type,
+      feedbackNum:0,
     };
   },
   props: {
@@ -223,7 +252,6 @@ export default {
     if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
       this.clientHeight = (document.documentElement.clientHeight-90)+'px'
     }
-    console.log(this.clientHeight);
     // this.clientHeight = document.documentElement.clientHeight+'px'
     this.randomPic();
   },
@@ -257,38 +285,155 @@ export default {
           this.workInfo = res.DATA[0];
           let baseInfo = res.DATA[0];
           this.SLAObj = baseInfo.slaStatus;
+          this.requireArriveTime = res.DATA[0].requireArriveTime.replace(/\-/g, "/");
         }
       });
     },
-    getLocation:function(){
+    getLocation:function(slaTypeId){
        var self = this
-      var geolocation = new BMap.Geolocation()
+       //调用百度地图api 中的获取当前位置接口
+      var geolocation = new BMap.Geolocation();
+      // 开启SDK辅助定位
+      geolocation.enableSDKLocation();
       geolocation.getCurrentPosition(function (res) {
-        self.pointA = new BMap.Point(res.point.lng, res.point.lat)  // 通过浏览器获得我的经纬度
-        console.log("pointA",self.pointA);
-        self.differDistance = self.getDistance(self.targetLatitude,self.targetLongitude);
-        console.log(self.differDistance);
-        console.log(self.differDistance<=12225.07);  
-        if(self.differDistance<=12226){
-          self.showModal = true;
-          setTimeout(()=>{
-            self.showModal = false;
-            // self.dialogVisible0 = true;
-            // let nowWorkId = self.workId;
-            // this.$router.push({ name: 'workBenchTaskDetailInfo',query:{workId:nowWorkId}})
-          },10000)     
-        }else{
-
+        console.log("getCurrentPosition",res);
+        console.log("BMAP_STATUS_SUCCESS",BMAP_STATUS_SUCCESS);
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            var myGeo = new BMap.Geocoder();
+            myGeo.getLocation(new BMap.Point(res.point.lng, res.point.lat),function(result){ if (result){
+              console.log("result",result);
+              self.pointA = new BMap.Point(res.point.lng, res.point.lat)  // 通过浏览器获得我的经纬度
+              self.differDistance = self.getDistance(self.targetLatitude,self.targetLongitude);
+              // if(self.differDistance<=0.5){
+                if(slaTypeId==5){
+                  // let now = new Date();
+                  // let currentdate = self.formatDateTime(now);
+                  // self.intervalTime(self.requireArriveTime,currentdate);
+                  self.clientHeight = (document.documentElement.clientHeight-90)+'px'
+                  self.randomPic();//随机选取图片
+                  self.showModal = true;//显示随机图片10s
+                  self.requestNum=0;//问题接口请求次数
+                  const TIME_COUNT = 5;
+                  setInterval(()=>{
+                    if(self.seconds > 0 && self.seconds <= TIME_COUNT){
+                      self.seconds--;
+                    }
+                  },1000)
+                  setTimeout(()=>{
+                    self.showModal = false;//10s后关闭随机图片框
+                    self.checkdcFlag = true;//显示问题弹框
+                    self.getQuestionArrive();//调用问题接口，获取问题
+                  },5000) 
+                }else{
+                  if(self.type == 'SLA'||self.sendPhone){
+                    //工程师必须反馈处理结果后（故障解决，故障解决不成功，任务已完成，任务未完成四选一完成SLA反馈），才可以点击“离场”反馈
+                    for(let i=0;i<self.SLAObj.length;i++){
+                      if(self.SLAObj[i].ifFeedback=='1'){
+                        if(self.SLAObj[i].slaTypeId =='6'||self.SLAObj[i].slaTypeId=='8'||self.SLAObj[i].slaTypeId=='9'||self.SLAObj[i].slaTypeId=='10'){
+                          self.feedbackNum++;
+                          break;
+                        }
+                      }
+                    }
+                    if(self.feedbackNum){
+                      self.dialogVisible0 = true;
+                    }else{
+                      self.$message({
+                        message:'请先完成结果反馈再进行离场',
+                        type: 'error',
+                        center: true,
+                        duration:2000,
+                        customClass: 'msgdefine'
+                      })
+                    }
+                  }else{
+                    console.log("000000000000");
+                    self.leaveVisible = true;
+                    // self.dialogVisible0 = true;
+                  }
+                  // self.dialogVisible0 = true;
+                }
+                // setTimeout(()=>{
+                //   // self.dialogVisible0 = true;
+                //   // let nowWorkId = self.workId;
+                //   // this.$router.push({ name: 'workBenchTaskDetailInfo',query:{workId:nowWorkId}})
+                // },10000)     
+              // }else{
+              //   self.$message({
+              //     message:'当前不在case所在地点，无法操作'+self.differDistance+result.address,
+              //     type: 'error',
+              //     center: true,
+              //     duration:2000,
+              //     customClass: 'msgdefine'
+              //   })
+              // }
+            }})
         }
       })
     },
     // 测量百度地图两个点间的距离
-   getDistance (latitude,longitude) {
+   getDistance:function (latitude,longitude) {
      var map = new BMap.Map('')
      var pointB = new BMap.Point(parseFloat(longitude), parseFloat(latitude))  // 店铺的经纬度
      var distance = (map.getDistance(this.pointA, pointB) / 1000).toFixed(2) // 保留小数点后两位
      return distance
    },
+   formatDateTime:function(date) {  
+        let y = date.getFullYear();  
+        let m = date.getMonth() + 1;  
+        m = m < 10 ? ('0' + m) : m;  
+        let d = date.getDate();  
+        d = d < 10 ? ('0' + d) : d;  
+        let h = date.getHours();  
+        h=h < 10 ? ('0' + h) : h;  
+        let minute = date.getMinutes();  
+        minute = minute < 10 ? ('0' + minute) : minute;  
+        let second=date.getSeconds();  
+        second=second < 10 ? ('0' + second) : second;  
+        return y + '/' + m + '/' + d+' '+h+':'+minute+':'+second;  
+    },
+    //工程师操作时间差计算
+   intervalTime:function(startTime,endTime){
+      let date1 = new Date(startTime);  //开始时间
+      let date2 = new Date(endTime);    //结束时间
+      let date3 = Math.abs(date2.getTime() - date1.getTime());  //时间差的毫秒数
+       //计算出相差天数
+      let days = Math.floor(date3 / (24 * 3600 * 1000));
+       //计算出小时数
+      let leave1 = date3 % (24 * 3600 * 1000);    //计算天数后剩余的毫秒数
+      let hours = Math.floor(leave1 / (3600 * 1000));
+      if(days==0&&hours<=2){
+        this.clientHeight = (document.documentElement.clientHeight-90)+'px'
+        this.randomPic();//随机选取图片
+        this.showModal = true;//显示随机图片10s
+        this.requestNum=0;//问题接口请求次数
+        const TIME_COUNT = 5;
+        setInterval(()=>{
+          if(this.seconds > 0 && this.seconds <= TIME_COUNT){
+            this.seconds--;
+          }
+        },1000)
+        setTimeout(()=>{
+          this.showModal = false;//10s后关闭随机图片框
+          this.checkdcFlag = true;//显示问题弹框
+          this.getQuestionArrive();//调用问题接口，获取问题
+        },5000) 
+      }else{
+        this.$notify.info({
+          title: '提示',
+          message: '当前不在任务要求到场时间范围内，无法操作;如果“要求到场时间”设置不正确，请联系CMO修改',
+          type: 'warning',
+          duration:0
+        });
+        // this.$message({
+        //   message:'当前不在任务要求到场时间范围内，无法操作；如果“要求到场时间”设置不正确，请联系CMO修改',
+        //   type: 'error',
+        //   center: true,
+        //   duration:3000,
+        //   customClass: 'msgdefine'
+        // })
+      }
+     },
     getTime:function() {
       var date = new Date();
       var seperator1 = "-";
@@ -325,24 +470,76 @@ export default {
       }else if(slaTypeId == 5){
         if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){        
           //类型是到场逻辑处理
-          // this.getLocation();
-          this.clientHeight = (document.documentElement.clientHeight-90)+'px'
-          this.randomPic();//随机选取图片
-          this.showModal = true;//显示随机图片10s
-          this.requestNum=0;//问题接口请求次数
-          setTimeout(()=>{
-            this.showModal = false;//10s后关闭随机图片框
-            this.checkdcFlag = true;//显示问题弹框
-            this.getQuestionArrive();//调用问题接口，获取问题
-          },10000) 
+          this.getLocation(slaTypeId);
+          // this.clientHeight = (document.documentElement.clientHeight-90)+'px'
+          // this.randomPic();//随机选取图片
+          // this.showModal = true;//显示随机图片5s
+          // this.requestNum=0;//问题接口请求次数
+          // const TIME_COUNT = 5;
+          // setInterval(()=>{
+          //   if(this.seconds > 0 && this.seconds <= TIME_COUNT){
+          //     this.seconds--;
+          //   }
+          // },1000)
+          // setTimeout(()=>{
+          //   this.showModal = false;//5s后关闭随机图片框
+          //   this.checkdcFlag = true;//显示问题弹框
+          //   this.getQuestionArrive();//调用问题接口，获取问题
+          // },5000) 
         }else{
           this.dialogVisible0 = true;
         }
-      } else {
+      }
+      else if(slaTypeId == 7){
+        if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){
+          this.getLocation(slaTypeId);
+        }else{
+          this.dialogVisible0 = true;
+        }
+      } 
+      else {
         this.dialogVisible0 = true;
       }
     },
-
+    leaveRadio(){
+      this.leaveVisible = false;
+      if(this.form.leaveradio==1){
+        fetch.get("?action=/work/SubmitCaseTroubleShootingServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
+          console.log(res);
+          let data = res.TEMP;     
+          this.$router.push({name: 'onsiteServiceInfo', query: {serviceId:data.serviceId,evaluateId:data.evaluateId,caseId:this.caseId,workId:this.workId,taskId:this.taskId,serviceType:this.form.leaveradio,type:'SLA'}})            
+        })
+      }else if(this.form.leaveradio==2){
+        fetch.get("?action=/work/SubmitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
+          console.log(res);
+          let data = res.TEMP;
+          this.$router.push({name: 'onsiteServiceInfo', query: {serviceId:data.serviceId,caseId:this.caseId,workId:this.workId,taskId:this.taskId,evaluateId:data.evaluateId,serviceType:this.form.leaveradio,type:'SLA'}})
+        })
+      }else{
+        let content = "[神州信息]您好，工程师已完成现场实施，请您进行客户评价，关注微信公众号神州信息锐行服务，点击一级菜单评价，输入事件编号"+this.workInfo.caseNo+"，进行用户评价"
+        fetch.get("?action=/risk/sendPhone&mobile="+this.workInfo.customerCellnumber+"&content="+content).then(res=>{
+          console.log("sendPhone",res);
+          if(res.STATUSCODE=='1'){
+            this.sendPhone = true;
+            console.log("sendPhone",this.sendPhone)
+            this.$message({
+              message:'已向客户发送短信提示进行客户评价，请协助提醒客户进行评价',
+              type: 'success',
+              center: true,
+              duration:3000,
+              customClass: 'msgdefine'
+            })
+          }else{
+            this.$message({
+              message:res.MESSAGE,
+              type: 'error',
+              center: true,
+              customClass: 'msgdefine'
+            });
+          }
+        })
+      }
+    },
     questionSubmit(){//提交问题
       const loading = this.$loading({
           lock: true,
@@ -414,18 +611,15 @@ export default {
     getNewQuestion(){//点击问题答错框确定按钮，关闭此弹框，显示问题界面
       this.requestNum+=1;  
       if(this.requestNum==1){
-        console.log("11111",this.requestNum)
         this.noQuestionIds +=this.questionObj.QUESTION_ID;
         this.getQuestionArrive();
       }else if(this.requestNum==2){
-        console.log("22222",this.requestNum)
         this.noQuestionIds +=","+this.questionObj.QUESTION_ID;
         this.getQuestionArrive();
       }else{//回答3道题，不管对错，进行到场反馈
         this.warnVisible = false;
         this.checkdcFlag = false;
         this.dialogVisible0 = true;
-        console.log("33333",this.requestNum);
       }
       
     },
@@ -438,7 +632,6 @@ export default {
       });
       var vm = this;
       let params="&REASON="+this.form.des2+"&EXPLAIN="+this.form.des1+this.form.des3;
-      // console.log(params);
       fetch.get("?action=/work/UpdateWorkSLAStatus&WORK_ID="+vm.$route.query.workId+
       "&SLA_TYPE="+vm.typeid+"&OPERATE_DATE="+vm.date+params).then(res=>{
         loading.close();
@@ -453,7 +646,6 @@ export default {
                 this.dialogVisible0=false;
                 this.dialogVisible1=false;
                 vm.getWorkInfo();
-                // location.reload()
               }else{
                 this.$message({
                   message:res.MESSAGE,
@@ -463,12 +655,9 @@ export default {
                 });
                 this.dialogVisible0=false;
                 this.dialogVisible1=false;
-              }
-              
+              }              
               console.log(res);
       });
-      //  location.reload()
-              // this.$router.go(0)
     }
   }
 
@@ -510,4 +699,7 @@ export default {
 .dialogdc >>> .submit .onsubmit:hover{background: #2698d6;}
 .dialogdc >>> .submit .el-form-item__content{margin: 0!important; display: flex;}
 .dialogdc >>> .submit .onsubmit{background: #2698d6; color: #ffffff;}
+
+.countDiv{float:right;margin-top:0.2rem;font-size:0.16rem;margin-right:0.2rem}
+.countButton{border-radius:50%;width:0.3rem;height:0.3rem;text-align:center;}
 </style>

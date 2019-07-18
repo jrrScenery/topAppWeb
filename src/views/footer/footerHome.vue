@@ -42,7 +42,6 @@ export default {
   methods: {
     getFooterArr(){
       this.footerArr = [];
-      console.log("AAAAAAAAAAAAAAAAA")
       let permissions = JSON.parse(localStorage.getItem("userPermission"));
       if(permissions==null||permissions.length==0){
         this.footerArr[0] = {elType: 1, index: '/home', text: '首页', className: 'el-icon-footer_1',display:true};

@@ -18,13 +18,13 @@
             </div>
             </el-col>
             <el-col :span="7">
-            <router-link v-if="taskDetailInfo.workStatusId==6" :to="{name:'workBenchSLAfeedback',query:{workId:this.$route.query.workId,latitude:taskDetailInfo.latitude,longitude:taskDetailInfo.longitude}}">
-                <div>
-                    <img src="../../assets/images/eventBaseInfo_2.png" style="width: 0.15rem; height: 0.135rem;" alt="">
-                    <span>SLA反馈</span>
-                </div>
-            </router-link>
-            <div  v-else @click="SLAclickService">
+                <router-link v-if="taskDetailInfo.workStatusId==6" :to="{name:'workBenchSLAfeedback',query:{caseId:this.caseId,taskId:this.taskId,workId:this.$route.query.workId,latitude:taskDetailInfo.latitude,longitude:taskDetailInfo.longitude}}">
+                    <div>
+                        <img src="../../assets/images/eventBaseInfo_2.png" style="width: 0.15rem; height: 0.135rem;" alt="">
+                        <span>SLA反馈</span>
+                    </div>
+                </router-link>
+                <div  v-else @click="SLAclickService">
                     <img src="../../assets/images/eventBaseInfo_2.png" style="width: 0.15rem; height: 0.135rem;" alt="">
                     <span>SLA反馈</span>
                 </div>
@@ -62,9 +62,13 @@
             <router-link :to="{name:'casePartEvaluate',query:{caseId:this.taskDetailInfo.caseId,workId:this.taskDetailInfo.workId,templateType:2,bjflg:1}}">
             <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/sla.png" alt="">备件评价</li>
             </router-link>
-            <router-link :to="{name: 'sparePartsSortOut',query:{caseId:this.caseId}}">
-            <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件整理</li>
+            <router-link v-if="slaDcFeedback==1" :to="{name: 'sparePartsSortOut',query:{caseId:this.caseId}}">
+                <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件整理</li>
             </router-link>
+            <div v-else @click="clickbjzl">
+                <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件整理</li>
+            </div>
+
             <router-link :to="{name:'workBenchPartRecycle',query:{caseId:this.caseId}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件回收</li>
             </router-link>
@@ -221,17 +225,20 @@ export default {
             selectAnwser:0,
             questionObj:{},
             question:"",
-            options:[]
+            options:[],
+            slaDcFeedback:''
         }
         
     },
     created:function(){
+        console.log(this.taskId);
         fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
             console.log("getWorkInfo",res.DATA);   
             this.taskDetailInfo = res.DATA[0];
             this.taskDetailInfo.refuseReason = '';
             this.specialNotes = res.DATA[0].specialNotes;
             this.riskInfos = res.DATA[0].riskInfos;
+            this.slaDcFeedback = res.DATA[0].slaStatus[4].ifFeedback
         });
     },
     beforeRouteLeave( to, from,next){
@@ -253,6 +260,15 @@ export default {
         SLAclickService(){
             this.$message({
                 message:'当前不是待反馈状态，无法反馈！',
+                type: 'warning',
+                center: true,
+                duration:2000,
+                customClass: 'msgdefine'
+            });
+        },
+        clickbjzl(){
+            this.$message({
+                message:'请先完成到场反馈再进行备件整理！',
                 type: 'warning',
                 center: true,
                 duration:2000,
@@ -335,8 +351,6 @@ export default {
             }
         },
         checkUndertake(){
-            console.log(this.taskDetailInfo.caseType);
-            console.log(this.taskDetailInfo.workType);
             if(this.taskDetailInfo.caseType=='故障'&&this.taskDetailInfo.workType!='其他'){               
                 this.chekFeedBackFalg = true;
                 this.form.radioItem=[];

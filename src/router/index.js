@@ -162,7 +162,11 @@ export default new Router({
     {
       path: '/workBench/workBenchSLAfeedback', 
       name: 'workBenchSLAfeedback',
-      component: resolve => require(['@/views/workBench/workBenchSLAfeedback'], resolve)
+      component: resolve => require(['@/views/workBench/workBenchSLAfeedback'], resolve),
+      // meta: {
+      //   isUseCache: false,
+      //   keepAlive: true
+      // }
     },
     //任务列表（首页我的任务->任务列表->任务->服务单一览表）
     {
@@ -204,11 +208,66 @@ export default new Router({
       name: 'workBenchPartRecycle',
       component: resolve => require(['@/views/workBench/workBenchPartRecycle'], resolve)
     },    
-    //首页值班信息
+    //首页值班信息CMO
     {
       path: '/workBench/workBenchWorkInfo',
-      name: 'workBenchPartRecycle',
+      name: 'workBenchWorkInfo',
       component: resolve => require(['@/views/workBench/workBenchWorkInfo'], resolve)
+    },
+    
+    //首页值班信息->技术专家组
+    {
+      path: '/workBench/workBenchTechSpec',
+      name: 'workBenchTechSpec',
+      component: resolve => require(['@/views/workBench/workBenchTechSpec'], resolve)
+    },
+    //首页值班信息->一线资源协调
+    {
+      path: '/workBench/workBenchResourceAdjust',
+      name: 'workBenchResourceAdjust',
+      component: resolve => require(['@/views/workBench/workBenchResourceAdjust'], resolve)
+    },
+    //首页值班信息->备件
+    {
+      path: '/workBench/workBenchWorkInfoParts',
+      name: 'workBenchWorkInfoParts',
+      component: resolve => require(['@/views/workBench/workBenchWorkInfoParts'], resolve)
+    },
+    //首页值班信息->北区一部二线
+    {
+      path: '/workBench/workBenchNorthOne',
+      name: 'workBenchNorthOne',
+      component: resolve => require(['@/views/workBench/workBenchNorthOne'], resolve)
+    },
+    //首页值班信息->北区一部二线
+    {
+      path: '/workBench/workBenchNorthTwo',
+      name: 'workBenchNorthTwo',
+      component: resolve => require(['@/views/workBench/workBenchNorthTwo'], resolve)
+    },
+    //首页值班信息->东区二线
+    {
+      path: '/workBench/workBenchEast',
+      name: 'workBenchEast',
+      component: resolve => require(['@/views/workBench/workBenchEast'], resolve)
+    },
+    //首页值班信息->南区二线
+    {
+      path: '/workBench/workBenchSouth',
+      name: 'workBenchSouth',
+      component: resolve => require(['@/views/workBench/workBenchSouth'], resolve)
+    },
+    //首页SLA标准
+    {
+      path: '/workBench/workBenchSLAStandard',
+      name: 'workBenchSLAStandard',
+      component: resolve => require(['@/views/workBench/workBenchSLAStandard'], resolve)
+    },
+    //首页打卡->打卡情况说明
+    {
+      path: '/home/punchFailShow',
+      name: 'punchFailShow',
+      component: resolve => require(['@/views/home/punchFailShow'], resolve)
     },
     //首页关注->需关注事件列表
     {

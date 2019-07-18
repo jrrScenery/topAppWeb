@@ -64,7 +64,7 @@ export default {
 
   props: ['title','searchType','queryData'],
 
-  watch: {
+  watch: { 
   },
 
   created () {
@@ -78,7 +78,7 @@ export default {
       console.log(this.popBg)
     },
 
-    searchData (data) {
+    searchData (data) { 
       this.$emit('searchPro', data)
     },
 

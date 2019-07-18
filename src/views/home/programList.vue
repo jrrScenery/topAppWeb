@@ -69,21 +69,7 @@ export default {
   data () {
     return {
       programListTit: '需关注项目',
-      programListArr: [
-        /**
-         {
-           num: 'WVJAH60TSF',
-           numone: '90.2',
-           numtwo: '90.2',
-           state: '执行中',
-           title: '2017年河南联通IT设备维保服务公开招标项目',
-           sale: '绍振洲',
-           proLeader: '绍振洲',
-           startTime: '2017-06-01',
-           endTime: '2017-06-01'
-         }*/
-      ],
-      // form: {},
+      programListArr: [],
       page:1,
       pageSize:10,
       busy:false,
@@ -102,7 +88,8 @@ export default {
       industry:'',
       PM:'',
       proName:'',
-      sale:''
+      sale:'',
+      area:''
     }
     this.isSearch = false;
     console.log("searchData",this.searchData)
@@ -127,7 +114,8 @@ export default {
         reqParams.PROJECT_NAME = this.searchData["proName"]
         reqParams.CUST_NAME = this.searchData["customer"]
         reqParams.PM_NAME = this.searchData["PM"]
-        reqParams.SALE_NAME = this.searchData["sale"]
+        reqParams.SALE_NAME = this.searchData["sale"],
+        reqParams.AREA = this.searchData["area"]
       }
       fetch.get("?action=GetFocusProject",reqParams).then(res=>{
         this.totalData = res.total;
@@ -155,6 +143,7 @@ export default {
 
     // 搜索条件data
     getSearParams (data) {
+      console.log(data);
       this.page = 1
       this.isSearch = true;
       this.programListArr = [];

@@ -7,14 +7,6 @@
           <el-option v-for="item in industryType" :label="item.name" :value="item.value" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
-<!--       <el-form-item label="事件类型" style="position: relative">
-        <template>
-          <div style="position: absolute; top: 0.25rem; left: -0.65rem; color: #999999; font-size: 0.1rem">可多选</div>
-          <el-checkbox-group v-model="form.type" size="small">
-            <el-checkbox-button v-for="item in Type" :label="item.value" name="type" :key="item.id">{{item.name}}</el-checkbox-button>
-          </el-checkbox-group>
-        </template>
-      </el-form-item> -->
       <el-form-item label="客户">
         <el-input v-model="form.customer" class="bInput"></el-input>
       </el-form-item>
@@ -32,6 +24,17 @@
       </el-form-item> 
       <el-form-item label="关键词">
         <el-input v-model="form.keyWord" class="bInput"></el-input>
+      </el-form-item>
+      <el-form-item label="区域">
+        <el-select v-model="form.area" placeholder="请选择区域">
+          <el-option v-for="item in areaArr" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="关注原因">
+        <el-input v-model="form.careReason" class="bInput"></el-input>
+        <!-- <el-select v-model="form.careReason" placeholder="请选择关注原因">
+          <el-option v-for="item in careReasonArr" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        </el-select> -->
       </el-form-item>
       <el-form-item label="创建时间" style="margin-bottom: 0.15rem">
         <el-col :span="11">
@@ -71,10 +74,13 @@ export default {
         eventNum: '',
         keyWord: '',
         startTime: '',
-        endTime: ''
+        endTime: '',
+        area:'',
+        careReason:''
       },
       industryType: [],
-      Type: []
+      Type: [],
+      areaArr:[],
     }
   },
 
@@ -86,14 +92,16 @@ export default {
     console.log("focus serach view");
     console.log(this.queryData);
     fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
-      console.log(res.data);
-      this.industryType = res.data;
-      console.log("this.industryType:",this.industryType)
-    });
-/*    fetch.get("?action=getDict&type=NT_CASE_TYPE","").then(res=>{
       // console.log(res.data);
-      this.Type = res.data;
-    });*/
+      this.industryType = res.data;
+      // console.log("this.industryType:",this.industryType)
+    });
+
+    fetch.get("?action=getDict&type=NT_PRO_AREA","").then(res=>{
+      this.areaArr = res.data;
+      // console.log("this.areaArr:",this.areaArr)
+    });
+
     this.form.industry = this.queryData.industry;
     this.form.customer = this.queryData.customer;
     this.form.proName = this.queryData.proName;
@@ -101,7 +109,9 @@ export default {
     this.form.PM = this.queryData.PM;
     this.form.eventNum = this.queryData.eventNum;
     this.form.keyWord = this.queryData.keyWord;
-    this.form.industry = this.queryData.industry;
+    this.form.area = this.queryData.area;
+    this.form.careReason = this.queryData.careReason;
+    // this.form.industry = this.queryData.industry;
     this.form.startTime = this.queryData.startTime;
     this.form.endTime = this.queryData.endTime;
   },
@@ -129,7 +139,7 @@ export default {
 </script>
 
 <style scoped>
-  .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0.5rem; position: relative;}
+  .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0; position: relative;overflow: scroll;height:70%}
   .searchView >>> .el-form-item{margin-bottom: 0.05rem;}
   .searchView >>> .el-select{width: 80%;}
   .searchView >>> .el-input__inner{padding: 0 0.05rem}
@@ -144,7 +154,7 @@ export default {
   .searchView >>> .el-input__prefix{display: none;}
   .searchView >>> .el-input--prefix .el-input__inner{padding: 0; text-align: center;}
   .searchView >>> .el-col-2{text-align: center;}
-  .searchView >>> .searchBtn{position: absolute; bottom: 0; left: 0; right: 0; height: 0.4rem;}
+  .searchView >>> .searchBtn{position: relative; bottom: 0; left: 0; right: 0; height: 0.4rem;}
   .searchView >>> .searchBtn .el-button{width: 50%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
   .searchView >>> .searchBtn .el-button:hover{background: #ffffff;}
   .searchView >>> .searchBtn .searchBtnCell:hover{background: #2698d6;}

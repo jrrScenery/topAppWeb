@@ -12,21 +12,96 @@
       <div v-if="items.arr.length!=0">
         <ul class="ul_workBench" >
           <template v-for="item in items.arr">
-            <li class="li_workBench" :key="item.id">
+            <li class="li_workBench" :key="item.id" v-if="item.text!='考勤打卡'">
               <router-link :to="{name:item.href,params:item.params}">
-                <img  :src="item.imgSrc" alt="">
+                <img :src="item.imgSrc" alt="">
               </router-link>
+              <span>{{item.text}}</span>
+            </li>
+            <li class="li_workBench" :key="item.id" v-else @click="punchCard()">
+              <img  :src="item.imgSrc" alt="">
               <span>{{item.text}}</span>
             </li>
           </template>
         </ul>
       </div>
     </div>
+
+    <div class="homeWarn">
+      <el-dialog
+          top="5%"
+          width="100%"
+          :visible.sync="homeWarnFlag"
+          :show-close="false"
+          :fullscreen="true"
+          center>
+          <el-form class="form1">
+          <div>
+            <div class="warnTextView">
+                <li>每一次严谨，都是风险的消逝！</li>
+                <li>风险事故猛于虎！请！立刻！马上！谨慎起来！</li>
+            </div>
+            <div class="imgView">
+                <div class="imgViewCol"><img src="../../assets/images/warn.jpg" alt=""></div>
+                <div class="imgViewCol"><img src="../../assets/images/prepare.jpg" alt=""></div>
+                <div class="imgViewCol"><img src="../../assets/images/warnLogo.jpg" alt=""></div>           
+            </div>
+            <div class="itemsView">
+                <div class='itemView'>评估能力</div>
+                <div class='itemView'>了解环境</div>
+                <div class='itemView'>分析关联</div>
+                <div class='itemView'>评估风险</div>
+                <div class='itemView'>重大变更</div>
+                <div class='itemView'>书面确认</div>
+                <div class='itemView'>数据重要</div>
+                <div class='itemView'>备份核实</div>
+            </div>
+            <div style="text-indent: 2em;padding:0.1rem;color:#B22222">如果这道题你都答不出来，赶紧连线你的部门经理手把手教你操作。</div>
+            <div style="text-indent: 2em;padding:0.1rem">{{question}}</div>
+            <el-form-item prop="options" class="radioView">
+                <el-checkbox-group 
+                    v-model="form.radioItem" 
+                    :min="0"
+                    :max="4"
+                    v-for="item in options" 
+                    :key="item.OPTION_ID">
+                    <el-checkbox :label="item.OPTION_ID"><div class="optionTextView">{{item.OPTION_NAME}}</div></el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+          </div>
+          <el-form-item  class="submit">
+              <!-- <el-button @click="questionVisible = false" >取 消</el-button> -->
+              <el-button type="primary"  class="onsubmit"  @click="onSubmit('form')">提 交</el-button>
+          </el-form-item>
+          </el-form>
+      </el-dialog>
+    </div>
+    <!-- 打卡不再范围时询问框 -->
+    <div class="dialogdc">
+      <el-dialog
+        title="提示"
+        :visible.sync="warnVisible"
+        :show-close="false"
+        width="80%"
+        center>
+        <el-form>
+          <div style="margin:0.2rem">
+            <span>{{desc}}</span>
+          </div>
+          <el-form-item class="submit">
+            <el-button @click="warnVisible = false" >取 消</el-button>
+            <el-button type="primary" class="onsubmit" @click="confirm()">确 定</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
 <script>
 import fetch from '../../utils/ajax'
+import LocationSdk from "@/utils/wxUtils"
+import BMap from 'BMap'
 export default {
   name: 'workBench',
 
@@ -47,11 +122,24 @@ export default {
         {arr: []},
         {arr: []},
         {arr: []}
-      ]
+      ],
+      location:[],
+      differDistance:null,
+      latitude:'',
+      longitude:'',
+      form:{
+          radioItem:[]
+      },
+      homeWarnFlag:false,
+      questionObj:{},
+      question:"",
+      options:[],
+      warnVisible:false,
+      zcInfo:null,  //驻场为空信息
+      desc:"您当前不在驻场区域，无法进行打卡，是否进行情况说明？"
     }
   },
   activated(){
-    // console.log(this.$route.meta.isUseCache);
     this.workBenchObj = [
         {arr: []},
         {arr: []},
@@ -86,15 +174,15 @@ export default {
           this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_4.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false};
           this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计',href: 'reportBusinessForm',params: {type: 'my'},display:true};
           this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉', href: 'tabshowTest',params: {type: 'my'},display:true};
-          this.workBenchObj[2].arr[2] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
-          this.workBenchObj[3].arr[0] = {imgSrc: require('@/assets/images/my_7.png'), text: 'SLA标准', href: 'workBenchSLAStandard',params: {type: 'my'},display:true};
+          // this.workBenchObj[2].arr[2] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
+          this.workBenchObj[2].arr[2] = {imgSrc: require('@/assets/images/punch.png'), text: '考勤打卡',display:true};
         }else{
           this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/my_5.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
           this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/my_6.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
           this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
           this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉', href: 'tabshowTest',params: {type: 'my'},display:true};
-          this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
-          this.workBenchObj[2].arr[2] = {imgSrc: require('@/assets/images/my_7.png'), text: 'SLA标准', href: 'workBenchSLAStandard',params: {type: 'my'},display:true};
+          // this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
+          this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/punch.png'), text: '考勤打卡',display:true};
         }
       }else{
         this.workBenchObj[0].arr[0] = {imgSrc: require('@/assets/images/my_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true};
@@ -105,17 +193,229 @@ export default {
           this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/my_4.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false};
           this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计',href: 'reportBusinessForm',params: {type: 'my'},display:true};
           this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉', href: 'tabshowTest',params: {type: 'my'},display:true};
-          this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
-          this.workBenchObj[2].arr[2] = {imgSrc: require('@/assets/images/my_7.png'), text: 'SLA标准', href: 'workBenchSLAStandard',params: {type: 'my'},display:true};
+          // this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
+          this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/punch.png'), text: '考勤打卡',display:true};
         }else{
           this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/my_5.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true},
           this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/my_6.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
           this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计',href: 'reportBusinessForm',params: {type: 'my'},display:true};
           this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉', href: 'tabshowTest',params: {type: 'my'},display:true};
-          this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
-          this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/my_7.png'), text: 'SLA标准', href: 'workBenchSLAStandard',params: {type: 'my'},display:true};
+          // this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
+          this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/punch.png'), text: '考勤打卡',display:true};
           // this.workBenchObj[2].arr = []
         }
+      }
+    },
+    punchCard(){
+      console.log("00000000");
+      this.form={
+          radioItem:[]
+      };
+      var vm = this;
+      this.getLocation();
+    },
+    getZcLocationInfo:function(){
+      fetch.get("?action=/system/getProAttendanceAddress",{}).then(res=>{
+        console.log("getProAttendanceAddress:",res);
+        if(res.STATUSCODE=='1'){
+          let location = res.data;
+          this.location = location;
+        }else{
+          this.$message({
+              message:res.MESSAGE+"发生错误",
+              type: 'error',
+              center: true,
+              duration:1000,
+              customClass: 'msgdefine'
+          });
+        }
+      })
+    },
+    getLocation:function(){
+      const loading = this.$loading({
+        lock: true,
+        text: '正在获取位置信息...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(255, 255, 255, 0.3)'
+      });
+      var self = this;
+      self.getZcLocationInfo();
+      function success(res){
+        console.log("res",res);
+        var lat = res.latitude;//gps经纬度
+        var lng = res.longitude;
+        setTimeout(function () {
+          console.log("000");
+          self.gpsPoint = new BMap.Point(lng,lat);
+          var convertor = new BMap.Convertor();
+          var pointArr = [];
+              pointArr.push(self.gpsPoint);
+              console.log(pointArr);
+          convertor.translate(pointArr, 1,5, function (point) {  
+            console.log("111",point);
+            self.latitude = point.points[0].lat;
+            self.longitude = point.points[0].lng;
+            self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
+            console.log(JSON.stringify(self.location)); 
+            if(self.location.length==0){
+              self.zcInfo = '驻场地址为空，请填写说明并维护地址';
+              self.desc = "您的驻场地址为空，无法进行打卡，是否进行情况说明？";
+              self.warnVisible = true;  
+            }else{
+              for(let i=0;i<self.location.length;i++){
+                if(self.location[i].LATITUDE!=null&&self.location[i].LONGITUDE!=null){
+                  self.getDistance(self.location[i].LATITUDE,self.location[i].LONGITUDE,self.location[i].ADDRESS_ID);
+                }
+              }
+            }
+            console.log("self.differDistance:",self.differDistance);
+            if(self.differDistance&&self.differDistance<=0.5){
+              self.postPunchInfo();
+            }else{
+              self.warnVisible = true;      
+            }
+            var geoc = new BMap.Geocoder(); 
+            geoc.getLocation(self.pointA, function(rs){
+              console.log("rs:",rs);
+              if(rs.surroundingPois.length!=0){
+                // self.surroundingTitle = rs.surroundingPois[0].title;
+                self.address = rs.surroundingPois[0].address+rs.surroundingPois[0].title;             
+              }else{
+                // self.surroundingTitle=rs.business;
+                self.address = rs.address+rs.business;  
+              }
+            })  
+          });
+        },1000)
+      }
+      LocationSdk.getLocation(success,loading)
+    },
+    // 测量百度地图两个点间的距离
+   getDistance:function (latitude,longitude,addressId) {
+     var map = new BMap.Map('')
+     var pointB = new BMap.Point(parseFloat(longitude), parseFloat(latitude))  // 店铺的经纬度
+     var distance = (map.getDistance(this.pointA, pointB) / 1000).toFixed(2) // 保留小数点后两位
+    //  return distance    
+     if(this.differDistance!=null){
+       if(distance<this.differDistance){
+         this.differDistance = distance;
+         this.addressId = addressId;
+       }
+     }else{
+       this.differDistance = distance;
+       this.addressId = addressId;
+     }
+   },
+   confirm(){
+     this.warnVisible=false;
+     this.$router.push({name:'punchFailShow',query:{lat:this.latitude,lng:this.longitude,address:this.address,zcInfo:'驻场地址为空，请填写说明并维护地址'}})
+   },
+    postPunchInfo(){
+      let param = {latitude:this.latitude,longitude:this.longitude,address:this.address,addressId:this.addressId,flg:1};
+      fetch.get("?action=/risk/savePosition",param).then(res=>{
+        console.log("savePosition",res);
+        // loading.close();
+        if(res.STATUSCODE=="1"){
+          this.homeWarnFlag = true;
+          fetch.get("?action=/risk/getQuestion",{}).then(res=>{
+            console.log("queryQuestion",res);
+            if(res.STATUSCODE=='1'){
+                this.$message({
+                  message:'打卡成功',
+                  type: 'success',
+                  center: true,
+                  duration:1000,
+                  customClass:'msgdefine'
+                });  
+              this.question = res.data.QUESTION;
+              this.options = res.data.options;
+              this.questionObj = res.data;
+            }else{
+              this.$message({
+                message:res.MESSAGE+"发生错误",
+                type: 'error',
+                center: true,
+                customClass: 'msgdefine'
+              });
+            }
+          })
+        }else{
+          this.$message({
+            message:'打卡失败',
+            type: 'error',
+            center: true,
+            customClass:'msgdefine'
+          });
+        }
+      })
+    },
+    onSubmit(formName){
+      let vm= this;
+      if(vm.form.radioItem.length==0){
+          this.$message({
+              message:'请选择答案',
+              type: 'error',
+              center: true,
+              duration:2000,
+              customClass: 'msgdefine'
+          })
+      }else{
+        let ifAnswerTrue = 1;
+        let rightAnwser = 0;
+        let answerIds = '';
+        for(let i = 0;i<vm.options.length;i++){
+            if(vm.options[i].IF_TRUE=="1"){
+                rightAnwser = rightAnwser+1;
+            }
+        }
+        for(let i = 0;i<vm.form.radioItem.length;i++){
+            vm.selectAnwser = vm.form.radioItem.length;
+            if(i==vm.form.radioItem.length-1){
+                answerIds+=vm.form.radioItem[i]
+            }else{
+                answerIds+=vm.form.radioItem[i]+","
+            }
+        }
+        for(let i = 0;i<vm.form.radioItem.length;i++){
+            for(let j =0;j<vm.options.length;j++){
+                if(vm.form.radioItem[i] == this.options[j].OPTION_ID){
+                    if(vm.options[j].IF_TRUE!="1"||(rightAnwser!=vm.selectAnwser)){
+                        ifAnswerTrue = 0;
+                    }
+                }
+            }
+        }
+        let data = {};
+        // data.workId = vm.workId;
+        data.excuteType = vm.questionObj.EXCUTE_TYPE;
+        data.questionId = vm.questionObj.QUESTION_ID;
+        data.answerIds = answerIds;
+        data.ifAnswerTrue = ifAnswerTrue;
+        var params = new URLSearchParams();
+        params.append("data",JSON.stringify(data));
+        console.log("params",params);
+        fetch.post("?action=/risk/saveAnswer",params).then(res=>{
+            console.log("saveAnswer",res);
+            if(res.STATUSCODE=='1'){
+                this.$message({
+                    message:'回答正确',
+                    type: 'success',
+                    center: true,
+                    duration:2000,
+                    customClass: 'msgdefine'
+                })
+                vm.homeWarnFlag = false;
+                // vm.onUndertake();
+            }else{
+                this.$message({
+                    message:res.MESSAGE,
+                    type: 'error',
+                    center: true,
+                    duration:2000,
+                    customClass: 'msgdefine'
+                })
+            }
+        })
       }
     },
   },
@@ -132,13 +432,6 @@ export default {
       let strscan = res;
       let ar= []
       ar = strscan.split("|");
-      alert(ar);
-      // this.$message({
-      //   message:ar,
-      //   type: 'info',
-      //   center: true,
-      //   customClass: 'msgdefine'
-      // });
       if(ar.length){
         ar.forEach(element => {
           if(element.length){
@@ -158,12 +451,6 @@ export default {
           }
         });
       }
-          // this.$message({
-          //   message:ar[0].split("：")[1],
-          //   type: 'info',
-          //   center: true,
-          //   customClass: 'msgdefine'
-          // });
           if(ar[0].split("：")[1]=='jingrr'){
             this.$router.push({name:"workBenchDeclare" , query:{num:objtmp.sn, type:objtmp.xinghao, firm:objtmp.factory,cityname:objtmp.city }})
           }
@@ -206,4 +493,35 @@ export default {
     /*! autoprefixer: off */
     -webkit-box-orient: vertical;
   }
+
+.homeWarn >>> .el-dialog__body{padding: 0px 0px}
+.homeWarn >>> .el-dialog__header{padding: 0px 0px 0px}
+.homeWarn >>> .el-dialog__footer{padding: 0px 0px 0px}
+.homeWarn >>>.warnTextView{padding:0.1rem;background-color:#B22222;color:#ffffff;}
+.homeWarn >>>.imgView{display:flex;position: relative; width: 90%; height: 100%;background-color: #ffffff;padding-left:5%;padding-right: 5%}
+.imgView >>>.imgViewCol{display: flex;align-items: center}
+.homeWarn >>>.itemsView{display:flex;flex-direction:row;flex-wrap: wrap;color:#B22222;text-align:center;border-bottom:0.01rem solid #e5e5e5;}
+.itemsView >>> .itemView{width: 25%}
+.radioView{margin-left: 0.2rem;}
+.optionTextView{word-wrap:break-word;word-break: break-all;white-space:normal;margin-right:0.2rem}
+
+.homeWarn  .submit{position: relative;left: 0; right: 0; height: 0.4rem;bottom: 0;}
+/* .submit >>> .el-form-item__content{margin: 0!important;}
+.submit >>> .el-form-item__content .el-button{width: 50%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;} */
+.homeWarn >>> .submit .el-button{width: 100%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
+.homeWarn >>> .submit .el-button:hover{background: #ffffff;}
+.homeWarn >>> .submit .onsubmit:hover{background: #2698d6;}
+.homeWarn >>> .submit .el-form-item__content{margin: 0!important; display: flex;}
+.homeWarn >>> .submit .onsubmit{background: #2698d6; color: #ffffff;}
+
+.dialogdc >>> .el-dialog__body{padding: 0px 0px}
+.dialogdc >>> .el-dialog__header{padding: 0px 0px 0px}
+.dialogdc >>> .el-dialog__footer{padding: 0px 0px 0px}
+.dialogdc >>>.warnTextView{padding:0.1rem;background-color:#B22222;color:#ffffff;}
+
+.dialogdc >>> .submit .el-button{width: 100%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
+.dialogdc >>> .submit .el-button:hover{background: #ffffff;}
+.dialogdc >>> .submit .onsubmit:hover{background: #2698d6;}
+.dialogdc >>> .submit .el-form-item__content{margin: 0!important; display: flex;}
+.dialogdc >>> .submit .onsubmit{background: #2698d6; color: #ffffff;}
 </style>

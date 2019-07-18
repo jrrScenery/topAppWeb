@@ -100,20 +100,17 @@ export default {
     showcpoint(){
       var vm =this;
       this.bmap.centerAndZoom(this.cmarker.getPosition(),this.bmap.getZoom());
+      console.log("bmap",this.bmap);
     },
     drawmap(){
       var vm=this;
       this.peoheight= this.peoheight
-      console.log(this.peoheight)
-      console.log(document.querySelector(".peopleinfo").clientHeight);
       if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
             let winHeight = document.documentElement.clientHeight
             let mapHeight = document.getElementById('peopleAllMap')
             let contentHeight = document.getElementById('content')
             mapHeight.style.height = winHeight - 95- (this.infoon ?this.peoheight:0) + 'px'//地图高度
             contentHeight.style.height = winHeight - 95 + 'px'  //整个content高度
-            console.log(mapHeight.style.height)
-            console.log(contentHeight.style.height)
           }
 
           let map = new BMap.Map('peopleAllMap')

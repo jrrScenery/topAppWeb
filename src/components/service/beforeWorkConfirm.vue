@@ -195,6 +195,7 @@ export default {
             serviceId:this.$route.query.serviceId,
             serviceType:this.$route.query.serviceType,
             taskId:this.$route.query.taskId,
+            type:this.$route.query.type,
             // popBg: false,
             checked:[
                 {ifY1:false,ifF1:false},
@@ -207,52 +208,54 @@ export default {
         }
     },
     created:function(){
-        fetch.get("?action=/work/getCaseServiceQuestion&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
-            console.log(res)
-            if(this.serviceType==2){
-                this.formData.caseServiceQuestion = res.dataService[0];
-                this.imgStrQuestion = res.dataService[0].imgStrQuestion;           
-            }else{
-                this.formData.caseServiceQuestion = res.dataDealService[0];
-                this.imgStrQuestion = res.dataDealService[0].imgStrQuestion;
-            }
-            if(this.formData.caseServiceQuestion.serviceTime == null){
-                this.formData.caseServiceQuestion.serviceTime = new Date();
-            }
-            if(this.formData.caseServiceQuestion.numberIf1==1){
-                this.checked[0].ifY1 = true;
-            }else if(this.formData.caseServiceQuestion.numberIf1==0){
-                this.checked[0].ifF1 = true;
-            }
-            if(this.formData.caseServiceQuestion.numberIf2==1){
-                this.checked[1].ifY2 = true;
-            }else if(this.formData.caseServiceQuestion.numberIf2==0){
-                this.checked[1].ifF2 = true;
-            }
-            if(this.formData.caseServiceQuestion.numberIf3==1){
-                this.checked[2].ifY3 = true;
-            }else if(this.formData.caseServiceQuestion.numberIf3==0){
-                this.checked[2].ifF3 = true;
-            }
-            if(this.formData.caseServiceQuestion.numberIf4==1){
-                this.checked[3].ifY4 = true;
-            }else if(this.formData.caseServiceQuestion.numberIf4==0){
-                this.checked[3].ifF4 = true;
-            }
-            if(this.formData.caseServiceQuestion.numberIf5==1){
-                this.checked[4].ifY5 = true;
-            }else if(this.formData.caseServiceQuestion.numberIf5==0){
-                this.checked[4].ifF5 = true;
-            }
-            if(this.formData.caseServiceQuestion.numberIf6==1){
-                this.checked[5].ifY6 = true;
-            }else if(this.formData.caseServiceQuestion.numberIf6==0){
-                this.checked[5].ifF6 = true;
-            }
-        })
+        this.getCaseServiceQuestion();
     },
     methods:{
-        
+        getCaseServiceQuestion(){
+            fetch.get("?action=/work/getCaseServiceQuestion&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
+                console.log(res)
+                if(this.serviceType==2){
+                    this.formData.caseServiceQuestion = res.dataService[0];
+                    this.imgStrQuestion = res.dataService[0].imgStrQuestion;           
+                }else{
+                    this.formData.caseServiceQuestion = res.dataDealService[0];
+                    this.imgStrQuestion = res.dataDealService[0].imgStrQuestion;
+                }
+                if(this.formData.caseServiceQuestion.serviceTime == null){
+                    this.formData.caseServiceQuestion.serviceTime = new Date();
+                }
+                if(this.formData.caseServiceQuestion.numberIf1==1){
+                    this.checked[0].ifY1 = true;
+                }else if(this.formData.caseServiceQuestion.numberIf1==0){
+                    this.checked[0].ifF1 = true;
+                }
+                if(this.formData.caseServiceQuestion.numberIf2==1){
+                    this.checked[1].ifY2 = true;
+                }else if(this.formData.caseServiceQuestion.numberIf2==0){
+                    this.checked[1].ifF2 = true;
+                }
+                if(this.formData.caseServiceQuestion.numberIf3==1){
+                    this.checked[2].ifY3 = true;
+                }else if(this.formData.caseServiceQuestion.numberIf3==0){
+                    this.checked[2].ifF3 = true;
+                }
+                if(this.formData.caseServiceQuestion.numberIf4==1){
+                    this.checked[3].ifY4 = true;
+                }else if(this.formData.caseServiceQuestion.numberIf4==0){
+                    this.checked[3].ifF4 = true;
+                }
+                if(this.formData.caseServiceQuestion.numberIf5==1){
+                    this.checked[4].ifY5 = true;
+                }else if(this.formData.caseServiceQuestion.numberIf5==0){
+                    this.checked[4].ifF5 = true;
+                }
+                if(this.formData.caseServiceQuestion.numberIf6==1){
+                    this.checked[5].ifY6 = true;
+                }else if(this.formData.caseServiceQuestion.numberIf6==0){
+                    this.checked[5].ifF6 = true;
+                }
+            })
+        },
         signature(imgStrQuestion){
             this.formData.caseServiceQuestion.imgStrQuestion = imgStrQuestion;
         },
@@ -502,10 +505,10 @@ export default {
                             center: true,
                             customClass: 'msgdefine'
                             });
-
                             let nowWorkId = vm.workId;
                             let nowCaseId = vm.caseId;
-                            setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId}})},1000);
+                            vm.getCaseServiceQuestion();
+                            // setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId}})},1000);
                         }else{
                             this.$message({
                             message:res.MESSAGE+"发生错误",

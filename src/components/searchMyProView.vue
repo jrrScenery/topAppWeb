@@ -24,6 +24,11 @@
       <el-form-item label="PM" label-width="0.8rem">
         <el-input v-model="form.PM" class="bInput"></el-input>
       </el-form-item>
+      <el-form-item label="区域" label-width="0.8rem">
+        <el-select v-model="form.area" placeholder="请选择区域">
+          <el-option v-for="item in areaArr" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item class="searchBtn">
         <el-button @click="onCancel">取消</el-button>
         <el-button class="searchBtnCell" @click="onSearch">查询</el-button>
@@ -49,10 +54,12 @@ export default {
         customer: '',
         proName: '',
         sale: '',
-        PM: ''
+        PM: '',
+        area:''
       },
       businessType: [],
-      industryType: []
+      industryType: [],
+      areaArr:[]
     }
   },
 
@@ -65,7 +72,10 @@ export default {
     });
     fetch.get("?action=getDict&type=NT_CUSTOMER_INDUSTRY","").then(res=>{
       this.industryType = res.data;
-      console.log("1111", this.industryType)
+    });
+
+    fetch.get("?action=getDict&type=NT_PRO_AREA","").then(res=>{
+      this.areaArr = res.data;
     });
 
     this.form.business = this.queryData.business;
@@ -74,7 +84,7 @@ export default {
     this.form.customer = this.queryData.customer;
     this.form.sale = this.queryData.sale;
     this.form.PM = this.queryData.PM;
-
+    this.form.area = this.queryData.area;
   },
 
   methods: {

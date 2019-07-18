@@ -51,9 +51,7 @@ export default {
           // localStorage.removeItem("userPermission");
           localStorage.setItem("userPermission", JSON.stringify(res.userPermission));
           this.updateUserPermission(res.userPermission);
-
         });
-
         //this.$router.push({name:'home',params:{}});
       });
     }
@@ -110,8 +108,6 @@ console.log(res);
               localStorage.setItem("userRole", JSON.stringify(res.data.userRole));
               localStorage.setItem("userName", this.ruleForm.userName);
 
-              
-              
               let ua = navigator.userAgent.toLowerCase();
               if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
                 var info={action:"login",empId:localStorage.getItem('empId'),token:token}
@@ -125,6 +121,7 @@ console.log(res);
 
               let userPermission = res.data.userPermission;
               this.updateUserPermission(userPermission);
+              console.log("userPermission",userPermission);
 
               this.loginErr = false
             }else{
@@ -154,7 +151,7 @@ console.log(res);
       }
       if(isGps==1){
         fetch.get("?action=getDict&type=GPS_UPDATE_INTERVAL",{}).then(res=>{
-          //console.log(res);
+          console.log("getDict",res);
           this.interval = res.data[0].name;
           
           let ua = navigator.userAgent.toLowerCase();
@@ -164,6 +161,7 @@ console.log(res);
             window.webkit.messageHandlers.ioshandle.postMessage({body: info});
           }else if(typeof(android)!="undefined"){
             var value = "{action:location,empId:"+localStorage.getItem('empId')+",interval:"+this.interval+"}";
+            console.log("value",value);
             android.getClient(value);
           }
           this.$router.push({name: 'home',query: { rancode: (new Date()).valueOf() }});

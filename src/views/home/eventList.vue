@@ -71,28 +71,7 @@ export default {
     return {
       eventListTit: '需关注事件',
       searchType: 'focusEvent',
-      eventListArr: [
-        /**{
-          num: 'CS1608260014',
-          timeone: '2016-08-26',
-          timetwo: '09:24:57',
-          firm: 'IBM',
-          model: '9117-570(P5 570)',
-          state: '待管理人处理',
-          type: '非故障技术支持',
-          alarm: 'CASE人员到场OLA超时'
-        },
-        {
-          num: 'CS1608260014',
-          timeone: '2016-08-26',
-          timetwo: '09:24:57',
-          firm: 'IBM',
-          model: '9117-570(P5 570)',
-          state: '待管理人处理',
-          type: '非故障技术支持',
-          alarm: 'CASE人员到场OLA超时'
-        }*/
-      ],
+      eventListArr: [],
       page:1,
       pageSize:10,
       busy:true,
@@ -115,7 +94,9 @@ export default {
       proName:'',
       sale:'',
       startTime:'',
-      type:[]
+      type:[],
+      area:'',
+      careReason:''
     }
     this.isSearch = false;
     console.log("vvvvvvvvvvvv",this.searchData);
@@ -141,11 +122,14 @@ export default {
         params.CASE_CD = this.searchData.eventNum;
         params.KEYWORD = this.searchData.keyWord;
         params.SALE_NAME = this.searchData.sale;
+        params.AREA = this.searchData.area;
+        params.REASON = this.searchData.careReason;
         params.START_TIME = this.searchData.startTime;
         params.END_TIME = this.searchData.endTime;
       }
       var flag = this.page>1;
       fetch.get("?action=GetFocusCase",params).then(res=>{
+        console.log(res);
         this.totalData = res.total;
         if(flag){
             this.eventListArr = this.eventListArr.concat(res.data);
@@ -173,6 +157,7 @@ export default {
     },
 
     searchList(formData){
+      console.log("formData:",formData);
       this.searchData = formData;
       this.eventListArr=[];
       this.isSearch = true;

@@ -36,7 +36,18 @@ export default {
             workId:this.$route.query.workId,
             serviceId:this.$route.query.serviceId,
             serviceType:this.$route.query.serviceType,
-            taskId:this.$route.query.taskId
+            taskId:this.$route.query.taskId,
+            type:this.$route.query.type
+        }
+    },
+    created(){
+        if(this.type=='SLA'){
+            this.$notify({
+                title: '提示',
+                message: '需全部完成实施前确认->完成后总结->客户评价，方可进行离场操作',
+                type: 'warning',
+                duration:0
+            });
         }
     },
     beforeRouteLeave( to, from,next){

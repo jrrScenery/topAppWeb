@@ -105,14 +105,13 @@ export default {
 
       post(url, params) {
         return new Promise((resolve, reject) => {
-            var token = localStorage.getItem("token");
+          var token = localStorage.getItem("token");
           axios.post(baseURL+url,params, {
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                "token":token,
-              },
-             
-            }
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              "token":token,
+            },            
+          }
           ).then(res => {
             if(res.data.STATUSCODE=='-1'){
                 // console.log(res.data+"------------------")

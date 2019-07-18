@@ -3,60 +3,58 @@
   <div class="declareWordLoadView">
     <header-last :title="declareTitle"></header-last>
     <div style="height: 0.45rem;"></div>
-      <div class="content">
-          <el-form ref="form" :model="form" label-width="0.9rem">
-            <el-form-item label="派工者" label-width="1.3rem" style="background: #f7f7f7">
-              <el-input v-model="form.creatorRolename" class="bInput" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="标准工作量" label-width="1.3rem" style="background: #f7f7f7">
-              <el-input v-model="pgstandardWorkload" class="bInput" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="调整工作量" label-width="1.3rem" style="background: #f7f7f7">
-              <el-input v-model="expectWorkload" class="bInput" disabled></el-input>
-            </el-form-item>
-            <el-form-item label="路途工作量(派工)" label-width="1.3rem" style="background: #f7f7f7">
-              <el-input v-model="pgwayWorkload" class="bInput" disabled></el-input>
-            </el-form-item>
-            <!-- <hr class="secondBoundaries"></hr> -->
-            <el-form-item label="开始时间">
-              <div class="block">
-                <span class="demonstration"></span>
-                <el-date-picker
-                  v-model="form.expectStart"
-                  type="datetime"
-                  placeholder="选择日期时间"
-                  default-time="12:00:00">
-                </el-date-picker>
-                </div>
-            </el-form-item>
-            <el-form-item label="结束时间">
-                <div class="block">
-                <span class="demonstration"></span>
-                <el-date-picker
-                  v-model="form.expectEnd"
-                  type="datetime"
-                  placeholder="选择日期时间"
-                  default-time="12:00:00">
-                </el-date-picker>
-              </div>
-            </el-form-item>
-            <el-form-item label="实施工作量">
-              <el-tooltip class="item" effect="light" content="已确认实施工作量 (单位小时，如：1.5)" placement="right">
-                <el-input v-model="form.standardWorkload" class="bInput"></el-input>
-                <el-button></el-button>
-              </el-tooltip>
-            </el-form-item>
-            
-            <el-form-item label="路途工作量">
-              <el-input placeholder="请输入路途工作量 (单位小时，如：1.5)" v-model="form.wayWorkload" class="bInput"></el-input>
-            </el-form-item>
-            <el-form-item class="submitBtn">
-              <el-button type="primary" @click="onSubmit('form')">提交</el-button>
-            </el-form-item>
-          </el-form>
+    <div class="content">
+      <el-form ref="form" :model="form" label-width="0.9rem">
+        <el-form-item label="派工者" label-width="1.3rem" style="background: #f7f7f7">
+          <el-input v-model="form.creatorRolename" class="bInput" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="标准工作量" label-width="1.3rem" style="background: #f7f7f7">
+          <el-input v-model="pgstandardWorkload" class="bInput" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="调整工作量" label-width="1.3rem" style="background: #f7f7f7">
+          <el-input v-model="expectWorkload" class="bInput" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="路途工作量(派工)" label-width="1.3rem" style="background: #f7f7f7">
+          <el-input v-model="pgwayWorkload" class="bInput" disabled></el-input>
+        </el-form-item>
+        <!-- <hr class="secondBoundaries"></hr> -->
+        <el-form-item label="开始时间">
+          <div class="block">
+            <span class="demonstration"></span>
+            <el-date-picker
+              v-model="form.expectStart"
+              type="datetime"
+              placeholder="选择日期时间"
+              default-time="12:00:00">
+            </el-date-picker>
+            </div>
+        </el-form-item>
+        <el-form-item label="结束时间">
+            <div class="block">
+            <span class="demonstration"></span>
+            <el-date-picker
+              v-model="form.expectEnd"
+              type="datetime"
+              placeholder="选择日期时间"
+              default-time="12:00:00">
+            </el-date-picker>
+          </div>
+        </el-form-item>
+        <el-form-item label="实施工作量">
+          <el-tooltip class="item" effect="light" content="已确认实施工作量 (单位小时，如：1.5)" placement="right">
+            <el-input v-model="form.standardWorkload" class="bInput"></el-input>
+            <el-button></el-button>
+          </el-tooltip>
+        </el-form-item>
         
-        </div>
-
+        <el-form-item label="路途工作量">
+          <el-input placeholder="请输入路途工作量 (单位小时，如：1.5)" v-model="form.wayWorkload" class="bInput"></el-input>
+        </el-form-item>
+        <el-form-item class="submitBtn">
+          <el-button type="primary" @click="onSubmit('form')">提交</el-button>
+        </el-form-item>
+      </el-form>        
+    </div>
   </div>
 </template>
 
@@ -124,16 +122,21 @@ export default {
                   let nowcaseid = vm.form.caseId;
                   let nowwordid = vm.form.workId;
                   setTimeout(function(){vm.$router.push({ name: "workBenchTaskDetailInfo",query:{caseId:nowcaseid,workId:nowwordid}})},1000);
-              }
-              else{
+              }else if(res.STATUSCODE=="2"){
+                this.$message({
+                  message:res.MESSAGE,
+                  type: 'warning',
+                  center: true,
+                  customClass: 'msgdefine'
+                });
+              }else{
                 this.$message({
                   message:res.MESSAGE+"发生错误",
                   type: 'error',
                   center: true,
                   customClass: 'msgdefine'
                 });
-              }
-              
+              }             
           });
         } else {
           this.$message({

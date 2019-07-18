@@ -108,17 +108,6 @@ export default {
     }, 
     data(){
         return{
-            // form: {
-            //     partsSource: "2",
-            //     partsId: "",
-            //     pnFru: "",
-            //     SN: "",
-            //     ifPackage: "",
-            //     ifTakeaway: "",
-            //     useStatus: "3",
-            //     isRecycle: "",
-            //     useStatusRemark: "",
-            // },
             isShow: false,
             partsTypeList: [],
             sparePartsSortOutTit:"事件备件列表",
