@@ -136,7 +136,8 @@ export default {
       options:[],
       warnVisible:false,
       zcInfo:null,  //驻场为空信息
-      desc:"您当前不在驻场区域，无法进行打卡，是否进行情况说明？"
+      desc:"您当前不在驻场区域，无法进行打卡，是否进行情况说明？",
+      isInPunchTime:false
     }
   },
   activated(){
@@ -147,9 +148,31 @@ export default {
         {arr: []}
     ];
     this.getWorkBenchObj();  
+    if(this.$route.query.homeWarnFlag){
+      this.homeWarnFlag = this.$route.query.homeWarnFlag;
+      this.getQuestion();
+    }
   },
   created(){
-    this.getWorkBenchObj();
+    var a = "08:30";
+    var b = "18:30";
+    var astr = a.split(":");
+    var bstr = b.split(":");
+    var aDate = new Date();
+    var bDate = new Date();
+    aDate.setHours(astr[0]);
+    aDate.setMinutes(astr[1]);
+    aDate.setSeconds('00');
+    bDate.setHours(bstr[0]);
+    bDate.setMinutes(bstr[1]);
+    bDate.setSeconds('00');
+
+    let befoream = aDate.getTime()-3*60*60*1000;
+    console.log(new Date(befoream));
+    console.log(bDate);
+    // var b = new Date(d.getFullYear(),d.getMonth(),d.getDate(),a.slice(0,2),a.slice(3,5),a.slice(6,8))
+    // console.log("b:",b.getHours()>d.getHours());
+    this.getWorkBenchObj();  
   },
   methods: {
     getWorkBenchObj(){
@@ -250,13 +273,13 @@ export default {
           var convertor = new BMap.Convertor();
           var pointArr = [];
               pointArr.push(self.gpsPoint);
-              console.log(pointArr);
+              // console.log(pointArr);
           convertor.translate(pointArr, 1,5, function (point) {  
             console.log("111",point);
             self.latitude = point.points[0].lat;
             self.longitude = point.points[0].lng;
             self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
-            console.log(JSON.stringify(self.location)); 
+            // console.log(JSON.stringify(self.location)); 
             if(self.location.length==0){
               self.zcInfo = '驻场地址为空，请填写说明并维护地址';
               self.desc = "您的驻场地址为空，无法进行打卡，是否进行情况说明？";
@@ -264,13 +287,16 @@ export default {
             }else{
               for(let i=0;i<self.location.length;i++){
                 if(self.location[i].LATITUDE!=null&&self.location[i].LONGITUDE!=null){
-                  self.getDistance(self.location[i].LATITUDE,self.location[i].LONGITUDE,self.location[i].ADDRESS_ID);
+                  self.getDistance(self.location[i]);
                 }
               }
             }
-            console.log("self.differDistance:",self.differDistance);
-            if(self.differDistance&&self.differDistance<=0.5){
-              self.postPunchInfo();
+            if(self.differDistance&&self.differDistance<=self.distance/1000){
+              let isInPunchTime = self.differTime(self.amStartTime,self.pmEndTime);
+              if(isInPunchTime){
+                self.postPunchInfo();
+              }
+              // self.postPunchInfo();
             }else{
               self.warnVisible = true;      
             }
@@ -278,10 +304,8 @@ export default {
             geoc.getLocation(self.pointA, function(rs){
               console.log("rs:",rs);
               if(rs.surroundingPois.length!=0){
-                // self.surroundingTitle = rs.surroundingPois[0].title;
                 self.address = rs.surroundingPois[0].address+rs.surroundingPois[0].title;             
               }else{
-                // self.surroundingTitle=rs.business;
                 self.address = rs.address+rs.business;  
               }
             })  
@@ -291,7 +315,10 @@ export default {
       LocationSdk.getLocation(success,loading)
     },
     // 测量百度地图两个点间的距离
-   getDistance:function (latitude,longitude,addressId) {
+   getDistance:function (location) {
+     let latitude = location.LATITUDE;
+     let longitude = location.LONGITUDE;
+     let addressId = location.ADDRESS_ID;
      var map = new BMap.Map('')
      var pointB = new BMap.Point(parseFloat(longitude), parseFloat(latitude))  // 店铺的经纬度
      var distance = (map.getDistance(this.pointA, pointB) / 1000).toFixed(2) // 保留小数点后两位
@@ -300,15 +327,80 @@ export default {
        if(distance<this.differDistance){
          this.differDistance = distance;
          this.addressId = addressId;
+         this.amStartTime = location.amStartTime;
+         this.pmEndTime = location.pmEndTime;
        }
      }else{
        this.differDistance = distance;
        this.addressId = addressId;
+       this.distance = location.distance;
+       this.amStartTime = location.amStartTime;
+       this.pmEndTime = location.pmEndTime;
      }
    },
+    //工程师操作时间差计算
+    differTime:function(startTime,endTime){
+      let strstart = startTime.split(":");
+      let strend = endTime.split(":");
+      let amDate = new Date();
+      let bmDate = new Date();
+      let c = new Date();
+      amDate.setHours(strstart[0]);
+      amDate.setMinutes(strstart[1]);
+      amDate.setSeconds('00');
+      bmDate.setHours(strend[0]);
+      bmDate.setMinutes(strend[1]);
+      bmDate.setSeconds('00');
+      let befoream = new Date(amDate.getTime()-3*60*60*1000);
+      let afterpm = new Date(bmDate.getTime()+3*60*60*1000);
+      console.log("amDate:"+amDate);
+      console.log("bmDate:"+bmDate);
+      console.log("befoream:"+befoream);
+      console.log("afterpm:"+afterpm);
+      let amdiffer1 = c.getTime()-befoream.getTime();
+      let amdiffer2 = amDate.getTime()-c.getTime();
+      let pmdiffer1 = c.getTime()-bmDate.getTime();
+      let pmdiffer2 = afterpm.getTime()-c.getTime();
+      console.log("amdiffer1",amdiffer1);
+      console.log("amdiffer2",amdiffer2);
+      console.log("pmdiffer1",pmdiffer1);
+      console.log("pmdiffer2",pmdiffer2);
+      if((amdiffer1>0&&amdiffer2>0)||(pmdiffer1>0&&pmdiffer2>0)){ 
+        return true
+      }else{
+        console.log("ssssssssss");
+        this.zcInfo = '当前不在打卡时间范围内，请填写说明';
+        this.desc = "当前不在打卡时间范围内，无法进行打卡，是否进行情况说明？";
+        this.warnVisible = true;  
+      }
+    },
    confirm(){
      this.warnVisible=false;
-     this.$router.push({name:'punchFailShow',query:{lat:this.latitude,lng:this.longitude,address:this.address,zcInfo:'驻场地址为空，请填写说明并维护地址'}})
+     this.$router.push({name:'punchFailShow',query:{lat:this.latitude,lng:this.longitude,address:this.address,zcInfo:this.zcInfo}})
+   },
+   getQuestion(){
+     fetch.get("?action=/risk/getQuestion",{}).then(res=>{
+      console.log("queryQuestion",res);
+      if(res.STATUSCODE=='1'){
+          this.$message({
+            message:'打卡成功',
+            type: 'success',
+            center: true,
+            duration:1000,
+            customClass:'msgdefine'
+          });  
+        this.question = res.data.QUESTION;
+        this.options = res.data.options;
+        this.questionObj = res.data;
+      }else{
+        this.$message({
+          message:res.MESSAGE+"发生错误",
+          type: 'error',
+          center: true,
+          customClass: 'msgdefine'
+        });
+      }
+    })
    },
     postPunchInfo(){
       let param = {latitude:this.latitude,longitude:this.longitude,address:this.address,addressId:this.addressId,flg:1};
@@ -317,28 +409,7 @@ export default {
         // loading.close();
         if(res.STATUSCODE=="1"){
           this.homeWarnFlag = true;
-          fetch.get("?action=/risk/getQuestion",{}).then(res=>{
-            console.log("queryQuestion",res);
-            if(res.STATUSCODE=='1'){
-                this.$message({
-                  message:'打卡成功',
-                  type: 'success',
-                  center: true,
-                  duration:1000,
-                  customClass:'msgdefine'
-                });  
-              this.question = res.data.QUESTION;
-              this.options = res.data.options;
-              this.questionObj = res.data;
-            }else{
-              this.$message({
-                message:res.MESSAGE+"发生错误",
-                type: 'error',
-                center: true,
-                customClass: 'msgdefine'
-              });
-            }
-          })
+          this.getQuestion();
         }else{
           this.$message({
             message:'打卡失败',

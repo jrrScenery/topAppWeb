@@ -37,11 +37,10 @@ export default {
         }
     },
     created(){
+        console.log(this.zcInfo);
         if(this.zcInfo!=null){
             this.desc = this.zcInfo
         }
-        console.log("lat:"+this.lat);
-        console.log("lng:"+this.lng);
     },
     methods:{
         check(loading){
@@ -82,7 +81,7 @@ export default {
                                 duration:1000,
                                 customClass: 'msgdefine'
                             });
-                            setTimeout(function(){vm.$router.push({ name: 'home',query:{}})},1000);
+                            setTimeout(function(){vm.$router.push({ name: 'home',query:{homeWarnFlag:true}})},1000);
                         }else{
                             this.$message({
                                 message:res.MESSAGE+"发生错误",

@@ -27,14 +27,14 @@
       </el-form-item>
       <el-form-item label="区域">
         <el-select v-model="form.area" placeholder="请选择区域">
-          <el-option v-for="item in areaArr" :label="item.name" :value="item.value" :key="item.id"></el-option>
+          <el-option v-for="item in areaArr" :label="item.DICTNAME" :value="item.DICTID" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="关注原因">
-        <el-input v-model="form.careReason" class="bInput"></el-input>
-        <!-- <el-select v-model="form.careReason" placeholder="请选择关注原因">
-          <el-option v-for="item in careReasonArr" :label="item.name" :value="item.value" :key="item.id"></el-option>
-        </el-select> -->
+        <!-- <el-input v-model="form.careReason" class="bInput"></el-input> -->
+        <el-select v-model="form.careReason" placeholder="请选择关注原因">
+          <el-option v-for="item in reasonArr" :label="item.name" :value="item.name" :key="item.id"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="创建时间" style="margin-bottom: 0.15rem">
         <el-col :span="11">
@@ -81,6 +81,7 @@ export default {
       industryType: [],
       Type: [],
       areaArr:[],
+      reasonArr:[]
     }
   },
 
@@ -97,9 +98,13 @@ export default {
       // console.log("this.industryType:",this.industryType)
     });
 
-    fetch.get("?action=getDict&type=NT_PRO_AREA","").then(res=>{
+    fetch.get("?action=/system/getTopArea","").then(res=>{
       this.areaArr = res.data;
-      // console.log("this.areaArr:",this.areaArr)
+      console.log("this.areaArr:",this.areaArr)
+    });
+    fetch.get("?action=getDict&type=CASE_EMERGENCY_REASON","").then(res=>{
+      this.reasonArr = res.data;
+      console.log("this.reasonArr:",this.reasonArr)
     });
 
     this.form.industry = this.queryData.industry;
@@ -139,8 +144,8 @@ export default {
 </script>
 
 <style scoped>
-  .searchView{background: #ffffff; padding: 0.15rem 0.2rem 0; position: relative;overflow: scroll;height:70%}
-  .searchView >>> .el-form-item{margin-bottom: 0.05rem;}
+  .searchView{background: #ffffff; padding: 0.1rem 0.2rem 0; position: relative;overflow: scroll;}
+  .searchView >>> .el-form-item{margin-bottom: 0.01rem;}
   .searchView >>> .el-select{width: 80%;}
   .searchView >>> .el-input__inner{padding: 0 0.05rem}
   .searchView >>> .el-select .el-input__inner:focus{border-color: #dcdfe6;}

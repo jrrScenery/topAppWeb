@@ -26,7 +26,7 @@
       </el-form-item>
       <el-form-item label="区域" label-width="0.8rem">
         <el-select v-model="form.area" placeholder="请选择区域">
-          <el-option v-for="item in areaArr" :label="item.name" :value="item.value" :key="item.id"></el-option>
+          <el-option v-for="item in areaArr" :label="item.DICTNAME" :value="item.DICTID" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item class="searchBtn">
@@ -74,8 +74,9 @@ export default {
       this.industryType = res.data;
     });
 
-    fetch.get("?action=getDict&type=NT_PRO_AREA","").then(res=>{
+    fetch.get("?action=/system/getTopArea","").then(res=>{
       this.areaArr = res.data;
+      console.log("areaArr:"+JSON.stringify(res.data));
     });
 
     this.form.business = this.queryData.business;
