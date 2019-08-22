@@ -12,14 +12,20 @@
       <div v-if="items.arr.length!=0">
         <ul class="ul_workBench" >
           <template v-for="item in items.arr">
-            <li class="li_workBench" :key="item.id" v-if="item.text!='考勤打卡'">
+            <li class="li_workBench" :key="item.id" v-if="item.text!='考勤'">
               <router-link :to="{name:item.href,params:item.params}">
                 <img :src="item.imgSrc" alt="">
               </router-link>
               <span>{{item.text}}</span>
             </li>
-            <li class="li_workBench" :key="item.id" v-else @click="punchCard()">
+            <!-- <li class="li_workBench" :key="item.id" v-else @click="punchCard()">
               <img  :src="item.imgSrc" alt="">
+              <span>{{item.text}}</span>
+            </li> -->
+            <li class="li_workBench" :key="item.id" v-else>
+              <router-link :to="{name:item.href,params:item.params}">
+                <img  :src="item.imgSrc" alt="">
+              </router-link>
               <span>{{item.text}}</span>
             </li>
           </template>
@@ -154,24 +160,6 @@ export default {
     }
   },
   created(){
-    var a = "08:30";
-    var b = "18:30";
-    var astr = a.split(":");
-    var bstr = b.split(":");
-    var aDate = new Date();
-    var bDate = new Date();
-    aDate.setHours(astr[0]);
-    aDate.setMinutes(astr[1]);
-    aDate.setSeconds('00');
-    bDate.setHours(bstr[0]);
-    bDate.setMinutes(bstr[1]);
-    bDate.setSeconds('00');
-
-    let befoream = aDate.getTime()-3*60*60*1000;
-    console.log(new Date(befoream));
-    console.log(bDate);
-    // var b = new Date(d.getFullYear(),d.getMonth(),d.getDate(),a.slice(0,2),a.slice(3,5),a.slice(6,8))
-    // console.log("b:",b.getHours()>d.getHours());
     this.getWorkBenchObj();  
   },
   methods: {
@@ -198,14 +186,14 @@ export default {
           this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计',href: 'reportBusinessForm',params: {type: 'my'},display:true};
           this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉', href: 'tabshowTest',params: {type: 'my'},display:true};
           // this.workBenchObj[2].arr[2] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
-          this.workBenchObj[2].arr[2] = {imgSrc: require('@/assets/images/punch.png'), text: '考勤打卡',display:true};
+          this.workBenchObj[2].arr[2] = {imgSrc: require('@/assets/images/kq.png'), text: '考勤',href: 'attendence',params: {type: 'my'},display:true};
         }else{
           this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/my_5.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
           this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/my_6.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
           this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
           this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉', href: 'tabshowTest',params: {type: 'my'},display:true};
           // this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
-          this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/punch.png'), text: '考勤打卡',display:true};
+          this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/kq.png'), text: '考勤',href: 'attendence',params: {type: 'my'},display:true};
         }
       }else{
         this.workBenchObj[0].arr[0] = {imgSrc: require('@/assets/images/my_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true};
@@ -217,14 +205,14 @@ export default {
           this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计',href: 'reportBusinessForm',params: {type: 'my'},display:true};
           this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉', href: 'tabshowTest',params: {type: 'my'},display:true};
           // this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
-          this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/punch.png'), text: '考勤打卡',display:true};
+          this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/kq.png'), text: '考勤',href: 'attendence',params: {type: 'my'},display:true};
         }else{
           this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/my_5.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true},
           this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/my_6.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
           this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计',href: 'reportBusinessForm',params: {type: 'my'},display:true};
           this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉', href: 'tabshowTest',params: {type: 'my'},display:true};
           // this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
-          this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/punch.png'), text: '考勤打卡',display:true};
+          this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/kq.png'), text: '考勤',href: 'attendence',params: {type: 'my'},display:true};
           // this.workBenchObj[2].arr = []
         }
       }
@@ -381,14 +369,7 @@ export default {
    getQuestion(){
      fetch.get("?action=/risk/getQuestion",{}).then(res=>{
       console.log("queryQuestion",res);
-      if(res.STATUSCODE=='1'){
-          this.$message({
-            message:'打卡成功',
-            type: 'success',
-            center: true,
-            duration:1000,
-            customClass:'msgdefine'
-          });  
+      if(res.STATUSCODE=='1'){ 
         this.question = res.data.QUESTION;
         this.options = res.data.options;
         this.questionObj = res.data;
@@ -469,12 +450,12 @@ export default {
             console.log("saveAnswer",res);
             if(res.STATUSCODE=='1'){
                 this.$message({
-                    message:'回答正确',
-                    type: 'success',
-                    center: true,
-                    duration:2000,
-                    customClass: 'msgdefine'
-                })
+                  message:'打卡成功',
+                  type: 'success',
+                  center: true,
+                  duration:1000,
+                  customClass:'msgdefine'
+                });  
                 vm.homeWarnFlag = false;
                 // vm.onUndertake();
             }else{

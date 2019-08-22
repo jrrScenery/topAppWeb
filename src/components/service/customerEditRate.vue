@@ -3,6 +3,16 @@
         <div class="serviceInfoCell">
             <div class="serviceContent">
                 <el-form :model="formData" ref="formData">
+                    <el-form-item>
+                        <el-card :body-style="{ padding: '0px' }">
+                            <div style="padding: 14px;">
+                                <span>客户不在实施现场，无法评价</span>
+                                <div class="bottom clearfix">
+                                    <el-button type="primary" class="sendMessage" @click="sendPhoneMessage()">发送远程评价</el-button>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-form-item>
                     <div class="editorView" v-for="(item,i) in evaluateval" :key="i">
                         <el-form-item>
                             <div class="star">
@@ -45,6 +55,24 @@
                 
             </div>
         </div>
+        <!-- 短信提醒询问框phoneVisible -->
+        <div class="dialogdc">
+            <el-dialog
+                title="提示"
+                :visible.sync="phoneVisible"
+                :show-close="false"
+                width="80%"
+                center>
+                <el-form>
+                    <div style="margin:0.2rem">
+                        <span>已向客户发送短信提示进行客户评价，请协助提醒客户进行评价</span>
+                    </div>
+                    <el-form-item class="submit">
+                        <el-button type="primary" class="onsubmit" @click="confirmSendSuccess()" >确 定</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-dialog>
+        </div>
     </div>
 </template>
 
@@ -73,12 +101,14 @@ export default {
             scoreOption:[],
             signImg:"",
             activeName:'third',
+            phoneVisible:false,
             workId:this.$route.query.workId,
             caseId:this.$route.query.caseId,
             evaluateId:this.$route.query.evaluateId,
             serviceType:this.$route.query.serviceType,
             serviceId:this.$route.query.serviceId,
-            taskId:this.$route.query.taskId
+            taskId:this.$route.query.taskId,
+            type:this.$route.query.type
         }
     },
     created:function(){
@@ -92,6 +122,7 @@ export default {
                 let jsonres= res;
                 this.formData.data = res.DATA[0];
                 this.signImg = res.DATA[0].imgStr;
+                this.contactMobile = res.DATA[0].contactMobile;
                 let tmpjsonval =[];
                 jsonres.question.forEach(function(v,i,ar){
                 let tmpobj = {};
@@ -99,8 +130,6 @@ export default {
                 tmpobj.options = jsonres.optionOption.filter(function(item){return v.questionId == item.questionId})
                 tmpobj.chkedopts = tmpobj.options.filter(function(item){return item.checkFlg})
                 tmpobj.aroptschked = tmpobj.chkedopts.map(function(v,i,ar){ return v.optionId});
-                // tmpobj.scores = jsonres.scoreOption.filter(function(item){return v.questionId == item.questionId});
-                // tmpobj.scoreval = vm.getScore(tmpobj.scores);
                 tmpobj.scoreval = vm.getScore(jsonres.scoreOption,v.questionId);
                 tmpjsonval.push(tmpobj);
                 })
@@ -110,7 +139,36 @@ export default {
             }
         })
     },
-    methods:{          
+    methods:{   
+        
+        sendPhoneMessage(){
+            this.phoneVisible = true;
+            let content = "[神州信息]您好，工程师已完成现场实施，请您进行客户评价，关注微信公众号神州信息锐行服务，点击一级菜单评价，输入事件编号"+this.workInfo.caseNo+"，进行用户评价"
+            fetch.get("?action=/risk/sendPhone&mobile="+this.contactMobile+"&content="+content).then(res=>{
+                console.log("sendPhone",res);
+                if(res.STATUSCODE=='1'){
+                    this.phoneVisible = true;
+                }else{
+                    this.$message({
+                    message:res.MESSAGE,
+                    type: 'error',
+                    center: true,
+                    customClass: 'msgdefine'
+                    });
+                }
+            })
+        },
+        confirmSendSuccess(){
+            this.phoneVisible = false;
+            console.log(this.type);
+            if(this.type=='SLA'){
+                this.$router.replace({name:'workBenchSLAfeedback',query:{caseId:this.caseId,workId:this.workId,taskId:this.taskId}});
+                this.$router.go(-1)
+            }else{
+                this.$router.replace({name:'serviceList',query:{caseId:this.caseId,workId:this.workId,taskId:this.taskId}});
+                this.$router.go(-1)
+            }
+        },
         signature(imgStr){
             this.formData.data.imgStr = imgStr;
         },
@@ -286,7 +344,13 @@ export default {
                         center: true,
                         customClass: 'msgdefine'
                         });
-                        setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                        if(vm.type=='SLA'){
+                            vm.$router.replace({name:'workBenchSLAfeedback',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}});
+                            vm.$router.go(-1)
+                        }else{
+                            setTimeout(function(){vm.$router.replace({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                            vm.$router.go(-1)
+                        }
                     }else{
                         this.$message({
                         message:res.MESSAGE+"发生错误",
@@ -307,7 +371,13 @@ export default {
                         center: true,
                         customClass: 'msgdefine'
                         });
-                        setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                        if(vm.type=='SLA'){
+                            vm.$router.replace({name:'workBenchSLAfeedback',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}});
+                            vm.$router.go(-1)
+                        }else{
+                            setTimeout(function(){vm.$router.replace({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                            vm.$router.go(-1)
+                        }
                     }else{
                         this.$message({
                         message:res.MESSAGE+"发生错误",
@@ -392,6 +462,7 @@ export default {
             }        
             return true;
         },
+        
     }
 
     
@@ -399,7 +470,7 @@ export default {
 </script>
 
 <style scoped>
-.customerEditRateView{width: 100%; position: relative;background-color: #ffffff;margin-top:0.05rem}
+.serviceInfoCell{width: 100%; position: relative;background-color: #ffffff;margin-top:0.05rem}
 .serviceContent{background: #ffffff; color: #999999; padding: 0.05rem 0 0.1rem;}
 .serviceContent>>> .el-form-item{padding: 0 0.1rem}
 .improve>>> span{padding: 0 0.05rem}
@@ -417,6 +488,20 @@ export default {
 .signature .el-form-item .sign img{width: 100%; display: block; flex-grow: 1;}
 .serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
 .serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
+
+  .sendMessage {
+    padding: 0.1rem;
+    margin-bottom: 0.1rem;
+    float: right;
+  }
+  .customerEditRateView .dialogdc >>> .el-dialog__body{padding: 0px 0px}
+  .customerEditRateView .dialogdc >>> .el-dialog__header{padding: 0px 0px 0px}
+  .customerEditRateView .dialogdc >>> .el-dialog__footer{padding: 0px 0px 0px}
+  .customerEditRateView .dialogdc >>> .submit .el-button{width: 100%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
+  .customerEditRateView .dialogdc >>> .submit .el-button:hover{background: #ffffff;}
+  .customerEditRateView .dialogdc >>> .submit .onsubmit:hover{background: #2698d6;}
+  .customerEditRateView .dialogdc >>> .submit .el-form-item__content{margin: 0!important; display: flex;}
+  .customerEditRateView .dialogdc >>> .submit .onsubmit{background: #2698d6; color: #ffffff;}
 </style>
 <style>
   .eventEvaluationEditorView span{ color: #666;}

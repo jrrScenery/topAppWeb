@@ -136,6 +136,42 @@ export default new Router({
       name: 'tabshowTest',
       component: resolve => require(['@/views/home/tabshowTest'], resolve)
     },
+    //首页->考勤
+    {
+      path: '/home/attendence',
+      name: 'attendence',
+      component: resolve => require(['@/views/home/attendence'], resolve)
+    },
+    //首页->考勤->审批
+    {
+      path: '/home/audit',
+      name: 'audit',
+      component: resolve => require(['@/views/home/audit'], resolve)
+    },
+    //首页->考勤->审批详情
+    {
+      path: '/home/auditDetail',
+      name: 'auditDetail',
+      component: resolve => require(['@/views/home/auditDetail'], resolve)
+    },
+    //首页->考勤->补考勤
+    {
+      path: '/home/makeUpAttendence',
+      name: 'makeUpAttendence',
+      component: resolve => require(['@/views/home/makeUpAttendence'], resolve)
+    },
+    //首页->考勤->查看考勤明细
+    {
+      path: '/home/checkAttenDetail',
+      name: 'checkAttenDetail',
+      component: resolve => require(['@/views/home/checkAttenDetail'], resolve)
+    },
+     //首页->考勤->考勤明细
+     {
+      path: '/home/attenDetail',
+      name: 'attenDetail',
+      component: resolve => require(['@/views/home/attenDetail'], resolve)
+    },
     //首页报表统计（业务）
     {
       path: '/home/reportBusinessForm',

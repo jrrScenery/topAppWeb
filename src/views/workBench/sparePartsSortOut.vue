@@ -92,6 +92,26 @@
 
             <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
         </div>
+
+        <!-- 请先完成结果反馈再进行离场feedbackVisible -->
+        <div class="dialogdc">
+            <el-dialog
+                title="提示"
+                :visible.sync="isDcFeedBack"
+                :show-close="false"
+                width="80%"
+                center>
+                <el-form>
+                <div style="margin:0.2rem">
+                    <span>请先完成到场反馈再进行备件整理</span>
+                </div>
+                <el-form-item class="submit">
+                    <el-button type="primary" class="onsubmit" @click="isDcFeedBack = false" >确 定</el-button>
+                    <!-- <el-button type="primary" class="onsubmit" @click="confirm()">确 定</el-button> -->
+                </el-form-item>
+                </el-form>
+            </el-dialog>
+        </div>
     </div>
 </template>
 
@@ -112,8 +132,11 @@ export default {
             partsTypeList: [],
             sparePartsSortOutTit:"事件备件列表",
             caseId:this.$route.query.caseId,
+            workId:this.$route.query.workId,
             searchData:[],
             sparePartsSortOutSelectArr:[],
+            slaFeedBack:'',
+            isDcFeedBack:false,//未点击到场反馈时备件整理弹框
             busy:false,
             loadall: false,
             isSearch:false,
@@ -126,7 +149,7 @@ export default {
                 {"useStatusName": "已使用件", "useStatusId": "1"},
                 {"useStatusName": "未使用件", "useStatusId": "2"},
                 {"useStatusName": "坏件", "useStatusId": "3"},
-                {"useStatusName": "DOA不可用", "useStatusId": "4"},
+                // {"useStatusName": "DOA不可用", "useStatusId": "4"},
                 {"useStatusName": "未到场", "useStatusId": "5"},
                 ],
         };
@@ -134,8 +157,14 @@ export default {
 
     methods:{
         getSparePart(){
-            fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId, {}).then(res=>{
+            console.log(this.workId);
+            fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId+"&WORK_ID="+this.workId, {}).then(res=>{
                 this.sparePartsSortOutSelectArr = res.DATA;
+                console.log(res.flag);
+                if(res.flag.length!=0){
+                    console.log("00000000");
+                    this.slaFeedBack = res.flag[0].STATUS;
+                }
                 console.log("spare", res)
                 this.busy = false;
                 this.loadall = true;
@@ -264,9 +293,11 @@ export default {
             let params_DATA = eval(params.get('DATA'));
             if (params_DATA=="judge_no") {
                 console.log(params_DATA);
+            }else if(this.slaFeedBack!='1'){
+                this.isDcFeedBack = true;
+                return false;
             }
             else{
-                // console.log("FFFF", typeof(params_DATA), params_DATA)
                 const loading = this.$loading({
                     lock: true,
                     text: '提交中...',
@@ -284,7 +315,7 @@ export default {
                     this.isShow = true;
                 }else{
                     fetch.post("?action=/parts/updatePartsGathering", params).then(res=>{
-                        // console.log("update", res)
+                        console.log("updatePartsGathering", res)
                         loading.close();
                         if(res.STATUSCODE=="0"){
                             this.$message({
@@ -295,6 +326,7 @@ export default {
                             });
                          
                             fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId, {}).then(res=>{
+                                console.log("GetCasePartsInfo",res)
                                 this.sparePartsSortOutSelectArr = res.DATA;
                                 this.busy = false;
                                 this.loadall = true;
@@ -349,7 +381,8 @@ export default {
             }
         },
     },
-    created:function(){
+    created(){
+        this.getSparePart();
     },
 }
 </script>
@@ -397,5 +430,12 @@ export default {
 .submitBtnSpare >>> .el-form-item__content{margin: 0!important;}
 .submitBtnSpare >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; bottom: 0;}
 
-
+.dialogdc >>> .el-dialog__body{padding: 0px 0px}
+.dialogdc >>> .el-dialog__header{padding: 0px 0px 0px}
+.dialogdc >>> .el-dialog__footer{padding: 0px 0px 0px}
+.dialogdc >>> .submit .el-button{width: 100%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
+.dialogdc >>> .submit .el-button:hover{background: #ffffff;}
+.dialogdc >>> .submit .onsubmit:hover{background: #2698d6;}
+.dialogdc >>> .submit .el-form-item__content{margin: 0!important; display: flex;}
+.dialogdc >>> .submit .onsubmit{background: #2698d6; color: #ffffff;}
 </style>

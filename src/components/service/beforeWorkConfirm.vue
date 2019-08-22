@@ -254,6 +254,7 @@ export default {
                 }else if(this.formData.caseServiceQuestion.numberIf6==0){
                     this.checked[5].ifF6 = true;
                 }
+                console.log(this.formData.caseServiceQuestion);
             })
         },
         signature(imgStrQuestion){

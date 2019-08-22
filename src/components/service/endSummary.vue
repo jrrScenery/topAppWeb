@@ -140,30 +140,54 @@ export default {
             type:this.$route.query.type
         }
     },
-    created:function(){
-        if(this.serviceType==2){
-            fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
-                console.log(res);
-                this.formData.userAndPrjItem = res.DATA[0];
-                this.workResultInfo = res.DATA[0].workResult;
-            })
-            fetch.get("?action=/system/getDict2&DICT_TYPE=NT_SERVICE_TYPE","").then(res=>{
-                console.log(res);
-                this.serviceTypeArr = res.data;
-            })
-            fetch.get("?action=/system/getDict2&DICT_TYPE=NT_CASE_WORK_RESULT","").then(res=>{
-                console.log(res);
-                this.workResultArr = res.data;
-            })
-        }else{
-            fetch.get("?action=/work/GetCaseroubleShootingServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
-                console.log(res);
-                this.formData.userAndPrjItem = res.DATA[0];
-                this.workResultInfo = res.DATA[0].implementResult;
-            })
-        }
+    created(){
+        this.getEndSummary();
+        // if(this.serviceType==2){
+        //     fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
+        //         console.log(res);
+        //         this.formData.userAndPrjItem = res.DATA[0];
+        //         this.workResultInfo = res.DATA[0].workResult;
+        //     })
+        //     fetch.get("?action=/system/getDict2&DICT_TYPE=NT_SERVICE_TYPE","").then(res=>{
+        //         console.log(res);
+        //         this.serviceTypeArr = res.data;
+        //     })
+        //     fetch.get("?action=/system/getDict2&DICT_TYPE=NT_CASE_WORK_RESULT","").then(res=>{
+        //         console.log(res);
+        //         this.workResultArr = res.data;
+        //     })
+        // }else{
+        //     fetch.get("?action=/work/GetCaseroubleShootingServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
+        //         console.log(res);
+        //         this.formData.userAndPrjItem = res.DATA[0];
+        //         this.workResultInfo = res.DATA[0].implementResult;
+        //     })
+        // }
     },
     methods:{      
+        getEndSummary(){
+            if(this.serviceType==2){
+                fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
+                    console.log(res);
+                    this.formData.userAndPrjItem = res.DATA[0];
+                    this.workResultInfo = res.DATA[0].workResult;
+                })
+                fetch.get("?action=/system/getDict2&DICT_TYPE=NT_SERVICE_TYPE","").then(res=>{
+                    console.log(res);
+                    this.serviceTypeArr = res.data;
+                })
+                fetch.get("?action=/system/getDict2&DICT_TYPE=NT_CASE_WORK_RESULT","").then(res=>{
+                    console.log(res);
+                    this.workResultArr = res.data;
+                })
+            }else{
+                fetch.get("?action=/work/GetCaseroubleShootingServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
+                    console.log(res);
+                    this.formData.userAndPrjItem = res.DATA[0];
+                    this.workResultInfo = res.DATA[0].implementResult;
+                })
+            }
+        },
         check(loading){
             console.log(this.formData.serviceType);
             if(this.formData.serviceType==null&&this.serviceType==2){
@@ -329,11 +353,13 @@ export default {
                                 center: true,
                                 customClass: 'msgdefine'
                                 });
-                                if(vm.type=='SLA'){
-                                    setTimeout(function(){vm.$router.push({ name: 'workBenchSLAfeedback',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId,type:type}})},1000);
-                                }else{
-                                    setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
-                                }
+                                vm.getEndSummary();
+                                // if(vm.type=='SLA'){
+                                //     vm.getEndSummary();
+                                //     // setTimeout(function(){vm.$router.push({ name: 'workBenchSLAfeedback',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId,type:type}})},1000);
+                                // }else{
+                                //     setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                                // }
                             }else{
                                 this.$message({
                                 message:res.MESSAGE+"发生错误",
@@ -349,16 +375,18 @@ export default {
                             loading.close();
                             if(res.STATUSCODE=="0"){
                                 this.$message({
-                                message:'提交成功',
-                                type: 'success',
-                                center: true,
-                                customClass: 'msgdefine'
+                                    message:'提交成功',
+                                    type: 'success',
+                                    center: true,
+                                    customClass: 'msgdefine'
                                 });
-                                if(vm.type=='SLA'){
-                                    setTimeout(function(){vm.$router.push({ name: 'workBenchSLAfeedback',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId,type:type}})},1000);
-                                }else{
-                                    setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
-                                }
+                                vm.getEndSummary();
+                                // if(vm.type=='SLA'){
+                                //     vm.getEndSummary();
+                                //     // setTimeout(function(){vm.$router.push({ name: 'workBenchSLAfeedback',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId,type:type}})},1000);
+                                // }else{
+                                //     setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                                // }
                             }else{
                                 this.$message({
                                 message:res.MESSAGE+"发生错误",

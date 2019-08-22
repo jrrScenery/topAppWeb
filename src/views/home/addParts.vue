@@ -104,16 +104,15 @@ export default {
         {"useStatusName": "已使用件", "useStatusId": "1"},
         {"useStatusName": "未使用件", "useStatusId": "2"},
         {"useStatusName": "坏件", "useStatusId": "3"},
-        {"useStatusName": "DOA不可用", "useStatusId": "4"},
+        // {"useStatusName": "DOA不可用", "useStatusId": "4"},
         {"useStatusName": "未到场", "useStatusId": "5"},
       ],
     };
   },
   created (){
-
     fetch.get("?action=/parts/GetPartsTypeList",{}).then(res=>{
+      console.log('GetPartsTypeList',res);
       this.partsTypeList = res.DATA;
-      console.log(this.partsTypeList)
     });
     
   },

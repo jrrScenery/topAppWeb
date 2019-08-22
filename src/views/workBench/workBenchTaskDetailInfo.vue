@@ -62,12 +62,12 @@
             <router-link :to="{name:'casePartEvaluate',query:{caseId:this.taskDetailInfo.caseId,workId:this.taskDetailInfo.workId,templateType:2,bjflg:1}}">
             <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/sla.png" alt="">备件评价</li>
             </router-link>
-            <router-link v-if="slaDcFeedback==1" :to="{name: 'sparePartsSortOut',query:{caseId:this.caseId}}">
+            <router-link :to="{name: 'sparePartsSortOut',query:{caseId:this.caseId,workId:this.workId,slaDcFeedback:this.slaDcFeedback}}">
                 <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件整理</li>
             </router-link>
-            <div v-else @click="clickbjzl">
+            <!-- <div v-else @click="clickbjzl">
                 <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件整理</li>
-            </div>
+            </div> -->
 
             <router-link :to="{name:'workBenchPartRecycle',query:{caseId:this.caseId}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件回收</li>
@@ -231,14 +231,14 @@ export default {
         
     },
     created:function(){
-        console.log(this.taskId);
+        console.log(this.$route.query.workId);
         fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
-            console.log("getWorkInfo",res.DATA);   
+            console.log("getWorkInfo",res);   
             this.taskDetailInfo = res.DATA[0];
             this.taskDetailInfo.refuseReason = '';
             this.specialNotes = res.DATA[0].specialNotes;
             this.riskInfos = res.DATA[0].riskInfos;
-            this.slaDcFeedback = res.DATA[0].slaStatus[4].ifFeedback
+            this.slaDcFeedback = res.DATA[0].leave[0].STATUS
         });
     },
     beforeRouteLeave( to, from,next){
@@ -266,15 +266,15 @@ export default {
                 customClass: 'msgdefine'
             });
         },
-        clickbjzl(){
-            this.$message({
-                message:'请先完成到场反馈再进行备件整理！',
-                type: 'warning',
-                center: true,
-                duration:2000,
-                customClass: 'msgdefine'
-            });
-        },
+        // clickbjzl(){
+        //     this.$message({
+        //         message:'请先完成到场反馈再进行备件整理！',
+        //         type: 'warning',
+        //         center: true,
+        //         duration:2000,
+        //         customClass: 'msgdefine'
+        //     });
+        // },
         onCancel () {
             let data = {
             popBgUndertake: false
@@ -571,7 +571,7 @@ export default {
 .dialogRefuseReason >>> .el-dialog__body{padding: 15px 5px}
 .dialogRefuseReason >>> .el-dialog__footer{padding: 1px 5px 5px; text-align:center}
 
-.dialogUndertake  .submit{position: absolute;left: 0; right: 0; height: 0.4rem;bottom: 0;}
+.dialogUndertake  .submit{position: relative;left: 0; right: 0; height: 0.4rem;bottom: 0;}
 /* .submit >>> .el-form-item__content{margin: 0!important;}
 .submit >>> .el-form-item__content .el-button{width: 50%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;} */
 .dialogUndertake >>> .submit .el-button{width: 100%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}

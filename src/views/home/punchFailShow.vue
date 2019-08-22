@@ -81,7 +81,8 @@ export default {
                                 duration:1000,
                                 customClass: 'msgdefine'
                             });
-                            setTimeout(function(){vm.$router.push({ name: 'home',query:{homeWarnFlag:true}})},1000);
+                            setTimeout(function(){vm.$router.push({ name: 'attendence',query:{homeWarnFlag:true}})},1000);
+                            // this.$router.go(-1)
                         }else{
                             this.$message({
                                 message:res.MESSAGE+"发生错误",

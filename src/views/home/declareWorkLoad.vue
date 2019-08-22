@@ -24,8 +24,8 @@
             <el-date-picker
               v-model="form.expectStart"
               type="datetime"
-              placeholder="选择日期时间"
-              default-time="12:00:00">
+              value-format="yyyy-MM-dd HH:mm:ss"
+              placeholder="选择日期时间">
             </el-date-picker>
             </div>
         </el-form-item>
@@ -35,8 +35,8 @@
             <el-date-picker
               v-model="form.expectEnd"
               type="datetime"
-              placeholder="选择日期时间"
-              default-time="12:00:00">
+              value-format="yyyy-MM-dd HH:mm:ss"
+              placeholder="选择日期时间">
             </el-date-picker>
           </div>
         </el-form-item>
@@ -78,7 +78,7 @@ export default {
         expectEnd: '',
         creatorRolename: '',
         standardWorkload: '',
-        wayWorkload: ''
+        wayWorkload: '' 
       },
       pgstandardWorkload:this.$route.query.standardWorkload,
       expectWorkload:this.$route.query.expectWorkload,
@@ -92,6 +92,8 @@ export default {
     this.form.standardWorkload = this.$route.query.standardWorkload;
     this.form.caseId = this.$route.query.caseId;
     this.form.workId = this.$route.query.workId;
+    console.log(typeof(this.form.expectStart))
+    console.log(this.form.expectStart);
   },
   methods: {
     onSubmit (formName) {
