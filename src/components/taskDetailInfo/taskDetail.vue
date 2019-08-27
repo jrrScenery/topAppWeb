@@ -33,9 +33,13 @@
                         <span>客户地址：</span>
                         <span>{{taskDetailInfo.customerAddress}}</span>
                     </li>
-                    <li>                
+                    <!-- <li>                
                         <span>预计开始时间：</span>
                         <span>{{taskDetailInfo.expectStart}}</span>
+                    </li> -->
+                    <li>                
+                        <span>要求到场时间：</span>
+                        <span>{{taskDetailInfo.requireArriveTime}}</span>
                     </li>
                     <li>                
                         <span>预计结束时间：</span>
@@ -48,11 +52,7 @@
                     <li>                
                         <span>路途工作量：</span>
                         <span>{{taskDetailInfo.wayWorkload}}</span>
-                    </li>
-                    <li>                
-                        <span>要求到场时间：</span>
-                        <span>{{taskDetailInfo.requireArriveTime}}</span>
-                    </li>
+                    </li>                   
                     <li>                
                         <span>设备型号：</span>
                         <span>{{taskDetailInfo.modelName}}</span>

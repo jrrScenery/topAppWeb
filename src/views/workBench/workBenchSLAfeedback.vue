@@ -359,26 +359,30 @@ export default {
             self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
             self.differDistance = self.getDistance(self.targetLatitude,self.targetLongitude);
             if(self.differDistance<=1){
+              if(slaTypeId==5){
               // let now = new Date();
               // let currentdate = self.formatDateTime(now);
               // self.intervalTime(self.requireArriveTime,currentdate);
-              self.clientHeight = (document.documentElement.clientHeight-90)+'px'
-              self.randomPic();//随机选取图片
-              self.showModal = true;//显示随机图片10s
-              self.requestNum=0;//问题接口请求次数
-              const TIME_COUNT = 5;
-              self.seconds = 5;
-              setInterval(()=>{
-                if(self.seconds > 0 && self.seconds <= TIME_COUNT){
-                  console.log("11111111111");
-                  self.seconds--;
-                }
-              },1000)
-              setTimeout(()=>{
-                self.showModal = false;//10s后关闭随机图片框
-                self.checkdcFlag = true;//显示问题弹框
-                self.getQuestionArrive();//调用问题接口，获取问题
-              },5000) 
+                self.clientHeight = (document.documentElement.clientHeight-90)+'px'
+                self.randomPic();//随机选取图片
+                self.showModal = true;//显示随机图片10s
+                self.requestNum=0;//问题接口请求次数
+                const TIME_COUNT = 5;
+                self.seconds = 5;
+                setInterval(()=>{
+                  if(self.seconds > 0 && self.seconds <= TIME_COUNT){
+                    console.log("11111111111");
+                    self.seconds--;
+                  }
+                },1000)
+                setTimeout(()=>{
+                  self.showModal = false;//10s后关闭随机图片框
+                  self.checkdcFlag = true;//显示问题弹框
+                  self.getQuestionArrive();//调用问题接口，获取问题
+                },5000) 
+              }else if(slaTypeId==7){
+                self.leavebjCheck();
+              }
             }else{
               self.$message({
                 message:'当前不在case所在地点，无法操作',
@@ -391,7 +395,7 @@ export default {
           })
         // },1000)
       }
-      LocationSdk.getLocation(success,loading)//通过h5获取位置信息
+      LocationSdk.getLocation(this,success,loading)//通过h5获取位置信息
       //  //调用百度地图api 中的获取当前位置接口
       // var geolocation = new BMap.Geolocation();
       // // 开启SDK辅助定位
@@ -571,44 +575,38 @@ export default {
       }
       else if(slaTypeId == 7){
         if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){
-          if(this.workTypeStatus==1){
-            this.workTypeVisible = true;
-            this.workTypeWarn = '请先完成备件整理再进行离场反馈';
-            return false;
-          }else if(this.workTypeStatus==2){
-            this.workTypeVisible = true;
-            this.workTypeWarn = '请确认未使用件的真实性？';
-            return false;
-          }else{
-            this.createService();
-          }
-            // if(this.type == 'SLA'||this.sendPhone){
-            //   //工程师必须反馈处理结果后（故障解决，故障解决不成功，任务已完成，任务未完成四选一完成SLA反馈），才可以点击“离场”反馈
-            //   for(let i=0;i<this.SLAObj.length;i++){
-            //     if(this.SLAObj[i].ifFeedback=='1'){
-            //       if(this.SLAObj[i].slaTypeId =='6'||this.SLAObj[i].slaTypeId=='8'||this.SLAObj[i].slaTypeId=='9'||this.SLAObj[i].slaTypeId=='10'){
-            //         this.feedbackNum++;
-            //         break;
-            //       }
-            //     }
-            //   }
-            //   if(this.feedbackNum){
-            //     this.dialogVisible0 = true;
-            //   }else{
-            //     this.feedbackVisible = true;
-            //   }
-            // }else{
-            //   console.log("000000000000");
-            //   this.leaveVisible = true;
-            //   // this.dialogVisible0 = true;
-            // }
-          // this.getLocation(slaTypeId);
+          this.getLocation(slaTypeId);
+          // if(this.workTypeStatus==1){
+          //   this.workTypeVisible = true;
+          //   this.workTypeWarn = '请先完成备件整理再进行离场反馈';
+          //   return false;
+          // }else if(this.workTypeStatus==2){
+          //   this.workTypeVisible = true;
+          //   this.workTypeWarn = '请确认未使用件的真实性？';
+          //   return false;
+          // }else{
+          //   this.createService();
+          // }
         }else{
           this.dialogVisible0 = true;
         }
       } 
       else {
         this.dialogVisible0 = true;
+      }
+    },
+    //离场备件判断
+    leavebjCheck(){
+      if(this.workTypeStatus==1){
+        this.workTypeVisible = true;
+        this.workTypeWarn = '请先完成备件整理再进行离场反馈';
+        return false;
+      }else if(this.workTypeStatus==2){
+        this.workTypeVisible = true;
+        this.workTypeWarn = '请确认未使用件的真实性？';
+        return false;
+      }else{
+        this.createService();
       }
     },
     //离场有无服务单逻辑判断

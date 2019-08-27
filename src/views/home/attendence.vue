@@ -65,7 +65,7 @@
                 </div>
                 <el-form-item  class="submit">
                     <!-- <el-button @click="questionVisible = false" >取 消</el-button> -->
-                    <el-button type="primary"  class="onsubmit"  @click="onSubmit('form')">提 交</el-button>
+                    <el-button type="primary"  class="onsubmit"  @click="onSubmit()">提 交</el-button>
                 </el-form-item>
                 </el-form>
             </el-dialog>
@@ -139,9 +139,9 @@ export default {
     methods:{
         getObj(){
             this.obj[0].arr[0]={imgSrc: require('@/assets/images/punch.png'), text: '打卡', display:false};
-            this.obj[0].arr[1] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
-            this.obj[0].arr[2] = {imgSrc: require('@/assets/images/makeupAttendence.png'), text: '补考勤', href: 'makeUpAttendence',display:true};
-            this.obj[1].arr[0] = {imgSrc: require('@/assets/images/attendetail.png'), text: '考勤明细', href: 'checkAttenDetail',display:true};
+            // this.obj[0].arr[1] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
+            // this.obj[0].arr[2] = {imgSrc: require('@/assets/images/makeupAttendence.png'), text: '补考勤', href: 'makeUpAttendence',display:true};
+            // this.obj[1].arr[0] = {imgSrc: require('@/assets/images/attendetail.png'), text: '考勤明细', href: 'checkAttenDetail',display:true};
         },
         confirm(){
             this.warnVisible=false;
@@ -257,13 +257,13 @@ export default {
             })
         },
         getLocation:function(){
+            var self = this;
             const loading = this.$loading({
                 lock: true,
                 text: '正在获取位置信息...',
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
-            var self = this;
             self.getZcLocationInfo();
             function success(res){
                 console.log("res",res);
@@ -311,9 +311,9 @@ export default {
                     });
                 },1000)
             }
-            LocationSdk.getLocation(success,loading)
+            LocationSdk.getLocation(this,success,loading)
         },
-        onSubmit(formName){
+        onSubmit(){
             let vm= this;
             if(vm.form.radioItem.length==0){
                 this.$message({
@@ -362,11 +362,11 @@ export default {
                     console.log("saveAnswer",res);
                     if(res.STATUSCODE=='1'){
                         this.$message({
-                        message:'打卡成功',
-                        type: 'success',
-                        center: true,
-                        duration:1000,
-                        customClass:'msgdefine'
+                            message:'打卡成功',
+                            type: 'success',
+                            center: true,
+                            duration:2000,
+                            customClass:'msgdefine'
                         });  
                         vm.homeWarnFlag = false;
                         setTimeout(function(){vm.$router.push({ name: 'home'})},1000);

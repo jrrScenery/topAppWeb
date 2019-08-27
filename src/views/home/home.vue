@@ -300,7 +300,7 @@ export default {
           });
         },1000)
       }
-      LocationSdk.getLocation(success,loading)
+      LocationSdk.getLocation(self,success,loading)
     },
     // 测量百度地图两个点间的距离
    getDistance:function (location) {

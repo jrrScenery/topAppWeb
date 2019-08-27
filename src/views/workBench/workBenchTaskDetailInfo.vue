@@ -266,15 +266,6 @@ export default {
                 customClass: 'msgdefine'
             });
         },
-        // clickbjzl(){
-        //     this.$message({
-        //         message:'请先完成到场反馈再进行备件整理！',
-        //         type: 'warning',
-        //         center: true,
-        //         duration:2000,
-        //         customClass: 'msgdefine'
-        //     });
-        // },
         onCancel () {
             let data = {
             popBgUndertake: false

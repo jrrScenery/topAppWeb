@@ -1,5 +1,5 @@
 <!--考勤详情查询条件-->
-<template>
+<template> 
     <div class="searchAttenDetailView">
         <el-form ref="form" :model="form" label-width="65px">
             <el-form-item label="时间">

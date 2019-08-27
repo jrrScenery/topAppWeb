@@ -123,6 +123,7 @@ export default {
                 this.formData.data = res.DATA[0];
                 this.signImg = res.DATA[0].imgStr;
                 this.contactMobile = res.DATA[0].contactMobile;
+                this.caseNo = res.DATA[0].caseCd;
                 let tmpjsonval =[];
                 jsonres.question.forEach(function(v,i,ar){
                 let tmpobj = {};
@@ -141,11 +142,24 @@ export default {
     },
     methods:{   
         
-        sendPhoneMessage(){
+        sendPhoneMessage(){       
+            const loading = this.$loading({
+                lock: true,
+                text: '发送短信中...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(255, 255, 255, 0.3)'
+            });
+            if(this.serviceType==2){
+                if(!this.check(loading)) return false;
+            }else if(this.serviceType==1){
+                if(!this.checkGz(loading)) return;
+            }
+            console.log("serviceType",this.serviceType);
             this.phoneVisible = true;
-            let content = "[神州信息]您好，工程师已完成现场实施，请您进行客户评价，关注微信公众号神州信息锐行服务，点击一级菜单评价，输入事件编号"+this.workInfo.caseNo+"，进行用户评价"
+            let content = "尊敬的客户您好，工程师已完成事件编号为"+this.caseNo+"的现场实施，请您关注微信公众号神州信息锐行服务，点击菜单评价进行用户评价"
             fetch.get("?action=/risk/sendPhone&mobile="+this.contactMobile+"&content="+content).then(res=>{
                 console.log("sendPhone",res);
+                loading.close();
                 if(res.STATUSCODE=='1'){
                     this.phoneVisible = true;
                 }else{
@@ -462,6 +476,39 @@ export default {
             }        
             return true;
         },
+
+        checkGz(loading){
+            if(this.formData.data.leaveTime==null){
+                this.$message({
+                    message:'请填写离场时间!',
+                    type: 'warning',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
+            if(this.formData.data.implementResult==null){
+                this.$message({
+                    message:'请填写实施结果!',
+                    type: 'warning',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
+            if(this.formData.data.problemSuggest==null){
+                this.$message({
+                    message:'请填写遗留问题及建议!',
+                    type: 'warning',
+                    center: true,
+                    customClass:'msgdefine'
+                });
+                loading.close();
+                return false
+            }
+        }
         
     }
 
