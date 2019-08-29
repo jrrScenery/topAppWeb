@@ -22,17 +22,23 @@ export default {
 
   data () {
     return {
-      caseId:this.$route.query.caseId,
-      workId:this.$route.query.workId,
-      taskId:this.$route.query.taskId,
+      // caseId:this.$route.query.caseId,
+      // workId:this.$route.query.workId,
+      // taskId:this.$route.query.taskId,
+      // serviceId:this.$route.query.serviceId,
     }
   },
-  props: ['title','backUrl','date1','date2'],
+  props: ['title','backUrl','date1','date2','caseId','workId','taskId'],
 
   methods: {
-      newService(serviceType){
+      newService(serviceType){ 
+        console.log("serviceId1",this.serviceId);
+        console.log("caseId",this.caseId);
+        console.log("workId",this.workId);
+        console.log("taskId",this.taskId);
+        console.log("serviceType",serviceType);
         if(serviceType == 2){
-            console.log(this.serviceId);
+            console.log("serviceId",this.serviceId);
             if(!this.serviceId){
               fetch.get("?action=/work/SubmitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
                 console.log(res);
@@ -41,9 +47,13 @@ export default {
               })
             }
         }else{
+          console.log("serviceId1",this.serviceId);
+          console.log("caseId",this.caseId);
+          console.log("workId",this.workId);
+          console.log("taskId",this.taskId);
           if(!this.serviceId){
             fetch.get("?action=/work/SubmitCaseTroubleShootingServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
-                console.log(res);
+                console.log("SubmitCaseTroubleShootingServiceFormInfo",res);
                 let data = res.TEMP;     
                 this.$router.push({name: 'onsiteServiceInfo', query: {serviceId:data.serviceId,evaluateId:data.evaluateId,caseId:this.caseId,workId:this.workId,taskId:this.taskId,serviceType:serviceType}})            
             })

@@ -139,9 +139,9 @@ export default {
     methods:{
         getObj(){
             this.obj[0].arr[0]={imgSrc: require('@/assets/images/punch.png'), text: '打卡', display:false};
-            // this.obj[0].arr[1] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
-            // this.obj[0].arr[2] = {imgSrc: require('@/assets/images/makeupAttendence.png'), text: '补考勤', href: 'makeUpAttendence',display:true};
-            // this.obj[1].arr[0] = {imgSrc: require('@/assets/images/attendetail.png'), text: '考勤明细', href: 'checkAttenDetail',display:true};
+            this.obj[0].arr[1] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
+            this.obj[0].arr[2] = {imgSrc: require('@/assets/images/makeupAttendence.png'), text: '补考勤', href: 'makeUpAttendence',display:true};
+            this.obj[1].arr[0] = {imgSrc: require('@/assets/images/attendetail.png'), text: '考勤明细', href: 'checkAttenDetail',display:true};
         },
         confirm(){
             this.warnVisible=false;
@@ -314,7 +314,7 @@ export default {
             LocationSdk.getLocation(this,success,loading)
         },
         onSubmit(){
-            let vm= this;
+            var vm= this;
             if(vm.form.radioItem.length==0){
                 this.$message({
                     message:'请选择答案',
@@ -342,7 +342,7 @@ export default {
                 }
                 for(let i = 0;i<vm.form.radioItem.length;i++){
                     for(let j =0;j<vm.options.length;j++){
-                        if(vm.form.radioItem[i] == this.options[j].OPTION_ID){
+                        if(vm.form.radioItem[i] == vm.options[j].OPTION_ID){
                             if(vm.options[j].IF_TRUE!="1"||(rightAnwser!=vm.selectAnwser)){
                                 ifAnswerTrue = 0;
                             }
@@ -355,13 +355,13 @@ export default {
                 data.questionId = vm.questionObj.QUESTION_ID;
                 data.answerIds = answerIds;
                 data.ifAnswerTrue = ifAnswerTrue;
-                var params = new URLSearchParams();
-                params.append("data",JSON.stringify(data));
-                console.log("params",params);
-                fetch.post("?action=/risk/saveAnswer",params).then(res=>{
+                // var params = new URLSearchParams();
+                // params.append("data",JSON.stringify(data));
+                // console.log("params",params);
+                fetch.questionPost("?action=/risk/saveAnswer",data).then(res=>{
                     console.log("saveAnswer",res);
                     if(res.STATUSCODE=='1'){
-                        this.$message({
+                        vm.$message({
                             message:'打卡成功',
                             type: 'success',
                             center: true,
@@ -372,7 +372,7 @@ export default {
                         setTimeout(function(){vm.$router.push({ name: 'home'})},1000);
                         // vm.onUndertake();
                     }else{
-                        this.$message({
+                        vm.$message({
                             message:res.MESSAGE,
                             type: 'error',
                             center: true,

@@ -4,7 +4,7 @@ export default class Location {
             let options = {
                 enableHighAccuracy: true,
                 maximumAge: 60*1000,
-                timeout: 10000,
+                timeout: 20000,
             };
             navigator.geolocation.getCurrentPosition(           
                 (res) => {

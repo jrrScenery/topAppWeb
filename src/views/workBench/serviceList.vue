@@ -1,6 +1,6 @@
 <template>
     <div class="serviceListView">
-        <header-base-nine :title="serviceListTit"></header-base-nine>
+        <header-base-nine :title="serviceListTit" :caseId='this.caseId' :workId='this.workId' :taskId='this.taskId'></header-base-nine>
         <div style="height: 0.45rem;"></div>
         <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
             <div class="taskListCell" v-for="item in serviceList" :key="item.id">

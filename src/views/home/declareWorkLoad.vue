@@ -104,8 +104,8 @@ export default {
         background: 'rgba(255, 255, 255, 0.3)'
       });
       let vm= this;
-      this.form.expectStart = this.formatTime(this.form.expectStart);
-      this.form.expectEnd = this.formatTime(this.form.expectEnd);
+      // this.form.expectStart = this.formatTime(this.form.expectStart);
+      // this.form.expectEnd = this.formatTime(this.form.expectEnd); 
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log("form", this.form)

@@ -357,8 +357,15 @@ export default {
             self.latitude = point.points[0].lat;
             self.longitude = point.points[0].lng;
             self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
+            // self.$message({
+            //     message:self.pointA,
+            //     type: 'error',
+            //     center: true,
+            //     duration:2000,
+            //     customClass: 'msgdefine'
+            // })
             self.differDistance = self.getDistance(self.targetLatitude,self.targetLongitude);
-            if(self.differDistance<=1){
+            if(self.differDistance<=4){
               if(slaTypeId==5){
               // let now = new Date();
               // let currentdate = self.formatDateTime(now);
@@ -396,85 +403,6 @@ export default {
         // },1000)
       }
       LocationSdk.getLocation(this,success,loading)//通过h5获取位置信息
-      //  //调用百度地图api 中的获取当前位置接口
-      // var geolocation = new BMap.Geolocation();
-      // // 开启SDK辅助定位
-      // geolocation.enableSDKLocation();
-      // geolocation.getCurrentPosition(function (res) {
-      //   console.log("getCurrentPosition",res);
-      //   console.log("BMAP_STATUS_SUCCESS",BMAP_STATUS_SUCCESS);
-      //   if(this.getStatus() == BMAP_STATUS_SUCCESS){
-      //       var myGeo = new BMap.Geocoder();
-      //       myGeo.getLocation(new BMap.Point(res.point.lng, res.point.lat),function(result){ if (result){
-      //         console.log("result",result);
-      //         self.pointA = new BMap.Point(res.point.lng, res.point.lat)  // 通过浏览器获得我的经纬度
-      //         self.differDistance = self.getDistance(self.targetLatitude,self.targetLongitude);
-      //         // if(self.differDistance<=0.5){
-      //           if(slaTypeId==5){
-      //             // let now = new Date();
-      //             // let currentdate = self.formatDateTime(now);
-      //             // self.intervalTime(self.requireArriveTime,currentdate);
-      //             self.clientHeight = (document.documentElement.clientHeight-90)+'px'
-      //             self.randomPic();//随机选取图片
-      //             self.showModal = true;//显示随机图片10s
-      //             self.requestNum=0;//问题接口请求次数
-      //             const TIME_COUNT = 5;
-      //             setInterval(()=>{
-      //               if(self.seconds > 0 && self.seconds <= TIME_COUNT){
-      //                 self.seconds--;
-      //               }
-      //             },1000)
-      //             setTimeout(()=>{
-      //               self.showModal = false;//10s后关闭随机图片框
-      //               self.checkdcFlag = true;//显示问题弹框
-      //               self.getQuestionArrive();//调用问题接口，获取问题
-      //             },5000) 
-      //           }else{
-      //             // if(self.type == 'SLA'||self.sendPhone){
-      //             //   //工程师必须反馈处理结果后（故障解决，故障解决不成功，任务已完成，任务未完成四选一完成SLA反馈），才可以点击“离场”反馈
-      //             //   for(let i=0;i<self.SLAObj.length;i++){
-      //             //     if(self.SLAObj[i].ifFeedback=='1'){
-      //             //       if(self.SLAObj[i].slaTypeId =='6'||self.SLAObj[i].slaTypeId=='8'||self.SLAObj[i].slaTypeId=='9'||self.SLAObj[i].slaTypeId=='10'){
-      //             //         self.feedbackNum++;
-      //             //         break;
-      //             //       }
-      //             //     }
-      //             //   }
-      //             //   if(self.feedbackNum){
-      //             //     self.dialogVisible0 = true;
-      //             //   }else{
-      //             //     self.$message({
-      //             //       message:'请先完成结果反馈再进行离场',
-      //             //       type: 'error',
-      //             //       center: true,
-      //             //       duration:2000,
-      //             //       customClass: 'msgdefine'
-      //             //     })
-      //             //   }
-      //             // }else{
-      //             //   console.log("000000000000");
-      //             //   self.leaveVisible = true;
-      //             //   // self.dialogVisible0 = true;
-      //             // }
-      //             self.dialogVisible0 = true;
-      //           }
-      //           // setTimeout(()=>{
-      //           //   // self.dialogVisible0 = true;
-      //           //   // let nowWorkId = self.workId;
-      //           //   // this.$router.push({ name: 'workBenchTaskDetailInfo',query:{workId:nowWorkId}})
-      //           // },10000)     
-      //         // }else{
-      //         //   self.$message({
-      //         //     message:'当前不在case所在地点，无法操作'+self.differDistance+result.address,
-      //         //     type: 'error',
-      //         //     center: true,
-      //         //     duration:2000,
-      //         //     customClass: 'msgdefine'
-      //         //   })
-      //         // }
-      //       }})
-      //   }
-      // })
     },
     // 测量百度地图两个点间的距离
    getDistance:function (latitude,longitude) {
