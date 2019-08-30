@@ -11,7 +11,7 @@
             <el-form-item label="申请时间:">
                 <el-col :span="24" >
                 <!-- <el-input v-model="currentdate"></el-input> -->
-                <el-date-picker type="datetime" placeholder="请选择可回收时间" style="width: 100%;"  v-model="currentdate" :disabled="true"></el-date-picker>
+                <el-date-picker type="datetime" placeholder="请选择可回收时间" style="width: 100%;"  v-model="currentdate"></el-date-picker>
                 </el-col>
                  <!-- <el-col class="line" :span="1">-</el-col>
                 <el-col :span="11">
@@ -19,16 +19,16 @@
                  </el-col> -->
             </el-form-item>
             <el-form-item label="回收联系人：">
-                <el-input v-model="maininput.customerLinkman" :disabled="true"></el-input>
+                <el-input v-model="maininput.customerLinkman"></el-input>
             </el-form-item>
             <el-form-item label="手机:">
-                <el-input v-model="maininput.customerTel" :disabled="true"></el-input>
+                <el-input v-model="maininput.customerTel"></el-input>
             </el-form-item>
             <el-form-item label="回收地点:">
-                <el-input v-model="maininput.customerAddress" :disabled="true"></el-input>
+                <el-input v-model="maininput.customerAddress"></el-input>
             </el-form-item>
             <el-form-item label="客户交接地址:">
-                <el-input v-model="maininput.customerAddress" :disabled="true"></el-input>
+                <el-input v-model="maininput.customerAddress"></el-input>
             </el-form-item>
             <el-form-item label="可回收时间:">
                 <el-col :span="24"  >
@@ -41,18 +41,18 @@
                  </el-col> -->
             </el-form-item>
             <el-form-item label="回收单要求:" >
-                <el-input type="textarea" placeholder="选填，请填写回收单要求" :rows="3" v-model="maininput.remark" :disabled="true"></el-input>
+                <el-input type="textarea" placeholder="选填，请填写回收单要求" :rows="3" v-model="maininput.remark"></el-input>
             </el-form-item>
                 <p>温馨提示：通过第三方物流陆运方式发货，运费到付。推荐顺丰物流 客服电话 <a @click="sendCall" v-bind:href="'tel:95338'"  style="font-size: 0.13em; color: #2698d6;">95338</a>。</p>
                 <p>回收安排信息</p>
             <el-form-item label="回收件收货人:">
-                <el-input v-model="recycleInfoinput.recyclePerson" :disabled="true"></el-input>
+                <el-input v-model="recycleInfoinput.recyclePerson"></el-input>
             </el-form-item>
             <el-form-item label="回收件收货人联系方式:" label-width="40%">
-                <el-input v-model="recycleInfoinput.recycleContact" :disabled="true"></el-input>
+                <el-input v-model="recycleInfoinput.recycleContact"></el-input>
             </el-form-item>
             <el-form-item label="回收件收货地址:">
-                <el-input v-model="recycleInfoinput.recycleAddr" :rows="0.5" :disabled="true"></el-input>
+                <el-input v-model="recycleInfoinput.recycleAddr" :rows="0.5"></el-input>
             </el-form-item>
 
             <el-form-item label="物流公司:">
@@ -90,23 +90,23 @@
         <el-form class="form1" style="color:#333333" label-width="80px">
             <p>发件人信息</p>
           <el-form-item label="发货人">
-            <el-input class="input1" v-model="maininput.empname" :disabled="true" style="font-size:6px"></el-input>
+            <el-input class="input1" v-model="maininput.customerLinkman" style="font-size:6px"></el-input>
           </el-form-item>
           <el-form-item label="发货人手机">
-            <el-input v-model="maininput.recyclePhone" :disabled="true"></el-input>
+            <el-input v-model="maininput.customerTel"></el-input>
           </el-form-item>
         <el-form-item label="发货城市">
-            <el-input class="input1" v-model="senderArea.fullName" :disabled="true" style="font-size:6px width:20px"></el-input>
+            <el-input class="input1" v-model="senderArea.fullName" style="font-size:6px width:20px"></el-input>
           </el-form-item>
           <el-form-item label="详细地址">
-            <el-input v-model="maininput.customerAddress" :disabled="true"></el-input>
+            <el-input v-model="maininput.customerAddress"></el-input>
           </el-form-item>
         <p>收货人信息</p>
           <el-form-item label="收货人">
-            <el-input class="input1" v-model="recycleInfoinput.recyclePerson" :disabled="true" style="font-size:6px"></el-input>
+            <el-input class="input1" v-model="recycleInfoinput.recyclePerson" style="font-size:6px"></el-input>
           </el-form-item>
           <el-form-item label="收货人手机">
-            <el-input v-model="recycleInfoinput.recycleContact" :disabled="true"></el-input>
+            <el-input v-model="recycleInfoinput.recycleContact"></el-input>
           </el-form-item>
         <el-form-item label="收货人城市">
             <el-input class="input1" v-model="recycleInfoinput.recycleCity" style="font-size:6px width:20px"></el-input>
