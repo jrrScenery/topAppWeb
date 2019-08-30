@@ -142,27 +142,6 @@ export default {
     },
     created(){
         this.getEndSummary();
-        // if(this.serviceType==2){
-        //     fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
-        //         console.log(res);
-        //         this.formData.userAndPrjItem = res.DATA[0];
-        //         this.workResultInfo = res.DATA[0].workResult;
-        //     })
-        //     fetch.get("?action=/system/getDict2&DICT_TYPE=NT_SERVICE_TYPE","").then(res=>{
-        //         console.log(res);
-        //         this.serviceTypeArr = res.data;
-        //     })
-        //     fetch.get("?action=/system/getDict2&DICT_TYPE=NT_CASE_WORK_RESULT","").then(res=>{
-        //         console.log(res);
-        //         this.workResultArr = res.data;
-        //     })
-        // }else{
-        //     fetch.get("?action=/work/GetCaseroubleShootingServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
-        //         console.log(res);
-        //         this.formData.userAndPrjItem = res.DATA[0];
-        //         this.workResultInfo = res.DATA[0].implementResult;
-        //     })
-        // }
     },
     methods:{      
         getEndSummary(){

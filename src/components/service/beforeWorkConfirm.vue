@@ -212,6 +212,9 @@ export default {
     },
     methods:{
         getCaseServiceQuestion(){
+            console.log("caseId",this.caseId);
+            console.log("serviceId",this.serviceId);
+            console.log("serviceType",this.serviceType);
             fetch.get("?action=/work/getCaseServiceQuestion&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
                 console.log(res)
                 if(this.serviceType==2){
