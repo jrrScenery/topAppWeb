@@ -220,6 +220,8 @@ export default {
                 if(valid){
                     if(vm.serviceType==2){
                         if(!vm.check(loading)) return;
+                    }else if(vm.serviceType==1){
+                        if(!vm.checkGz(loading)) return;
                     }
                     let detailArray = new Array();
                     var totalScore = 0;
