@@ -125,6 +125,7 @@ export default {
       endTime:this.$route.query.endDate,
       type:this.$route.query.type? this.$route.query.type.split(','):["1","2"],
     }
+    console.log("searchData",this.searchData);
     this.isSearch = this.$route.query.isSearch;
     if(!this.$route.meta.isUseCache){
       this.busy= false;

@@ -252,6 +252,7 @@ export default {
       SLAObj: [],
       workInfo:{},
       differDistance:0,
+      isDcFeedBack:false,//是否已经到场操作
       workId:this.$route.query.workId,
       caseId:this.$route.query.caseId,
       taskId:this.$route.query.taskId,
@@ -330,6 +331,11 @@ export default {
           this.workInfo = res.DATA[0];
           let baseInfo = res.DATA[0];
           this.SLAObj = baseInfo.slaStatus;
+          for(let i=0;i<this.SLAObj.length;i++){
+            if(this.SLAObj[i].slaTypeId == 5&& this.SLAObj[i].ifFeedback=='1'){
+              this.isDcFeedBack = true;
+            }
+          }
           this.requireArriveTime = res.DATA[0].requireArriveTime.replace(/\-/g, "/");
           this.workTypeStatus = res.DATA[0].leave[0].STATUS;
           this.hasService = res.DATA[0].leave[0].HAS_SERVICE;
@@ -357,36 +363,28 @@ export default {
             self.latitude = point.points[0].lat;
             self.longitude = point.points[0].lng;
             self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
-            // self.$message({
-            //     message:self.pointA,
-            //     type: 'error',
-            //     center: true,
-            //     duration:2000,
-            //     customClass: 'msgdefine'
-            // })
             self.differDistance = self.getDistance(self.targetLatitude,self.targetLongitude);
             if(self.differDistance<=4){
               if(slaTypeId==5){
-              // let now = new Date();
-              // let currentdate = self.formatDateTime(now);
-              // self.intervalTime(self.requireArriveTime,currentdate);
-                self.clientHeight = (document.documentElement.clientHeight-90)+'px'
-                self.randomPic();//随机选取图片
-                self.showModal = true;//显示随机图片10s
-                self.requestNum=0;//问题接口请求次数
-                const TIME_COUNT = 5;
-                self.seconds = 5;
-                setInterval(()=>{
-                  if(self.seconds > 0 && self.seconds <= TIME_COUNT){
-                    console.log("11111111111");
-                    self.seconds--;
-                  }
-                },1000)
-                setTimeout(()=>{
-                  self.showModal = false;//10s后关闭随机图片框
-                  self.checkdcFlag = true;//显示问题弹框
-                  self.getQuestionArrive();//调用问题接口，获取问题
-                },5000) 
+                let now = new Date();
+                let currentdate = self.formatDateTime(now);//到场时间限制
+                self.intervalTime(self.requireArriveTime,currentdate);
+                // self.clientHeight = (document.documentElement.clientHeight-90)+'px'
+                // self.randomPic();//随机选取图片
+                // self.showModal = true;//显示随机图片10s
+                // self.requestNum=0;//问题接口请求次数
+                // const TIME_COUNT = 5;
+                // self.seconds = 5;
+                // setInterval(()=>{
+                //   if(self.seconds > 0 && self.seconds <= TIME_COUNT){
+                //     self.seconds--;
+                //   }
+                // },1000)
+                // setTimeout(()=>{
+                //   self.showModal = false;//10s后关闭随机图片框
+                //   self.checkdcFlag = true;//显示问题弹框
+                //   self.getQuestionArrive();//调用问题接口，获取问题
+                // },5000) 
               }else if(slaTypeId==7){
                 self.leavebjCheck();
               }
@@ -405,13 +403,13 @@ export default {
       LocationSdk.getLocation(this,success,loading)//通过h5获取位置信息
     },
     // 测量百度地图两个点间的距离
-   getDistance:function (latitude,longitude) {
-     var map = new BMap.Map('')
-     var pointB = new BMap.Point(parseFloat(longitude), parseFloat(latitude))  // 店铺的经纬度
-     var distance = (map.getDistance(this.pointA, pointB) / 1000).toFixed(2) // 保留小数点后两位
-     return distance
-   },
-   formatDateTime:function(date) {  
+    getDistance:function (latitude,longitude) {
+      var map = new BMap.Map('')
+      var pointB = new BMap.Point(parseFloat(longitude), parseFloat(latitude))  // 店铺的经纬度
+      var distance = (map.getDistance(this.pointA, pointB) / 1000).toFixed(2) // 保留小数点后两位
+      return distance
+    },
+    formatDateTime:function(date) {  
         let y = date.getFullYear();  
         let m = date.getMonth() + 1;  
         m = m < 10 ? ('0' + m) : m;  
@@ -425,41 +423,115 @@ export default {
         second=second < 10 ? ('0' + second) : second;  
         return y + '/' + m + '/' + d+' '+h+':'+minute+':'+second;  
     },
+
+    //满足到场时间要求
+    inHours(){
+      let self = this;
+      self.clientHeight = (document.documentElement.clientHeight-90)+'px'
+      self.randomPic();//随机选取图片
+      self.showModal = true;//显示随机图片10s
+      self.requestNum=0;//问题接口请求次数
+      self.seconds = 5;
+      setInterval(()=>{
+        if(self.seconds > 0 && self.seconds <= TIME_COUNT){
+          self.seconds--;
+        }
+      },1000)
+      const TIME_COUNT = 5;
+      setTimeout(()=>{
+        self.showModal = false;//10s后关闭随机图片框
+        self.checkdcFlag = true;//显示问题弹框
+        self.getQuestionArrive();//调用问题接口，获取问题
+      },5000)
+    },
+    //不满足到场时间要求
+    notify(startTime,hours){
+      this.$notify.info({
+        title: '提示',
+        message: '预计到场时间为'+startTime+'，当前不在任务要求到场时间范围内，无法操作;如果“要求到场时间”设置不正确，请联系CMO修改',
+        type: 'warning',
+        duration:0
+      });
+    },
     //工程师操作时间差计算
-   intervalTime:function(startTime,endTime){
-      let date1 = new Date(startTime);  //开始时间
-      let date2 = new Date(endTime);    //结束时间
+    intervalTime:function(startTime,endTime){
+      console.log(startTime);
+      console.log(endTime);
+      var self = this;
+      function tranDate (time) {
+        return new Date(time.replace(/-/g, '/')).getTime();
+      }
+      let control1 = startTime.substring(0,10)+" 08:00:00"; // 限制时间08:00
+      let control2 = startTime.substring(0,10)+" 19:00:00";//显示时间19:00
+      let time1 = new Date(control1);
+      let time2 = new Date(time1.getTime()+24*60*60*1000);//次日08:00点
+      let control3 = this.formatDateTime(time2);//显示时间次日08：00
+      let restrict1 = tranDate(control1);//转换限制时间为08:00的时间格式
+      let restrict2 = tranDate(control2);//转换限制时间为19:00的时间格式
+      let restrict3 = tranDate(control3);//转换限制时间为次日08：00的时间格式
+      let expect = tranDate(startTime);//预计到场时间
+
+      let date1 = new Date(startTime);  //预计到场时间
+      let date2 = new Date(endTime);    //当前时间
       let date3 = Math.abs(date2.getTime() - date1.getTime());  //时间差的毫秒数
        //计算出相差天数
       let days = Math.floor(date3 / (24 * 3600 * 1000));
        //计算出小时数
       let leave1 = date3 % (24 * 3600 * 1000);    //计算天数后剩余的毫秒数
-      let hours = Math.floor(leave1 / (3600 * 1000));
-      if(days==0&&hours<=2){
-        this.clientHeight = (document.documentElement.clientHeight-90)+'px'
-        this.randomPic();//随机选取图片
-        this.showModal = true;//显示随机图片10s
-        this.requestNum=0;//问题接口请求次数
-        const TIME_COUNT = 5;
-        // setInterval(()=>{
-        //   if(this.seconds > 0 && this.seconds <= TIME_COUNT){
-        //     this.seconds--;
-        //   }
-        // },1000)
-        setTimeout(()=>{
-          this.showModal = false;//10s后关闭随机图片框
-          this.checkdcFlag = true;//显示问题弹框
-          this.getQuestionArrive();//调用问题接口，获取问题
-        },5000) 
+      let hours = Math.floor(leave1 / (3600 * 1000))+days*24;
+      console.log(expect);
+      console.log(restrict1);
+      console.log(restrict2);
+      console.log(restrict3);
+      console.log(hours);
+      if(expect>=restrict1&&expect<=restrict2){//如果在预计到场当日的08：00-19：00
+        if(hours<=3){
+          console.log("0000000000");
+          self.inHours();
+        }else{
+          console.log("11111111111");
+          self.notify(startTime,hours);
+        }
+      }else if(expect>=restrict2&&expect<=restrict3){//19:00-次日08:00
+        if(hours<=6){
+          console.log("222222222222");
+          self.inHours();
+        }else{
+          console.log("333333333333");
+          self.notify(startTime,hours);
+        }
+      }else if(expect<restrict1){
+        if(hours<=6){
+          console.log("44444444444");
+          self.inHours();
+        }else{
+          console.log("5555555555555");
+          self.notify(startTime,hours);
+        }
       }else{
-        this.$notify.info({
-          title: '提示',
-          message: '当前不在任务要求到场时间范围内，无法操作;如果“要求到场时间”设置不正确，请联系CMO修改',
-          type: 'warning',
-          duration:0
-        });
+        console.log("6666666666666");
+        self.notify(startTime,hours);
       }
-     },
+      // if(days==0&&hours<=2){
+      //   this.clientHeight = (document.documentElement.clientHeight-90)+'px'
+      //   this.randomPic();//随机选取图片
+      //   this.showModal = true;//显示随机图片10s
+      //   this.requestNum=0;//问题接口请求次数
+      //   const TIME_COUNT = 5;
+      //   setTimeout(()=>{
+      //     this.showModal = false;//10s后关闭随机图片框
+      //     this.checkdcFlag = true;//显示问题弹框
+      //     this.getQuestionArrive();//调用问题接口，获取问题
+      //   },5000) 
+      // }else{
+      //   this.$notify.info({
+      //     title: '提示',
+      //     message: '当前不在任务要求到场时间范围内，无法操作;如果“要求到场时间”设置不正确，请联系CMO修改',
+      //     type: 'warning',
+      //     duration:0
+      //   });
+      // }
+    },
     getTime:function() {
       var date = new Date();
       var seperator1 = "-";
@@ -492,29 +564,51 @@ export default {
       this.date=this.$options.methods.getTime();
       this.typeid = slaTypeId;
       if (slaTypeId == 8 || slaTypeId == 10) {
-        this.dialogVisible1 = true;
+        if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){
+          if(this.isDcFeedBack){
+            this.dialogVisible1 = true;
+          }else{
+            this.$message({
+              message:'请先进行到场操作',
+              type: 'warning',
+              center: true,
+              duration:2000,
+              customClass: 'msgdefine'
+            })
+          }
+        }else{
+          this.dialogVisible1 = true;
+        }
+      }else if(slaTypeId == 6 || slaTypeId == 9){
+        console.log(slaTypeId);
+        if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){
+          if(this.isDcFeedBack){
+            this.dialogVisible0 = true;
+          }else{
+            this.$message({
+              message:'请先进行到场操作',
+              type: 'warning',
+              center: true,
+              duration:2000,
+              customClass: 'msgdefine'
+            })
+          }
+        }else{
+          this.dialogVisible0 = true;
+        }
       }else if(slaTypeId == 5){
+        // let now = new Date();
+        //     let currentdate = this.formatDateTime(now);//到场时间限制
+        //     this.intervalTime(this.requireArriveTime,currentdate);
         if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){        
           //类型是到场逻辑处理
           this.getLocation(slaTypeId);
         }else{
           this.dialogVisible0 = true;
         }
-      }
-      else if(slaTypeId == 7){
+      }else if(slaTypeId == 7){
         if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){
           this.getLocation(slaTypeId);
-          // if(this.workTypeStatus==1){
-          //   this.workTypeVisible = true;
-          //   this.workTypeWarn = '请先完成备件整理再进行离场反馈';
-          //   return false;
-          // }else if(this.workTypeStatus==2){
-          //   this.workTypeVisible = true;
-          //   this.workTypeWarn = '请确认未使用件的真实性？';
-          //   return false;
-          // }else{
-          //   this.createService();
-          // }
         }else{
           this.dialogVisible0 = true;
         }

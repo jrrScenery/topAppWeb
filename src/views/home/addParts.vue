@@ -15,6 +15,16 @@
             <el-form-item label="序列号">
               <el-input v-model="form.SN" placeholder="请输入序列号" class="bInput"></el-input>
             </el-form-item>
+            <el-form-item label="设备型号">                                    
+              <el-autocomplete class="el-input"
+                  v-model="form.modelName" 
+                  :value="form.modelName"
+                  :fetch-suggestions="querySearchModel"
+                  placeholder="请输入型号" 
+                  :trigger-on-focus="false"
+                  @select="getModelName()">
+              </el-autocomplete>
+            </el-form-item>
             <el-form-item label="备件类型">
               <el-select v-model="form.partsType" placeholder="请选择备件类型" clearable>
                 <el-option v-for="item in partsTypeList" :label="item.partsTypeName" :value="item.partsTypeId" :key="item.id"></el-option>
@@ -80,10 +90,12 @@ export default {
         ifTakeaway: "",
         useStatus: "3",
         isRecycle: "",
+        modelName:"",
         useStatusRemark: "",
         partsType: "",
         caseId: this.$route.query.caseId,
       },
+      modelArray:[],
       rules: {
         ifPackage: [
           { required: true, message: '请先选择是否包装', trigger: 'change' }
@@ -117,6 +129,36 @@ export default {
     
   },
   methods: {
+    getModelName(){
+      if(this.form.modelName){
+          for(let i=0;i<this.modelArray.length;i++){
+              if(this.modelArray[i].modelName == this.form.modelName){
+                  // modelId = this.modelArray[i].modelId;
+                  this.form.modelName = this.modelArray[i].modelName;
+              }
+          } 
+      }
+    },
+    querySearchModel(queryString,cb) {
+      fetch.get("?action=/parts/queryModelName&MODELNAME="+this.form.modelName,'').then(res=>{
+          console.log("queryModelName",res);
+          this.modelArray = res.data;
+          let modelArray = [];
+          for(let i=0;i<res.data.length;i++){
+              modelArray.push({'modelId':res.data[i].modelId,'factoryId':res.data[i].factoryId,'value':res.data[i].modelName})
+          }               
+          let results = queryString ? modelArray.filter(this.createStateFilter(queryString)) : modelArray;
+          clearTimeout(this.timeout);
+          this.timeout = setTimeout(() => {
+              cb(results);
+          }, 1000 * Math.random());
+      })
+    },
+    createStateFilter(queryString) {
+      return (devId) => {
+          return (devId.value.toLowerCase().indexOf(queryString.toLowerCase()) !== -1);
+      };
+    },
     showMsg (msg){
       this.$notify({
         title: '警示信息',
@@ -125,11 +167,13 @@ export default {
       });
     },
     DATAParams (){
+      console.log("this.form",this.form)
       let DATA = {};
       DATA.PARTS_SOURCE = this.form.partsSource;
       DATA.PN_FRU = this.form.pnFru;
       DATA.SN = this.form.SN;
       DATA.TYPE = this.form.partsType;
+      DATA.MODEL_NAME = this.form.modelName;
       DATA.USE_STATUS = this.form.useStatus;
       DATA.USE_STATUS_REMARK = this.form.useStatusRemark;
       DATA.IF_PACKAGE = this.form.ifPackage;
@@ -157,6 +201,17 @@ export default {
       let vm= this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          if(this.form.pnFru==''){
+            loading.close();
+            this.$message({
+              message:'请填写FN号',
+              type: 'warning',
+              center: true,
+              duration:2000,
+              customClass: 'msgdefine'
+            })
+            return false;
+          }
           fetch.post("?action=/parts/updatePartsGathering", params).then(res=>{
             console.log("params", params)
             console.log(res)
@@ -167,9 +222,9 @@ export default {
                 type: 'success',
                 center: true,
                 customClass: 'msgdefine'
-                });
+              });
 
-              this.$router.go(0);
+              // this.$router.go(0);
               let data = {
                 popBg: false
               };
@@ -189,12 +244,14 @@ export default {
             }
               
           });
-        } else {
+        }
+        else {
           loading.close();
           this.$message({
                   message:"请正确填写",
-                  type: 'error',
+                  type: 'warning',
                   center: true,
+                  duration:2000,
                   customClass: 'msgdefine'
                 });
           return false;

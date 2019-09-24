@@ -22,6 +22,17 @@
                                     <el-form-item label="PN/FRU">
                                         <el-input v-model="scope.row.pnFru" placeholder="请输入PN/FRU" class="bInput"></el-input>
                                     </el-form-item>
+                                    <el-form-item label="设备型号">                                    
+                                        <el-autocomplete class="el-input"
+                                            v-model="scope.row.modelName" 
+                                            :value="scope.row.modelName"
+                                            :fetch-suggestions="querySearchModel"
+                                            placeholder="请输入型号" 
+                                            :trigger-on-focus="false"
+                                            @select="getModelName(scope.row.modelName)">
+                                        </el-autocomplete>
+                                        <!-- <el-input v-model="scope.row.modelName" placeholder="请输入设备型号" class="bInput"></el-input> -->
+                                    </el-form-item>
                                     <el-form-item label="序列号">
                                         <el-input v-model="scope.row.sn" placeholder="请输入序列号" class="bInput"></el-input>
                                     </el-form-item>
@@ -137,6 +148,8 @@ export default {
             sparePartsSortOutSelectArr:[],
             slaFeedBack:'',
             isDcFeedBack:false,//未点击到场反馈时备件整理弹框
+            modelOptions:[],//设备型号
+            loading: false,
             busy:false,
             loadall: false,
             isSearch:false,
@@ -156,11 +169,43 @@ export default {
     },
 
     methods:{
+        getModelName(modelName){
+            if(modelName){
+                for(let i=0;i<this.modelArray.length;i++){
+                    if(this.modelArray[i].modelName == modelName){
+                        // modelId = this.modelArray[i].modelId;
+                        modelName = this.modelArray[i].modelName;
+                    }
+                } 
+            }
+        },
+        querySearchModel(queryString,cb) {
+            console.log("queryString",queryString);
+            console.log("cb",cb);
+            fetch.get("?action=/parts/queryModelName&MODELNAME="+queryString,'').then(res=>{
+                console.log("queryModelName",res);
+                this.modelArray = res.data;
+                let modelArray = [];
+                for(let i=0;i<res.data.length;i++){
+                   modelArray.push({'modelId':res.data[i].modelId,'factoryId':res.data[i].factoryId,'value':res.data[i].modelName})
+                }               
+                let results = queryString ? modelArray.filter(this.createStateFilter(queryString)) : modelArray;
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                    cb(results);
+                }, 1000 * Math.random());
+            })
+        },
+        createStateFilter(queryString) {
+            return (devId) => {
+                return (devId.value.toLowerCase().indexOf(queryString.toLowerCase()) !== -1);
+            };
+        },
         getSparePart(){
             console.log(this.workId);
             fetch.get("?action=/parts/GetCasePartsInfo" + "&CASE_ID=" + this.caseId+"&WORK_ID="+this.workId, {}).then(res=>{
                 this.sparePartsSortOutSelectArr = res.DATA;
-                console.log(res.flag);
+                console.log("GetCasePartsInfo",res.DATA);
                 if(res.flag.length!=0){
                     console.log("00000000");
                     this.slaFeedBack = res.flag[0].STATUS;
@@ -171,6 +216,7 @@ export default {
 
             });
             fetch.get("?action=/parts/GetPartsTypeList",{}).then(res=>{
+                console.log("GetPartsTypeList",res.DATA);
                 this.partsTypeList = res.DATA;
             });
         },
@@ -184,6 +230,7 @@ export default {
             changeParts.PARTS_SOURCE = formUpdateParts.partsSource;
             changeParts.PN_FRU = formUpdateParts.pnFru;
             changeParts.SN = formUpdateParts.sn;
+            changeParts.MODEL_NAME = formUpdateParts.modelName;
             changeParts.TYPE = formUpdateParts.type;
             changeParts.USE_STATUS = formUpdateParts.useStatus;
             changeParts.USE_STATUS_REMARK = formUpdateParts.useStatusRemark;
@@ -205,7 +252,7 @@ export default {
             takedown.SN = formUpdateParts.takeDownSN;
             takedown.IS_RECYCLE = 1;
             takedown.USE_STATUS_REMARK = "";
-            takedown.MODEL_NAE = formUpdateParts.modelName;
+            takedown.MODEL_NAME = formUpdateParts.modelName;
             takedown.COMEFROM_SN = formUpdateParts.sn;
             takedown.COMEFROM_PARTS_ID = formUpdateParts.partsId;
             takedown.CASE_ID = formUpdateParts.caseId;
@@ -269,6 +316,7 @@ export default {
                 params.append('DATA', array);
                 params.append('UPDATE_DATE', this.getCurrentTime());
                 params.append('CASE_ID', this.caseId);
+                // params.append('MODEL_NAE', formUpdateParts.modelName);
                 console.log("qweasd", params, eval(params.get('DATA')).length, eval(params.get('DATA')))
                 // params_dict.DATA = list;
                 return params
@@ -289,8 +337,10 @@ export default {
         },
          
         onSubmit (formUpdateParts) {
+            console.log("formUpdateParts",formUpdateParts);
             let params = this.onArray(formUpdateParts);
             let params_DATA = eval(params.get('DATA'));
+            console.log("params_DATA:",params_DATA);
             if (params_DATA=="judge_no") {
                 console.log(params_DATA);
             }else if(this.slaFeedBack!='1'){
@@ -314,6 +364,7 @@ export default {
                     });
                     this.isShow = true;
                 }else{
+                    console.log("params",params);
                     fetch.post("?action=/parts/updatePartsGathering", params).then(res=>{
                         console.log("updatePartsGathering", res)
                         loading.close();

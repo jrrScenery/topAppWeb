@@ -143,9 +143,6 @@
  </div>
 </template>
 <script>
-// import eventBaseInfo from '../../components/event/eventBaseInfo'
-// import eventProgress from '../../components/event/eventProgress'
-// import eventPeople from '../../components/event/eventPeople'
 import eventParts from "../../components/event/eventParts";
 import HeaderLast from "../header/headerLast";
 import fetch from "../../utils/ajax";
@@ -173,48 +170,18 @@ export default {
       currentdate: "",
       canRecycleTime:"",
       senderArea:[],
-      // applicant:"张三",
-      // apTime:"2018-08-15 09:50:24",
-      // contactor:"张三",
-      // apPhone:"11111111",
-      // region:"北京市朝阳区",
-      // haAddress:"北京市朝阳区办公楼",
-      // reTime:"2018-08-20",
-      // require:"没有要求",
-      // receiver:"李四",
-      // rePhone:"444444444444",
-      // reAdress:"北京市东城区",
-      // delivery:"顺丰",
-      // cardNum:"SF8888665",
-      // goBack:"是",
-      // description:"这是回寄说明",
-      //   },
     };
   },
 
   created: function() {
     this.currentdate = new Date();
       this.parts=this.$route.params.parts;
-      console.log("========="+this.caseId);
-      console.log(this.parts)
-      console.log("=======")
     fetch.get("?action=/parts/getPartsCanRecycle&CASE_ID="+this.caseId).then(res => {
-      console.log("ffffffffff");
-      console.log(res);
-      //   let remain=;
-      //   let rr=res.;
       this.maininput = res.main[0];
       this.recycleInfoinput = res.recycleInfo[0];
       this.supplier = res.supplier;
-      // console.log("111111111")
-      // console.log(this.parts);
-      // console.log(this.maininput);
-      // console.log(this.recycleInfoinput);
     });
   },
-  // mounted:function(){
-    
-  // },
   methods: {
     sender(){
       console.log(this.transportCompany)
@@ -263,18 +230,18 @@ export default {
         commodity.push(c);
         kd.Commodity=commodity;
         kd.Remark=this.remark;
-        let params = JSON.stringify(kd);
-        // let params=new URLSearchParams;
-        // params.append('kd',JSON.stringify(kd));
-        // params.append('ShipperCode',"SF");
-        // params.append('ShipperCode',"SF");
-        // params.append('ShipperCode',"SF");
-        // params.append('Sender',JSON.stringify(sender));
-        // params.append('Receiver',JSON.stringify(kd.Receiver));
-        // params.append('Remark',this.remark);
-        // params.append('Commodity',commodity);?action=/parts/getSFSendCode?action=/parts/getSFSendCode
+        // let params = JSON.stringify(kd);
+        let params=new URLSearchParams;
+        params.append('kd',JSON.stringify(kd));
+        params.append('ShipperCode',"SF");
+        params.append('ShipperCode',"SF");
+        params.append('ShipperCode',"SF");
+        params.append('Sender',JSON.stringify(sender));
+        params.append('Receiver',JSON.stringify(kd.Receiver));
+        params.append('Remark',this.remark);
+        params.append('Commodity',commodity);
         console.log(params);
-        fetch.get("?action=/parts/getSFSendCode&kd="+params).then(res=>{
+        fetch.post("?action=/parts/getSFSendCode",params).then(res=>{
         loading.close();
               if(res.STATUSCODE=="0"){
                 this.$message({
@@ -284,8 +251,9 @@ export default {
                   customClass: 'msgdefine',
                   TimeRanges:'1000'
                 });
-                innerVisible=false;
-                location.reload;
+                this.transportCode = res.code;
+                this.innerVisible=false;
+                // location.reload;
                 
               }else{
                 this.$message({

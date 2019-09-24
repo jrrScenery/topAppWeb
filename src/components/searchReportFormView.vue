@@ -81,9 +81,7 @@ export default {
   .headerLeft i{font-size: 0.2rem;}
   .popBg{background: rgba(0,0,0,0.5); position: fixed; top: 0.45rem; bottom: 0; z-index: 999; padding: 0 0.25rem;}
 </style>
->
 
-</style>
 
 
       
