@@ -30,7 +30,7 @@
                 </div>
             </el-col>
             <el-col :span="7" >
-            <router-link v-if="taskDetailInfo.workStatusId!=5" :to="{name:'serviceList',query:{caseId:this.$route.query.caseId,workId:this.$route.query.workId,taskId:taskDetailInfo.taskId}}">
+            <router-link v-if="taskDetailInfo.workStatusId!=5" :to="{name:'serviceList',query:{caseId:taskDetailInfo.caseId,workId:taskDetailInfo.workId,taskId:taskDetailInfo.taskId}}">
                 <div>
                 <img src="../../assets/images/eventBaseInfo_3.png" style="width: 0.145rem; height: 0.145rem;" alt="">
                 <span>服务单</span>
@@ -231,7 +231,7 @@ export default {
         
     },
     created:function(){
-        console.log(this.$route.query.workId);
+        console.log("workId",this.$route.query.workId); 
         fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
             console.log("getWorkInfo",res);   
             this.taskDetailInfo = res.DATA[0];
@@ -242,8 +242,8 @@ export default {
         });
     },
     beforeRouteLeave( to, from,next){
-        if (to.name == 'workBenchTaskList') {
-            to.meta.isUseCache = true;    
+        if (to.name == 'workBenchTaskList'||to.name == 'serviceList') {
+            to.meta.isUseCache = false;    
         }        
         next();
     },
@@ -314,10 +314,10 @@ export default {
                 data.questionId = vm.questionObj.QUESTION_ID;
                 data.answerIds = answerIds;
                 data.ifAnswerTrue = ifAnswerTrue;
-                var params = new URLSearchParams();
-                params.append("data",JSON.stringify(data));
-                console.log("params",params);
-                fetch.post("?action=/risk/saveAnswer",params).then(res=>{
+                // var params = new URLSearchParams();
+                // params.append("data",JSON.stringify(data));
+                // console.log("params",params);
+                fetch.questionPost("?action=/risk/saveAnswer",data).then(res=>{
                     console.log("saveAnswer",res);
                     if(res.STATUSCODE=='1'){
                         this.$message({

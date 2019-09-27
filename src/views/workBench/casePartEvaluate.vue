@@ -82,39 +82,42 @@ export default {
         }
     },
     mounted(){
-        fetch.get("?action=/work/GetWorkEvaluateInfo",{CASE_ID:this.caseId,WORK_ID:this.workId,TEMPLATE_TYPE:this.templateType,BJ_FLG:this.bjflg}).then(res=>{
-            console.log(res);
-            this.submitFlg=res.SUBMIT_FLG;
-            this.evaluateId=res.EVALUATE_ID_RETURN;
-            if("0" == res.STATUSCODE){
-                this.questionComment = res.QUESTION[0].questionComment;
-                let jsonres= res;
-                let tmpjsonval =[];
-                jsonres.QUESTION.forEach(function(v,i,ar){
-                let tmpobj = {};
-                tmpobj.question= v;
-                tmpobj.options = v.optionOption;
-                tmpobj.chkedopts = tmpobj.options.filter(function(item){return item.checkFlg})
-                tmpobj.aroptschked = tmpobj.chkedopts.map(function(v,i,ar){ return v.optionId});
-                tmpobj.scores = v.scoreOption;
-                let index=0;
-                tmpobj.scores.forEach(function(v,i,ar){
-                    if(v.checkFlg==1){
-                        index=i+1;
-                    }
-                });
-                tmpobj.scoreval=index;
-                tmpjsonval.push(tmpobj);
-                })
-                this.evaluateval = tmpjsonval;
-                console.log(tmpjsonval);
-            }
-            
-        })
+        this.getWorkEvaluateInfo();
     },
     scoreChange:function(e){
     },
     methods:{
+        getWorkEvaluateInfo(){
+            fetch.get("?action=/work/GetWorkEvaluateInfo",{CASE_ID:this.caseId,WORK_ID:this.workId,TEMPLATE_TYPE:this.templateType,BJ_FLG:this.bjflg}).then(res=>{
+                console.log(res);
+                this.submitFlg=res.SUBMIT_FLG;
+                this.evaluateId=res.EVALUATE_ID_RETURN;
+                if("0" == res.STATUSCODE){
+                    this.questionComment = res.QUESTION[0].questionComment;
+                    let jsonres= res;
+                    let tmpjsonval =[];
+                    jsonres.QUESTION.forEach(function(v,i,ar){
+                    let tmpobj = {};
+                    tmpobj.question= v;
+                    tmpobj.options = v.optionOption;
+                    tmpobj.chkedopts = tmpobj.options.filter(function(item){return item.checkFlg})
+                    tmpobj.aroptschked = tmpobj.chkedopts.map(function(v,i,ar){ return v.optionId});
+                    tmpobj.scores = v.scoreOption;
+                    let index=0;
+                    tmpobj.scores.forEach(function(v,i,ar){
+                        if(v.checkFlg==1){
+                            index=i+1;
+                        }
+                    });
+                    tmpobj.scoreval=index;
+                    tmpjsonval.push(tmpobj);
+                    })
+                    this.evaluateval = tmpjsonval;
+                    console.log(tmpjsonval);
+                }
+                
+            })
+        },
         submitForm () {
             let result=new Array;
             let temp={};
@@ -148,30 +151,29 @@ export default {
         }
         // console.log("{{{{{{{{{{{{"+result)
             result=JSON.stringify(result);
-            let params=new URLSearchParams;
-            params.append('totalScore',this.evaluateval[0].scoreval);
-            params.append('failFlg',this.evaluateval[0].scoreval<3?1:0);
-            params.append('EvaluateResult',result);
-            params.append('workId',this.workId);
-            params.append('evaluateId',this.evaluateId);
-            params.append('evaluateStatus',2);
+            let params = {};
+            params.totalScore = this.evaluateval[0].scoreval;
+            params.failFlg = this.evaluateval[0].scoreval<3?1:0;
+            params.EvaluateResult = result;
+            params.workId = this.workId;
+            params.evaluateId = this.evaluateId;
+            params.evaluateStatus = 2;
+            // let params=new URLSearchParams;
+            // params.append('totalScore',this.evaluateval[0].scoreval);
+            // params.append('failFlg',this.evaluateval[0].scoreval<3?1:0);
+            // params.append('EvaluateResult',result);
+            // params.append('workId',this.workId);
+            // params.append('evaluateId',this.evaluateId);
+            // params.append('evaluateStatus',2);
             const loading = this.$loading({
                 lock: true,
                 text: '提交中...',
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
-            // console.log(params.get("evaluateId"));
-            // console.log(qs.stringify({postData},{arrayFormat: 'brackets'}));
-             fetch.post("?action=/work/SubmitWorkEvaluateInfo",params).then(res=>{
-                // var token = localStorage.getItem("token");
-                // this.$axios({
-                //     method:'post',
-                //     url:global_.proxyServer+"?action=/work/SubmitWorkEvaluateInfo",
-                //     data:params,
-                //       headers:{"token":token}
-                // }).then(res=>{ 
-            loading.close();           
+            console.log("params",params)
+             fetch.questionPost("?action=/work/SubmitWorkEvaluateInfo",params).then(res=>{
+                loading.close();           
               if(res.STATUSCODE=="0"){
                 this.$message({
                   message:'提交成功',
@@ -180,8 +182,8 @@ export default {
                   customClass: 'msgdefine',
                   TimeRanges:'1000'
                 });
-                location.reload;
-                
+                this.getWorkEvaluateInfo();
+                // location.reload;              
               }else{
                 this.$message({
                   message:res.MESSAGE+"发生错误",

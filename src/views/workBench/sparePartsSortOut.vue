@@ -3,8 +3,9 @@
         <header-base-eight :title="sparePartsSortOutTit"></header-base-eight>
         <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
             <div class="SelectListCell">
+                <div class="sortAttentionDiv">特别注意：请对以下供货件进行整理</div>
             <el-table :data="sparePartsSortOutSelectArr" style="width: 100%">
-
+                
                 <el-table-column prop="date" label="修改" width="8%">
                     <template slot-scope="scope">
                     <div class="contentPopover">
@@ -284,7 +285,8 @@ export default {
         },
 
         onArray (formUpdateParts){
-            let params = new URLSearchParams;
+            let params = {};
+            // let params = new URLSearchParams;
             let array = new Array;
             let list = [];
             let params_dict = {};
@@ -313,17 +315,19 @@ export default {
                     array.push(chageArray);
                 }
                 array = JSON.stringify(array);
-                params.append('DATA', array);
-                params.append('UPDATE_DATE', this.getCurrentTime());
-                params.append('CASE_ID', this.caseId);
-                // params.append('MODEL_NAE', formUpdateParts.modelName);
-                console.log("qweasd", params, eval(params.get('DATA')).length, eval(params.get('DATA')))
-                // params_dict.DATA = list;
+                params.DATA = array;
+                params.UPDATE_DATE = this.getCurrentTime();
+                params.CASE_ID = this.caseId;
+                // params.append('DATA', array);
+                // params.append('UPDATE_DATE', this.getCurrentTime());
+                // params.append('CASE_ID', this.caseId);
+                // console.log("qweasd", params, eval(params.get('DATA')).length, eval(params.get('DATA')))
                 return params
             }
             array = "judge_no";
             array = JSON.stringify(array);
-            params.append("DATA", array);
+            // params.append("DATA", array);
+            params=array;
             return params
         },
         
@@ -339,7 +343,9 @@ export default {
         onSubmit (formUpdateParts) {
             console.log("formUpdateParts",formUpdateParts);
             let params = this.onArray(formUpdateParts);
-            let params_DATA = eval(params.get('DATA'));
+            console.log("params",params);
+            // let params_DATA = eval(params.get('DATA'));
+            let params_DATA = JSON.parse(params.DATA);
             console.log("params_DATA:",params_DATA);
             if (params_DATA=="judge_no") {
                 console.log(params_DATA);
@@ -365,7 +371,7 @@ export default {
                     this.isShow = true;
                 }else{
                     console.log("params",params);
-                    fetch.post("?action=/parts/updatePartsGathering", params).then(res=>{
+                    fetch.questionPost("?action=/parts/updatePartsGathering", params).then(res=>{
                         console.log("updatePartsGathering", res)
                         loading.close();
                         if(res.STATUSCODE=="0"){
@@ -441,6 +447,7 @@ export default {
 
 <style scoped>
 .sparePartsSortOutSelectView{width: 100%}
+.sparePartsSortOutSelectView >>>.sortAttentionDiv{padding: 0.1rem;color: red;display: flex;justify-content: center}
 .content{width: 100%; position: absolute; top: 0.45rem; bottom: 0;margin-top: 0.05rem; overflow: scroll;}
 .SelectListCell{background: #ffffff}
 .SelectListCell >>> .el-radio__label{font-size: 0px}

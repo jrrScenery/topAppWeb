@@ -184,14 +184,18 @@ export default {
     },
 
     onSubmit (formName) {
-      let params=new URLSearchParams;
+      let params = {};
+      // let params=new URLSearchParams;
       let array = new Array;
       // console.log(this.ifData())
       array.push(this.DATAParams());
       array = JSON.stringify(array);
-      params.append('DATA', array);
-      params.append('UPDATE_DATE', this.getCurrentTime());
-      params.append('CASE_ID', this.caseId);
+      params.DATA = array;
+      params.UPDATE_DATE = this.getCurrentTime();
+      params.CASE_ID = this.caseId;
+      // params.append('DATA', array);
+      // params.append('UPDATE_DATE', this.getCurrentTime());
+      // params.append('CASE_ID', this.caseId);
       const loading = this.$loading({
         lock: true,
         text: '提交中...',
@@ -212,7 +216,7 @@ export default {
             })
             return false;
           }
-          fetch.post("?action=/parts/updatePartsGathering", params).then(res=>{
+          fetch.questionPost("?action=/parts/updatePartsGathering", params).then(res=>{
             console.log("params", params)
             console.log(res)
             loading.close();
@@ -280,9 +284,9 @@ export default {
 }
 </script>
 
-<style scoped>
-  .addPartsView{width:100%;background: #ffffff;}
-  .content{width:100%; margin-top: 0.5rem;background: #ffffff;}
+<style scoped> 
+  .addPartsView{width:100%;background: #ffffff; position: relative;}
+  /* .content{margin-top: 0.5rem;background: #ffffff;} */
   .content >>> .el-form-item{border-bottom: 0.01rem solid #e5e5e5; margin: 0;}
   .content >>> .el-form-item__label{font-size: 0.13rem; color: #acacac; padding: 0 0 0 0.15rem; text-align: left}
   .content >>> .el-form-item__error{position: relative}

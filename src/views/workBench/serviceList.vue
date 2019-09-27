@@ -1,6 +1,6 @@
 <template>
     <div class="serviceListView">
-        <header-base-nine :title="serviceListTit" :caseId='this.caseId' :workId='this.workId' :taskId='this.taskId'></header-base-nine>
+        <header-base-nine :title="serviceListTit" :caseId='caseId' :workId='workId' :taskId='taskId'></header-base-nine>
         <div style="height: 0.45rem;"></div>
         <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
             <div class="taskListCell" v-for="item in serviceList" :key="item.id">
@@ -9,7 +9,7 @@
                         <li>
                             <span>服务单号</span>  
                             <span style="color:#2698d6">{{item.serviceCd}}</span>
-                        </li>
+                        </li> 
                         <li>
                             <span>评价ID</span>  
                             <span>{{item.evaluateId}}</span>
@@ -69,12 +69,16 @@ export default {
         }
     },
     activated(){
+        console.log("workId111111",this.$route.query.workId);
         if(!this.$route.meta.isUseCache){
-        this.serviceList = [];
-        this.busy= false;
-        this.loadall= false;
-        this.page =1;
-        this.loadMore();
+            this.caseId = this.$route.query.caseId;
+            this.workId = this.$route.query.workId;
+            this.taskId = this.$route.query.taskId;
+            this.serviceList = [];
+            this.busy= false;
+            this.loadall= false;
+            this.page =1;
+            this.loadMore();
         }
         this.$route.meta.isUseCache = false;
     },
@@ -83,7 +87,7 @@ export default {
             var params = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize};
             var flag = this.page>1;
             fetch.get("?action=/work/GetServiceFormList&WORK_ID="+this.$route.query.workId+"&CASE_ID="+this.$route.query.caseId,params).then(res=>{  
-                console.log(res);
+                console.log("GetServiceFormList",res);
                 if(flag){
                     this.serviceList = this.serviceList.concat(res.DATA);
                 }else{
@@ -118,7 +122,7 @@ export default {
     beforeRouteLeave( to, from,next){
         console.log(to);
         if (to.name == 'onsiteServiceInfo') {
-            // to.meta.isUseCache = true;   
+            to.meta.keepAlive = false;   
             this.scrollTop = document.querySelector('.content').scrollTop; 
         }        
         next();

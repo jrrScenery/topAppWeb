@@ -231,17 +231,24 @@ export default {
         kd.Commodity=commodity;
         kd.Remark=this.remark;
         // let params = JSON.stringify(kd);
-        let params=new URLSearchParams;
-        params.append('kd',JSON.stringify(kd));
-        params.append('ShipperCode',"SF");
-        params.append('ShipperCode',"SF");
-        params.append('ShipperCode',"SF");
-        params.append('Sender',JSON.stringify(sender));
-        params.append('Receiver',JSON.stringify(kd.Receiver));
-        params.append('Remark',this.remark);
-        params.append('Commodity',commodity);
-        console.log(params);
-        fetch.post("?action=/parts/getSFSendCode",params).then(res=>{
+        // let params=new URLSearchParams;
+        let params = {};
+        params.kd = JSON.stringify(kd);
+        // params.ShipperCode = 'SF';
+        // params.Sender = JSON.stringify(sender);
+        // params.Receiver = JSON.stringify(kd.Receiver);
+        // params.Remark = this.remark;
+        // params.Commodity = JSON.stringify(commodity);
+        // params.append('kd',JSON.stringify(kd));
+        // params.append('ShipperCode',"SF");
+        // params.append('ShipperCode',"SF");
+        // params.append('ShipperCode',"SF");
+        // params.append('Sender',JSON.stringify(sender));
+        // params.append('Receiver',JSON.stringify(kd.Receiver));
+        // params.append('Remark',this.remark);
+        // params.append('Commodity',commodity);
+        console.log("params",params);
+        fetch.questionPost("?action=/parts/getSFSendCode",params).then(res=>{
         loading.close();
               if(res.STATUSCODE=="0"){
                 this.$message({
@@ -309,34 +316,30 @@ export default {
       recycleInfo.dcitsRecycleContact=vm.recycleInfoinput.dcitsRecycleContact;
       recycleInfo.remark=vm.remark;
       recycleInfo.sendType1=vm.transportCompanytype;
-     
-      console.log("1111111");
-      console.log(details);
-      console.log(main);
-      console.log(recycleInfo);
+
       for(var i=0;i<details.length;i++){
         if(details[i].recycleMId==null||details.recycleMId==""){
           main.ifSave=1;
           break;
         }
       }
-      console.log("details:"+details);
-      let postData=new URLSearchParams;
-      postData.append('main',JSON.stringify(main)),
-      postData.append('details',JSON.stringify(details));
-      postData.append('recycleInfo',JSON.stringify(recycleInfo));
+      let postData = {};
+      postData.main = JSON.stringify(main);
+      postData.details = JSON.stringify(details);
+      postData.recycleInfo = JSON.stringify(recycleInfo);
+      // let postData=new URLSearchParams;
+      // postData.append('main',JSON.stringify(main)),
+      // postData.append('details',JSON.stringify(details));
+      // postData.append('recycleInfo',JSON.stringify(recycleInfo));
 
       // let params="&main="+this.main+"&parts="+this.parts+"&recycleInfo"+this.recycleInfo;
-      console.log(postData.get("main"));
-      console.log(postData.get("details"));
-      console.log(postData.get("recycleInfo"));
       if(type==1){
         if(recycleInfo.transportCode==""){
           loading.close();
           alert("请填写物流单号！");
           return false;
         }else{
-      fetch.post("?action=/parts/insertRecycleApply",postData).then(res=>{
+      fetch.questionPost("?action=/parts/insertRecycleApply",postData).then(res=>{
         loading.close();
               if(res.STATUSCODE=="0"){
                 this.$message({
@@ -361,7 +364,7 @@ export default {
         }
       }
       if(type==2){
-        fetch.post("?action=/parts/submitPartsRecycle",postData).then(res=>{
+        fetch.questionPost("?action=/parts/submitPartsRecycle",postData).then(res=>{
         loading.close();
               if(res.STATUSCODE=="0"){
                 this.$message({

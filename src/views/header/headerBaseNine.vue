@@ -22,10 +22,6 @@ export default {
 
   data () {
     return {
-      // caseId:this.$route.query.caseId,
-      // workId:this.$route.query.workId,
-      // taskId:this.$route.query.taskId,
-      // serviceId:this.$route.query.serviceId,
     }
   },
   props: ['title','backUrl','date1','date2','caseId','workId','taskId'],

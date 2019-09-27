@@ -8,7 +8,7 @@
                             <div style="padding: 14px;">
                                 <span>客户不在实施现场，无法评价</span>
                                 <div class="bottom clearfix">
-                                    <el-button type="primary" class="sendMessage" @click="sendPhoneMessage()">发送远程评价</el-button>
+                                    <el-button type="primary" class="sendMessage" @click="editCustomerInfo()">客户远程确认及评价</el-button>
                                 </div>
                             </div>
                         </el-card>
@@ -55,6 +55,28 @@
                 
             </div>
         </div>
+        <!-- 点击客户远程确认及评价编辑客户信息 -->
+        <div class="dialogdc">
+        <el-dialog
+            title="提示"
+            :visible.sync="editCustomerInfoVisible"
+            :show-close="false"
+            width="80%"
+            center>
+            <el-form>
+                <el-form-item>
+                    <el-input class="customerInput" v-model="formData.customerName" placeholder="请输入姓名"></el-input>
+                    <el-input class="customerInput" v-model="formData.customerPhone" placeholder="请输入手机号"></el-input>
+                </el-form-item>
+            <!-- <div style="margin:0.2rem">
+                <span>{{feedbackDesc}}</span>
+            </div> -->
+            <el-form-item class="submit">
+                <el-button type="primary" class="onsubmit" @click="sendPhoneMessage()" >确 定</el-button>
+            </el-form-item>
+            </el-form>
+        </el-dialog>
+        </div>
         <!-- 短信提醒询问框phoneVisible -->
         <div class="dialogdc">
             <el-dialog
@@ -94,7 +116,9 @@ export default {
                 scoreOption:[],
                 data:'',
                 aroptschked:[],
-                otherResult:''
+                otherResult:'',
+                customerName:'',
+                customerPhone:''
             },
             score:[],
             evaluateval:[],
@@ -102,6 +126,8 @@ export default {
             signImg:"",
             activeName:'third',
             phoneVisible:false,
+            editCustomerInfoVisible:false,//点击客户远程确认及评价编辑客户信息是否显示
+            serviceCd:'',//服务单编号
             workId:this.$route.query.workId,
             caseId:this.$route.query.caseId,
             evaluateId:this.$route.query.evaluateId,
@@ -122,8 +148,10 @@ export default {
                 let jsonres= res;
                 this.formData.data = res.DATA[0];
                 this.signImg = res.DATA[0].imgStr;
-                this.contactMobile = res.DATA[0].contactMobile;
+                this.formData.customerPhone = res.DATA[0].contactMobile;
                 this.caseNo = res.DATA[0].caseCd;
+                this.serviceCd = res.DATA[0].serviceCd;
+                this.formData.customerName = res.DATA[0].customerName;
                 let tmpjsonval =[];
                 jsonres.question.forEach(function(v,i,ar){
                 let tmpobj = {};
@@ -141,7 +169,9 @@ export default {
         })
     },
     methods:{   
-        
+        editCustomerInfo(){
+            this.editCustomerInfoVisible = true;
+        },        
         sendPhoneMessage(){       
             const loading = this.$loading({
                 lock: true,
@@ -149,15 +179,20 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
+            this.editCustomerInfoVisible = false;
+            console.log("serviceType",this.serviceType==1)
             if(this.serviceType==2){
                 if(!this.check(loading)) return false;
             }else if(this.serviceType==1){
                 if(!this.checkGz(loading)) return;
             }
-            console.log("serviceType",this.serviceType);
+            // fetch.get("?action=/system/getShortUrl&url=http://111.203.122.61:8084/home/onsiteServiceInfo").then(res=>{
+            //     console.log("getShortUrl",res);
+            // })           
             this.phoneVisible = true;
-            let content = "尊敬的客户您好，工程师已完成事件编号为"+this.caseNo+"的现场实施，请您关注微信公众号神州信息锐行服务，点击菜单评价进行用户评价"
-            fetch.get("?action=/risk/sendPhone&mobile="+this.contactMobile+"&content="+content).then(res=>{
+            console.log("customerPhone",this.formData.customerPhone);
+            let content = "尊敬的客户您好，工程师已完成服务单号为"+this.serviceCd+"的现场实施，请您关注微信公众号神州信息锐行服务，点击菜单评价进行用户评价"
+            fetch.get("?action=/risk/sendPhone&mobile="+this.formData.customerPhone+"&content="+content).then(res=>{
                 console.log("sendPhone",res);
                 loading.close();
                 if(res.STATUSCODE=='1'){
@@ -295,15 +330,26 @@ export default {
                         return;
                     }
                     let avgScore = totalScore/countScore;
-                    let postData = new URLSearchParams;
-                    postData.append('workId',vm.workId);
-                    postData.append('evaluateStatus',2);
-                    postData.append('evaluateId',vm.evaluateId);
-                    postData.append('totalScore',avgScore);
-                    postData.append('EvaluateResult',JSON.stringify(detailArray));
-                    postData.append('failFlg',failFlg);
-                    postData.append('workId',vm.workId);
-                    fetch.post("?action=/work/SubmitClientReview",postData).then(res=>{
+                    // let postdata = {};
+                    // postdata.workId = vm.workId;
+                    // postdata.workId = vm.workId;
+                    // let postData = new URLSearchParams;
+                    let postData = {}
+                    postData.workId = vm.workId;
+                    postData.evaluateStatus = 2;
+                    postData.evaluateId = vm.evaluateId;
+                    postData.totalScore = avgScore;
+                    postData.EvaluateResult = JSON.stringify(detailArray);
+                    postData.failFlg = failFlg;
+                    postData.workId = vm.workId;
+                    // postData.append('workId',vm.workId);
+                    // postData.append('evaluateStatus',2);
+                    // postData.append('evaluateId',vm.evaluateId);
+                    // postData.append('totalScore',avgScore);
+                    // postData.append('EvaluateResult',JSON.stringify(detailArray));
+                    // postData.append('failFlg',failFlg);
+                    // postData.append('workId',vm.workId);
+                    fetch.questionPost("?action=/work/SubmitClientReview",postData).then(res=>{
                         console.log(res);
                         loading.close();
                         if(res.STATUSCODE=="0"){
@@ -323,9 +369,12 @@ export default {
         },
         updateServiceWithSignature(loading){
             let vm= this;
-            var data = new URLSearchParams;
-            data.append('opFlg',5);
-            data.append('customerId',this.formData.data.customerId);
+            // var data = new URLSearchParams;
+            let data = {};
+            data.opFlg = 5;
+            data.customerId = this.formData.data.customerId;
+            // data.append('opFlg',5);
+            // data.append('customerId',this.formData.data.customerId);
             let temp = {};
             temp.serviceId = this.formData.data.serviceId;
             temp.caseId=this.caseId;
@@ -345,12 +394,13 @@ export default {
             temp.leaveTime = this.formData.data.leaveTime;
             temp.imgStr=this.formData.data.imgStr;
             temp.engineer = localStorage.getItem('empId');
-            data.append('data',JSON.stringify(temp));
+            // data.append('data',JSON.stringify(temp));
+            data.data = JSON.stringify(temp);
             let nowWorkId = this.workId;
             let nowCaseId = this.caseId;
             let nowtaskId = this.taskId;
             if(this.serviceType==2){
-                fetch.post("?action=/work/UpdateSceneServiceFormInfo",data).then(res=>{
+                fetch.questionPost("?action=/work/UpdateSceneServiceFormInfo",data).then(res=>{
                     loading.close();
                     console.log(res);
                     if(res.STATUSCODE=="0"){
@@ -377,7 +427,7 @@ export default {
                     }
                 })
             }else{
-                fetch.post("?action=/work/UpdateCaseTroubleShootingServiceFormInfo",data).then(res=>{
+                fetch.questionPost("?action=/work/UpdateCaseTroubleShootingServiceFormInfo",data).then(res=>{
                     loading.close();
                     console.log(res);
                     if(res.STATUSCODE=="0"){
@@ -480,6 +530,8 @@ export default {
         },
 
         checkGz(loading){
+            console.log("11111111111");
+            console.log(this.formData.data.leaveTime==null);
             if(this.formData.data.leaveTime==null){
                 this.$message({
                     message:'请填写离场时间!',
@@ -510,6 +562,7 @@ export default {
                 loading.close();
                 return false
             }
+            return true;
         }
         
     }
@@ -520,10 +573,9 @@ export default {
 
 <style scoped>
 .serviceInfoCell{width: 100%; position: relative;background-color: #ffffff;margin-top:0.05rem}
-.serviceContent{background: #ffffff; color: #999999; padding: 0.05rem 0 0.1rem;}
-.serviceContent>>> .el-form-item{padding: 0 0.1rem}
-.improve>>> span{padding: 0 0.05rem}
-.editorView .star{display: flex;line-height: 0.2rem}
+.serviceContent{background: #ffffff; color: #999999; }
+.editorView{margin: 0 0.1rem}
+.editorView .star{display: flex;line-height: 0.2rem;}
 .editorView .star .starTit{ display: inline-block; width: 1.5rem;font-size: 0.14rem}
 .editorView .improve span{line-height: 0.02rem;font-size: 0.13rem}
 .editorView .improve >>> .el-checkbox{display: block; margin: 0;line-height: 0.1rem; font-size: 0.13rem; color: #999999;}
@@ -531,12 +583,11 @@ export default {
 .improveCell span{ color: #666;word-wrap: break-word}
 .el-checkbox__input.is-disabled+span.el-checkbox__label{color: #666!important;}
 
-.signature .el-form-item{overflow: hidden;zoom:1; margin: 0; color: #2698d6; border-top: 0.01rem solid #e1e1e1;border-bottom: 0.01rem solid #e1e1e1}
-.signature .el-form-item div{color: #333333; margin-left: 0.6rem;}
-.signature .el-form-item .sign{}
+.signature .el-form-item{overflow: hidden;zoom:1; margin: 0; color: #2698d6; border-top: 0.01rem solid #e1e1e1;border-bottom: 0.01rem solid #e1e1e1;margin: 0 0.1rem}
+.signature .el-form-item div{color: #333333; }
 .signature .el-form-item .sign img{width: 100%; display: block; flex-grow: 1;}
 .serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
-.serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
+.serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;z-index:1}
 
   .sendMessage {
     padding: 0.1rem;
@@ -551,6 +602,7 @@ export default {
   .customerEditRateView .dialogdc >>> .submit .onsubmit:hover{background: #2698d6;}
   .customerEditRateView .dialogdc >>> .submit .el-form-item__content{margin: 0!important; display: flex;}
   .customerEditRateView .dialogdc >>> .submit .onsubmit{background: #2698d6; color: #ffffff;}
+  .customerEditRateView .customerInput{margin-left:5%;width: 90%;margin-bottom: 0.05rem}
 </style>
 <style>
   .eventEvaluationEditorView span{ color: #666;}

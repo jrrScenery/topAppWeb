@@ -4,164 +4,166 @@
         <!-- <el-form ref="form" :model="form"> -->
         <div class="confirmView">
             <el-form :model="formData" ref="formData">
-                <el-form-item>
-                    <div>1.用户已将维护窗口安排在业务非高峰时段</div>
-                    <div class="selectBox">
-                        <div>是：</div>
-                        <el-checkbox v-model="checked[0].ifY1" @change="changeIfY1"></el-checkbox>
-                        <div>操作时间</div>
-                    </div>
-                    <el-form-item label="从：" style="margin-bottom:0.05rem">
-                        <el-col :span="15">
-                                <el-date-picker
-                                v-model="formData.caseServiceQuestion.operationStarttime"
-                                type="datetime"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                placeholder="选择开始时间"
-                                style="width:100%">
-                                </el-date-picker>
-                        </el-col>
+                <div style="padding:0 0.1rem">
+                    <el-form-item>
+                        <div>1.用户已将维护窗口安排在业务非高峰时段</div>
+                        <div class="selectBox">
+                            <div>是：</div>
+                            <el-checkbox v-model="checked[0].ifY1" @change="changeIfY1"></el-checkbox>
+                            <div>操作时间</div>
+                        </div>
+                        <el-form-item label="从：" style="margin-bottom:0.05rem">
+                            <el-col :span="15">
+                                    <el-date-picker
+                                    v-model="formData.caseServiceQuestion.operationStarttime"
+                                    type="datetime"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    placeholder="选择开始时间"
+                                    style="width:100%">
+                                    </el-date-picker>
+                            </el-col>
+                        </el-form-item>
+                        <el-form-item label="至：">
+                            <el-col :span="15">
+                                    <el-date-picker
+                                    v-model="formData.caseServiceQuestion.operationEndtime"
+                                    type="datetime"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    placeholder="选择结束时间"
+                                    style="width:100%">
+                                    </el-date-picker>
+                            </el-col>
+                        </el-form-item>
+                        <div class="selectBox">
+                            <div>否：</div>
+                            <el-checkbox v-model="checked[0].ifF1" @change="changeIfF1"></el-checkbox>
+                        </div> 
                     </el-form-item>
-                    <el-form-item label="至：">
-                        <el-col :span="15">
-                                <el-date-picker
-                                v-model="formData.caseServiceQuestion.operationEndtime"
-                                type="datetime"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                placeholder="选择结束时间"
-                                style="width:100%">
-                                </el-date-picker>
-                        </el-col>
+                    <el-form-item>
+                        <div>2.用户已申请停机维护窗口</div>
+                        <div class="selectBox">
+                            <div>是：</div>
+                            <el-checkbox v-model="checked[1].ifY2" @change="changeIfY2"></el-checkbox>
+                            <div>停机时间</div>
+                        </div>
+                        <el-form-item label="从：" style="margin-bottom:0.05rem">
+                            <el-col :span="15">
+                                    <el-date-picker
+                                    v-model="formData.caseServiceQuestion.stopStarttime"
+                                    type="datetime"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    placeholder="选择开始时间"
+                                    style="width:100%">
+                                    </el-date-picker>
+                            </el-col>
+                        </el-form-item>
+                        <el-form-item label="至：">
+                            <el-col :span="15">
+                                    <el-date-picker
+                                    v-model="formData.caseServiceQuestion.stopEndtime"
+                                    type="datetime"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    placeholder="选择结束时间"
+                                    style="width:100%">
+                                    </el-date-picker>
+                            </el-col>
+                        </el-form-item>                    
+                        <div class="selectBox">
+                            <div>否：</div>
+                            <el-checkbox v-model="checked[1].ifF2" @change="changeIfF2"></el-checkbox>
+                        </div> 
                     </el-form-item>
-                    <div class="selectBox">
-                        <div>否：</div>
-                        <el-checkbox v-model="checked[0].ifF1" @change="changeIfF1"></el-checkbox>
-                    </div> 
-                </el-form-item>
-                <el-form-item>
-                    <div>2.用户已申请停机维护窗口</div>
-                    <div class="selectBox">
-                        <div>是：</div>
-                        <el-checkbox v-model="checked[1].ifY2" @change="changeIfY2"></el-checkbox>
-                        <div>停机时间</div>
-                    </div>
-                    <el-form-item label="从：" style="margin-bottom:0.05rem">
-                        <el-col :span="15">
-                                <el-date-picker
-                                v-model="formData.caseServiceQuestion.stopStarttime"
-                                type="datetime"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                placeholder="选择开始时间"
-                                style="width:100%">
-                                </el-date-picker>
-                        </el-col>
-                    </el-form-item>
-                    <el-form-item label="至：">
-                        <el-col :span="15">
-                                <el-date-picker
-                                v-model="formData.caseServiceQuestion.stopEndtime"
-                                type="datetime"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                placeholder="选择结束时间"
-                                style="width:100%">
-                                </el-date-picker>
-                        </el-col>
-                    </el-form-item>                    
-                    <div class="selectBox">
-                        <div>否：</div>
-                        <el-checkbox v-model="checked[1].ifF2" @change="changeIfF2"></el-checkbox>
-                    </div> 
-                </el-form-item>
-                <el-form-item>
-                    <div>3、对于涉及重启或配置变更的服务实施</div>
-                    <div>用户事先完成了操作系统的备份工作</div>
-                    <div class="selectBox">
-                        <div>是：</div>
-                        <el-checkbox v-model="checked[2].ifY3" @change="changeIfY3"></el-checkbox>
-                        <div>最近一次备份时间：</div>
-                    </div>
-                    <div class="block">
-                        <el-date-picker
-                        v-model="formData.caseServiceQuestion.lastbackupTime"
-                        type="datetime"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        placeholder="请选择时间">
-                        </el-date-picker>
-                    </div>   
-                    <div class="selectBox">
-                        <div>否：</div>
-                        <el-checkbox v-model="checked[2].ifF3" @change="changeIfF3"></el-checkbox>
-                    </div>                     
-                </el-form-item>
-                <el-form-item>
-                    <div>4.服务开始前，用户保留了相关配置信息和文档</div>
-                    <div>用于可能必要的恢复</div>
-                    <el-form-item label="是：">
-                        <el-checkbox v-model="checked[3].ifY4" @change="changeIfY4"></el-checkbox>
-                    </el-form-item>
-                    <el-form-item label="否：">
-                        <el-checkbox v-model="checked[3].ifF4" @change="changeIfF4"></el-checkbox>
-                    </el-form-item>
-                </el-form-item>
-                <el-form-item>
-                    <div>5.用户在服务开始前完成了业务相关数据备份</div>
-                    <div class="selectBox">
-                        <div>是：</div>
-                        <el-checkbox v-model="checked[4].ifY5" @change="changeIfY5"></el-checkbox>
-                        <div>最近一次备份时间：</div>
-                    </div>       
-                    <div class="block">
-                        <el-date-picker
-                        v-model="formData.caseServiceQuestion.beforeLastbackupTime"
-                        type="datetime"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        placeholder="请选择时间">
-                        </el-date-picker>
-                    </div>  
-                    <div class="selectBox">
-                        <div>否：</div>
-                        <el-checkbox v-model="checked[4].ifF5" @change="changeIfF5"></el-checkbox>
-                    </div>               
-                </el-form-item>
-                <el-form-item>
-                    <div>6.用户针对这些备份做过备份恢复测试</div>
-                    <div class="selectBox">
-                        <div>是：</div>
-                        <el-checkbox v-model="checked[5].ifY6" @change="changeIfY6"></el-checkbox>
-                        <div>备份测试时间：</div>
-                    </div>       
-                    <div class="block">
-                        <el-date-picker
-                        v-model="formData.caseServiceQuestion.backuptestTime"
-                        type="datetime"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        placeholder="请选择时间">
-                        </el-date-picker>
-                    </div>  
-                    <div class="selectBox">
-                        <div>否：</div>
-                        <el-checkbox v-model="checked[5].ifF6" @change="changeIfF6"></el-checkbox>
-                    </div>               
-                </el-form-item>
-                <div style="margin:0 0.1rem">神州数码工程师已按规范要求就本次服务内容、影响和风险与用户进行了沟通，同意神州数码工程师开始服务实施。</div>
-                <div style="margin:0.1rem">用户确认</div>
-                <div v-if="formData.caseServiceQuestion.imgStrQuestion">
-                    <img id="imgStrQuestion" style="height:2.5rem;" v-bind:src="formData.caseServiceQuestion.imgStrQuestion" alt="">
-                </div>
-                <div v-else><img style="height:0.5rem;" src="" alt=""></div>
-                <add-signature :title="addSignatureTit" :queryData="searchData" @searchPro="signature"></add-signature>
-                
-                <el-form-item label="日期：">
-                    <el-col :span="15">
+                    <el-form-item>
+                        <div>3、对于涉及重启或配置变更的服务实施</div>
+                        <div>用户事先完成了操作系统的备份工作</div>
+                        <div class="selectBox">
+                            <div>是：</div>
+                            <el-checkbox v-model="checked[2].ifY3" @change="changeIfY3"></el-checkbox>
+                            <div>最近一次备份时间：</div>
+                        </div>
+                        <div class="block">
                             <el-date-picker
-                            v-model="formData.caseServiceQuestion.serviceTime"
+                            v-model="formData.caseServiceQuestion.lastbackupTime"
                             type="datetime"
                             value-format="yyyy-MM-dd HH:mm:ss"
-                            placeholder="请选择时间"
-                            style="width:100%">
+                            placeholder="请选择时间">
                             </el-date-picker>
-                    </el-col>
-                </el-form-item>  
+                        </div>   
+                        <div class="selectBox">
+                            <div>否：</div>
+                            <el-checkbox v-model="checked[2].ifF3" @change="changeIfF3"></el-checkbox>
+                        </div>                     
+                    </el-form-item>
+                    <el-form-item>
+                        <div>4.服务开始前，用户保留了相关配置信息和文档</div>
+                        <div>用于可能必要的恢复</div>
+                        <el-form-item label="是：">
+                            <el-checkbox v-model="checked[3].ifY4" @change="changeIfY4"></el-checkbox>
+                        </el-form-item>
+                        <el-form-item label="否：">
+                            <el-checkbox v-model="checked[3].ifF4" @change="changeIfF4"></el-checkbox>
+                        </el-form-item>
+                    </el-form-item>
+                    <el-form-item>
+                        <div>5.用户在服务开始前完成了业务相关数据备份</div>
+                        <div class="selectBox">
+                            <div>是：</div>
+                            <el-checkbox v-model="checked[4].ifY5" @change="changeIfY5"></el-checkbox>
+                            <div>最近一次备份时间：</div>
+                        </div>       
+                        <div class="block">
+                            <el-date-picker
+                            v-model="formData.caseServiceQuestion.beforeLastbackupTime"
+                            type="datetime"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            placeholder="请选择时间">
+                            </el-date-picker>
+                        </div>  
+                        <div class="selectBox">
+                            <div>否：</div>
+                            <el-checkbox v-model="checked[4].ifF5" @change="changeIfF5"></el-checkbox>
+                        </div>               
+                    </el-form-item>
+                    <el-form-item>
+                        <div>6.用户针对这些备份做过备份恢复测试</div>
+                        <div class="selectBox">
+                            <div>是：</div>
+                            <el-checkbox v-model="checked[5].ifY6" @change="changeIfY6"></el-checkbox>
+                            <div>备份测试时间：</div>
+                        </div>       
+                        <div class="block">
+                            <el-date-picker
+                            v-model="formData.caseServiceQuestion.backuptestTime"
+                            type="datetime"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            placeholder="请选择时间">
+                            </el-date-picker>
+                        </div>  
+                        <div class="selectBox">
+                            <div>否：</div>
+                            <el-checkbox v-model="checked[5].ifF6" @change="changeIfF6"></el-checkbox>
+                        </div>               
+                    </el-form-item>
+                    <div style="margin:0 0.1rem">神州数码工程师已按规范要求就本次服务内容、影响和风险与用户进行了沟通，同意神州数码工程师开始服务实施。</div>
+                    <div style="margin:0.1rem">用户确认</div>
+                    <div v-if="formData.caseServiceQuestion.imgStrQuestion">
+                        <img id="imgStrQuestion" style="height:2.5rem;" v-bind:src="formData.caseServiceQuestion.imgStrQuestion" alt="">
+                    </div>
+                    <div v-else><img style="height:0.5rem;" src="" alt=""></div>
+                    <add-signature :title="addSignatureTit" :queryData="searchData" @searchPro="signature"></add-signature>
+                    
+                    <el-form-item label="日期：">
+                        <el-col :span="15">
+                                <el-date-picker
+                                v-model="formData.caseServiceQuestion.serviceTime"
+                                type="datetime"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="请选择时间"
+                                style="width:100%">
+                                </el-date-picker>
+                        </el-col>
+                    </el-form-item>  
+                </div>
                 <div style="height: 0.6rem;"></div>
                 <el-form-item class="serviceSubmitBtn" v-if="!imgStrQuestion">
                     <el-button @click="submitForm('formData')">提交</el-button>
@@ -416,8 +418,10 @@ export default {
                     temp.serviceTime = this.formData.caseServiceQuestion.serviceTime;
                     temp.imgStrQuestion = this.formData.caseServiceQuestion.imgStrQuestion;
                     temp.serviceId=this.serviceId;
-                    var data = new URLSearchParams;
-                    data.append('serviceType',this.serviceType);
+                    // var data = {};
+                    // temp.serviceType = this.serviceType;
+                    // var data = new URLSearchParams;
+                    // data.append('serviceType',this.serviceType);
                     if((temp.operationStarttime!=null&&this.checked[0].ifY1==false)||(temp.operationEndtime!=null&&this.checked[0].ifY1==false)){
                         loading.close();
                         this.$message({
@@ -498,16 +502,18 @@ export default {
                     }else{
                         temp.numberIf6="0";
                     }
-                   data.append('data',JSON.stringify(temp));
-                   console.log(data);
-                    fetch.post("?action=/work/submitServiceQuestion",data).then(res=>{
+                    let data = {};
+                    data.serviceType = this.serviceType;
+                    data.data = JSON.stringify(temp);
+                    console.log(data);
+                    fetch.questionPost("?action=/work/submitServiceQuestion",data).then(res=>{
                         loading.close();
                         if(res.STATUSCODE=="0"){
                             this.$message({
-                            message:'提交成功',
-                            type: 'success',
-                            center: true,
-                            customClass: 'msgdefine'
+                                message:'提交成功',
+                                type: 'success',
+                                center: true,
+                                customClass: 'msgdefine'
                             });
                             let nowWorkId = vm.workId;
                             let nowCaseId = vm.caseId;
@@ -532,10 +538,10 @@ export default {
 <style scoped>
 .attention{margin:0.05rem 0.1rem 0.1rem;color: red}
 .confirmView{margin:0.1rem 0;line-height: 0.2rem}
-.confirmView >>> .el-form-item{margin-left:0.2rem;margin-bottom:0;margin:0 0.05rem;}
+.confirmView >>> .el-form-item{margin-bottom:0;}
 .selectBox{display: flex;}
 .serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
-.serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
+.serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;z-index: 1}
 /* .popBg{background: rgba(0,0,0,0.5); position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1}
 .popBg div{background: #f5f5f9; position: absolute; right: 0; bottom: 0; z-index: 2; line-height: 0.3rem} */
 </style>

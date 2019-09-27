@@ -4,103 +4,105 @@
             <div class="serviceInfoTit">用户及项目信息</div>
             <div class="serviceContent">
                 <el-form :model="formData" ref="formData">
-                    <ul class="tableTd">
-                        <li>
-                            <span>服务单号</span>
-                            <span>{{formData.userAndPrjItem.serviceCd}}</span>
-                        </li>
-                        <li>
-                            <span>项目编号</span>
-                            <span>{{formData.userAndPrjItem.projectCode}}</span>
-                        </li>
-                        <li>
-                            <span>项目名称</span>
-                            <span>{{formData.userAndPrjItem.projectName}}</span>
-                        </li>
-                        <li>
-                            <span>用户单位</span>
-                            <span>{{formData.userAndPrjItem.customerName}}</span>
-                        </li>
-                        <li>
-                            <span>联系人</span>
-                            <span>{{formData.userAndPrjItem.realname}}</span>
-                        </li>
-                        <li>
-                            <span>联系电话</span>
-                            <span>{{formData.userAndPrjItem.contactMobile}}</span>
-                        </li>
-                        <li>
-                            <span>事件编号</span>
-                            <span>{{formData.userAndPrjItem.caseCd}}</span>
-                        </li>
-                        <li v-if="serviceType==2">
-                            <span>工程师姓名</span>
-                            <span>{{formData.userAndPrjItem.enginnername}}</span>
-                        </li>
-                    </ul>
-                    <el-form-item v-if="serviceType==2" label="服务类型">
-                        <el-col :span="15">
-                            <el-select clearable placeholder="请选择服务类型" v-model="formData.serviceType" style="width:100%">
-                                <el-option v-for="item in serviceTypeArr" :label="item.DICTNAME" :value="item.DICTID" :key="item.value">
-                            </el-option>
-                            </el-select>
-                        </el-col>
-                    </el-form-item>
-                    <el-form-item label="到场时间">
-                        <el-col :span="15">
-                            <el-date-picker
-                            v-model="formData.userAndPrjItem.arriveTime"
-                            type="datetime"
-                            value-format="yyyy-MM-dd HH:mm:ss"
-                            placeholder="请选择时间"
-                            style="width: 100%;">
-                            </el-date-picker>
-                        </el-col>
-                    </el-form-item>
-                    <el-form-item label="离场时间">
-                        <el-col :span="15">
-                            <el-date-picker
-                            v-model="formData.userAndPrjItem.leaveTime"
-                            type="datetime"
-                            value-format="yyyy-MM-dd HH:mm:ss"
-                            placeholder="请选择时间"
-                            style="width: 100%;">
-                            </el-date-picker>
-                        </el-col>
-                    </el-form-item>
-                    <div v-if="serviceType==2">
-                        <el-form-item label="实际实用工时">
-                            <el-col :span="12">
-                            <el-input v-model="formData.userAndPrjItem.realWork" placeholder="请输入使用工时" style="width:100%"></el-input>
+                    <div style="padding:0 0.1rem">
+                        <ul class="tableTd">
+                            <li>
+                                <span>服务单号</span>
+                                <span>{{formData.userAndPrjItem.serviceCd}}</span>
+                            </li>
+                            <li>
+                                <span>项目编号</span>
+                                <span>{{formData.userAndPrjItem.projectCode}}</span>
+                            </li>
+                            <li>
+                                <span>项目名称</span>
+                                <span>{{formData.userAndPrjItem.projectName}}</span>
+                            </li>
+                            <li>
+                                <span>用户单位</span>
+                                <span>{{formData.userAndPrjItem.customerName}}</span>
+                            </li>
+                            <li>
+                                <span>联系人</span>
+                                <span>{{formData.userAndPrjItem.realname}}</span>
+                            </li>
+                            <li>
+                                <span>联系电话</span>
+                                <span>{{formData.userAndPrjItem.contactMobile}}</span>
+                            </li>
+                            <li>
+                                <span>事件编号</span>
+                                <span>{{formData.userAndPrjItem.caseCd}}</span>
+                            </li>
+                            <li v-if="serviceType==2">
+                                <span>工程师姓名</span>
+                                <span>{{formData.userAndPrjItem.enginnername}}</span>
+                            </li>
+                        </ul>
+                        <el-form-item v-if="serviceType==2" label="服务类型">
+                            <el-col :span="15">
+                                <el-select clearable placeholder="请选择服务类型" v-model="formData.serviceType" style="width:100%">
+                                    <el-option v-for="item in serviceTypeArr" :label="item.DICTNAME" :value="item.DICTID" :key="item.value">
+                                </el-option>
+                                </el-select>
                             </el-col>
                         </el-form-item>
-                        <div class="article">{{content}}</div>
-                        <el-form-item>
-                            <el-input type="textarea" v-model="formData.userAndPrjItem.workContent" placeholder="请输入工作内容"></el-input>
+                        <el-form-item label="到场时间">
+                            <el-col :span="15">
+                                <el-date-picker
+                                v-model="formData.userAndPrjItem.arriveTime"
+                                type="datetime"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="请选择时间"
+                                style="width: 100%;">
+                                </el-date-picker>
+                            </el-col>
                         </el-form-item>
-                        <div class="article">{{result}}</div>
-                        <el-form-item>
-                            <el-radio-group v-for="item in workResultArr" :key="item.id" v-model="formData.workResult">
-                                <el-radio :label="item.DICTID" style="width:100%;margin-left:0.25rem">{{item.DICTNAME}}</el-radio>
-                            </el-radio-group>
+                        <el-form-item label="离场时间">
+                            <el-col :span="15">
+                                <el-date-picker
+                                v-model="formData.userAndPrjItem.leaveTime"
+                                type="datetime"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="请选择时间"
+                                style="width: 100%;">
+                                </el-date-picker>
+                            </el-col>
                         </el-form-item>
-                        <el-form-item>
-                            <el-input type="textarea" v-model="formData.userAndPrjItem.problemPlan" placeholder="若存在问题及下一步计划：若顺利完成，则此项填无"></el-input>
-                        </el-form-item>
-                    </div>
-                    <div v-else>
-                        <el-form-item label="故障现象">
-                            <el-input v-model="formData.userAndPrjItem.faultDesc" placeholder="请输入故障现象"></el-input>
-                        </el-form-item>
-                        <el-form-item label="分析诊断">
-                            <el-input v-model="formData.userAndPrjItem.analysis" placeholder="请输入分析诊断"></el-input>
-                        </el-form-item>
-                        <el-form-item label="实施结果">
-                            <el-input v-model="formData.userAndPrjItem.implementResult" placeholder="请输入实施结果"></el-input>
-                        </el-form-item>
-                        <el-form-item label="遗留问题及建议">
-                            <el-input v-model="formData.userAndPrjItem.problemSuggest" placeholder="请输入遗留问题及建议"></el-input>
-                        </el-form-item>
+                        <div v-if="serviceType==2">
+                            <el-form-item label="实际实用工时">
+                                <el-col :span="12">
+                                <el-input v-model="formData.userAndPrjItem.realWork" placeholder="请输入使用工时" style="width:100%"></el-input>
+                                </el-col>
+                            </el-form-item>
+                            <div class="article">{{content}}</div>
+                            <el-form-item>
+                                <el-input type="textarea" v-model="formData.userAndPrjItem.workContent" placeholder="请输入工作内容"></el-input>
+                            </el-form-item>
+                            <div class="article">{{result}}</div>
+                            <el-form-item>
+                                <el-radio-group v-for="item in workResultArr" :key="item.id" v-model="formData.workResult">
+                                    <el-radio :label="item.DICTID" style="width:100%;margin-left:0.25rem">{{item.DICTNAME}}</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-input type="textarea" v-model="formData.userAndPrjItem.problemPlan" placeholder="若存在问题及下一步计划：若顺利完成，则此项填无"></el-input>
+                            </el-form-item>
+                        </div>
+                        <div v-else>
+                            <el-form-item label="故障现象">
+                                <el-input v-model="formData.userAndPrjItem.faultDesc" placeholder="请输入故障现象"></el-input>
+                            </el-form-item>
+                            <el-form-item label="分析诊断">
+                                <el-input v-model="formData.userAndPrjItem.analysis" placeholder="请输入分析诊断"></el-input>
+                            </el-form-item>
+                            <el-form-item label="实施结果">
+                                <el-input v-model="formData.userAndPrjItem.implementResult" placeholder="请输入实施结果"></el-input>
+                            </el-form-item>
+                            <el-form-item label="遗留问题及建议">
+                                <el-input v-model="formData.userAndPrjItem.problemSuggest" placeholder="请输入遗留问题及建议"></el-input>
+                            </el-form-item>
+                        </div>
                     </div>
                     <div style="height: 0.6rem;"></div>
                     <el-form-item class="serviceSubmitBtn" v-if="!workResultInfo">
@@ -147,12 +149,12 @@ export default {
         getEndSummary(){
             if(this.serviceType==2){
                 fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
-                    console.log(res);
+                    console.log("GetOnsiteServiceFormInfo",res);
                     this.formData.userAndPrjItem = res.DATA[0];
                     this.workResultInfo = res.DATA[0].workResult;
                 })
                 fetch.get("?action=/system/getDict2&DICT_TYPE=NT_SERVICE_TYPE","").then(res=>{
-                    console.log(res);
+                    console.log("serviceTypeArr",res);
                     this.serviceTypeArr = res.data;
                 })
                 fetch.get("?action=/system/getDict2&DICT_TYPE=NT_CASE_WORK_RESULT","").then(res=>{
@@ -293,11 +295,15 @@ export default {
             this.$refs[formName].validate((valid) => {
                 if(valid){
                     if(!vm.check(loading)) return;
-                    var data=new URLSearchParams;
-                    data.append('serviceId',this.formData.userAndPrjItem.serviceId);
-                    data.append('opFlg',1);
-                    data.append('customerId',this.formData.userAndPrjItem.customerId);
-                    var temp = {};
+                    // var data=new URLSearchParams;
+                    var data = {};
+                        data.serviceId = this.formData.userAndPrjItem.serviceId;
+                        data.opFlg = 1;
+                        data.customerId = this.formData.userAndPrjItem.customerId;
+                    // data.append('serviceId',this.formData.userAndPrjItem.serviceId);
+                    // data.append('opFlg',1);
+                    // data.append('customerId',this.formData.userAndPrjItem.customerId);
+                    let temp = {};
                     temp.serviceId = this.formData.userAndPrjItem.serviceId;
                     temp.caseId=this.caseId;
                     if(vm.serviceType==2){
@@ -315,14 +321,14 @@ export default {
                     temp.arriveTime = this.formData.userAndPrjItem.arriveTime;
                     temp.leaveTime = this.formData.userAndPrjItem.leaveTime;
                     console.log(temp);
-                    data.append('data',JSON.stringify(temp));
+                    data.data=JSON.stringify(temp);
                     console.log(data);
                     let nowWorkId = vm.workId;
                     let nowCaseId = vm.caseId;
                     let nowtaskId = vm.taskId;
                     let type = vm.type;
                     if(vm.serviceType==2){
-                        fetch.post("?action=/work/UpdateSceneServiceFormInfo",data).then(res=>{
+                        fetch.questionPost("?action=/work/UpdateSceneServiceFormInfo",data).then(res=>{
                             console.log(res);    
                             loading.close();
                             if(res.STATUSCODE=="0"){
@@ -349,7 +355,7 @@ export default {
                             }
                         })
                     }else{
-                        fetch.post("?action=/work/UpdateCaseTroubleShootingServiceFormInfo",data).then(res=>{
+                        fetch.questionPost("?action=/work/UpdateCaseTroubleShootingServiceFormInfo",data).then(res=>{
                             console.log(res);    
                             loading.close();
                             if(res.STATUSCODE=="0"){
@@ -392,16 +398,16 @@ export default {
     .serviceInfoCell .serviceInfoTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
     .serviceInfoCell .serviceInfoTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
     /* .summaryView{margin:0.1rem;line-height: 0.2rem} */
-    .serviceContent{background: #ffffff; color: #999999; padding: 0.1rem 0.05rem 0.15rem;}
+    .serviceContent{background: #ffffff; color: #999999; padding: 0.1rem 0}
     .serviceContent >>> .el-form-item{border-bottom: 0.01rem; margin: 0.03rem 0;}
-    .serviceContent >>> .el-form-item__label{font-size: 0.13rem; padding: 0 0.2rem 0 0.2rem; text-align: left}
-    .article{line-height: 0.3rem; padding: 0 0.2rem 0 0.2rem;}
-    .tableTd li{display: flex; line-height: 0.2rem; padding: 0 0.2rem; color: #666666;}
+    .serviceContent >>> .el-form-item__label{font-size: 0.13rem; text-align: left}
+    .article{line-height: 0.3rem; }
+    .tableTd li{display: flex; line-height: 0.2rem; color: #666666;}
     .tableTd span{text-align: center;}
     .tableTd span:nth-child(1){width: 100%; text-align: left;}
     .tableTd span:nth-child(2){width: 100%;text-align: left}
     .serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
-    .serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;}
+    .serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;z-index:1}
 
 </style>
 
