@@ -52,7 +52,7 @@ export default {
     },
     beforeRouteLeave( to, from,next){
         if (to.name == 'serviceList') {
-            to.meta.isUseCache = true;    
+            to.meta.isUseCache = false;    
         }        
         next();
     },

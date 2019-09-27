@@ -14,14 +14,16 @@
       </div>
       <div class="tabdetail">
         <el-row v-for="item in SLAObj" :key="item.slaTypeId"><!--这几条数据在一个json数组slaStatus中，workid相同。-->
-          <el-col :span="7"><div style="text-align:left">{{item.slaType}}</div></el-col>
-          <el-col :span="8" v-if="item.operateDate!=null"><div style="font-size:0.13rem;line-height:0.2rem;">{{item.operateDate}}</div></el-col>
-          <el-col :span="8" v-else><div style="font-size:0.13rem;line-height:0.2rem;">无</div></el-col>
-          <el-col :span="6"><div style="word-wrap: break-word;font-size:0.13rem;padding-right:5px;line-height:0.2rem;">{{item.feedbackDescription}}</div></el-col><!--反馈说明-->
-          <el-col :span="3" style="float:right;color:#2698d6" >
-            <div v-if="item.ifFeedback==0" @click="dialogopen(item.slaTypeId)">反馈</div>
-            <div v-if="item.ifFeedback!=0" style="color:#666666" >已反馈</div>
-          </el-col>
+          <!-- <div v-if="item.slaTypeId!=='1'&&item.slaTypeId!=='2'&&item.slaTypeId!=='3'"> -->
+            <el-col :span="7"><div style="text-align:left">{{item.slaType}}</div></el-col>
+            <el-col :span="8" v-if="item.operateDate!=null"><div style="font-size:0.13rem;line-height:0.2rem;">{{item.operateDate}}</div></el-col>
+            <el-col :span="8" v-else><div style="font-size:0.13rem;line-height:0.2rem;">无</div></el-col>
+            <el-col :span="6"><div style="word-wrap: break-word;font-size:0.13rem;padding-right:5px;line-height:0.2rem;">{{item.feedbackDescription}}</div></el-col><!--反馈说明-->
+            <el-col :span="3" style="float:right;color:#2698d6" >
+              <div v-if="item.ifFeedback==0" @click="dialogopen(item.slaTypeId)">反馈</div>
+              <div v-if="item.ifFeedback!=0" style="color:#666666" >已反馈</div>
+            </el-col>
+          <!-- </div> -->
         </el-row>
       </div>
     </div>
@@ -479,37 +481,25 @@ export default {
        //计算出小时数
       let leave1 = date3 % (24 * 3600 * 1000);    //计算天数后剩余的毫秒数
       let hours = Math.floor(leave1 / (3600 * 1000))+days*24;
-      console.log(expect);
-      console.log(restrict1);
-      console.log(restrict2);
-      console.log(restrict3);
-      console.log(hours);
       if(expect>=restrict1&&expect<=restrict2){//如果在预计到场当日的08：00-19：00
         if(hours<=3){
-          console.log("0000000000");
           self.inHours();
         }else{
-          console.log("11111111111");
           self.notify(startTime,hours);
         }
       }else if(expect>=restrict2&&expect<=restrict3){//19:00-次日08:00
         if(hours<=6){
-          console.log("222222222222");
           self.inHours();
         }else{
-          console.log("333333333333");
           self.notify(startTime,hours);
         }
       }else if(expect<restrict1){
         if(hours<=6){
-          console.log("44444444444");
           self.inHours();
         }else{
-          console.log("5555555555555");
           self.notify(startTime,hours);
         }
       }else{
-        console.log("6666666666666");
         self.notify(startTime,hours);
       }
       // if(days==0&&hours<=2){
@@ -716,15 +706,13 @@ export default {
               }
           }
         }
-        let data = {};
-        data.workId = vm.workId;
-        data.excuteType = vm.questionObj.EXCUTE_TYPE;
-        data.questionId = vm.questionObj.QUESTION_ID;
-        data.answerIds = answerIds;
-        data.ifAnswerTrue = ifAnswerTrue;
-        var params = new URLSearchParams();
-        params.append("data",JSON.stringify(data));
-        fetch.post("?action=/risk/saveAnswerArrive",params).then(res=>{
+        let params = {};
+        params.workId = vm.workId;
+        params.excuteType = vm.questionObj.EXCUTE_TYPE;
+        params.questionId = vm.questionObj.QUESTION_ID;
+        params.answerIds = answerIds;
+        params.ifAnswerTrue = ifAnswerTrue;
+        fetch.questionPost("?action=/risk/saveAnswerArrive",params).then(res=>{
           loading.close();
           console.log("saveAnswerArrive",res);
           if(res.STATUSCODE=='1'){//问题回答正确，显示反馈框，进行到场反馈

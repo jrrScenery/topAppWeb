@@ -6,7 +6,7 @@
         <el-form label-width="100px" label-position="left">
             <p>基本信息</p>
             <el-form-item label="回收申请人：">
-                <el-input v-model="maininput.empname" :disabled="true"></el-input>
+                <el-input v-model="maininput.realName" :disabled="true"></el-input>
             </el-form-item>
             <el-form-item label="申请时间:">
                 <el-col :span="24" >
@@ -174,9 +174,11 @@ export default {
   },
 
   created: function() {
+    this.realName = localStorage.getItem("realName");
     this.currentdate = new Date();
       this.parts=this.$route.params.parts;
     fetch.get("?action=/parts/getPartsCanRecycle&CASE_ID="+this.caseId).then(res => {
+      console.log("getPartsCanRecycle",res);
       this.maininput = res.main[0];
       this.recycleInfoinput = res.recycleInfo[0];
       this.supplier = res.supplier;
@@ -210,8 +212,8 @@ export default {
         kd.PayType=1;
         kd.ExpType=1;
         var sender = {};
-        sender.Name=this.maininput.empname;
-        sender.Mobile=this.maininput.recyclePhone;
+        sender.Name=this.maininput.customerLinkman;
+        sender.Mobile=this.maininput.customerTel;
         sender.CityName=this.senderArea.areaName;
         sender.ProvinceName=this.senderArea.provinceName;
         sender.Address=this.maininput.customerAddress;
