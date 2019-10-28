@@ -4,13 +4,13 @@
       <header>
         <div class="headerLeft " v-on:click="back"><i class="el-icon-arrow-left"></i></div>
         <h2>{{title}}</h2>
-        <el-dropdown trigger="click">
+        <div class="headerRight"></div>
+        <!-- <el-dropdown trigger="click">
             <div class="el-icon-plus"></div>
             <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native='newService(2)'>创建现场服务单</el-dropdown-item>
-                <el-dropdown-item @click.native='newService(1)'>创建case故障处理服务单</el-dropdown-item>
+                <el-dropdown-item @click.native='newService(serviceType)'>创建服务单</el-dropdown-item>
             </el-dropdown-menu>
-        </el-dropdown>
+        </el-dropdown> -->
       </header>
   </div>
 </template>
@@ -24,7 +24,7 @@ export default {
     return {
     }
   },
-  props: ['title','backUrl','date1','date2','caseId','workId','taskId'],
+  props: ['title','backUrl','date1','date2','caseId','workId','taskId','serviceType'],
 
   methods: {
       newService(serviceType){ 
@@ -42,7 +42,7 @@ export default {
                 this.$router.push({name: 'onsiteServiceInfo', query: {serviceId:data.serviceId,caseId:this.caseId,workId:this.workId,taskId:this.taskId,evaluateId:data.evaluateId,serviceType:serviceType}})
               })
             }
-        }else{
+        }else if(serviceType == 1){
           console.log("serviceId1",this.serviceId);
           console.log("caseId",this.caseId);
           console.log("workId",this.workId);
@@ -54,6 +54,13 @@ export default {
                 this.$router.push({name: 'onsiteServiceInfo', query: {serviceId:data.serviceId,evaluateId:data.evaluateId,caseId:this.caseId,workId:this.workId,taskId:this.taskId,serviceType:serviceType}})            
             })
           }
+        }else{
+          this.$message({
+              message:'该工单类型不需要创建服务单',
+              type: 'warning',
+              center: true,
+              customClass: 'msgdefine'
+          });
         }
       },
 

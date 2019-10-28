@@ -1,6 +1,6 @@
 <template>
     <div class="attenDetailView">
-        <header-atten-detail :title="attenDetailTit" @searchNotice="searchNotice"></header-atten-detail>
+        <header-atten-detail :title="attenDetailTit" :searchType='searchType' @searchNotice="searchNotice"></header-atten-detail>
         <div style="height:0.45rem"></div>
         <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
             <ul>
@@ -11,11 +11,10 @@
                     <p>{{item.name}}</p>
                 </div>
                 <div class="article">
-                    <div class="title"><span class="tit_l">打卡时间:</span><span class="tit_r">{{item.punchTime}}</span></div>
-                    <div class="desc">是否提交说明:{{item.isSubmitDesc}}</div>
-                    <div class="desc">说明:{{item.desc}}</div>
-                    <div class="desc">是否审批:{{item.isAudit}}</div>
-                    <div class="desc">审批人:{{item.auditMana}}</div>
+                    <div class="title"><span class="tit_l">打卡时间:</span><span class="tit_r">{{item.punchDate}} {{item.beginTime}}-{{item.endTime}}</span></div>
+                    <div class="desc">补提考勤:{{item.absBeginTime}}-{{item.absEndTime}}</div>
+                    <div class="desc">请假类型:{{leaveType[item.leaveType]}}</div>
+                    <div class="desc">说明:{{item.reason}}</div>
                 </div>
                 </li>
             </ul>
@@ -26,6 +25,7 @@
 <script>
 import headerAttenDetail from "../header/headerAttenDetail";
 import loadingtmp from '@/components/load/loading'
+import transfrom from "@/utils/dateTransform.js"
 export default {
     name:'attenDetail',
     components:{
@@ -35,6 +35,7 @@ export default {
     data(){
         return{
             attenDetailTit:'考勤明细',
+            searchType:'attenDetail',
             detailArr:[],
             formData: [],
             searchPage: '',
@@ -42,14 +43,17 @@ export default {
             pageSize:10,
             busy:false,
             loadall: false,
-            caseId:this.$route.query.caseId
+            id:this.$route.query.id
         }
     },
-    created(){
-        console.log(this.$route.query.caseId);
+    created(){      
+        this.leaveType = transfrom.getLeaveType().leaveType;
+        this.processStatus = transfrom.getLeaveType().processStatus;
         this.detailArr = [
-            {name:'杜鑫',punchTime:'2019-08-16 - ',isSubmitDesc:'否',desc:'',isAudit:'否',auditMana:'胡素标'},
-            {name:'杜鑫',punchTime:'2019-08-15 10:00- ',isSubmitDesc:'是',desc:'因公外出',isAudit:'是',auditMana:'胡素标'}
+            {name:'杜鑫',punchDate:'2019-08-16',absBeginTime: "09:00",absEndTime: "18:00",
+                addrId: 64,beginTime: "",endTime: "",groupId: 33,id: 66026,isNew: 3,
+                leaveType: 1,prjId: 33,processStatus: 3,reason: ""},
+            // {name:'杜鑫',punchTime:'2019-08-15 10:00- ',isSubmitDesc:'是',desc:'因公外出',isAudit:'是',auditMana:'胡素标'}
         ]
     },
     methods:{

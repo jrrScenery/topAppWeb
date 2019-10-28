@@ -88,7 +88,7 @@ export default {
             //console.log(res.data);
             if(res.data.STATUSCODE=="0"){
 
-console.log(res);
+console.log("login",res);
               global_.userInfo = res.data.userInfo;
               global_.userPermission = res.data.userPermission;
               global_.userRole = res.data.userRole;

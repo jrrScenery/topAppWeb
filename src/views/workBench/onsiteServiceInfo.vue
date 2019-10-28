@@ -36,6 +36,7 @@ export default {
             workId:this.$route.query.workId,
             serviceId:this.$route.query.serviceId,
             serviceType:this.$route.query.serviceType,
+            workTypeId:this.$route.query.workTypeId,
             taskId:this.$route.query.taskId,
             type:this.$route.query.type
         }

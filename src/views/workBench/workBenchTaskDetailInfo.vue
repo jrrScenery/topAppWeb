@@ -18,7 +18,7 @@
             </div>
             </el-col>
             <el-col :span="7">
-                <router-link v-if="taskDetailInfo.workStatusId==6" :to="{name:'workBenchSLAfeedback',query:{caseId:this.caseId,taskId:this.taskId,workId:this.$route.query.workId,latitude:taskDetailInfo.latitude,longitude:taskDetailInfo.longitude}}">
+                <router-link v-if="taskDetailInfo.workStatusId==6" :to="{name:'workBenchSLAfeedback',query:{caseId:this.caseId,taskId:this.taskId,workId:this.$route.query.workId,workTypeId:this.workTypeId,latitude:taskDetailInfo.latitude,longitude:taskDetailInfo.longitude}}">
                     <div>
                         <img src="../../assets/images/eventBaseInfo_2.png" style="width: 0.15rem; height: 0.135rem;" alt="">
                         <span>SLA反馈</span>
@@ -30,7 +30,7 @@
                 </div>
             </el-col>
             <el-col :span="7" >
-            <router-link v-if="taskDetailInfo.workStatusId!=5" :to="{name:'serviceList',query:{caseId:taskDetailInfo.caseId,workId:taskDetailInfo.workId,taskId:taskDetailInfo.taskId}}">
+            <router-link v-if="taskDetailInfo.workStatusId!=5" :to="{name:'serviceList',query:{caseId:taskDetailInfo.caseId,workId:taskDetailInfo.workId,taskId:taskDetailInfo.taskId,workTypeId:this.workTypeId}}">
                 <div>
                 <img src="../../assets/images/eventBaseInfo_3.png" style="width: 0.145rem; height: 0.145rem;" alt="">
                 <span>服务单</span>
@@ -209,6 +209,7 @@ export default {
             expectStart:this.$route.query.expectStart,
             expectEnd:this.$route.query.expectEnd,
             creatorRealname:this.$route.query.creatorRealname,
+            workTypeId:this.$route.query.workTypeId,
             taskDetailInfo:{},
             specialNotes:[],
             riskInfos:[],
@@ -308,12 +309,14 @@ export default {
                         }
                     }
                 }
+                let params = {};
+                params.workId = vm.workId;
+                params.excuteType = vm.questionObj.EXCUTE_TYPE;
+                params.questionId = vm.questionObj.QUESTION_ID;
+                params.answerIds = answerIds;
+                params.ifAnswerTrue = ifAnswerTrue;
                 let data = {};
-                data.workId = vm.workId;
-                data.excuteType = vm.questionObj.EXCUTE_TYPE;
-                data.questionId = vm.questionObj.QUESTION_ID;
-                data.answerIds = answerIds;
-                data.ifAnswerTrue = ifAnswerTrue;
+                data.data = JSON.stringify(params);
                 // var params = new URLSearchParams();
                 // params.append("data",JSON.stringify(data));
                 // console.log("params",params);
@@ -453,6 +456,7 @@ export default {
             let vm = this;
             let params = "&CASE_ID="+this.taskDetailInfo.caseId+"&WORK_ID="+this.taskDetailInfo.workId+"&ACCEPT_DATE="+this.getCurrentTime()+"&REFUSE_REASON="+this.taskDetailInfo.refuseReason;
             fetch.get("?action=/work/UpdateWorkAcceptStatus"+"&ACCEPT_STATUS=3" + params,{}).then(res=>{
+                console.log('UpdateWorkAcceptStatus',res);
                 loading.close();
                 if(res.STATUSCODE=="0"){
                     this.$message({

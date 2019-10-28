@@ -172,6 +172,18 @@ export default new Router({
       name: 'attenDetail',
       component: resolve => require(['@/views/home/attenDetail'], resolve)
     },
+    //首页->考勤->考勤明细
+    {
+      path: '/home/punchDetail',
+      name: 'punchDetail',
+      component: resolve => require(['@/views/home/punchDetail'], resolve)
+    },
+    //首页->考勤->考勤月明细
+    {
+      path: '/home/monthTypeDetail',
+      name: 'monthTypeDetail',
+      component: resolve => require(['@/views/home/monthTypeDetail'], resolve)
+    },
     //首页报表统计（业务）
     {
       path: '/home/reportBusinessForm',
@@ -203,6 +215,12 @@ export default new Router({
       //   isUseCache: false,
       //   keepAlive: true
       // }
+    },
+    //任务列表（首页我的任务->任务列表->任务->SLA反馈->实施前确认）
+    {
+      path: '/workBench/workConfirm', 
+      name: 'workConfirm',
+      component: resolve => require(['@/views/workBench/workConfirm'], resolve),
     },
     //任务列表（首页我的任务->任务列表->任务->服务单一览表）
     {

@@ -6,18 +6,30 @@
       <div class="headerRight" @click.stop="popBg=!popBg">{{headerRight}}</div>
     </header>
     <template v-if="popBg">
-      <div class="popBg">
-        <search-atten-detail @change="updatePopBg" @search="searchData"></search-atten-detail>
-      </div>
+        <div class="popBg">
+            <template v-if="searchType=='makeupAtten'">
+                <search-make-atten-view @change="updatePopBg" @search="searchData" :queryData="queryData"></search-make-atten-view>
+            </template>
+            <template v-else-if="searchType=='punchDetail'">
+                <search-punch-detail @change="updatePopBg" @search="searchData" :queryData="queryData"></search-punch-detail>
+            </template>
+            <template v-else>
+                <search-atten-detail @change="updatePopBg" @search="searchData" :queryData='queryData'></search-atten-detail>
+            </template>
+        </div>
     </template>
 </div>
 </template>
 <script>
 import searchAttenDetail from '@/components/searchAttenDetail'
+import searchMakeAttenView from '@/components/searchMakeAttenView'
+import searchPunchDetail from '@/components/searchPunchDetail'
 export default {
     name: 'headerAttenDetail',
     components:{
-        searchAttenDetail
+        searchAttenDetail,
+        searchMakeAttenView,
+        searchPunchDetail
     },
     data () {
         return {
@@ -25,7 +37,7 @@ export default {
             popBg: false,
         }
     },
-    props:['title','queryData'],
+    props:['title','queryData','searchType'],
     methods:{
         updatePopBg (data) {
             this.popBg = data.popBg

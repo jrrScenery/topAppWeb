@@ -1,7 +1,8 @@
 <template>
-    <div class="beforeWorkConfirmView">
+    <div class="workConfirmView">
+        <header-last :title="workConfirmTit"></header-last>
+        <div style="height:0.45rem"></div>
         <div class="attention">为确保用户业务连续性及数据安全，请现场工程师务必就以下事项与用户详细沟通，用户确认后方可开始操作：</div>
-        <!-- <el-form ref="form" :model="form"> -->
         <div class="confirmView">
             <el-form :model="formData" ref="formData">
                 <div style="padding:0 0.1rem">
@@ -15,11 +16,11 @@
                         <el-form-item label="从：" style="margin-bottom:0.05rem">
                             <el-col :span="15">
                                     <el-date-picker
-                                        v-model="formData.caseServiceQuestion.operationStarttime"
-                                        type="datetime"
-                                        value-format="yyyy-MM-dd HH:mm:ss"
-                                        placeholder="选择开始时间"
-                                        style="width:100%">
+                                    v-model="formData.caseServiceQuestion.operationStarttime"
+                                    type="datetime"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    placeholder="选择开始时间"
+                                    style="width:100%">
                                     </el-date-picker>
                             </el-col>
                         </el-form-item>
@@ -145,12 +146,6 @@
                         </div>               
                     </el-form-item>
                     <div style="margin:0 0.1rem">神州数码工程师已按规范要求就本次服务内容、影响和风险与用户进行了沟通，同意神州数码工程师开始服务实施。</div>
-                    <div style="margin:0.1rem">用户确认</div>
-                    <div v-if="formData.caseServiceQuestion.imgStrQuestion">
-                        <img id="imgStrQuestion" style="height:2.5rem;" v-bind:src="formData.caseServiceQuestion.imgStrQuestion" alt="">
-                    </div>
-                    <div v-else><img style="height:0.5rem;" src="" alt=""></div>
-                    <add-signature :title="addSignatureTit" :queryData="searchData" @searchPro="signature"></add-signature>
                     
                     <el-form-item label="日期：">
                         <el-col :span="15">
@@ -165,38 +160,36 @@
                     </el-form-item>  
                 </div>
                 <div style="height: 0.6rem;"></div>
-                <el-form-item class="serviceSubmitBtn" v-if="!imgStrQuestion">
+                <el-form-item class="serviceSubmitBtn">
                     <el-button @click="submitForm('formData')">提交</el-button>
                 </el-form-item>
             </el-form>
-        </div>            
+        </div> 
     </div>
 </template>
-
 <script>
+import headerLast from "../header/headerLast";
 import fetch from '../../utils/ajax'
-import addSignature from '../../components/addSignature'
-import qs from 'qs'
-
 export default {
-    name:"beforeWorkConfirm",
+    name:'workConfirm',
     components:{
-        addSignature
+        headerLast
     },
     data(){
         return{
-            addSignatureTit:'添加签名',
+            workConfirmTit:'实施前确认',
             formData:{
                 caseServiceQuestion:{
                 },
             },
-            imgStrQuestion:'',
             searchData:[],
             caseId:this.$route.query.caseId,
             workId:this.$route.query.workId,
             serviceId:this.$route.query.serviceId,
             serviceType:this.$route.query.serviceType,
             taskId:this.$route.query.taskId,
+            evaluateId:this.$route.query.evaluateId,
+            workTypeId:this.$route.query.workTypeId,
             type:this.$route.query.type,
             // popBg: false,
             checked:[
@@ -206,7 +199,7 @@ export default {
                 {ifY4:false,ifF4:false},
                 {ifY5:false,ifF5:false},
                 {ifY6:false,ifF6:false}
-            ],    
+            ], 
         }
     },
     created:function(){
@@ -214,17 +207,12 @@ export default {
     },
     methods:{
         getCaseServiceQuestion(){
-            console.log("caseId",this.caseId);
-            console.log("serviceId",this.serviceId);
-            console.log("serviceType",this.serviceType);
             fetch.get("?action=/work/getCaseServiceQuestion&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
-                console.log("getCaseServiceQuestion",res)
+                console.log(res)
                 if(this.serviceType==2){
-                    this.formData.caseServiceQuestion = res.dataService[0];
-                    this.imgStrQuestion = res.dataService[0].imgStrQuestion;           
+                    this.formData.caseServiceQuestion = res.dataService[0];        
                 }else{
                     this.formData.caseServiceQuestion = res.dataDealService[0];
-                    this.imgStrQuestion = res.dataDealService[0].imgStrQuestion;
                 }
                 if(this.formData.caseServiceQuestion.serviceTime == null){
                     this.formData.caseServiceQuestion.serviceTime = new Date();
@@ -261,9 +249,6 @@ export default {
                 }
                 console.log(this.formData.caseServiceQuestion);
             })
-        },
-        signature(imgStrQuestion){
-            this.formData.caseServiceQuestion.imgStrQuestion = imgStrQuestion;
         },
         changeIfY1(val){
             if(val==true){
@@ -469,16 +454,6 @@ export default {
                 });
                 return false
             }
-            if(this.formData.caseServiceQuestion.imgStrQuestion==null){
-                loading.close();
-                this.$message({
-                    message:'请添加签名!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
             return true
         },
         submitForm(formName){
@@ -501,12 +476,7 @@ export default {
                     temp.beforeLastbackupTime = this.formData.caseServiceQuestion.beforeLastbackupTime;
                     temp.backuptestTime = this.formData.caseServiceQuestion.backuptestTime;
                     temp.serviceTime = this.formData.caseServiceQuestion.serviceTime;
-                    temp.imgStrQuestion = this.formData.caseServiceQuestion.imgStrQuestion;
                     temp.serviceId=this.serviceId;
-                    // var data = {};
-                    // temp.serviceType = this.serviceType;
-                    // var data = new URLSearchParams;
-                    // data.append('serviceType',this.serviceType);
                     if((temp.operationStarttime!=null&&this.checked[0].ifY1==false)||(temp.operationEndtime!=null&&this.checked[0].ifY1==false)){
                         loading.close();
                         this.$message({
@@ -593,6 +563,7 @@ export default {
                     console.log(data);
                     fetch.questionPost("?action=/work/submitServiceQuestion",data).then(res=>{
                         loading.close();
+                        console.log('submitServiceQuestion',res);
                         if(res.STATUSCODE=="0"){
                             this.$message({
                                 message:'提交成功',
@@ -602,8 +573,14 @@ export default {
                             });
                             let nowWorkId = vm.workId;
                             let nowCaseId = vm.caseId;
-                            vm.getCaseServiceQuestion();
-                            // setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId}})},1000);
+                            let serviceId = vm.serviceId;
+                            let serviceType = vm.serviceType;
+                            let taskId = vm.taskId;
+                            let evaluateId = vm.evaluateId;
+                            let dialogVisible0 = true;
+                            let workTypeId = vm.workTypeId;
+                            // vm.getCaseServiceQuestion();
+                            setTimeout(function(){vm.$router.push({ name: 'workBenchSLAfeedback',query:{caseId:nowCaseId,workId:nowWorkId,serviceId:serviceId,serviceType:serviceType,taskId:taskId,evaluateId:evaluateId,dialogVisible0:dialogVisible0,workTypeId:workTypeId}})},1000);
                         }else{
                             this.$message({
                             message:res.MESSAGE+"发生错误",
@@ -617,17 +594,15 @@ export default {
             })
         },
     }
+
 }
 </script>
-
 <style scoped>
+.workConfirmView{width: 100%;height: 100%;overflow: scroll}
 .attention{margin:0.05rem 0.1rem 0.1rem;color: red}
 .confirmView{margin:0.1rem 0;line-height: 0.2rem}
 .confirmView >>> .el-form-item{margin-bottom:0;}
 .selectBox{display: flex;}
 .serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
 .serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;z-index: 1}
-/* .popBg{background: rgba(0,0,0,0.5); position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1}
-.popBg div{background: #f5f5f9; position: absolute; right: 0; bottom: 0; z-index: 2; line-height: 0.3rem} */
 </style>
-

@@ -1,41 +1,44 @@
 <template>
-    <div class="todoAuditView">
-        <header-last :title="todoAuditTit"></header-last>
-        <div style="height: 0.45rem;"></div>
+    <div class="punchDetailView">
+        <header-last :title="punchDetailTit"></header-last>
+        <div style="height:0.45rem"></div>
         <div class="content">
             <el-tabs v-model="activeName">
-                <el-tab-pane :label="firstTabTit" name="first"><todo-audit></todo-audit></el-tab-pane>
-                <el-tab-pane :label="secondTabTit" name="second" lazy><done-audit></done-audit> </el-tab-pane>
+                <el-tab-pane :label="firstTabTit" name="first"><day-detail></day-detail></el-tab-pane>
+                <el-tab-pane :label="secondTabTit" name="second" lazy><month-detail></month-detail></el-tab-pane>
             </el-tabs>
         </div>
     </div>
 </template>
 <script>
 import headerLast from "../header/headerLast";
-import todoAudit from '../../components/audit/todoAudit'
-import doneAudit from '../../components/audit/doneAudit'
+import dayDetail from "../../components/punchDetail/dayDetail"
+import monthDetail from "../../components/punchDetail/monthDetail"
 export default {
-    name:'audit',
+    name:'punchDetail',
     components:{
         headerLast,
-        todoAudit,
-        doneAudit,
+        dayDetail,
+        monthDetail
     },
     data(){
         return{
+            punchDetailTit:'打卡明细',
+            searchType:'punchDetail',
             activeName: 'first',
-            todoAuditTit:'审批',
-            firstTabTit: '待审批',
-            secondTabTit: '已审批',
-            todoListArr:[],
+            firstTabTit: '日统计',
+            secondTabTit: '月统计',
         }
     },
     created(){
+
+    },
+    methods:{
     }
 }
 </script>
 <style scoped>
-.todoAuditView{width: 100%;}
+.punchDetailView{width: 100%;height: 100%;overflow: scroll}
 .content{margin: 0 0; background: #ffffff; position: relative;}
 .content >>> .el-tabs__header{margin: 0 0 0rem;}
 .content >>> .el-tabs__item.is-active{color: #2698d6;}

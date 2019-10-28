@@ -2,11 +2,11 @@
     <div class="checkAttenDetailView">
         <header-last :title="checkAttenDetailTit"></header-last>
         <div style="height:0.45rem"></div>
-        <ul class="ul_AttenView" >      
-            <li class="li_AttenView" v-for="item in liObj" :key="item.id">
+        <ul class="ul_AttenView" @click="getPunchDetail" v-if="liObj.length!=0">   
+            <li class="li_AttenView" v-for="item in liObj" :data-id='item.id' :key="item.id">
                 <template>
-                    <span v-on:click="pushDtail(item.id)">{{item.text}}</span>
-                    <i class="el-icon-arrow-right"></i>
+                    <span :data-id='item.id'>{{item.text}}</span>
+                    <i class="el-icon-arrow-right" :data-id='item.id'></i>
                 </template>
             </li>
         </ul>
@@ -32,6 +32,13 @@ export default {
         }
     },
     methods:{
+        getPunchDetail:function(event){
+            event = (event||window.event);
+            let target = (event.target || event.srcElement);
+            let id = target.getAttribute('data-id');
+            console.log('data-id',id);
+            this.$router.push({name:'punchDetail',query:{id:id}})
+        },
         pushDtail(caseId){
             console.log("caseId:",caseId);
             this.$router.push({name:'attenDetail',query:{caseId:caseId}})

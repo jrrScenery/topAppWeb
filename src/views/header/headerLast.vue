@@ -28,6 +28,7 @@ export default {
 
     back: function (event) {
       console.log("in back");
+      console.log(this.backUrl);
       if(this.backUrl&&this.backUrl.length>0){
         console.log("route backurl");
         this.$router.push({name:this.backUrl,query:{date1:this.date1,date2:this.date2}});       

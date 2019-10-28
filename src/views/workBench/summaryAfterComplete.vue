@@ -1,5 +1,6 @@
 <template>
     <div class="endSummaryView">
+        <header-last :title="summaryTit"></header-last>
         <div class="serviceInfoCell">
             <div class="serviceInfoTit">用户及项目信息</div>
             <div class="serviceContent">
@@ -104,66 +105,29 @@
                             </el-form-item>
                         </div>
                     </div>
-                    <div class="sendMessageView"><!-- v-show="isShow"-->
-                        <div class="serviceInfoTit">服务单确认人信息</div>
-                        <div class="des">若预选设置内没有需要选择的客户信息，工程师可直补充客户信息后点击“发送评价连接”。</div>
-                        <el-form-item label="客户联系人" label-width="1.1rem">
-                            <el-select v-model="customerForm.empname" placeholder="请选择" @change="npmNameChange()">
-                                <el-option 
-                                    v-for="item in customerList" 
-                                    :key="item.empid"
-                                    :label="item.empname"
-                                    :value="item.empname">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="客户联系人手机" label-width="1.1rem">
-                            <el-input v-model="customerForm.mobileno" placeholder="请输入客户联系人手机" clearable></el-input>
-                        </el-form-item>
-                    </div>
                     <div style="height: 0.6rem;"></div>
-                    <el-form-item class="serviceSubmitBtn" v-if="serviceStatus==='1'">
-                        <el-button type="primary" @click="submitForm('formData')">{{submitName}}</el-button>
+                    <el-form-item class="serviceSubmitBtn" v-if="!workResultInfo">
+                        <el-button @click="submitForm('formData')">提交</el-button>
                     </el-form-item>
-                    <el-form-item class="serviceSubmitBtn" v-else>
-                        <el-button v-if="serviceStatus=='6'" type="primary" disabled>客户已评价</el-button>
-                        <el-button @click="submitSendForm('customerForm')" type="primary" v-else>{{submitName}}</el-button>
-                    </el-form-item>                  
                 </el-form>
             </div>
-        </div>
-        <!-- 短信提醒询问框phoneVisible -->
-        <div class="dialogdc">
-            <el-dialog
-                title="提示"
-                :visible.sync="phoneVisible"
-                :show-close="false"
-                width="80%"
-                center>
-                <el-form>
-                    <div style="margin:0.2rem">
-                        <span>已向客户发送短信提示进行客户评价，请协助提醒客户进行评价</span>
-                    </div>
-                    <el-form-item class="submit">
-                        <el-button type="primary" class="onsubmit" @click="confirmSendSuccess()" >确 定</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-dialog>
         </div>
     </div>
 </template>
 
 <script>
 import fetch from '../../utils/ajax'
+import headerLast from "../header/headerLast";
 export default {
     name: 'endSummaryView',
-
     components: {
+        headerLast
     },
     data(){
         return{
+            summaryTit:'完成后总结',
             formData:{
-                userAndPrjItem:{},
+                userAndPrjItem:'',
                 serviceType:"",
                 workResult:""
             },
@@ -173,70 +137,24 @@ export default {
             content:"工作内容",
             result:"工作结果",
             activeName:'second',
-            // isShow:false,
             workId:this.$route.query.workId,
             caseId:this.$route.query.caseId,
             taskId:this.$route.query.taskId,
             serviceId:this.$route.query.serviceId,
             serviceType:this.$route.query.serviceType,
-            type:this.$route.query.type,
-            customerList:'',
-            ifSendEvaluate:'',
-            serviceStatus:'',
-            phoneVisible:false,
-            customerForm:{
-                empname:'',
-                mobileno:'',
-                empId:''
-            },
-            submitName:'提交并发送客户评价连接',
-            shortUrl:'',
+            type:this.$route.query.type
         }
     },
     created(){
         this.getEndSummary();
-        this.getWorkCustList();
     },
-    methods:{     
-         getWorkCustList(){
-             fetch.get("?action=/work/getWorkCustList&WORK_ID="+this.workId).then(res=>{
-                 console.log("getWorkCustList",res);
-                 if(res.STATUSCODE=='0'){
-                     this.customerList = res.data;
-                 }else{
-                     this.$message({
-                        message:res.MESSAGE,
-                        type: 'error',
-                        center: true,
-                        customClass: 'msgdefine'
-                    });
-                 }
-             })
-         },
-         npmNameChange(){
-             for(let i =0;i<this.customerList.length;i++){
-                 if(this.customerList[i].empname === this.customerForm.empname){
-                     this.customerForm.mobileno = this.customerList[i].mobileno;
-                     this.customerForm.empId = this.customerList[i].empid
-                 }
-             }
-         },
+    methods:{      
         getEndSummary(){
             if(this.serviceType==2){
                 fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
                     console.log("GetOnsiteServiceFormInfo",res);
                     this.formData.userAndPrjItem = res.DATA[0];
                     this.workResultInfo = res.DATA[0].workResult;
-                    this.ifSendEvaluate = res.DATA[0].ifSendEvaluate;
-                    this.serviceStatus = res.DATA[0].serviceStatus;
-                    this.evaluateId = res.DATA[0].evaluateId;
-                    if(res.DATA[0].serviceStatus==='2'){
-                        if(res.DATA[0].ifSendEvaluate===1){                        
-                            this.submitName = "再次发送客户评价连接";
-                        }else{
-                            this.submitName = "发送客户评价连接";
-                        }
-                    }
                 })
                 fetch.get("?action=/system/getDict2&DICT_TYPE=NT_SERVICE_TYPE","").then(res=>{
                     console.log("serviceTypeArr",res);
@@ -248,78 +166,11 @@ export default {
                 })
             }else{
                 fetch.get("?action=/work/GetCaseroubleShootingServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
-                    console.log("GetCaseroubleShootingServiceFormInfo",res);
+                    console.log(res);
                     this.formData.userAndPrjItem = res.DATA[0];
                     this.workResultInfo = res.DATA[0].implementResult;
-                    this.ifSendEvaluate = res.DATA[0].ifSendEvaluate;
-                    this.serviceStatus = res.DATA[0].serviceStatus;
-                    this.evaluateId = res.DATA[0].evaluateId;
-                    if(res.DATA[0].serviceStatus==='2'){
-                        if(res.DATA[0].ifSendEvaluate===1){    
-                            this.submitName = "再次发送客户评价连接";
-                        }else{
-                            this.submitName = "发送客户评价连接";
-                        }
-                    }
                 })
             }
-        },
-        confirmSendSuccess(){
-            this.getEndSummary();
-            this.phoneVisible = false;
-        },
-        submitSendForm(){
-            const loading = this.$loading({
-                lock: true,
-                text: '发送短信中...',
-                spinner: 'el-icon-loading',
-                background: 'rgba(255, 255, 255, 0.3)'
-            });
-            if(this.customerForm.empname===''){
-                this.$message({
-                    message:'请选择客户联系人!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.customerForm.mobileno===''){
-                this.$message({
-                    message:'请选择客户联系人电话!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            let params = "&url=http://wxjfb.dcits.com/home/onsiteServiceInfo&CASE_ID="+this.caseId+
-                "&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType+
-                "&evaluateId="+this.evaluateId+"&serviceType="+this.serviceType+
-                "&workId="+this.workId+"&userId="+this.customerForm.empId;
-            fetch.get("?action=/system/getShortUrl"+params).then(res=>{
-                console.log("getShortUrl",res);
-                let shortUrl = res.shorturl
-                console.log("customerPhone",this.customerForm.mobileno);
-                let content = "尊敬的客户您好，工程师已完成了现场实施，请您对我们的服务进行评价，谢谢！"+shortUrl
-                fetch.get("?action=/work/sendCustEvaluate&MOBILE="+this.customerForm.mobileno+"&CONTENT="+content+
-                            "&SERVICE_TYPE="+this.serviceType+"&SERVICE_ID="+this.serviceId+"&EMPNAME="+this.customerForm.empname).then(res=>{
-                    console.log("sendCustEvaluate",res);
-                    loading.close();
-                    if(res.STATUSCODE=='0'){
-                        this.phoneVisible = true;
-                    }else{
-                        this.$message({
-                        message:res.MESSAGE,
-                        type: 'error',
-                        center: true,
-                        customClass: 'msgdefine'
-                        });
-                    }
-                })
-            })           
         },
         check(loading){
             console.log(this.formData.serviceType);
@@ -434,26 +285,6 @@ export default {
                 loading.close();
                 return false
             }
-            if(this.customerForm.empname===''){
-                this.$message({
-                    message:'请选择客户联系人!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.customerForm.mobileno===''){
-                this.$message({
-                    message:'请选择客户联系人电话!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
             return true;
         },
         submitForm(formName){
@@ -467,10 +298,14 @@ export default {
             this.$refs[formName].validate((valid) => {
                 if(valid){
                     if(!vm.check(loading)) return;
+                    // var data=new URLSearchParams;
                     var data = {};
                         data.serviceId = this.formData.userAndPrjItem.serviceId;
                         data.opFlg = 1;
                         data.customerId = this.formData.userAndPrjItem.customerId;
+                    // data.append('serviceId',this.formData.userAndPrjItem.serviceId);
+                    // data.append('opFlg',1);
+                    // data.append('customerId',this.formData.userAndPrjItem.customerId);
                     let temp = {};
                     temp.serviceId = this.formData.userAndPrjItem.serviceId;
                     temp.caseId=this.caseId;
@@ -497,8 +332,7 @@ export default {
                     let type = vm.type;
                     if(vm.serviceType==2){
                         fetch.questionPost("?action=/work/UpdateSceneServiceFormInfo",data).then(res=>{
-                            console.log("00000000000");
-                            console.log("UpdateSceneServiceFormInfo",res);    
+                            console.log(res);    
                             loading.close();
                             if(res.STATUSCODE=="0"){
                                 this.$message({
@@ -507,9 +341,13 @@ export default {
                                 center: true,
                                 customClass: 'msgdefine'
                                 });
-                                vm.submitSendForm();
                                 vm.getEndSummary();
-                                // vm.isShow = true;
+                                // if(vm.type=='SLA'){
+                                //     vm.getEndSummary();
+                                //     // setTimeout(function(){vm.$router.push({ name: 'workBenchSLAfeedback',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId,type:type}})},1000);
+                                // }else{
+                                //     setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                                // }
                             }else{
                                 this.$message({
                                 message:res.MESSAGE+"发生错误",
@@ -521,7 +359,7 @@ export default {
                         })
                     }else{
                         fetch.questionPost("?action=/work/UpdateCaseTroubleShootingServiceFormInfo",data).then(res=>{
-                            console.log("UpdateCaseTroubleShootingServiceFormInfo",res);    
+                            console.log(res);    
                             loading.close();
                             if(res.STATUSCODE=="0"){
                                 this.$message({
@@ -530,9 +368,13 @@ export default {
                                     center: true,
                                     customClass: 'msgdefine'
                                 });
-                                vm.submitSendForm();
                                 vm.getEndSummary();
-                                // vm.isShow = true;
+                                // if(vm.type=='SLA'){
+                                //     vm.getEndSummary();
+                                //     // setTimeout(function(){vm.$router.push({ name: 'workBenchSLAfeedback',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId,type:type}})},1000);
+                                // }else{
+                                //     setTimeout(function(){vm.$router.push({ name: 'serviceList',query:{caseId:nowCaseId,workId:nowWorkId,taskId:nowtaskId}})},1000);
+                                // }
                             }else{
                                 this.$message({
                                 message:res.MESSAGE+"发生错误",
@@ -550,6 +392,8 @@ export default {
 
 }
 </script>
+
+
 <style scoped>
     .endSummaryView{width: 100%; position: relative;background-color: #ffffff;margin-top:0.1rem}
     .serviceInfoCell{white-space:normal}
@@ -565,20 +409,8 @@ export default {
     .tableTd span{text-align: center;}
     .tableTd span:nth-child(1){width: 100%; text-align: left;}
     .tableTd span:nth-child(2){width: 100%;text-align: left}
-    .sendMessageView{padding: 0.1rem}
-    .sendMessageView>>>.des{padding: 0.1rem}
-
-    .endSummaryView .dialogdc >>> .el-dialog__body{padding: 0px 0px}
-  .endSummaryView .dialogdc >>> .el-dialog__header{padding: 0px 0px 0px}
-  .endSummaryView .dialogdc >>> .el-dialog__footer{padding: 0px 0px 0px}
-  .endSummaryView .dialogdc >>> .submit .el-button{width: 100%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
-  .endSummaryView .dialogdc >>> .submit .el-button:hover{background: #ffffff;}
-  .endSummaryView .dialogdc >>> .submit .onsubmit:hover{background: #2698d6;}
-  .endSummaryView .dialogdc >>> .submit .el-form-item__content{margin: 0!important; display: flex;}
-  .endSummaryView .dialogdc >>> .submit .onsubmit{background: #2698d6; color: #ffffff;}
-
     .serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
-    .serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #ffffff; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;z-index:1}
+    .serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;z-index:1}
 
 </style>
 

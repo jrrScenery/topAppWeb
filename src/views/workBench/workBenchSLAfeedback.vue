@@ -31,9 +31,9 @@
       <el-dialog :visible.sync="dialogVisible0" width="80%" :show-close=false class="dialog">
         <el-form class="form1" style="color:#333333">
           <el-form-item label="反馈时间">
-            <el-input class="input1" :value="date" :disabled="true"></el-input>
+            <el-input class="input1" :value="date" disabled></el-input>
           </el-form-item>
-          <el-form-item>
+          <el-form-item v-if="typeid!=='4'&&typeid!=='7'">
             <el-input v-if="typeid==6" type="textarea" :rows="4" placeholder="请简要描述所做操作及处理结果。例如，更换25盘柜上的13号硬盘后，存储状态恢复正常。" v-model="form.des1" style="font-size:6px"></el-input>
             <el-input v-else  type="textarea" placeholder="请填写说明" v-model="form.des1" style="font-size:6px"></el-input>
           </el-form-item>
@@ -147,34 +147,87 @@
         </el-form>
       </el-dialog>
     </div>
-    <!-- 离场创建服务单弹框 -->
-    <div class="dialogdc">
+    <!-- 离场客户评价弹框 -->
+    <!-- <div class="dialogdc">
       <el-dialog
-        :visible.sync="leaveVisible"
+        title="提示"
+        :visible.sync="rateVisible"
         :show-close="false"
         width="80%"
         center>
         <el-form>
-          <el-form-item label="请选择创建以下何种类型服务单" class="radioView">
-            <el-radio-group v-model="form.leaveradio" @change="leaveRadio()">
-                <div style="line-height:0.3rem">
-                  <el-radio :label="2">创建现场服务单</el-radio>
-                </div>
-                <div style="line-height:0.3rem">
-                  <el-radio :label="1">创建case故障服务单</el-radio>
-                </div>
-                <!-- <div style="line-height:0.3rem">
-                  <el-radio :label="3">客户不在实施现场</el-radio>
-                </div> -->
-            </el-radio-group>
-            <div style="line-height:0.2rem;margin-right:0.1rem;margin-bottom:0.1rem">注：未完成的服务单请在服务单列表进行完成</div>
+          <el-form-item label="客户名称" label-width="0.8rem" style="margin:0.1rem">
+            <el-input :value="form.customerContactor" placeholder="请输入客户联系人"></el-input>
           </el-form-item>
-          <!-- <el-form-item>
-          </el-form-item> -->
+          <el-form-item label="联系方式" label-width="0.8rem" style="margin:0.1rem">
+            <el-input :value="form.customerCellnumber" placeholder="请输入联系方式"></el-input>
+          </el-form-item>
+          <el-form-item class="submit">
+            <el-button type="primary" class="onsubmit" @click="sendPhoneMessage()" >发送客户评价</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div> -->
+    <!-- 短信提醒询问框phoneVisible -->
+    <div class="dialogdc">
+        <el-dialog
+            title="提示"
+            :visible.sync="phoneVisible"
+            :show-close="false"
+            width="80%"
+            center>
+            <el-form>
+                <div style="margin:0.2rem">
+                    <span>已向客户发送短信提示进行客户评价，请协助提醒客户进行评价</span>
+                </div>
+                <el-form-item class="submit">
+                    <el-button type="primary" class="onsubmit" @click="confirmSendSuccess()" >确 定</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+    </div>
+    <!-- 实施结果任务反馈 taskVisible-->
+    <div class="dialogdc">
+      <el-dialog
+        :visible.sync="taskVisible"
+        :show-close="false"
+        width="50%"
+        center>
+        <el-form>
+          <el-form-item label="请选择任务是否完成" class="radioView">
+            <el-radio-group v-model="form.taskradio" @change="taskRadio(feedbackType)">
+                <div style="line-height:0.3rem">
+                  <el-radio :label="1">任务已完成</el-radio>
+                </div>
+                <div style="line-height:0.3rem">
+                  <el-radio :label="2">任务未完成 </el-radio>
+                </div>
+            </el-radio-group>
+          </el-form-item>
         </el-form>
       </el-dialog>
     </div>
-
+    <!-- 实施结果故障反馈 caseVisible-->
+    <div class="dialogdc">
+      <el-dialog
+        :visible.sync="caseVisible"
+        :show-close="false"
+        width="50%"
+        center>
+        <el-form>
+          <el-form-item label="请选择故障是否解决" class="radioView">
+            <el-radio-group v-model="form.caseradio" @change="caseRadio()">
+                <div style="line-height:0.3rem">
+                  <el-radio :label="1">故障解决</el-radio>
+                </div>
+                <div style="line-height:0.3rem">
+                  <el-radio :label="2">故障解决不成功</el-radio>
+                </div>
+            </el-radio-group>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
     <!-- 请先完成结果反馈再进行离场feedbackVisible -->
     <div class="dialogdc">
       <el-dialog
@@ -213,6 +266,325 @@
         </el-form>
       </el-dialog>
     </div>
+    <!-- 实施前确认 -->
+    <div class="dialogdc workconfirm">
+      <el-dialog
+        top="5%"
+        width="100%"
+        title="实施前确认"
+        :visible.sync="workConfirmFlag"
+        :show-close="false"
+        :fullscreen="true"
+        center>
+        <div class="warnTextView confirmWarn">为确保用户业务连续性及数据安全，请现场工程师务必就以下事项与用户详细沟通，用户确认后方可开始操作：</div>
+        <div class="confirmView">
+            <el-form :model="formData" ref="formData">
+                <div style="padding:0 0.1rem">
+                    <el-form-item>
+                        <div>1.用户已将维护窗口安排在业务非高峰时段</div>
+                        <div class="selectBox">
+                            <div>是：</div>
+                            <el-checkbox v-model="checked[0].ifY1" @change="changeIfY1"></el-checkbox>
+                            <div>操作时间</div>
+                        </div>
+                        <el-form-item label="从：" style="margin-bottom:0.05rem">
+                            <el-col :span="15">
+                                    <el-date-picker
+                                    v-model="formData.caseServiceQuestion.operationStarttime"
+                                    type="datetime"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    placeholder="选择开始时间"
+                                    style="width:100%">
+                                    </el-date-picker>
+                            </el-col>
+                        </el-form-item>
+                        <el-form-item label="至：">
+                            <el-col :span="15">
+                                    <el-date-picker
+                                    v-model="formData.caseServiceQuestion.operationEndtime"
+                                    type="datetime"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    placeholder="选择结束时间"
+                                    style="width:100%">
+                                    </el-date-picker>
+                            </el-col>
+                        </el-form-item>
+                        <div class="selectBox">
+                            <div>否：</div>
+                            <el-checkbox v-model="checked[0].ifF1" @change="changeIfF1"></el-checkbox>
+                        </div> 
+                    </el-form-item>
+                    <el-form-item>
+                        <div>2.用户已申请停机维护窗口</div>
+                        <div class="selectBox">
+                            <div>是：</div>
+                            <el-checkbox v-model="checked[1].ifY2" @change="changeIfY2"></el-checkbox>
+                            <div>停机时间</div>
+                        </div>
+                        <el-form-item label="从：" style="margin-bottom:0.05rem">
+                            <el-col :span="15">
+                                    <el-date-picker
+                                    v-model="formData.caseServiceQuestion.stopStarttime"
+                                    type="datetime"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    placeholder="选择开始时间"
+                                    style="width:100%">
+                                    </el-date-picker>
+                            </el-col>
+                        </el-form-item>
+                        <el-form-item label="至：">
+                            <el-col :span="15">
+                                    <el-date-picker
+                                    v-model="formData.caseServiceQuestion.stopEndtime"
+                                    type="datetime"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    placeholder="选择结束时间"
+                                    style="width:100%">
+                                    </el-date-picker>
+                            </el-col>
+                        </el-form-item>                    
+                        <div class="selectBox">
+                            <div>否：</div>
+                            <el-checkbox v-model="checked[1].ifF2" @change="changeIfF2"></el-checkbox>
+                        </div> 
+                    </el-form-item>
+                    <el-form-item>
+                        <div>3、对于涉及重启或配置变更的服务实施</div>
+                        <div>用户事先完成了操作系统的备份工作</div>
+                        <div class="selectBox">
+                            <div>是：</div>
+                            <el-checkbox v-model="checked[2].ifY3" @change="changeIfY3"></el-checkbox>
+                            <div>最近一次备份时间：</div>
+                        </div>
+                        <div class="block">
+                            <el-date-picker
+                            v-model="formData.caseServiceQuestion.lastbackupTime"
+                            type="datetime"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            placeholder="请选择时间">
+                            </el-date-picker>
+                        </div>   
+                        <div class="selectBox">
+                            <div>否：</div>
+                            <el-checkbox v-model="checked[2].ifF3" @change="changeIfF3"></el-checkbox>
+                        </div>                     
+                    </el-form-item>
+                    <el-form-item>
+                        <div>4.服务开始前，用户保留了相关配置信息和文档</div>
+                        <div>用于可能必要的恢复</div>
+                        <el-form-item label="是：">
+                            <el-checkbox v-model="checked[3].ifY4" @change="changeIfY4"></el-checkbox>
+                        </el-form-item>
+                        <el-form-item label="否：">
+                            <el-checkbox v-model="checked[3].ifF4" @change="changeIfF4"></el-checkbox>
+                        </el-form-item>
+                    </el-form-item>
+                    <el-form-item>
+                        <div>5.用户在服务开始前完成了业务相关数据备份</div>
+                        <div class="selectBox">
+                            <div>是：</div>
+                            <el-checkbox v-model="checked[4].ifY5" @change="changeIfY5"></el-checkbox>
+                            <div>最近一次备份时间：</div>
+                        </div>       
+                        <div class="block">
+                            <el-date-picker
+                            v-model="formData.caseServiceQuestion.beforeLastbackupTime"
+                            type="datetime"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            placeholder="请选择时间">
+                            </el-date-picker>
+                        </div>  
+                        <div class="selectBox">
+                            <div>否：</div>
+                            <el-checkbox v-model="checked[4].ifF5" @change="changeIfF5"></el-checkbox>
+                        </div>               
+                    </el-form-item>
+                    <el-form-item>
+                        <div>6.用户针对这些备份做过备份恢复测试</div>
+                        <div class="selectBox">
+                            <div>是：</div>
+                            <el-checkbox v-model="checked[5].ifY6" @change="changeIfY6"></el-checkbox>
+                            <div>备份测试时间：</div>
+                        </div>       
+                        <div class="block">
+                            <el-date-picker
+                            v-model="formData.caseServiceQuestion.backuptestTime"
+                            type="datetime"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            placeholder="请选择时间">
+                            </el-date-picker>
+                        </div>  
+                        <div class="selectBox">
+                            <div>否：</div>
+                            <el-checkbox v-model="checked[5].ifF6" @change="changeIfF6"></el-checkbox>
+                        </div>               
+                    </el-form-item>
+                    <div style="margin:0 0.1rem">神州数码工程师已按规范要求就本次服务内容、影响和风险与用户进行了沟通，同意神州数码工程师开始服务实施。</div>
+                    
+                    <el-form-item label="日期：">
+                        <el-col :span="15">
+                                <el-date-picker
+                                v-model="formData.caseServiceQuestion.serviceTime"
+                                type="datetime"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="请选择时间"
+                                style="width:100%">
+                                </el-date-picker>
+                        </el-col>
+                    </el-form-item>  
+                </div>
+                <div style="height: 0.6rem;"></div>
+                <el-form-item class="serviceSubmitBtn">
+                    <el-button type="primary" @click="submitForm('formData')">提交</el-button>
+                </el-form-item>
+            </el-form>
+        </div> 
+      </el-dialog>
+    </div>
+    <!--完成后总结-->
+    <div class="dialogdc workconfirm">
+      <el-dialog
+        top="5%"
+        width="100%"
+        title="完成后总结"
+        :visible.sync="summaryFlag"
+        :show-close="false"
+        :fullscreen="true"
+        center>
+          <div class="serviceInfoCell">
+            <div class="serviceInfoTit">用户及项目信息</div>
+            <div class="serviceContent">
+                <el-form :model="formData" ref="formData">
+                    <div style="padding:0 0.1rem">
+                        <ul class="tableTd">
+                            <li>
+                                <span>服务单号</span>
+                                <span>{{formData.userAndPrjItem.serviceCd}}</span>
+                            </li>
+                            <li>
+                                <span>项目编号</span>
+                                <span>{{formData.userAndPrjItem.projectCode}}</span>
+                            </li>
+                            <li>
+                                <span>项目名称</span>
+                                <span>{{formData.userAndPrjItem.projectName}}</span>
+                            </li>
+                            <li>
+                                <span>用户单位</span>
+                                <span>{{formData.userAndPrjItem.customerName}}</span>
+                            </li>
+                            <li>
+                                <span>联系人</span>
+                                <span>{{formData.userAndPrjItem.realname}}</span>
+                            </li>
+                            <li>
+                                <span>联系电话</span>
+                                <span>{{formData.userAndPrjItem.contactMobile}}</span>
+                            </li>
+                            <li>
+                                <span>事件编号</span>
+                                <span>{{formData.userAndPrjItem.caseCd}}</span>
+                            </li>
+                            <li v-if="serviceType==2">
+                                <span>工程师姓名</span>
+                                <span>{{formData.userAndPrjItem.enginnername}}</span>
+                            </li>
+                        </ul>
+                        <el-form-item v-if="serviceType==2" label="服务类型">
+                            <el-col :span="15">
+                                <el-select clearable placeholder="请选择服务类型" v-model="formData.serviceType" style="width:100%">
+                                    <el-option v-for="item in serviceTypeArr" :label="item.DICTNAME" :value="item.DICTID" :key="item.value">
+                                </el-option>
+                                </el-select>
+                            </el-col>
+                        </el-form-item>
+                        <el-form-item label="到场时间">
+                            <el-col :span="15">
+                                <el-date-picker
+                                v-model="formData.userAndPrjItem.arriveTime"
+                                type="datetime"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="请选择时间"
+                                style="width: 100%;">
+                                </el-date-picker>
+                            </el-col>
+                        </el-form-item>
+                        <el-form-item label="离场时间">
+                            <el-col :span="15">
+                                <el-date-picker
+                                v-model="formData.userAndPrjItem.leaveTime"
+                                type="datetime"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="请选择时间"
+                                style="width: 100%;">
+                                </el-date-picker>
+                            </el-col>
+                        </el-form-item>
+                        <div v-if="serviceType==2">
+                            <el-form-item label="实际实用工时">
+                                <el-col :span="12">
+                                <el-input v-model="formData.userAndPrjItem.realWork" placeholder="请输入使用工时" style="width:100%"></el-input>
+                                </el-col>
+                            </el-form-item>
+                            <div class="article">{{content}}</div>
+                            <el-form-item>
+                                <el-input type="textarea" v-model="formData.userAndPrjItem.workContent" placeholder="请输入工作内容"></el-input>
+                            </el-form-item>
+                            <div class="article">{{result}}</div>
+                            <el-form-item>
+                                <el-radio-group v-for="item in workResultArr" :key="item.id" v-model="formData.workResult">
+                                    <el-radio :label="item.DICTID" style="width:100%;margin-left:0.25rem">{{item.DICTNAME}}</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-input type="textarea" v-model="formData.userAndPrjItem.problemPlan" placeholder="若存在问题及下一步计划：若顺利完成，则此项填无"></el-input>
+                            </el-form-item>
+                        </div>
+                        <div v-else>
+                            <el-form-item label="故障现象">
+                                <el-input v-model="formData.userAndPrjItem.faultDesc" placeholder="请输入故障现象"></el-input>
+                            </el-form-item>
+                            <el-form-item label="分析诊断">
+                                <el-input v-model="formData.userAndPrjItem.analysis" placeholder="请输入分析诊断"></el-input>
+                            </el-form-item>
+                            <el-form-item label="实施结果">
+                                <el-input v-model="formData.userAndPrjItem.implementResult" placeholder="请输入实施结果"></el-input>
+                            </el-form-item>
+                            <el-form-item label="遗留问题及建议">
+                                <el-input v-model="formData.userAndPrjItem.problemSuggest" placeholder="请输入遗留问题及建议"></el-input>
+                            </el-form-item>
+                        </div>
+                    </div>
+                    <div class="sendMessageView">
+                        <div class="serviceInfoTit">服务单确认人信息</div>
+                        <div class="des">若预选设置内没有需要选择的客户信息，工程师可直补充客户信息后点击“发送评价连接”。</div>
+                        <el-form-item label="客户联系人" label-width="1.1rem">
+                            <el-select v-model="customerForm.empname" placeholder="请选择" @change="npmNameChange()">
+                                <el-option 
+                                    v-for="item in customerList" 
+                                    :key="item.empid"
+                                    :label="item.empname"
+                                    :value="item.empname">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="客户联系人手机" label-width="1.1rem">
+                            <el-input v-model="customerForm.mobileno" placeholder="请输入客户联系人手机" clearable></el-input>
+                        </el-form-item>
+                    </div>
+                    <div style="height: 0.6rem;"></div>
+                    <el-form-item class="serviceSubmitBtn" v-if="serviceStatus==='1'">
+                        <el-button type="primary" @click="submitSummaryForm('formData')">{{submitName}}</el-button>
+                    </el-form-item>
+                    <el-form-item class="serviceSubmitBtn" v-else>
+                        <el-button v-if="serviceStatus=='6'" type="primary" disabled>客户已评价</el-button>
+                        <el-button @click="submitSendForm('customerForm')" type="primary" v-else>{{submitName}}</el-button>
+                    </el-form-item>   
+                </el-form>
+            </div>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -223,6 +595,7 @@ import fetch from "../../utils/ajax";
 import loadingtmp from "@/components/load/loading";
 import BMap from 'BMap'
 import LocationSdk from "@/utils/wxUtils"
+import slacommon from '@/utils/slacommon.js';
 const cityOptions = ['上海', '北京', '广州', '深圳'];
 export default {
   name: "workBenchSLAfeedback",
@@ -237,9 +610,17 @@ export default {
       checkdcFlag:false,//问题显示
       warnVisible:false,//答错问题提示
       showModal: false,//图片显示
-      leaveVisible:false,
+      phoneVisible:false,
+      // leaveVisible:false,
+      // rateVisible:false,//客户评价显示
       feedbackVisible:false,//先完成结果反馈再进行离场
       workTypeVisible:false,//工单类型为“现场实施”或“现场信息搜集”，工程师点击“离场”逻辑弹框
+      workConfirmFlag:false,//实施前确认
+      taskVisible:false,//仅需任务反馈弹框
+      caseVisible:false,//需反馈任务和故障的弹框
+      summaryFlag:false,//完成后总结
+      // isShow:false,//短信客户信息是否显示
+      feedbackType:'',
       radio: 0,
       typeid: "",
       form:{
@@ -247,10 +628,28 @@ export default {
         des2:"",
         des3:"",
         option:[],
-        leaveradio:0
+        taskradio:0,
+        caseradio:0,
+        customerContactor:'',
+        customerCellnumber:''
       },
+      formData:{
+        caseServiceQuestion:{
+        },//实施前确认参数
+        userAndPrjItem:{},//完成后总结参数
+        serviceType:"",
+        workResult:""//完成后总结参数
+      },
+      customerForm:{
+          empname:'',
+          mobileno:'',
+          empId:''
+      },
+      submitName:'提交并发送客户评价连接',
+      customerList:'',
       date:"",
       status: "",
+      serviceStatus:'',
       SLAObj: [],
       workInfo:{},
       differDistance:0,
@@ -258,6 +657,9 @@ export default {
       workId:this.$route.query.workId,
       caseId:this.$route.query.caseId,
       taskId:this.$route.query.taskId,
+      workTypeId:this.$route.query.workTypeId,
+      slaTypeId:'',
+      serviceType:'',
       clientHeight:'',
       checkedCities1: ['上海', '北京'],
       cities: cityOptions,
@@ -276,7 +678,22 @@ export default {
       feedbackDesc:"请先完成结果反馈再进行离场（故障解决，故障解决不成功，任务已完成，任务未完成四选一）",
       workTypeWarn:'',
       workTypeStatus:'',//离场进行工单类型的判断（未备件整理；未使用件）
-      hasService:''//离场有无服务单判断，有服务单:1；无服务单:0
+      // shortUrl:'',
+      checked:[
+        {ifY1:false,ifF1:false},
+        {ifY2:false,ifF2:false},
+        {ifY3:false,ifF3:false},
+        {ifY4:false,ifF4:false},
+        {ifY5:false,ifF5:false},
+        {ifY6:false,ifF6:false}
+      ], 
+      workResultInfo:'',//完成后总结参数
+      workResultArr:[],
+      serviceTypeArr:[],
+      content:"工作内容",
+      result:"工作结果",//完成后总结参数
+      // hasService:''//离场有无服务单判断，有服务单:1；无服务单:0
+      serviceCd:'',//短信链接
     };
   },
   props: {
@@ -296,6 +713,18 @@ export default {
   },
 
   created: function() {
+    if(this.$route.query.dialogVisible0){
+      this.dialogVisible0 = this.$route.query.dialogVisible0
+    }
+    console.log("workTypeId",this.workTypeId);
+    if(this.workTypeId=='XCSS'){//现场实施用case故障处理
+      this.serviceType = 1;
+    }else if(this.workTypeId=='XXSJ'||this.workTypeId=='XJ'||this.workTypeId=='XJBG'||this.workTypeId=='ZCFW'||this.workTypeId=='JSZC'){
+      this.serviceType = 2
+    }else{
+      this.serviceType = 0//无服务单
+    }
+    this.getWorkCustList();
     this.getWorkInfo();
     if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
       this.clientHeight = (document.documentElement.clientHeight-90)+'px'
@@ -325,14 +754,92 @@ export default {
       this.bgDef = this.imgRandom[randomKeys[index]].suprizeUrl;
       console.log("bgDef",this.bgDef);
     },
+    getWorkCustList(){
+        fetch.get("?action=/work/getWorkCustList&WORK_ID="+this.workId).then(res=>{
+            console.log("getWorkCustList",res);
+            if(res.STATUSCODE=='0'){
+                this.customerList = res.data;
+            }else{
+                this.$message({
+                  message:res.MESSAGE,
+                  type: 'error',
+                  center: true,
+                  customClass: 'msgdefine'
+              });
+            }
+        })
+    },
+    npmNameChange(){
+      for(let i =0;i<this.customerList.length;i++){
+          if(this.customerList[i].empname === this.customerForm.empname){
+              this.customerForm.mobileno = this.customerList[i].mobileno;
+              this.customerForm.empId = this.customerList[i].empid;
+          }
+      }
+    },
+    submitSendForm(){
+      const loading = this.$loading({
+          lock: true,
+          text: '发送短信中...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(255, 255, 255, 0.3)'
+      });
+      if(this.customerForm.empname===''){
+          this.$message({
+              message:'请选择客户联系人!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          loading.close();
+          return false
+      }
+      if(this.customerForm.mobileno===''){
+          this.$message({
+              message:'请选择客户联系人电话!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          loading.close();
+          return false
+      }
+      let params = "&url=http://wxjfb.dcits.com/home/onsiteServiceInfo&CASE_ID="+this.caseId+
+            "&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType+
+            "&evaluateId="+this.evaluateId+"&serviceType="+this.serviceType+
+            "&workId="+this.workId+"&userId="+this.customerForm.empId;
+      fetch.get("?action=/system/getShortUrl"+params).then(res=>{
+          console.log("getShortUrl",res);
+          let shortUrl = res.shorturl
+          // this.phoneVisible = true;
+          console.log("customerPhone",this.customerForm.mobileno);
+          let content = "尊敬的客户您好，工程师已完成了现场实施，请您对我们的服务进行评价，谢谢！"+shortUrl
+          fetch.get("?action=/work/sendCustEvaluate&MOBILE="+this.customerForm.mobileno+"&CONTENT="+content+
+                            "&SERVICE_TYPE="+this.serviceType+"&SERVICE_ID="+this.serviceId+"&EMPNAME="+this.customerForm.empname).then(res=>{
+              console.log("sendCustEvaluate",res);
+              loading.close();
+              if(res.STATUSCODE=='0'){
+                  this.phoneVisible = true;
+              }else{
+                  this.$message({
+                  message:res.MESSAGE,
+                  type: 'error',
+                  center: true,
+                  customClass: 'msgdefine'
+                  });
+              }
+          })
+      })           
+    },
     getWorkInfo:function(){
-      console.log("workId",this.$route.query.workId)
       fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res => {
         console.log("getWorkInfo",res);
         if(res.STATUSCODE=='0'){ 
           this.workInfo = res.DATA[0];
           let baseInfo = res.DATA[0];
           this.SLAObj = baseInfo.slaStatus;
+          this.form.customerContactor = res.DATA[0].customerContactor;
+          this.form.customerCellnumber = res.DATA[0].customerCellnumber; 
           for(let i=0;i<this.SLAObj.length;i++){
             if(this.SLAObj[i].slaTypeId == 5&& this.SLAObj[i].ifFeedback=='1'){
               this.isDcFeedBack = true;
@@ -355,7 +862,6 @@ export default {
       function success(res){
         var lat = res.latitude;//gps经纬度
         var lng = res.longitude;
-        // setTimeout(function () {
           self.gpsPoint = new BMap.Point(lng,lat);
           var convertor = new BMap.Convertor();
           var pointArr = [];
@@ -369,24 +875,8 @@ export default {
             if(self.differDistance<=4){
               if(slaTypeId==5){
                 let now = new Date();
-                let currentdate = self.formatDateTime(now);//到场时间限制
+                let currentdate = slacommon.formatDateTime(now);//到场时间限制
                 self.intervalTime(self.requireArriveTime,currentdate);
-                // self.clientHeight = (document.documentElement.clientHeight-90)+'px'
-                // self.randomPic();//随机选取图片
-                // self.showModal = true;//显示随机图片10s
-                // self.requestNum=0;//问题接口请求次数
-                // const TIME_COUNT = 5;
-                // self.seconds = 5;
-                // setInterval(()=>{
-                //   if(self.seconds > 0 && self.seconds <= TIME_COUNT){
-                //     self.seconds--;
-                //   }
-                // },1000)
-                // setTimeout(()=>{
-                //   self.showModal = false;//10s后关闭随机图片框
-                //   self.checkdcFlag = true;//显示问题弹框
-                //   self.getQuestionArrive();//调用问题接口，获取问题
-                // },5000) 
               }else if(slaTypeId==7){
                 self.leavebjCheck();
               }
@@ -400,7 +890,6 @@ export default {
               })
             }
           })
-        // },1000)
       }
       LocationSdk.getLocation(this,success,loading)//通过h5获取位置信息
     },
@@ -410,20 +899,6 @@ export default {
       var pointB = new BMap.Point(parseFloat(longitude), parseFloat(latitude))  // 店铺的经纬度
       var distance = (map.getDistance(this.pointA, pointB) / 1000).toFixed(2) // 保留小数点后两位
       return distance
-    },
-    formatDateTime:function(date) {  
-        let y = date.getFullYear();  
-        let m = date.getMonth() + 1;  
-        m = m < 10 ? ('0' + m) : m;  
-        let d = date.getDate();  
-        d = d < 10 ? ('0' + d) : d;  
-        let h = date.getHours();  
-        h=h < 10 ? ('0' + h) : h;  
-        let minute = date.getMinutes();  
-        minute = minute < 10 ? ('0' + minute) : minute;  
-        let second=date.getSeconds();  
-        second=second < 10 ? ('0' + second) : second;  
-        return y + '/' + m + '/' + d+' '+h+':'+minute+':'+second;  
     },
 
     //满足到场时间要求
@@ -457,8 +932,6 @@ export default {
     },
     //工程师操作时间差计算
     intervalTime:function(startTime,endTime){
-      console.log(startTime);
-      console.log(endTime);
       var self = this;
       function tranDate (time) {
         return new Date(time.replace(/-/g, '/')).getTime();
@@ -467,7 +940,7 @@ export default {
       let control2 = startTime.substring(0,10)+" 19:00:00";//显示时间19:00
       let time1 = new Date(control1);
       let time2 = new Date(time1.getTime()+24*60*60*1000);//次日08:00点
-      let control3 = this.formatDateTime(time2);//显示时间次日08：00
+      let control3 = slacommon.formatDateTime(time2);//显示时间次日08：00
       let restrict1 = tranDate(control1);//转换限制时间为08:00的时间格式
       let restrict2 = tranDate(control2);//转换限制时间为19:00的时间格式
       let restrict3 = tranDate(control3);//转换限制时间为次日08：00的时间格式
@@ -502,25 +975,6 @@ export default {
       }else{
         self.notify(startTime,hours);
       }
-      // if(days==0&&hours<=2){
-      //   this.clientHeight = (document.documentElement.clientHeight-90)+'px'
-      //   this.randomPic();//随机选取图片
-      //   this.showModal = true;//显示随机图片10s
-      //   this.requestNum=0;//问题接口请求次数
-      //   const TIME_COUNT = 5;
-      //   setTimeout(()=>{
-      //     this.showModal = false;//10s后关闭随机图片框
-      //     this.checkdcFlag = true;//显示问题弹框
-      //     this.getQuestionArrive();//调用问题接口，获取问题
-      //   },5000) 
-      // }else{
-      //   this.$notify.info({
-      //     title: '提示',
-      //     message: '当前不在任务要求到场时间范围内，无法操作;如果“要求到场时间”设置不正确，请联系CMO修改',
-      //     type: 'warning',
-      //     duration:0
-      //   });
-      // }
     },
     getTime:function() {
       var date = new Date();
@@ -551,10 +1005,80 @@ export default {
       })
     },
     dialogopen(slaTypeId) {
+      this.slaTypeId=slaTypeId;
       this.date=this.$options.methods.getTime();
       this.typeid = slaTypeId;
-      if (slaTypeId == 8 || slaTypeId == 10) {
+      if(slaTypeId == null){
+        this.form.taskradio = 0;
+        this.form.caseradio = 0;
+        let caseType = this.workInfo.caseType;
+        let workType = this.workInfo.workType;
+        let caseTypeFlag1 = (caseType==='故障');
+        let caseTypeFlag2 = (caseType==='技术咨询');
+        let caseTypeFlag3 = (caseType==='RMA');
+        let workTypeFlag1 = (workType==='现场信息收集');
+        let workTypeFlag2 = (workType==='远程指导实施');
+        let workTypeFlag3 = (workType==='现场实施');
+        if(caseTypeFlag1||caseTypeFlag2||caseTypeFlag3){
+          if(workTypeFlag1||workTypeFlag2||workTypeFlag3){
+            //需反馈任务和故障解决的工单
+            this.taskVisible = true;
+            this.feedbackType = "case";
+          }else{
+            //仅需反馈任务的工单
+            this.taskVisible = true;
+            this.feedbackType = "task";
+          }
+        }else{
+          //仅需反馈任务的工单
+          this.taskVisible = true;
+          this.feedbackType = "task";
+        }
+        // fetch.get("?action=/work/getSLAFeedbackList2&WORK_ID="+this.workId).then(res=>{
+        //   console.log("getSLAFeedbackList2",res);
+
+        // })
+      }
+      else if(slaTypeId == 5){
+        if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){        
+          //类型是到场逻辑处理
+          this.getLocation(slaTypeId);
+        }else if(this.workInfo.caseType!='故障'){
+          if(this.serviceType == 0){
+            this.dialogVisible0 = true;
+          }else{
+            this.newService(this.serviceType);
+          }
+          // this.dialogVisible0 = true;
+        }else{
+          this.dialogVisible0 = true;
+        }
+      }else if(slaTypeId == 7){
         if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){
+          this.getLocation(slaTypeId);
+        }
+        // else if(this.workInfo.caseType!='故障'){
+        //   if(this.serviceType == 0){
+        //     this.dialogVisible0 = true;
+        //   }else{
+        //     this.rateVisible = true;
+        //     // this.newService(this.serviceType);
+        //   }
+        //   // this.dialogVisible0 = true;
+        // }
+        else{
+          this.dialogVisible0 = true;
+        }
+      } 
+      else {
+        this.dialogVisible0 = true;
+      }
+    },
+    //实施结果反馈前对到场操作的控制
+    dcCheck(slaTypeId){
+      if (slaTypeId == 8 || slaTypeId == 10) {
+        this.typeid = slaTypeId;
+        // if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){
           if(this.isDcFeedBack){
             this.dialogVisible1 = true;
           }else{
@@ -566,12 +1090,13 @@ export default {
               customClass: 'msgdefine'
             })
           }
-        }else{
-          this.dialogVisible1 = true;
-        }
+        // }else{
+        //   this.dialogVisible1 = true;
+        // }
       }else if(slaTypeId == 6 || slaTypeId == 9){
+        this.typeid = slaTypeId;
         console.log(slaTypeId);
-        if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){
+        // if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){
           if(this.isDcFeedBack){
             this.dialogVisible0 = true;
           }else{
@@ -583,32 +1108,42 @@ export default {
               customClass: 'msgdefine'
             })
           }
-        }else{
-          this.dialogVisible0 = true;
-        }
-      }else if(slaTypeId == 5){
-        // let now = new Date();
-        //     let currentdate = this.formatDateTime(now);//到场时间限制
-        //     this.intervalTime(this.requireArriveTime,currentdate);
-        if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){        
-          //类型是到场逻辑处理
-          this.getLocation(slaTypeId);
-        }else{
-          this.dialogVisible0 = true;
-        }
-      }else if(slaTypeId == 7){
-        if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){
-          this.getLocation(slaTypeId);
-        }else{
-          this.dialogVisible0 = true;
-        }
-      } 
-      else {
-        this.dialogVisible0 = true;
+        // }else{
+        //   this.dialogVisible0 = true;
+        // }
       }
     },
-    //离场备件判断
+    //点击实施结果反馈操作
+    taskRadio(type){
+      console.log("1111111");
+      if(type==='task'){//仅需完成任务的工单
+        this.taskVisible = false;
+        if(this.form.taskradio==1){//任务完成
+          this.dcCheck('9');
+        }else if(this.form.taskradio==2){//任务未完成
+          this.dcCheck('10');
+        }
+      }else{//先完成任务反馈在完成故障反馈
+        this.taskVisible = false;
+        if(this.form.taskradio==1){//任务完成弹出故障解决和未解决单选框
+          this.caseVisible = true;
+        }else if(this.form.taskradio==2){//任务未完成
+          this.dcCheck('10');
+        }
+      }
+    },
+    //
+    caseRadio(){
+      this.caseVisible = false;
+      if(this.form.caseradio==1){//故障解决成功
+        this.dcCheck('6');
+      }else if(this.form.caseradio==2){//故障解决不成功
+        this.dcCheck('8');
+      }
+    },
+    //离场时备件判断
     leavebjCheck(){
+      console.log("workTypeStatus",this.workTypeStatus);
       if(this.workTypeStatus==1){
         this.workTypeVisible = true;
         this.workTypeWarn = '请先完成备件整理再进行离场反馈';
@@ -618,46 +1153,69 @@ export default {
         this.workTypeWarn = '请确认未使用件的真实性？';
         return false;
       }else{
-        this.createService();
+        this.getFeedbackResult();
       }
     },
-    //离场有无服务单逻辑判断
-    createService(){
-      if(this.hasService){
-        //工程师必须反馈处理结果后（故障解决，故障解决不成功，任务已完成，任务未完成四选一完成SLA反馈），才可以点击“离场”反馈
-        for(let i=0;i<this.SLAObj.length;i++){
-          if(this.SLAObj[i].ifFeedback=='1'){
-            if(this.SLAObj[i].slaTypeId =='6'||this.SLAObj[i].slaTypeId=='8'||this.SLAObj[i].slaTypeId=='9'||this.SLAObj[i].slaTypeId=='10'){
-              this.feedbackNum++;
-              break;
-            }
+    //工程师必须反馈处理结果后（故障解决，故障解决不成功，任务已完成，任务未完成四选一完成SLA反馈），才可以点击“离场”反馈
+    getFeedbackResult(){
+      for(let i=0;i<this.SLAObj.length;i++){
+          if(this.SLAObj[i].ifFeedback=='1'&&this.SLAObj[i].slaTypeId===null){
+            this.feedbackNum++;
+            break;
           }
         }
+        console.log('serviceType',this.serviceType);
         if(this.feedbackNum){
           this.dialogVisible0 = true;
+          // if(this.serviceType===0){
+          //   this.dialogVisible0 = true;
+          // }else{
+          //   this.rateVisible = true;
+          // }
         }else{
           this.feedbackVisible = true;
         }
-      }else{
-        this.leaveVisible = true;
-      }
     },
-    //点击离场，若无服务单则弹出创建服务单弹框；点击弹框单选按钮
-    leaveRadio(){
-      this.leaveVisible = false;
-      if(this.form.leaveradio==1){//创建case故障服务单
-        fetch.get("?action=/work/SubmitCaseTroubleShootingServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
-          console.log(res);
-          let data = res.TEMP;     
-          this.$router.push({name: 'onsiteServiceInfo', query: {serviceId:data.serviceId,evaluateId:data.evaluateId,caseId:this.caseId,workId:this.workId,taskId:this.taskId,serviceType:this.form.leaveradio,type:'SLA'}})            
-        })
-      }else if(this.form.leaveradio==2){//创建现场服务单
-        fetch.get("?action=/work/SubmitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
-          console.log(res);
-          let data = res.TEMP;
-          this.$router.push({name: 'onsiteServiceInfo', query: {serviceId:data.serviceId,caseId:this.caseId,workId:this.workId,taskId:this.taskId,evaluateId:data.evaluateId,serviceType:this.form.leaveradio,type:'SLA'}})
-        })
-      }
+    // sendPhoneMessage(){       
+    //   const loading = this.$loading({
+    //       lock: true,
+    //       text: '发送短信中...',
+    //       spinner: 'el-icon-loading',
+    //       background: 'rgba(255, 255, 255, 0.3)'
+    //   });
+    //   let params = "&url=http://wxjfb.dcits.com/home/onsiteServiceInfo&CASE_ID="+this.caseId+
+    //       "&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType+
+    //       "&evaluateId="+this.evaluateId+"&serviceType="+this.serviceType+
+    //       "&workId="+this.workId;
+    //   let content = '';
+    //   fetch.get("?action=/system/getShortUrl"+params).then(res=>{
+    //       console.log("getShortUrl",res);
+    //       this.shortUrl = res.shorturl;
+    //       content = "尊敬的客户您好，工程师已完成服务单号为"+this.serviceCd+"的现场实施，请您关注微信公众号神州信息锐行服务，点击菜单评价进行用户评价"+this.shortUrl;
+    //       this.sendPhone(content,loading);
+    //   })                
+    // },
+    // sendPhone(content,loading){
+    //   fetch.get("?action=/risk/sendPhone&mobile="+this.form.customerCellnumber+"&content="+content).then(res=>{
+    //       console.log("sendPhone",res);
+    //       this.rateVisible = false;
+    //       loading.close();
+    //       if(res.STATUSCODE=='1'){
+    //           this.phoneVisible = true;
+    //       }else{
+    //           this.$message({
+    //           message:res.MESSAGE,
+    //           type: 'error',
+    //           center: true,
+    //           customClass: 'msgdefine'
+    //           });
+    //       }
+    //   })
+    // },
+    confirmSendSuccess(){
+      this.phoneVisible = false;
+      this.summaryFlag = false;
+      // this.dialogVisible0 = true;
     },
     questionSubmit(){//提交问题
       const loading = this.$loading({
@@ -712,17 +1270,52 @@ export default {
         params.questionId = vm.questionObj.QUESTION_ID;
         params.answerIds = answerIds;
         params.ifAnswerTrue = ifAnswerTrue;
-        fetch.questionPost("?action=/risk/saveAnswerArrive",params).then(res=>{
+        let data = {}
+        data.data = JSON.stringify(params);
+        fetch.questionPost("?action=/risk/saveAnswerArrive",data).then(res=>{
           loading.close();
           console.log("saveAnswerArrive",res);
           if(res.STATUSCODE=='1'){//问题回答正确，显示反馈框，进行到场反馈
               vm.checkdcFlag = false;
-              vm.dialogVisible0 = true;
+              // vm.dialogVisible0 = true;
+              //服务单实施前确认
+              vm.newService(vm.serviceType);
           }else{//问题回答错误，弹出弹框，提示回答错误并给出正确答案
             vm.warnVisible = true;
             vm.wrongMessage = res.MESSAGE;          
           }
         })
+      }
+    },
+    newService(serviceType){
+      console.log("serviceType",serviceType); 
+      console.log("serviceId",this.serviceId);
+      if(serviceType == 2){//现场服务单
+          if(!this.serviceId){
+            fetch.get("?action=/work/SubmitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
+              console.log('SubmitSceneServiceFormInfo',res);
+              this.serviceId = res.TEMP.serviceId;
+              this.evaluateId = res.TEMP.evaluateId;     
+              let data = res.TEMP;   
+              this.getCaseServiceQuestion(); 
+            })
+          }else{
+            this.getCaseServiceQuestion(); 
+          }
+      }else if(serviceType == 1){//故障解决服务单
+        if(!this.serviceId){
+          fetch.get("?action=/work/SubmitCaseTroubleShootingServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
+              console.log("SubmitCaseTroubleShootingServiceFormInfo",res);
+              let data = res.TEMP; 
+              this.serviceId = res.TEMP.serviceId;
+              this.evaluateId = res.TEMP.evaluateId; 
+              this.getCaseServiceQuestion();            
+          })
+        }else{
+          this.getCaseServiceQuestion(); 
+        }
+      }else{
+         this.dialogVisible0 = true;
       }
     },
     getNewQuestion(){//点击问题答错框确定按钮，关闭此弹框，显示问题界面
@@ -736,9 +1329,9 @@ export default {
       }else{//回答3道题，不管对错，进行到场反馈
         this.warnVisible = false;
         this.checkdcFlag = false;
-        this.dialogVisible0 = true;
-      }
-      
+        this.newService(this.serviceType);
+        // this.dialogVisible0 = true;
+      }     
     },
     onSubmit() {
       const loading = this.$loading({
@@ -751,41 +1344,720 @@ export default {
       let params="&REASON="+this.form.des2+"&EXPLAIN="+this.form.des1+this.form.des3;
       fetch.get("?action=/work/UpdateWorkSLAStatus&WORK_ID="+vm.$route.query.workId+
       "&SLA_TYPE="+vm.typeid+"&OPERATE_DATE="+vm.date+params).then(res=>{
+        console.log("UpdateWorkSLAStatus",res);
         loading.close();
-              if(res.STATUSCODE=="0"){
-                this.$message({
-                  message:'提交成功',
-                  type: 'success',
-                  center: true,
-                  customClass: 'msgdefine',
-                  TimeRanges:'1000'
-                });
-                this.dialogVisible0=false;
-                this.dialogVisible1=false;
-                vm.form.des1 = '';
-                vm.form.des2 = '';
-                vm.form.des3 = '';
-                vm.getWorkInfo();
-              }else{
-                this.$message({
-                  message:res.MESSAGE,
-                  type: 'error',
-                  center: true,
-                  customClass: 'msgdefine'
-                });
-                this.dialogVisible0=false;
-                this.dialogVisible1=false;
-              }              
-              console.log(res);
+        if(res.STATUSCODE=="0"){
+          this.$message({
+            message:'提交成功',
+            type: 'success',
+            center: true,
+            customClass: 'msgdefine',
+            TimeRanges:'1000'
+          });
+          this.dialogVisible0=false;
+          this.dialogVisible1=false;
+          this.serviceId = res.SERVICEID;
+          vm.form.des1 = '';
+          vm.form.des2 = '';
+          vm.form.des3 = '';
+          vm.getWorkInfo();  
+          if(this.slaTypeId == null){            
+            vm.getEndSummary();
+          }       
+        }else{
+          this.$message({
+            message:res.MESSAGE,
+            type: 'error',
+            center: true,
+            customClass: 'msgdefine'
+          });
+          this.dialogVisible0=false;
+          this.dialogVisible1=false;
+        }              
       });
+    },
+    getEndSummary(){
+      console.log("serviceType",this.serviceType);
+      console.log("serviceId",this.serviceId);
+      if(this.serviceType==2){
+          this.summaryFlag = true;
+          fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId).then(res=>{
+              console.log("GetOnsiteServiceFormInfo",res);
+              this.formData.userAndPrjItem = res.DATA[0];
+              this.serviceCd = res.DATA[0].serviceCd;
+              this.workResultInfo = res.DATA[0].workResult;
+              this.ifSendEvaluate = res.DATA[0].ifSendEvaluate;
+              this.serviceStatus = res.DATA[0].serviceStatus;
+              if(res.DATA[0].serviceStatus==='2'){
+                  if(res.DATA[0].ifSendEvaluate===1){                        
+                      this.submitName = "再次发送客户评价连接";
+                  }else{
+                      this.submitName = "发送客户评价连接";
+                  }
+              }
+              // if(res.DATA[0].workResult){
+              //     this.isShow = true;
+              // }
+              // if(res.DATA[0].serviceStatus!="6"){
+              //     if(res.DATA[0].ifSendEvaluate==0){
+              //         this.submitName = "发送客户评价连接";
+              //     }else if(res.DATA[0].ifSendEvaluate==1){                        
+              //         this.submitName = "再次发送客户评价连接";
+              //     }
+              // }
+          })
+          fetch.get("?action=/system/getDict2&DICT_TYPE=NT_SERVICE_TYPE","").then(res=>{
+              console.log("serviceTypeArr",res);
+              this.serviceTypeArr = res.data;
+          })
+          fetch.get("?action=/system/getDict2&DICT_TYPE=NT_CASE_WORK_RESULT","").then(res=>{
+              console.log("getDict2",res);
+              this.workResultArr = res.data;
+          })
+      }else if(this.serviceType==1){
+          this.summaryFlag = true;
+          fetch.get("?action=/work/GetCaseroubleShootingServiceFormInfo&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId).then(res=>{
+              console.log("GetCaseroubleShootingServiceFormInfo",res);
+              this.formData.userAndPrjItem = res.DATA[0];
+              this.workResultInfo = res.DATA[0].implementResult;
+              this.ifSendEvaluate = res.DATA[0].ifSendEvaluate;
+              this.serviceStatus = res.DATA[0].serviceStatus;
+              if(res.DATA[0].serviceStatus==='2'){
+                if(res.DATA[0].ifSendEvaluate===1){    
+                  this.submitName = "再次发送客户评价连接";
+                }else{
+                  this.submitName = "发送客户评价连接";
+                }
+              }
+              // if(res.DATA[0].implementResult){
+              //     this.isShow = true;
+              // }
+              // if(res.DATA[0].serviceStatus=="6"){
+              //     if(res.DATA[0].ifSendEvaluate==0){
+              //         this.submitName = "发送客户评价连接";
+              //     }else if(res.DATA[0].ifSendEvaluate==1){    
+              //         this.submitName = "再次发送客户评价连接";
+              //     }
+              // }
+          })
+      }
     },
     confirm(){
       this.workTypeVisible = false;
-      this.createService();
+      this.getFeedbackResult();
+      // this.createService();
     },
     onrefuse(){
       this.workTypeVisible = false
       this.$router.push({name:'sparePartsSortOut',query:{caseId:this.caseId,workId:this.workId}})
+    },
+    //获取服务单数据
+    getCaseServiceQuestion(){
+      // console
+      fetch.get("?action=/work/getCaseServiceQuestion&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
+          console.log("getCaseServiceQuestion",res)
+          this.workConfirmFlag = true;            
+          if(this.serviceType==2){
+              this.evaluateId = res.dataService[0].evaluateId;
+              this.formData.caseServiceQuestion = res.dataService[0];        
+          }else{
+              this.evaluateId = res.dataDealService[0].evaluateId;
+              this.formData.caseServiceQuestion = res.dataDealService[0];
+          }
+          if(this.formData.caseServiceQuestion.serviceTime == null){
+              this.formData.caseServiceQuestion.serviceTime = new Date();
+          }
+          if(this.formData.caseServiceQuestion.numberIf1==1){
+              this.checked[0].ifY1 = true;
+          }else if(this.formData.caseServiceQuestion.numberIf1==0){
+              this.checked[0].ifF1 = true;
+          }
+          if(this.formData.caseServiceQuestion.numberIf2==1){
+              this.checked[1].ifY2 = true;
+          }else if(this.formData.caseServiceQuestion.numberIf2==0){
+              this.checked[1].ifF2 = true;
+          }
+          if(this.formData.caseServiceQuestion.numberIf3==1){
+              this.checked[2].ifY3 = true;
+          }else if(this.formData.caseServiceQuestion.numberIf3==0){
+              this.checked[2].ifF3 = true;
+          }
+          if(this.formData.caseServiceQuestion.numberIf4==1){
+              this.checked[3].ifY4 = true;
+          }else if(this.formData.caseServiceQuestion.numberIf4==0){
+              this.checked[3].ifF4 = true;
+          }
+          if(this.formData.caseServiceQuestion.numberIf5==1){
+              this.checked[4].ifY5 = true;
+          }else if(this.formData.caseServiceQuestion.numberIf5==0){
+              this.checked[4].ifF5 = true;
+          }
+          if(this.formData.caseServiceQuestion.numberIf6==1){
+              this.checked[5].ifY6 = true;
+          }else if(this.formData.caseServiceQuestion.numberIf6==0){
+              this.checked[5].ifF6 = true;
+          }
+      })
+    },
+    changeIfY1(val){
+      if(val==true){
+          this.checked[0].ifY1 = true;
+          this.checked[0].ifF1 = false;
+      }
+    },
+    changeIfF1(val){
+      if(val==true){
+          this.checked[0].ifF1 = true;
+          this.checked[0].ifY1 = false;
+      }
+    },
+    changeIfY2(val){
+      if(val==true){
+          this.checked[1].ifY2 = true;
+          this.checked[1].ifF2 = false;
+      }
+    },
+    changeIfF2(val){
+      if(val==true){
+          this.checked[1].ifF2 = true;
+          this.checked[1].ifY2 = false;
+      }
+    },
+    changeIfY3(val){
+      if(val==true){
+          this.checked[2].ifY3 = true;
+          this.checked[2].ifF3 = false;
+      }
+    },
+    changeIfF3(val){
+      if(val==true){
+          this.checked[2].ifF3 = true;
+          this.checked[2].ifY3 = false;
+      }
+    },
+    changeIfY4(val){
+      if(val==true){
+          this.checked[3].ifY4 = true;
+          this.checked[3].ifF4 = false;
+      }
+    },
+    changeIfF4(val){
+      if(val==true){
+          this.checked[3].ifF4 = true;
+          this.checked[3].ifY4 = false;
+      }
+    },
+    changeIfY5(val){
+      if(val==true){
+          this.checked[4].ifY5 = true;
+          this.checked[4].ifF5 = false;
+      }
+    },
+    changeIfF5(val){
+      if(val==true){
+          this.checked[4].ifF5 = true;
+          this.checked[4].ifY5 = false;
+      }
+    },
+    changeIfY6(val){
+      if(val==true){
+          this.checked[5].ifY6 = true;
+          this.checked[5].ifF6 = false;
+      }
+    },
+    changeIfF6(val){
+      if(val==true){
+          this.checked[5].ifF6 = true;
+          this.checked[5].ifY6 = false;
+      }
+    },
+    check(loading){
+      if(this.checked[0].ifY1==true&&this.formData.caseServiceQuestion.operationStarttime==null){
+          loading.close();
+          this.$message({
+              message:'请选择操作开始时间',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          return false
+      }
+      if(this.checked[0].ifY1==true&&this.formData.caseServiceQuestion.operationEndtime==null){
+          loading.close();
+          this.$message({
+              message:'请选择操作结束时间',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          return false
+      }
+      if(this.checked[1].ifY2==true&&this.formData.caseServiceQuestion.stopStarttime==null){
+          loading.close();
+          this.$message({
+              message:'请选择停机开始时间',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          return false
+      }
+      if(this.checked[1].ifY2==true&&this.formData.caseServiceQuestion.stopEndtime==null){
+          loading.close();
+          this.$message({
+              message:'请选择停机结束时间',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          return false
+      }
+      if(this.checked[2].ifY3==true&&this.formData.caseServiceQuestion.lastbackupTime==null){
+          loading.close();
+          this.$message({
+              message:'请选择选项3最近一次备份时间',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          return false
+      }
+      if(this.checked[4].ifY5==true&&this.formData.caseServiceQuestion.beforeLastbackupTime==null){
+          loading.close();
+          this.$message({
+              message:'请选择选项5最近一次备份时间',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          return false
+      }
+      if(this.checked[5].ifY6==true&&this.formData.caseServiceQuestion.backuptestTime==null){
+          loading.close();
+          this.$message({
+              message:'请选择备份测试时间',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          return false
+      }
+      if(this.checked[0].ifY1==true&&this.checked[0].ifF1==true||this.checked[0].ifY1==false&&this.checked[0].ifF1==false){
+          loading.close();
+          this.$message({
+              message:'序号1请选择是或者否,不能全选或不选!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          return false
+      }
+      if(this.checked[1].ifY2==true&&this.checked[1].ifF2==true||this.checked[1].ifY2==false&&this.checked[1].ifF2==false){
+          loading.close();
+          this.$message({
+              message:'序号2请选择是或者否,不能全选或不选!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          return false
+      }
+      if(this.checked[2].ifY3==true&&this.checked[2].ifF3==true||this.checked[2].ifY3==false&&this.checked[2].ifF3==false){
+          loading.close();
+          this.$message({
+              message:'序号3请选择是或者否,不能全选或不选!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          return false
+      }
+      if(this.checked[3].ifY4==true&&this.checked[3].ifF4==true||this.checked[3].ifY4==false&&this.checked[3].ifF4==false){
+          loading.close();
+          this.$message({
+              message:'序号4请选择是或者否,不能全选或不选!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          return false
+      }
+      if(this.checked[4].ifY5==true&&this.checked[4].ifF5==true||this.checked[4].ifY5==false&&this.checked[4].ifF5==false){
+          loading.close();
+          this.$message({
+              message:'序号5请选择是或者否,不能全选或不选!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          return false
+      }
+      if(this.checked[5].ifY6==true&&this.checked[5].ifF6==true||this.checked[5].ifY6==false&&this.checked[5].ifF6==false){
+          loading.close();
+          this.$message({
+              message:'序号6请选择是或者否,不能全选或不选!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          return false
+      }
+      return true
+  },
+  submitForm(formName){
+      const loading = this.$loading({
+          lock: true,
+          text: '提交中...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(255, 255, 255, 0.3)'
+      });
+      let vm= this;
+      this.$refs[formName].validate((valid) => {
+          if(valid){
+              if(!vm.check(loading)) return;                    
+              let temp = {};
+              temp.operationStarttime = this.formData.caseServiceQuestion.operationStarttime;
+              temp.operationEndtime = this.formData.caseServiceQuestion.operationEndtime;
+              temp.stopStarttime = this.formData.caseServiceQuestion.stopStarttime;
+              temp.stopEndtime = this.formData.caseServiceQuestion.stopEndtime;
+              temp.lastbackupTime = this.formData.caseServiceQuestion.lastbackupTime;
+              temp.beforeLastbackupTime = this.formData.caseServiceQuestion.beforeLastbackupTime;
+              temp.backuptestTime = this.formData.caseServiceQuestion.backuptestTime;
+              temp.serviceTime = this.formData.caseServiceQuestion.serviceTime;
+              temp.serviceId=this.serviceId;
+              if((temp.operationStarttime!=null&&this.checked[0].ifY1==false)||(temp.operationEndtime!=null&&this.checked[0].ifY1==false)){
+                  loading.close();
+                  this.$message({
+                      message:'序号1请选择是,取消否!',
+                      type: 'warning',
+                      center: true,
+                      customClass:'msgdefine'
+                  });
+                  return false;        
+              }
+              if((temp.stopStarttime!=null&&this.checked[1].ifY2==false)||(temp.stopEndtime!=null&&this.checked[1].ifY2==false)){
+                  loading.close();
+                  this.$message({
+                      message:'序号2请选择是,取消否!',
+                      type: 'warning',
+                      center: true,
+                      customClass:'msgdefine'
+                  });
+                  return false;         
+              }
+              if(temp.lastbackupTime!=null&&this.checked[2].ifY3==false){
+                  loading.close();
+                  this.$message({
+                      message:'序号3请选择是,取消否!',
+                      type: 'warning',
+                      center: true,
+                      customClass:'msgdefine'
+                  });
+                  return false;                       
+              }
+              if(temp.beforeLastbackupTime!=null&&this.checked[4].ifY5==false){
+                  loading.close();
+                  this.$message({
+                      message:'序号5请选择是,取消否!',
+                      type: 'warning',
+                      center: true,
+                      customClass:'msgdefine'
+                  });
+                  return false;                       
+              }
+              if(temp.backuptestTime!=null&&this.checked[5].ifY6==false){
+                  loading.close();
+                  this.$message({
+                      message:'序号6请选择是,取消否!',
+                      type: 'warning',
+                      center: true,
+                      customClass:'msgdefine'
+                  });
+                  return false;                       
+              }
+              if(this.checked[0].ifY1==true){
+                  temp.numberIf1=1;
+              }else{
+                  temp.numberIf1=0;
+              }
+              if(this.checked[1].ifY2==true){
+                  temp.numberIf2="1";
+              }else{
+                  temp.numberIf2="0";
+              }
+              if(this.checked[2].ifY3==true){
+                  temp.numberIf3="1";
+              }else{
+                  temp.numberIf3="0";
+              }
+              if(this.checked[3].ifY4==true){
+                  temp.numberIf4="1";
+              }else{
+                  temp.numberIf4="0";
+              }
+              if(this.checked[4].ifY5==true){
+                  temp.numberIf5="1";
+              }else{
+                  temp.numberIf5="0";
+              }
+              if(this.checked[5].ifY6==true){
+                  temp.numberIf6="1";
+              }else{
+                  temp.numberIf6="0";
+              }
+              let data = {};
+              data.serviceType = this.serviceType;
+              data.data = JSON.stringify(temp);
+              console.log(data);
+              fetch.questionPost("?action=/work/submitServiceQuestion",data).then(res=>{
+                  loading.close();
+                  console.log('submitServiceQuestion',res);
+                  if(res.STATUSCODE=="0"){
+                      this.$message({
+                          message:'提交成功',
+                          type: 'success',
+                          center: true,
+                          customClass: 'msgdefine'
+                      });
+                      vm.workConfirmFlag = false;
+                      vm.dialogVisible0 = true;
+                  }else{
+                      this.$message({
+                      message:res.MESSAGE+"发生错误",
+                      type: 'error',
+                      center: true,
+                      customClass: 'msgdefine'
+                      });
+                  }
+              })
+          }
+      })
+    },
+
+    summaryCheck(loading){
+      if(this.formData.serviceType==null&&this.serviceType==2){
+          this.$message({
+              message:'请选择服务类型!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          loading.close();
+          return false
+      }
+      if(this.formData.userAndPrjItem.arriveTime==null){
+          this.$message({
+              message:'请填写到场时间!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          loading.close();
+          return false
+      }
+      if(this.formData.userAndPrjItem.leaveTime==null){
+          this.$message({
+              message:'请填写离场时间!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          loading.close();
+          return false
+      }
+      if(this.formData.userAndPrjItem.realWork==null&&this.serviceType==2){
+          this.$message({
+              message:'请填写实际工时!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          loading.close();
+          return false
+      }
+      if(this.formData.workResult==null&&this.serviceType==2){
+          this.$message({
+              message:'请填写工作结果!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          loading.close();
+          return false
+      }
+      
+      if(this.formData.userAndPrjItem.workContent==null&&this.serviceType==2){
+          this.$message({
+              message:'请填写工作内容!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          loading.close();
+          return false
+      }
+      if(this.formData.userAndPrjItem.problemPlan==null&&this.serviceType==2){
+          this.$message({
+              message:'请填写存在问题!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          loading.close();
+          return false
+      }
+      if(this.formData.userAndPrjItem.faultDesc==null&&this.serviceType==1){
+          this.$message({
+              message:'请选择工作结果!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          loading.close();
+          return false
+      }
+      if(this.formData.userAndPrjItem.analysis==null&&this.serviceType==1){
+          this.$message({
+              message:'请填写分析诊断!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          loading.close();
+          return false
+      }
+      if(this.formData.userAndPrjItem.implementResult==null&&this.serviceType==1){
+          this.$message({
+              message:'请填写实施结果!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          loading.close();
+          return false
+      }
+      if(this.formData.userAndPrjItem.problemSuggest==null&&this.serviceType==1){
+          this.$message({
+              message:'请填写遗留问题及建议!',
+              type: 'warning',
+              center: true,
+              customClass:'msgdefine'
+          });
+          loading.close();
+          return false
+      }
+      if(this.customerForm.empname===''){
+        this.$message({
+            message:'请选择客户联系人!',
+            type: 'warning',
+            center: true,
+            customClass:'msgdefine'
+        });
+        loading.close();
+        return false
+      }
+      if(this.customerForm.mobileno===''){
+        this.$message({
+            message:'请选择客户联系人电话!',
+            type: 'warning',
+            center: true,
+            customClass:'msgdefine'
+        });
+        loading.close();
+        return false
+      }
+      return true;
+    },
+    submitSummaryForm(formName){
+      const loading = this.$loading({
+          lock: true,
+          text: '提交中...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(255, 255, 255, 0.3)'
+      });
+      let vm= this;
+      this.$refs[formName].validate((valid) => {
+          if(valid){
+              if(!vm.summaryCheck(loading)) return;
+              let data = {};
+                  data.serviceId = this.formData.userAndPrjItem.serviceId;
+                  data.opFlg = 1;
+                  data.customerId = this.formData.userAndPrjItem.customerId;
+              let temp = {};
+              temp.serviceId = this.formData.userAndPrjItem.serviceId;
+              temp.caseId=this.caseId;
+              if(vm.serviceType==2){
+                  temp.serviceType = this.formData.serviceType;
+                  temp.realWork = this.formData.userAndPrjItem.realWork;
+                  temp.workContent = this.formData.userAndPrjItem.workContent;
+                  temp.workResult = this.formData.workResult;
+                  temp.problemPlan = this.formData.userAndPrjItem.problemPlan;
+              }else{
+                  temp.faultDesc = this.formData.userAndPrjItem.faultDesc;
+                  temp.analysis = this.formData.userAndPrjItem.analysis;
+                  temp.implementResult = this.formData.userAndPrjItem.implementResult;
+                  temp.problemSuggest = this.formData.userAndPrjItem.problemSuggest;
+              }
+              temp.arriveTime = this.formData.userAndPrjItem.arriveTime;
+              temp.leaveTime = this.formData.userAndPrjItem.leaveTime;
+              console.log(temp);
+              data.data=JSON.stringify(temp);
+              console.log(data);
+              let nowWorkId = vm.workId;
+              let nowCaseId = vm.caseId;
+              let nowtaskId = vm.taskId;
+              let type = vm.type;
+              if(vm.serviceType==2){
+                  fetch.questionPost("?action=/work/UpdateSceneServiceFormInfo",data).then(res=>{
+                      console.log("UpdateSceneServiceFormInfo",res);    
+                      loading.close();
+                      if(res.STATUSCODE=="0"){
+                          this.$message({
+                          message:'提交成功',
+                          type: 'success',
+                          center: true,
+                          customClass: 'msgdefine'
+                          });
+                          // vm.isShow = true;
+                          vm.submitSendForm();
+                          vm.getEndSummary();
+                          // vm.summaryFlag = false;
+                      }else{
+                          this.$message({
+                          message:res.MESSAGE+"发生错误",
+                          type: 'error',
+                          center: true,
+                          customClass: 'msgdefine'
+                          });
+                      }
+                  })
+              }else{
+                  fetch.questionPost("?action=/work/UpdateCaseTroubleShootingServiceFormInfo",data).then(res=>{
+                      console.log(res);    
+                      loading.close();
+                      if(res.STATUSCODE=="0"){
+                          this.$message({
+                              message:'提交成功',
+                              type: 'success',
+                              center: true,
+                              customClass: 'msgdefine'
+                          });
+                          // vm.isShow = true;
+                          vm.submitSendForm();
+                          vm.getEndSummary();
+                          // vm.summaryFlag = false;
+                      }else{
+                          this.$message({
+                          message:res.MESSAGE+"发生错误",
+                          type: 'error',
+                          center: true,
+                          customClass: 'msgdefine'
+                          });
+                      }       
+                  })                     
+              }
+          }
+      })
     }
   }
 
@@ -812,7 +2084,25 @@ export default {
 .self-modal{z-index: 3000;}
 
 .dialogdc >>> .el-dialog__body{padding: 0px 0px}
-.dialogdc >>> .el-dialog__header{padding: 0px 0px 0px}
+.dialogdc >>> .el-dialog__header{padding: 0px 0px 0px;}
+.workconfirm >>> .el-dialog__header{position:fixed; top: 0; left: 0; right: 0; z-index: 999;display: flex; justify-content: center;align-items: center; background: #2698d6; height: 0.45rem; line-height: 0.45rem; padding: 0 0.1rem; color: #ffffff}
+.workconfirm >>> .el-dialog__title{color: #ffffff;font-size: 0.16rem;}
+.workconfirm >>> .confirmWarn{margin-top:0.45rem;font-size: 0.12rem;line-height: 0.2rem}
+
+.endSummaryView{width: 100%; position: relative;background-color: #ffffff;margin-top:0.45rem}
+.serviceInfoCell{white-space:normal;margin-top:0.45rem}
+.serviceInfoCell .serviceInfoTit{position: relative; line-height: 0.2rem; margin-left: 0.15rem; font-size: 0.14rem; color: #2698d6;}
+.serviceInfoCell .serviceInfoTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
+.serviceInfoCell .serviceInfoTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
+.serviceContent{background: #ffffff; color: #999999; padding: 0.1rem 0}
+.serviceContent >>> .el-form-item{border-bottom: 0.01rem; margin: 0.03rem 0;}
+.serviceContent >>> .el-form-item__label{font-size: 0.13rem; text-align: left}
+.article{line-height: 0.3rem; }
+.tableTd li{display: flex; line-height: 0.2rem; color: #666666;}
+.tableTd span{text-align: center;}
+.tableTd span:nth-child(1){width: 100%; text-align: left;}
+.tableTd span:nth-child(2){width: 100%;text-align: left}
+
 .dialogdc >>> .el-dialog__footer{padding: 0px 0px 0px}
 .dialogdc >>>.warnTextView{padding:0.1rem;background-color:#B22222;color:#ffffff;}
 .dialogdc >>>.imgView{display:flex;position: relative; width: 90%; height: 100%;background-color: #ffffff;padding-left:5%;padding-right: 5%}
@@ -830,4 +2120,13 @@ export default {
 
 .countDiv{float:right;margin-top:0.2rem;font-size:0.16rem;margin-right:0.2rem}
 .countButton{border-radius:50%;width:0.3rem;height:0.3rem;text-align:center;}
+
+.confirmView{margin:0.1rem 0;line-height: 0.2rem}
+.confirmView >>> .el-form-item{margin-bottom:0;}
+.selectBox{display: flex;}
+.serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
+.serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #ffffff;border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;z-index: 1}
+
+.sendMessageView{padding: 0.1rem}
+.sendMessageView>>>.des{padding: 0.1rem}
 </style>

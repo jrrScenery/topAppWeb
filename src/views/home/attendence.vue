@@ -139,9 +139,9 @@ export default {
     methods:{
         getObj(){
             this.obj[0].arr[0]={imgSrc: require('@/assets/images/punch.png'), text: '打卡', display:false};
-            this.obj[0].arr[1] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
-            this.obj[0].arr[2] = {imgSrc: require('@/assets/images/makeupAttendence.png'), text: '补考勤', href: 'makeUpAttendence',display:true};
-            this.obj[1].arr[0] = {imgSrc: require('@/assets/images/attendetail.png'), text: '考勤明细', href: 'checkAttenDetail',display:true};
+            // this.obj[0].arr[1] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
+            // this.obj[0].arr[2] = {imgSrc: require('@/assets/images/makeupAttendence.png'), text: '补考勤', href: 'makeUpAttendence',display:true};
+            // this.obj[1].arr[0] = {imgSrc: require('@/assets/images/attendetail.png'), text: '考勤明细', href: 'checkAttenDetail',display:true};
         },
         confirm(){
             this.warnVisible=false;
@@ -357,7 +357,7 @@ export default {
                 data.ifAnswerTrue = ifAnswerTrue;
                 // var params = new URLSearchParams();
                 // params.append("data",JSON.stringify(data));
-                // console.log("params",params);
+                // console.log("params",params); 
                 fetch.questionPost("?action=/risk/saveAnswer",data).then(res=>{
                     console.log("saveAnswer",res);
                     if(res.STATUSCODE=='1'){

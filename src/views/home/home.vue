@@ -147,6 +147,7 @@ export default {
     }
   },
   activated(){
+    console.log("000000000000");
     this.workBenchObj = [
         {arr: []},
         {arr: []},
@@ -160,6 +161,7 @@ export default {
     }
   },
   created(){
+    console.log("000000000000");
     this.getWorkBenchObj();  
   },
   methods: {

@@ -337,7 +337,7 @@ export default {
                 type: 'warning',
                 center: true,
                 customClass:'msgdefine'
-                });
+            });
         },
          
         onSubmit (formUpdateParts) {
@@ -391,8 +391,7 @@ export default {
                             });
                             this.isShow = false;
         
-                        }
-                        else{
+                        }else{
                             this.$message({
                                 message:res.MESSAGE+"发生错误",
                                 type: 'error',

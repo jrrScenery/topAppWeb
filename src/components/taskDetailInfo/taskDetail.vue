@@ -145,9 +145,12 @@ export default {
         }
         
     },
+    created(){
+        console.log("workId0000000:",this.$route.query.workId);
+    },
     beforeRouteLeave( to, from,next){
         if (to.name == 'workBenchTaskList') {
-            to.meta.isUseCache = true;    
+            to.meta.isUseCache = false;    
         }        
         next();
     },

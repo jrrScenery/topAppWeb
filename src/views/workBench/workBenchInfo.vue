@@ -58,29 +58,7 @@ export default {
     this.getProjectStat();
   },
   mounted(){
-    // fetch.get('?action=GetProjectStat',{}).then(res => {
-    //   console.log(res.data)
-    //   if("0"== res.STATUSCODE){
-
-    //     let logData = res.data;
-    //     let temparr= [] ;
-    //     let tempTypeId = -1;
-    //     logData.forEach(function(v,i,ar){
-    //       if(0 == temparr.length || v.BTSORT!= temparr[temparr.length-1]["typeid"] ){
-    //         temparr.push({"typeid":v.BTSORT,"inx":i,"name":v.BUSINESS_TYPE,arr:[]});
-    //         console.log(temparr[temparr.length-1]["typeid"])
-    //       }
-    //       temparr[temparr.length-1]["arr"].push(v);
-    //     })
-    //     console.log(temparr);
-    //     this.workBenchInfoObj= temparr;
-
-        
-    //   }
-    //   this.busy = false;
-    //   this.loadall = true;
-
-    // })
+   
   },
   methods: {
     getProjectStat(){

@@ -24,7 +24,7 @@
 <script>
 export default {
     name:'searchAttenDetail',
-    props: ['searchData'],
+    props: ['queryData'],
     data () {
         return {
             form: {

@@ -90,7 +90,7 @@ export default {
         background: 'rgba(255, 255, 255, 0.3)'
       });
       let vm= this;
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate((valid) => { 
         if (valid) {
           let params = "&PROJECT_ID="+ this.projectId +"&TYPE="+this.value4 + "&NAME="+this.formData.name + "&PHONE="+this.formData.phone+  "&CONTENT="+window.encodeURI(this.formData.article);
           fetch.get("?action=UpdateSuggest&CASE_ID="+this.caseId+params,"").then(res=>{
