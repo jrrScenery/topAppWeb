@@ -104,11 +104,11 @@
                             </el-form-item>
                         </div>
                     </div>
-                    <div class="sendMessageView"><!-- v-show="isShow"-->
+                    <div class="sendMessageView" v-if="isShow"><!-- v-show="isShow"-->
                         <div class="serviceInfoTit">服务单确认人信息</div>
                         <div class="des">若预选设置内没有需要选择的客户信息，工程师可直补充客户信息后点击“发送评价连接”。</div>
                         <el-form-item label="客户联系人" label-width="1.1rem">
-                            <el-select v-model="customerForm.empname" placeholder="请选择" @change="npmNameChange()">
+                            <el-select v-model="customerForm.empname" filterable placeholder="请选择" @change="npmNameChange()">
                                 <el-option 
                                     v-for="item in customerList" 
                                     :key="item.empid"
@@ -120,17 +120,58 @@
                         <el-form-item label="客户联系人手机" label-width="1.1rem">
                             <el-input v-model="customerForm.mobileno" placeholder="请输入客户联系人手机" clearable></el-input>
                         </el-form-item>
+                        <!-- <el-form-item label="是否已签纸质服务单" label-width="1.3rem">
+                            <el-radio v-model="radio" label="1">无</el-radio>
+                            <el-radio v-model="radio" label="2">有</el-radio>
+                            <img id="showpic" :src="uploadres" ref="showpic" class="imgout" @click="takePhoto">
+                        </el-form-item> -->
+                        <!-- <input type="hidden" v-model ="formData.docId">
+                        <el-form-item class="takephbox" style="padding-left:10px;">
+                            <el-button type="success" style="margin-top:10px;"  @click="takePhoto">上传照片</el-button>
+                            <div class="imgout">
+                                <img id="showpic" :src="uploadres" ref="showpic" >
+                            </div>                     
+                        </el-form-item> -->
                     </div>
                     <div style="height: 0.6rem;"></div>
                     <el-form-item class="serviceSubmitBtn" v-if="serviceStatus==='1'">
-                        <el-button type="primary" @click="submitForm('formData')">{{submitName}}</el-button>
+                        <el-button type="primary" @click="submitForm('formData')">提交</el-button>
                     </el-form-item>
                     <el-form-item class="serviceSubmitBtn" v-else>
                         <el-button v-if="serviceStatus=='6'" type="primary" disabled>客户已评价</el-button>
                         <el-button @click="submitSendForm('customerForm')" type="primary" v-else>{{submitName}}</el-button>
-                    </el-form-item>                  
+                    </el-form-item>                             
                 </el-form>
             </div>
+        </div>
+        <!-- 点击客户远程确认及评价编辑客户信息 -->
+        <div class="dialogdc">
+            <el-dialog
+                title="提示"
+                :visible.sync="editCustomerInfoVisible"
+                :show-close="false"
+                width="90%"
+                center>
+                <el-form :model="formData" ref="formData">
+                    <el-form-item label="客户联系人" label-width="1.1rem">
+                        <el-select v-model="customerForm.empname" filterable placeholder="请选择" @change="npmNameChange()">
+                            <el-option 
+                                v-for="item in customerList" 
+                                :key="item.empid"
+                                :label="item.empname"
+                                :value="item.empname">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="客户联系人手机" label-width="1.1rem">
+                        <el-input v-model="customerForm.mobileno" placeholder="请输入客户联系人手机" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item class="submit">
+                        <el-button @click="editCustomerInfoVisible=false" >取消</el-button>
+                        <el-button type="primary" class="onsubmit" @click="submitSendForm()" >发送</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-dialog>
         </div>
         <!-- 短信提醒询问框phoneVisible -->
         <div class="dialogdc">
@@ -173,7 +214,7 @@ export default {
             content:"工作内容",
             result:"工作结果",
             activeName:'second',
-            // isShow:false,
+            isShow:false,
             workId:this.$route.query.workId,
             caseId:this.$route.query.caseId,
             taskId:this.$route.query.taskId,
@@ -190,12 +231,18 @@ export default {
                 empId:''
             },
             submitName:'提交并发送客户评价连接',
+            editCustomerInfoVisible:false,
             shortUrl:'',
+            radio:'0',
+            uploadres:require('../../assets/images/takephoto.png')
         }
     },
     created(){
         this.getEndSummary();
         this.getWorkCustList();
+    },
+    mounted(){
+        window.photoResult = this.getPhotoUrl;
     },
     methods:{     
          getWorkCustList(){
@@ -231,9 +278,11 @@ export default {
                     this.serviceStatus = res.DATA[0].serviceStatus;
                     this.evaluateId = res.DATA[0].evaluateId;
                     if(res.DATA[0].serviceStatus==='2'){
-                        if(res.DATA[0].ifSendEvaluate===1){                        
+                        if(res.DATA[0].ifSendEvaluate===1){ 
+                            this.isShow = true;                       
                             this.submitName = "再次发送客户评价连接";
                         }else{
+                            this.isShow = true;  
                             this.submitName = "发送客户评价连接";
                         }
                     }
@@ -255,9 +304,11 @@ export default {
                     this.serviceStatus = res.DATA[0].serviceStatus;
                     this.evaluateId = res.DATA[0].evaluateId;
                     if(res.DATA[0].serviceStatus==='2'){
-                        if(res.DATA[0].ifSendEvaluate===1){    
+                        if(res.DATA[0].ifSendEvaluate===1){ 
+                            this.isShow = true;      
                             this.submitName = "再次发送客户评价连接";
                         }else{
+                            this.isShow = true;   
                             this.submitName = "发送客户评价连接";
                         }
                     }
@@ -301,24 +352,34 @@ export default {
                 "&workId="+this.workId+"&userId="+this.customerForm.empId;
             fetch.get("?action=/system/getShortUrl"+params).then(res=>{
                 console.log("getShortUrl",res);
-                let shortUrl = res.shorturl
-                console.log("customerPhone",this.customerForm.mobileno);
-                let content = "尊敬的客户您好，工程师已完成了现场实施，请您对我们的服务进行评价，谢谢！"+shortUrl
-                fetch.get("?action=/work/sendCustEvaluate&MOBILE="+this.customerForm.mobileno+"&CONTENT="+content+
-                            "&SERVICE_TYPE="+this.serviceType+"&SERVICE_ID="+this.serviceId+"&EMPNAME="+this.customerForm.empname).then(res=>{
-                    console.log("sendCustEvaluate",res);
-                    loading.close();
-                    if(res.STATUSCODE=='0'){
-                        this.phoneVisible = true;
-                    }else{
-                        this.$message({
-                        message:res.MESSAGE,
+                if(res.STATUSCODE=='1'){
+                    let shortUrl = res.shorturl;
+                    console.log("customerPhone",this.customerForm.mobileno);
+                    let content = "尊敬的客户您好，工程师已完成了现场实施，请您对我们的服务进行评价，谢谢！"+shortUrl
+                    fetch.get("?action=/work/sendCustEvaluate&MOBILE="+this.customerForm.mobileno+"&CONTENT="+content+
+                                "&SERVICE_TYPE="+this.serviceType+"&SERVICE_ID="+this.serviceId+"&EMPNAME="+this.customerForm.empname).then(res=>{
+                        console.log("sendCustEvaluate",res);
+                        loading.close();
+                        if(res.STATUSCODE=='0'){
+                            this.editCustomerInfoVisible = false;
+                            this.phoneVisible = true;
+                        }else{
+                            this.$message({
+                                message:res.MESSAGE,
+                                type: 'error',
+                                center: true,
+                                customClass: 'msgdefine'
+                            });
+                        }
+                    })
+                }else{
+                    this.$message({
+                        message:res.MESSAGE+"发生错误",
                         type: 'error',
                         center: true,
                         customClass: 'msgdefine'
-                        });
-                    }
-                })
+                    });
+                }
             })           
         },
         check(loading){
@@ -434,26 +495,6 @@ export default {
                 loading.close();
                 return false
             }
-            if(this.customerForm.empname===''){
-                this.$message({
-                    message:'请选择客户联系人!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.customerForm.mobileno===''){
-                this.$message({
-                    message:'请选择客户联系人电话!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
             return true;
         },
         submitForm(formName){
@@ -507,8 +548,9 @@ export default {
                                 center: true,
                                 customClass: 'msgdefine'
                                 });
-                                vm.submitSendForm();
+                                // vm.submitSendForm();
                                 vm.getEndSummary();
+                                vm.editCustomerInfoVisible = true;
                                 // vm.isShow = true;
                             }else{
                                 this.$message({
@@ -530,8 +572,9 @@ export default {
                                     center: true,
                                     customClass: 'msgdefine'
                                 });
-                                vm.submitSendForm();
+                                // vm.submitSendForm();
                                 vm.getEndSummary();
+                                vm.editCustomerInfoVisible = true;
                                 // vm.isShow = true;
                             }else{
                                 this.$message({
@@ -545,7 +588,45 @@ export default {
                     }
                 }
             })
-        }
+        },
+        takePhoto:function(){
+            let ua = navigator.userAgent.toLowerCase();
+            console.log(ua);
+            if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
+                var info={action:"takePhoto"}
+                window.webkit.messageHandlers.ioshandle.postMessage({body: info});
+            }else if(/(Android)/i.test(ua) && /mobile/i.test(ua)){
+                var value = "{action:takePhoto}";
+                android.getClient(value);
+            }
+        },
+        getPhotoUrl: function(photodata){
+            let loading = this.$loading({
+                lock: true,
+                text: '上传中...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(255, 255, 255, 0.3)'
+            });
+            var data=new FormData();
+            data.append("FILETYPE","jpg")
+            data.append("FILE",'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==')
+            data.append("FILE", photodata)
+            fetch.post("?action=/api/upload",data).then(res=>{
+                console.log("upload",res)
+                if(res['STATUSCODE'] == '0'){
+                    this.formData.docId= res.data.docId
+                    this.$refs.showpic.src = photodata;
+                // this.$toast(this.form.docId);
+                }
+                else{
+                    this.$toast(res.MESSAGE);
+                }
+                loading.close();
+            });
+        },
+    },
+    beforeDestroy(){
+        window.photoResult = null;
     }
 
 }
@@ -567,6 +648,7 @@ export default {
     .tableTd span:nth-child(2){width: 100%;text-align: left}
     .sendMessageView{padding: 0.1rem}
     .sendMessageView>>>.des{padding: 0.1rem}
+    .sendMessageView>>>.imgout{height:0.3rem;width:0.3rem;margin-left:0.2rem}
 
     .endSummaryView .dialogdc >>> .el-dialog__body{padding: 0px 0px}
   .endSummaryView .dialogdc >>> .el-dialog__header{padding: 0px 0px 0px}
@@ -580,5 +662,14 @@ export default {
     .serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
     .serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #ffffff; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;z-index:1}
 
+.takephbox{ }
+  .takephbox .imgout{ border:1px solid #ccc; width: 124px; height: 124px; margin-top: 10px;; padding: 1px; text-align: center;}
+  .takephbox .imgout img{ height: 120px; width: auto; margin: 0 auto; max-width: 120px;}
+
+.dialogdc >>> .submit .el-button{width: 100%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
+.dialogdc >>> .submit .el-button:hover{background: #ffffff;}
+.dialogdc >>> .submit .onsubmit:hover{background: #2698d6;}
+.dialogdc >>> .submit .el-form-item__content{margin: 0!important; display: flex;}
+.dialogdc >>> .submit .onsubmit{background: #2698d6; color: #ffffff;}
 </style>
 

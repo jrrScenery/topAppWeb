@@ -555,11 +555,11 @@
                             </el-form-item>
                         </div>
                     </div>
-                    <div class="sendMessageView">
+                    <div class="sendMessageView" v-if="isShow">
                         <div class="serviceInfoTit">服务单确认人信息</div>
                         <div class="des">若预选设置内没有需要选择的客户信息，工程师可直补充客户信息后点击“发送评价连接”。</div>
                         <el-form-item label="客户联系人" label-width="1.1rem">
-                            <el-select v-model="customerForm.empname" placeholder="请选择" @change="npmNameChange()">
+                            <el-select v-model="customerForm.empname" filterable placeholder="请选择" @change="npmNameChange()">
                                 <el-option 
                                     v-for="item in customerList" 
                                     :key="item.empid"
@@ -574,7 +574,7 @@
                     </div>
                     <div style="height: 0.6rem;"></div>
                     <el-form-item class="serviceSubmitBtn" v-if="serviceStatus==='1'">
-                        <el-button type="primary" @click="submitSummaryForm('formData')">{{submitName}}</el-button>
+                        <el-button type="primary" @click="submitSummaryForm('formData')">提交</el-button>
                     </el-form-item>
                     <el-form-item class="serviceSubmitBtn" v-else>
                         <el-button v-if="serviceStatus=='6'" type="primary" disabled>客户已评价</el-button>
@@ -583,6 +583,35 @@
                 </el-form>
             </div>
         </div>
+      </el-dialog>
+    </div>
+    <!-- 点击客户远程确认及评价编辑客户信息 -->
+    <div class="dialogdc">
+      <el-dialog
+        title="提示"
+        :visible.sync="editCustomerInfoVisible"
+        :show-close="false"
+        width="90%"
+        center>
+        <el-form :model="formData" ref="formData">
+          <el-form-item label="客户联系人" label-width="1.1rem">
+            <el-select v-model="customerForm.empname" filterable placeholder="请选择" @change="npmNameChange()">
+                <el-option 
+                    v-for="item in customerList" 
+                    :key="item.empid"
+                    :label="item.empname"
+                    :value="item.empname">
+                </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="客户联系人手机" label-width="1.1rem">
+            <el-input v-model="customerForm.mobileno" placeholder="请输入客户联系人手机" clearable></el-input>
+          </el-form-item>
+          <el-form-item class="submit">
+            <el-button @click="editCustomerInfoVisible=false" >取消</el-button>
+            <el-button type="primary" class="onsubmit" @click="submitSendForm()" >发送</el-button>
+          </el-form-item>
+        </el-form>
       </el-dialog>
     </div>
   </div>
@@ -619,7 +648,8 @@ export default {
       taskVisible:false,//仅需任务反馈弹框
       caseVisible:false,//需反馈任务和故障的弹框
       summaryFlag:false,//完成后总结
-      // isShow:false,//短信客户信息是否显示
+      isShow:false,//短信客户信息是否显示
+      editCustomerInfoVisible:false,
       feedbackType:'',
       radio: 0,
       typeid: "",
@@ -658,6 +688,7 @@ export default {
       caseId:this.$route.query.caseId,
       taskId:this.$route.query.taskId,
       workTypeId:this.$route.query.workTypeId,
+      serviceId:'',
       slaTypeId:'',
       serviceType:'',
       clientHeight:'',
@@ -810,25 +841,34 @@ export default {
             "&workId="+this.workId+"&userId="+this.customerForm.empId;
       fetch.get("?action=/system/getShortUrl"+params).then(res=>{
           console.log("getShortUrl",res);
-          let shortUrl = res.shorturl
-          // this.phoneVisible = true;
-          console.log("customerPhone",this.customerForm.mobileno);
-          let content = "尊敬的客户您好，工程师已完成了现场实施，请您对我们的服务进行评价，谢谢！"+shortUrl
-          fetch.get("?action=/work/sendCustEvaluate&MOBILE="+this.customerForm.mobileno+"&CONTENT="+content+
-                            "&SERVICE_TYPE="+this.serviceType+"&SERVICE_ID="+this.serviceId+"&EMPNAME="+this.customerForm.empname).then(res=>{
-              console.log("sendCustEvaluate",res);
-              loading.close();
-              if(res.STATUSCODE=='0'){
+          if(res.STATUSCODE=='1'){
+            let shortUrl = res.shorturl;
+            console.log("customerPhone",this.customerForm.mobileno);
+            let content = "尊敬的客户您好，工程师已完成了现场实施，请您对我们的服务进行评价，谢谢！"+shortUrl
+            fetch.get("?action=/work/sendCustEvaluate&MOBILE="+this.customerForm.mobileno+"&CONTENT="+content+
+                              "&SERVICE_TYPE="+this.serviceType+"&SERVICE_ID="+this.serviceId+"&EMPNAME="+this.customerForm.empname).then(res=>{
+                console.log("sendCustEvaluate",res);
+                loading.close();
+                if(res.STATUSCODE=='0'){
+                  this.editCustomerInfoVisible = false;
                   this.phoneVisible = true;
-              }else{
-                  this.$message({
-                  message:res.MESSAGE,
-                  type: 'error',
-                  center: true,
-                  customClass: 'msgdefine'
-                  });
-              }
-          })
+                }else{
+                    this.$message({
+                      message:res.MESSAGE,
+                      type: 'error',
+                      center: true,
+                      customClass: 'msgdefine'
+                    });
+                }
+            })
+          }else{
+            this.$message({
+              message:res.MESSAGE+"发生错误",
+              type: 'error',
+              center: true,
+              customClass: 'msgdefine'
+            });
+          }
       })           
     },
     getWorkInfo:function(){
@@ -1034,10 +1074,6 @@ export default {
           this.taskVisible = true;
           this.feedbackType = "task";
         }
-        // fetch.get("?action=/work/getSLAFeedbackList2&WORK_ID="+this.workId).then(res=>{
-        //   console.log("getSLAFeedbackList2",res);
-
-        // })
       }
       else if(slaTypeId == 5){
         if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){        
@@ -1049,7 +1085,6 @@ export default {
           }else{
             this.newService(this.serviceType);
           }
-          // this.dialogVisible0 = true;
         }else{
           this.dialogVisible0 = true;
         }
@@ -1057,15 +1092,6 @@ export default {
         if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){
           this.getLocation(slaTypeId);
         }
-        // else if(this.workInfo.caseType!='故障'){
-        //   if(this.serviceType == 0){
-        //     this.dialogVisible0 = true;
-        //   }else{
-        //     this.rateVisible = true;
-        //     // this.newService(this.serviceType);
-        //   }
-        //   // this.dialogVisible0 = true;
-        // }
         else{
           this.dialogVisible0 = true;
         }
@@ -1078,7 +1104,6 @@ export default {
     dcCheck(slaTypeId){
       if (slaTypeId == 8 || slaTypeId == 10) {
         this.typeid = slaTypeId;
-        // if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){
           if(this.isDcFeedBack){
             this.dialogVisible1 = true;
           }else{
@@ -1090,13 +1115,9 @@ export default {
               customClass: 'msgdefine'
             })
           }
-        // }else{
-        //   this.dialogVisible1 = true;
-        // }
       }else if(slaTypeId == 6 || slaTypeId == 9){
         this.typeid = slaTypeId;
         console.log(slaTypeId);
-        // if(this.workInfo.caseType=='故障'&&this.workInfo.workType!='其他'){
           if(this.isDcFeedBack){
             this.dialogVisible0 = true;
           }else{
@@ -1108,9 +1129,6 @@ export default {
               customClass: 'msgdefine'
             })
           }
-        // }else{
-        //   this.dialogVisible0 = true;
-        // }
       }
     },
     //点击实施结果反馈操作
@@ -1167,55 +1185,13 @@ export default {
         console.log('serviceType',this.serviceType);
         if(this.feedbackNum){
           this.dialogVisible0 = true;
-          // if(this.serviceType===0){
-          //   this.dialogVisible0 = true;
-          // }else{
-          //   this.rateVisible = true;
-          // }
         }else{
           this.feedbackVisible = true;
         }
     },
-    // sendPhoneMessage(){       
-    //   const loading = this.$loading({
-    //       lock: true,
-    //       text: '发送短信中...',
-    //       spinner: 'el-icon-loading',
-    //       background: 'rgba(255, 255, 255, 0.3)'
-    //   });
-    //   let params = "&url=http://wxjfb.dcits.com/home/onsiteServiceInfo&CASE_ID="+this.caseId+
-    //       "&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType+
-    //       "&evaluateId="+this.evaluateId+"&serviceType="+this.serviceType+
-    //       "&workId="+this.workId;
-    //   let content = '';
-    //   fetch.get("?action=/system/getShortUrl"+params).then(res=>{
-    //       console.log("getShortUrl",res);
-    //       this.shortUrl = res.shorturl;
-    //       content = "尊敬的客户您好，工程师已完成服务单号为"+this.serviceCd+"的现场实施，请您关注微信公众号神州信息锐行服务，点击菜单评价进行用户评价"+this.shortUrl;
-    //       this.sendPhone(content,loading);
-    //   })                
-    // },
-    // sendPhone(content,loading){
-    //   fetch.get("?action=/risk/sendPhone&mobile="+this.form.customerCellnumber+"&content="+content).then(res=>{
-    //       console.log("sendPhone",res);
-    //       this.rateVisible = false;
-    //       loading.close();
-    //       if(res.STATUSCODE=='1'){
-    //           this.phoneVisible = true;
-    //       }else{
-    //           this.$message({
-    //           message:res.MESSAGE,
-    //           type: 'error',
-    //           center: true,
-    //           customClass: 'msgdefine'
-    //           });
-    //       }
-    //   })
-    // },
     confirmSendSuccess(){
       this.phoneVisible = false;
       this.summaryFlag = false;
-      // this.dialogVisible0 = true;
     },
     questionSubmit(){//提交问题
       const loading = this.$loading({
@@ -1379,32 +1355,25 @@ export default {
     getEndSummary(){
       console.log("serviceType",this.serviceType);
       console.log("serviceId",this.serviceId);
-      if(this.serviceType==2){
-          this.summaryFlag = true;
+      if(this.serviceType==2){        
           fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId).then(res=>{
               console.log("GetOnsiteServiceFormInfo",res);
+              this.summaryFlag = true;
               this.formData.userAndPrjItem = res.DATA[0];
               this.serviceCd = res.DATA[0].serviceCd;
               this.workResultInfo = res.DATA[0].workResult;
               this.ifSendEvaluate = res.DATA[0].ifSendEvaluate;
               this.serviceStatus = res.DATA[0].serviceStatus;
+              this.evaluateId = res.DATA[0].evaluateId;
               if(res.DATA[0].serviceStatus==='2'){
-                  if(res.DATA[0].ifSendEvaluate===1){                        
-                      this.submitName = "再次发送客户评价连接";
+                  if(res.DATA[0].ifSendEvaluate===1){  
+                    this.isShow = true;                       
+                    this.submitName = "再次发送客户评价连接";
                   }else{
-                      this.submitName = "发送客户评价连接";
+                    this.isShow = true; 
+                    this.submitName = "发送客户评价连接";
                   }
               }
-              // if(res.DATA[0].workResult){
-              //     this.isShow = true;
-              // }
-              // if(res.DATA[0].serviceStatus!="6"){
-              //     if(res.DATA[0].ifSendEvaluate==0){
-              //         this.submitName = "发送客户评价连接";
-              //     }else if(res.DATA[0].ifSendEvaluate==1){                        
-              //         this.submitName = "再次发送客户评价连接";
-              //     }
-              // }
           })
           fetch.get("?action=/system/getDict2&DICT_TYPE=NT_SERVICE_TYPE","").then(res=>{
               console.log("serviceTypeArr",res);
@@ -1414,31 +1383,24 @@ export default {
               console.log("getDict2",res);
               this.workResultArr = res.data;
           })
-      }else if(this.serviceType==1){
-          this.summaryFlag = true;
+      }else if(this.serviceType==1){         
           fetch.get("?action=/work/GetCaseroubleShootingServiceFormInfo&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId).then(res=>{
               console.log("GetCaseroubleShootingServiceFormInfo",res);
+              this.summaryFlag = true;
               this.formData.userAndPrjItem = res.DATA[0];
               this.workResultInfo = res.DATA[0].implementResult;
               this.ifSendEvaluate = res.DATA[0].ifSendEvaluate;
               this.serviceStatus = res.DATA[0].serviceStatus;
+              this.evaluateId = res.DATA[0].evaluateId;
               if(res.DATA[0].serviceStatus==='2'){
-                if(res.DATA[0].ifSendEvaluate===1){    
+                if(res.DATA[0].ifSendEvaluate===1){ 
+                  this.isShow = true;    
                   this.submitName = "再次发送客户评价连接";
                 }else{
+                  this.isShow = true; 
                   this.submitName = "发送客户评价连接";
                 }
               }
-              // if(res.DATA[0].implementResult){
-              //     this.isShow = true;
-              // }
-              // if(res.DATA[0].serviceStatus=="6"){
-              //     if(res.DATA[0].ifSendEvaluate==0){
-              //         this.submitName = "发送客户评价连接";
-              //     }else if(res.DATA[0].ifSendEvaluate==1){    
-              //         this.submitName = "再次发送客户评价连接";
-              //     }
-              // }
           })
       }
     },
@@ -1946,26 +1908,6 @@ export default {
           loading.close();
           return false
       }
-      if(this.customerForm.empname===''){
-        this.$message({
-            message:'请选择客户联系人!',
-            type: 'warning',
-            center: true,
-            customClass:'msgdefine'
-        });
-        loading.close();
-        return false
-      }
-      if(this.customerForm.mobileno===''){
-        this.$message({
-            message:'请选择客户联系人电话!',
-            type: 'warning',
-            center: true,
-            customClass:'msgdefine'
-        });
-        loading.close();
-        return false
-      }
       return true;
     },
     submitSummaryForm(formName){
@@ -2019,8 +1961,9 @@ export default {
                           customClass: 'msgdefine'
                           });
                           // vm.isShow = true;
-                          vm.submitSendForm();
+                          // vm.submitSendForm();
                           vm.getEndSummary();
+                          vm.editCustomerInfoVisible = true;
                           // vm.summaryFlag = false;
                       }else{
                           this.$message({
@@ -2043,8 +1986,9 @@ export default {
                               customClass: 'msgdefine'
                           });
                           // vm.isShow = true;
-                          vm.submitSendForm();
+                          // vm.submitSendForm();
                           vm.getEndSummary();
+                          vm.editCustomerInfoVisible = true;
                           // vm.summaryFlag = false;
                       }else{
                           this.$message({

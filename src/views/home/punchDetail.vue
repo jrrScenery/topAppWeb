@@ -11,7 +11,7 @@
     </div>
 </template>
 <script>
-import headerLast from "../header/headerLast";
+import headerLast from "../header/headerLast"
 import dayDetail from "../../components/punchDetail/dayDetail"
 import monthDetail from "../../components/punchDetail/monthDetail"
 export default {

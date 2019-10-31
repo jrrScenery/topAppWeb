@@ -18,6 +18,7 @@ var draw;
 var preHandler = function(e){e.preventDefault();}
 class Draw {
     constructor(el) {
+        console.log("el:",el);
         this.el = el
         this.canvas = document.getElementById(this.el)
         this.cxt = this.canvas.getContext('2d')
@@ -31,8 +32,6 @@ class Draw {
     }
     init(btn) {
         var that = this; 
-        // this.height= this.$refs.elememt.offsetHeight;  //100
-        // this.width = this.$refs.
         this.canvas.addEventListener('touchstart', function(event) {
             document.addEventListener('touchstart', preHandler, false); 
             that.drawBegin(event)

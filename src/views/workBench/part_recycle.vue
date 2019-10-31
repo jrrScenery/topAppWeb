@@ -6,7 +6,7 @@
         <el-form label-width="100px" label-position="left">
             <p>基本信息</p>
             <el-form-item label="回收申请人：">
-                <el-input v-model="maininput.realName" :disabled="true"></el-input>
+                <el-input v-model="realName" :disabled="true"></el-input>
             </el-form-item>
             <el-form-item label="申请时间:">
                 <el-col :span="24" >

@@ -93,7 +93,6 @@ export default {
           }
           return item;
         })
-        // console.log(tmpar);
         if(flag){
             this.proRepairObj = this.proRepairObj.concat(res.data);
         }else{
@@ -107,8 +106,6 @@ export default {
           this.busy = false;
           this.page++
         }
-
-
       });
     },
     loadMore(){
@@ -126,8 +123,6 @@ export default {
   },
 
   mounted () {
-
-
   }
 }
 </script>

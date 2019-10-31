@@ -271,7 +271,6 @@ export default {
             let data = {
             popBgUndertake: false
             } 
-            // this.$emit('change', data)
         },
         onSubmit(formName){
             let vm= this;
@@ -317,9 +316,6 @@ export default {
                 params.ifAnswerTrue = ifAnswerTrue;
                 let data = {};
                 data.data = JSON.stringify(params);
-                // var params = new URLSearchParams();
-                // params.append("data",JSON.stringify(data));
-                // console.log("params",params);
                 fetch.questionPost("?action=/risk/saveAnswer",data).then(res=>{
                     console.log("saveAnswer",res);
                     if(res.STATUSCODE=='1'){

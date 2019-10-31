@@ -3,16 +3,6 @@
         <div class="serviceInfoCell">
             <div class="serviceContent">
                 <el-form :model="formData" ref="formData">
-                    <!-- <el-form-item>
-                        <el-card :body-style="{ padding: '0px' }">
-                            <div style="padding: 14px;">
-                                <span>客户不在实施现场，无法评价</span>
-                                <div class="bottom clearfix">
-                                    <el-button type="primary" class="sendMessage" @click="editCustomerInfo()">客户远程确认及评价</el-button>
-                                </div>
-                            </div>
-                        </el-card>
-                    </el-form-item> -->
                     <div class="editorView" v-for="(item,i) in evaluateval" :key="i">
                         <el-form-item>
                             <div class="star">
@@ -332,11 +322,12 @@ export default {
                     postData.failFlg = failFlg;
                     postData.workId = vm.workId;
                     fetch.questionPost("?action=/work/SubmitClientReview",postData).then(res=>{
-                        console.log(res);
+                        console.log("SubmitClientReview",res);
                         // loading.close();
                         if(res.STATUSCODE=="0"){
                             vm.updateServiceWithSignature(loading);
                         }else{
+                            loading.close();
                             this.$message({
                             message:res.MESSAGE+"发生错误",
                             type: 'error',

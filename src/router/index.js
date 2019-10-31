@@ -18,7 +18,7 @@ export default new Router({
         {
           path: '/home',
           name: 'home',
-          component: resolve => require(['@/views/home/home'], resolve),
+          component: resolve => require(['@/views/home/home'], resolve),//路由的懒加载
           meta: {
             isUseCache: false,
             keepAlive: true
