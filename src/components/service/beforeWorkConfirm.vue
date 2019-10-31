@@ -176,6 +176,7 @@
 <script>
 import fetch from '../../utils/ajax'
 import addSignature from '../../components/addSignature'
+import slacommon from "../../utils/slacommon.js"
 import qs from 'qs'
 
 export default {
@@ -337,150 +338,6 @@ export default {
                 this.checked[5].ifY6 = false;
             }
         },
-        check(loading){
-            console.log(this.formData.caseServiceQuestion.operationStarttime)
-            if(this.checked[0].ifY1==true&&this.formData.caseServiceQuestion.operationStarttime==null){
-                loading.close();
-                this.$message({
-                    message:'请选择操作开始时间',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
-            if(this.checked[0].ifY1==true&&this.formData.caseServiceQuestion.operationEndtime==null){
-                loading.close();
-                this.$message({
-                    message:'请选择操作结束时间',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
-            if(this.checked[1].ifY2==true&&this.formData.caseServiceQuestion.stopStarttime==null){
-                loading.close();
-                this.$message({
-                    message:'请选择停机开始时间',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
-            if(this.checked[1].ifY2==true&&this.formData.caseServiceQuestion.stopEndtime==null){
-                loading.close();
-                this.$message({
-                    message:'请选择停机结束时间',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
-            if(this.checked[2].ifY3==true&&this.formData.caseServiceQuestion.lastbackupTime==null){
-                loading.close();
-                this.$message({
-                    message:'请选择选项3最近一次备份时间',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
-            if(this.checked[4].ifY5==true&&this.formData.caseServiceQuestion.beforeLastbackupTime==null){
-                loading.close();
-                this.$message({
-                    message:'请选择选项5最近一次备份时间',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
-            if(this.checked[5].ifY6==true&&this.formData.caseServiceQuestion.backuptestTime==null){
-                loading.close();
-                this.$message({
-                    message:'请选择备份测试时间',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
-            if(this.checked[0].ifY1==true&&this.checked[0].ifF1==true||this.checked[0].ifY1==false&&this.checked[0].ifF1==false){
-                loading.close();
-                this.$message({
-                    message:'序号1请选择是或者否,不能全选或不选!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
-            if(this.checked[1].ifY2==true&&this.checked[1].ifF2==true||this.checked[1].ifY2==false&&this.checked[1].ifF2==false){
-                loading.close();
-                this.$message({
-                    message:'序号2请选择是或者否,不能全选或不选!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
-            if(this.checked[2].ifY3==true&&this.checked[2].ifF3==true||this.checked[2].ifY3==false&&this.checked[2].ifF3==false){
-                loading.close();
-                this.$message({
-                    message:'序号3请选择是或者否,不能全选或不选!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
-            if(this.checked[3].ifY4==true&&this.checked[3].ifF4==true||this.checked[3].ifY4==false&&this.checked[3].ifF4==false){
-                loading.close();
-                this.$message({
-                    message:'序号4请选择是或者否,不能全选或不选!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
-            if(this.checked[4].ifY5==true&&this.checked[4].ifF5==true||this.checked[4].ifY5==false&&this.checked[4].ifF5==false){
-                loading.close();
-                this.$message({
-                    message:'序号5请选择是或者否,不能全选或不选!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
-            if(this.checked[5].ifY6==true&&this.checked[5].ifF6==true||this.checked[5].ifY6==false&&this.checked[5].ifF6==false){
-                loading.close();
-                this.$message({
-                    message:'序号6请选择是或者否,不能全选或不选!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
-            if(this.formData.caseServiceQuestion.imgStrQuestion==null){
-                loading.close();
-                this.$message({
-                    message:'请添加签名!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                return false
-            }
-            return true
-        },
         submitForm(formName){
             const loading = this.$loading({
                 lock: true,
@@ -491,7 +348,8 @@ export default {
             let vm= this;
             this.$refs[formName].validate((valid) => {
                 if(valid){
-                    if(!vm.check(loading)) return;                    
+                    // if(!vm.check(loading)) return; 
+                    if(!slacommon.beforeConfirmCheck(loading,this.checked,this.formData)) return;                    
                     let temp = {};
                     temp.operationStarttime = this.formData.caseServiceQuestion.operationStarttime;
                     temp.operationEndtime = this.formData.caseServiceQuestion.operationEndtime;
@@ -503,60 +361,8 @@ export default {
                     temp.serviceTime = this.formData.caseServiceQuestion.serviceTime;
                     temp.imgStrQuestion = this.formData.caseServiceQuestion.imgStrQuestion;
                     temp.serviceId=this.serviceId;
-                    // var data = {};
-                    // temp.serviceType = this.serviceType;
-                    // var data = new URLSearchParams;
-                    // data.append('serviceType',this.serviceType);
-                    if((temp.operationStarttime!=null&&this.checked[0].ifY1==false)||(temp.operationEndtime!=null&&this.checked[0].ifY1==false)){
-                        loading.close();
-                        this.$message({
-                            message:'序号1请选择是,取消否!',
-                            type: 'warning',
-                            center: true,
-                            customClass:'msgdefine'
-                        });
-                        return false;        
-                    }
-                    if((temp.stopStarttime!=null&&this.checked[1].ifY2==false)||(temp.stopEndtime!=null&&this.checked[1].ifY2==false)){
-                        loading.close();
-                        this.$message({
-                            message:'序号2请选择是,取消否!',
-                            type: 'warning',
-                            center: true,
-                            customClass:'msgdefine'
-                        });
-                        return false;         
-                    }
-                    if(temp.lastbackupTime!=null&&this.checked[2].ifY3==false){
-                        loading.close();
-                        this.$message({
-                            message:'序号3请选择是,取消否!',
-                            type: 'warning',
-                            center: true,
-                            customClass:'msgdefine'
-                        });
-                        return false;                       
-                    }
-                    if(temp.beforeLastbackupTime!=null&&this.checked[4].ifY5==false){
-                        loading.close();
-                        this.$message({
-                            message:'序号5请选择是,取消否!',
-                            type: 'warning',
-                            center: true,
-                            customClass:'msgdefine'
-                        });
-                        return false;                       
-                    }
-                    if(temp.backuptestTime!=null&&this.checked[5].ifY6==false){
-                        loading.close();
-                        this.$message({
-                            message:'序号6请选择是,取消否!',
-                            type: 'warning',
-                            center: true,
-                            customClass:'msgdefine'
-                        });
-                        return false;                       
-                    }
+                    if(!slacommon.beforeConfirmSubmitCheck(loading,temp,this.checked)) return;
+                    
                     if(this.checked[0].ifY1==true){
                         temp.numberIf1=1;
                     }else{

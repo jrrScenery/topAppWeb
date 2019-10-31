@@ -147,27 +147,6 @@
         </el-form>
       </el-dialog>
     </div>
-    <!-- 离场客户评价弹框 -->
-    <!-- <div class="dialogdc">
-      <el-dialog
-        title="提示"
-        :visible.sync="rateVisible"
-        :show-close="false"
-        width="80%"
-        center>
-        <el-form>
-          <el-form-item label="客户名称" label-width="0.8rem" style="margin:0.1rem">
-            <el-input :value="form.customerContactor" placeholder="请输入客户联系人"></el-input>
-          </el-form-item>
-          <el-form-item label="联系方式" label-width="0.8rem" style="margin:0.1rem">
-            <el-input :value="form.customerCellnumber" placeholder="请输入联系方式"></el-input>
-          </el-form-item>
-          <el-form-item class="submit">
-            <el-button type="primary" class="onsubmit" @click="sendPhoneMessage()" >发送客户评价</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
-    </div> -->
     <!-- 短信提醒询问框phoneVisible -->
     <div class="dialogdc">
         <el-dialog
@@ -640,8 +619,6 @@ export default {
       warnVisible:false,//答错问题提示
       showModal: false,//图片显示
       phoneVisible:false,
-      // leaveVisible:false,
-      // rateVisible:false,//客户评价显示
       feedbackVisible:false,//先完成结果反馈再进行离场
       workTypeVisible:false,//工单类型为“现场实施”或“现场信息搜集”，工程师点击“离场”逻辑弹框
       workConfirmFlag:false,//实施前确认
@@ -709,7 +686,6 @@ export default {
       feedbackDesc:"请先完成结果反馈再进行离场（故障解决，故障解决不成功，任务已完成，任务未完成四选一）",
       workTypeWarn:'',
       workTypeStatus:'',//离场进行工单类型的判断（未备件整理；未使用件）
-      // shortUrl:'',
       checked:[
         {ifY1:false,ifF1:false},
         {ifY2:false,ifF2:false},
@@ -723,7 +699,6 @@ export default {
       serviceTypeArr:[],
       content:"工作内容",
       result:"工作结果",//完成后总结参数
-      // hasService:''//离场有无服务单判断，有服务单:1；无服务单:0
       serviceCd:'',//短信链接
     };
   },
@@ -742,12 +717,10 @@ export default {
       }
     }
   },
-
   created: function() {
     if(this.$route.query.dialogVisible0){
       this.dialogVisible0 = this.$route.query.dialogVisible0
     }
-    console.log("workTypeId",this.workTypeId);
     if(this.workTypeId=='XCSS'){//现场实施用case故障处理
       this.serviceType = 1;
     }else if(this.workTypeId=='XXSJ'||this.workTypeId=='XJ'||this.workTypeId=='XJBG'||this.workTypeId=='ZCFW'||this.workTypeId=='JSZC'){
@@ -783,7 +756,6 @@ export default {
       let randomKeys = ["1", "2", "3"];
       let index = Math.floor(Math.random() * 3);
       this.bgDef = this.imgRandom[randomKeys[index]].suprizeUrl;
-      console.log("bgDef",this.bgDef);
     },
     getWorkCustList(){
         fetch.get("?action=/work/getWorkCustList&WORK_ID="+this.workId).then(res=>{
@@ -815,26 +787,7 @@ export default {
           spinner: 'el-icon-loading',
           background: 'rgba(255, 255, 255, 0.3)'
       });
-      if(this.customerForm.empname===''){
-          this.$message({
-              message:'请选择客户联系人!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          loading.close();
-          return false
-      }
-      if(this.customerForm.mobileno===''){
-          this.$message({
-              message:'请选择客户联系人电话!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          loading.close();
-          return false
-      }
+      if(!slacommon.customerInfoCheck(loading,this.customerForm)) return;
       let params = "&url=http://wxjfb.dcits.com/home/onsiteServiceInfo&CASE_ID="+this.caseId+
             "&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType+
             "&evaluateId="+this.evaluateId+"&serviceType="+this.serviceType+
@@ -1117,7 +1070,6 @@ export default {
           }
       }else if(slaTypeId == 6 || slaTypeId == 9){
         this.typeid = slaTypeId;
-        console.log(slaTypeId);
           if(this.isDcFeedBack){
             this.dialogVisible0 = true;
           }else{
@@ -1133,7 +1085,6 @@ export default {
     },
     //点击实施结果反馈操作
     taskRadio(type){
-      console.log("1111111");
       if(type==='task'){//仅需完成任务的工单
         this.taskVisible = false;
         if(this.form.taskradio==1){//任务完成
@@ -1161,7 +1112,6 @@ export default {
     },
     //离场时备件判断
     leavebjCheck(){
-      console.log("workTypeStatus",this.workTypeStatus);
       if(this.workTypeStatus==1){
         this.workTypeVisible = true;
         this.workTypeWarn = '请先完成备件整理再进行离场反馈';
@@ -1253,7 +1203,6 @@ export default {
           console.log("saveAnswerArrive",res);
           if(res.STATUSCODE=='1'){//问题回答正确，显示反馈框，进行到场反馈
               vm.checkdcFlag = false;
-              // vm.dialogVisible0 = true;
               //服务单实施前确认
               vm.newService(vm.serviceType);
           }else{//问题回答错误，弹出弹框，提示回答错误并给出正确答案
@@ -1306,7 +1255,6 @@ export default {
         this.warnVisible = false;
         this.checkdcFlag = false;
         this.newService(this.serviceType);
-        // this.dialogVisible0 = true;
       }     
     },
     onSubmit() {
@@ -1407,7 +1355,6 @@ export default {
     confirm(){
       this.workTypeVisible = false;
       this.getFeedbackResult();
-      // this.createService();
     },
     onrefuse(){
       this.workTypeVisible = false
@@ -1415,7 +1362,6 @@ export default {
     },
     //获取服务单数据
     getCaseServiceQuestion(){
-      // console
       fetch.get("?action=/work/getCaseServiceQuestion&CASE_ID="+this.caseId+"&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType).then(res=>{
           console.log("getCaseServiceQuestion",res)
           this.workConfirmFlag = true;            
@@ -1533,139 +1479,6 @@ export default {
           this.checked[5].ifY6 = false;
       }
     },
-    check(loading){
-      if(this.checked[0].ifY1==true&&this.formData.caseServiceQuestion.operationStarttime==null){
-          loading.close();
-          this.$message({
-              message:'请选择操作开始时间',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          return false
-      }
-      if(this.checked[0].ifY1==true&&this.formData.caseServiceQuestion.operationEndtime==null){
-          loading.close();
-          this.$message({
-              message:'请选择操作结束时间',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          return false
-      }
-      if(this.checked[1].ifY2==true&&this.formData.caseServiceQuestion.stopStarttime==null){
-          loading.close();
-          this.$message({
-              message:'请选择停机开始时间',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          return false
-      }
-      if(this.checked[1].ifY2==true&&this.formData.caseServiceQuestion.stopEndtime==null){
-          loading.close();
-          this.$message({
-              message:'请选择停机结束时间',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          return false
-      }
-      if(this.checked[2].ifY3==true&&this.formData.caseServiceQuestion.lastbackupTime==null){
-          loading.close();
-          this.$message({
-              message:'请选择选项3最近一次备份时间',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          return false
-      }
-      if(this.checked[4].ifY5==true&&this.formData.caseServiceQuestion.beforeLastbackupTime==null){
-          loading.close();
-          this.$message({
-              message:'请选择选项5最近一次备份时间',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          return false
-      }
-      if(this.checked[5].ifY6==true&&this.formData.caseServiceQuestion.backuptestTime==null){
-          loading.close();
-          this.$message({
-              message:'请选择备份测试时间',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          return false
-      }
-      if(this.checked[0].ifY1==true&&this.checked[0].ifF1==true||this.checked[0].ifY1==false&&this.checked[0].ifF1==false){
-          loading.close();
-          this.$message({
-              message:'序号1请选择是或者否,不能全选或不选!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          return false
-      }
-      if(this.checked[1].ifY2==true&&this.checked[1].ifF2==true||this.checked[1].ifY2==false&&this.checked[1].ifF2==false){
-          loading.close();
-          this.$message({
-              message:'序号2请选择是或者否,不能全选或不选!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          return false
-      }
-      if(this.checked[2].ifY3==true&&this.checked[2].ifF3==true||this.checked[2].ifY3==false&&this.checked[2].ifF3==false){
-          loading.close();
-          this.$message({
-              message:'序号3请选择是或者否,不能全选或不选!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          return false
-      }
-      if(this.checked[3].ifY4==true&&this.checked[3].ifF4==true||this.checked[3].ifY4==false&&this.checked[3].ifF4==false){
-          loading.close();
-          this.$message({
-              message:'序号4请选择是或者否,不能全选或不选!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          return false
-      }
-      if(this.checked[4].ifY5==true&&this.checked[4].ifF5==true||this.checked[4].ifY5==false&&this.checked[4].ifF5==false){
-          loading.close();
-          this.$message({
-              message:'序号5请选择是或者否,不能全选或不选!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          return false
-      }
-      if(this.checked[5].ifY6==true&&this.checked[5].ifF6==true||this.checked[5].ifY6==false&&this.checked[5].ifF6==false){
-          loading.close();
-          this.$message({
-              message:'序号6请选择是或者否,不能全选或不选!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          return false
-      }
-      return true
-  },
   submitForm(formName){
       const loading = this.$loading({
           lock: true,
@@ -1676,7 +1489,8 @@ export default {
       let vm= this;
       this.$refs[formName].validate((valid) => {
           if(valid){
-              if(!vm.check(loading)) return;                    
+              // if(!vm.check(loading)) return;     
+              if(!slacommon.beforeConfirmCheck(loading,this.checked,this.formData)) return;             
               let temp = {};
               temp.operationStarttime = this.formData.caseServiceQuestion.operationStarttime;
               temp.operationEndtime = this.formData.caseServiceQuestion.operationEndtime;
@@ -1687,56 +1501,7 @@ export default {
               temp.backuptestTime = this.formData.caseServiceQuestion.backuptestTime;
               temp.serviceTime = this.formData.caseServiceQuestion.serviceTime;
               temp.serviceId=this.serviceId;
-              if((temp.operationStarttime!=null&&this.checked[0].ifY1==false)||(temp.operationEndtime!=null&&this.checked[0].ifY1==false)){
-                  loading.close();
-                  this.$message({
-                      message:'序号1请选择是,取消否!',
-                      type: 'warning',
-                      center: true,
-                      customClass:'msgdefine'
-                  });
-                  return false;        
-              }
-              if((temp.stopStarttime!=null&&this.checked[1].ifY2==false)||(temp.stopEndtime!=null&&this.checked[1].ifY2==false)){
-                  loading.close();
-                  this.$message({
-                      message:'序号2请选择是,取消否!',
-                      type: 'warning',
-                      center: true,
-                      customClass:'msgdefine'
-                  });
-                  return false;         
-              }
-              if(temp.lastbackupTime!=null&&this.checked[2].ifY3==false){
-                  loading.close();
-                  this.$message({
-                      message:'序号3请选择是,取消否!',
-                      type: 'warning',
-                      center: true,
-                      customClass:'msgdefine'
-                  });
-                  return false;                       
-              }
-              if(temp.beforeLastbackupTime!=null&&this.checked[4].ifY5==false){
-                  loading.close();
-                  this.$message({
-                      message:'序号5请选择是,取消否!',
-                      type: 'warning',
-                      center: true,
-                      customClass:'msgdefine'
-                  });
-                  return false;                       
-              }
-              if(temp.backuptestTime!=null&&this.checked[5].ifY6==false){
-                  loading.close();
-                  this.$message({
-                      message:'序号6请选择是,取消否!',
-                      type: 'warning',
-                      center: true,
-                      customClass:'msgdefine'
-                  });
-                  return false;                       
-              }
+              if(!slacommon.beforeConfirmSubmitCheck(loading,temp,this.checked)) return;             
               if(this.checked[0].ifY1==true){
                   temp.numberIf1=1;
               }else{
@@ -1795,121 +1560,6 @@ export default {
           }
       })
     },
-
-    summaryCheck(loading){
-      if(this.formData.serviceType==null&&this.serviceType==2){
-          this.$message({
-              message:'请选择服务类型!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          loading.close();
-          return false
-      }
-      if(this.formData.userAndPrjItem.arriveTime==null){
-          this.$message({
-              message:'请填写到场时间!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          loading.close();
-          return false
-      }
-      if(this.formData.userAndPrjItem.leaveTime==null){
-          this.$message({
-              message:'请填写离场时间!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          loading.close();
-          return false
-      }
-      if(this.formData.userAndPrjItem.realWork==null&&this.serviceType==2){
-          this.$message({
-              message:'请填写实际工时!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          loading.close();
-          return false
-      }
-      if(this.formData.workResult==null&&this.serviceType==2){
-          this.$message({
-              message:'请填写工作结果!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          loading.close();
-          return false
-      }
-      
-      if(this.formData.userAndPrjItem.workContent==null&&this.serviceType==2){
-          this.$message({
-              message:'请填写工作内容!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          loading.close();
-          return false
-      }
-      if(this.formData.userAndPrjItem.problemPlan==null&&this.serviceType==2){
-          this.$message({
-              message:'请填写存在问题!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          loading.close();
-          return false
-      }
-      if(this.formData.userAndPrjItem.faultDesc==null&&this.serviceType==1){
-          this.$message({
-              message:'请选择工作结果!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          loading.close();
-          return false
-      }
-      if(this.formData.userAndPrjItem.analysis==null&&this.serviceType==1){
-          this.$message({
-              message:'请填写分析诊断!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          loading.close();
-          return false
-      }
-      if(this.formData.userAndPrjItem.implementResult==null&&this.serviceType==1){
-          this.$message({
-              message:'请填写实施结果!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          loading.close();
-          return false
-      }
-      if(this.formData.userAndPrjItem.problemSuggest==null&&this.serviceType==1){
-          this.$message({
-              message:'请填写遗留问题及建议!',
-              type: 'warning',
-              center: true,
-              customClass:'msgdefine'
-          });
-          loading.close();
-          return false
-      }
-      return true;
-    },
     submitSummaryForm(formName){
       const loading = this.$loading({
           lock: true,
@@ -1920,7 +1570,8 @@ export default {
       let vm= this;
       this.$refs[formName].validate((valid) => {
           if(valid){
-              if(!vm.summaryCheck(loading)) return;
+              // if(!vm.summaryCheck(loading)) return;
+              if(!slacommon.check(loading,this.formData,this.serviceType)) return;
               let data = {};
                   data.serviceId = this.formData.userAndPrjItem.serviceId;
                   data.opFlg = 1;
@@ -1960,11 +1611,8 @@ export default {
                           center: true,
                           customClass: 'msgdefine'
                           });
-                          // vm.isShow = true;
-                          // vm.submitSendForm();
                           vm.getEndSummary();
                           vm.editCustomerInfoVisible = true;
-                          // vm.summaryFlag = false;
                       }else{
                           this.$message({
                           message:res.MESSAGE+"发生错误",

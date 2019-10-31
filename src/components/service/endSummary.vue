@@ -196,6 +196,7 @@
 
 <script>
 import fetch from '../../utils/ajax'
+import slacommon from "../../utils/slacommon.js"
 export default {
     name: 'endSummaryView',
 
@@ -326,26 +327,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
-            if(this.customerForm.empname===''){
-                this.$message({
-                    message:'请选择客户联系人!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.customerForm.mobileno===''){
-                this.$message({
-                    message:'请选择客户联系人电话!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
+            if(!slacommon.customerInfoCheck(loading,this.customerForm)) return;
             let params = "&url=http://wxjfb.dcits.com/home/onsiteServiceInfo&CASE_ID="+this.caseId+
                 "&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType+
                 "&evaluateId="+this.evaluateId+"&serviceType="+this.serviceType+
@@ -382,121 +364,6 @@ export default {
                 }
             })           
         },
-        check(loading){
-            console.log(this.formData.serviceType);
-            if(this.formData.serviceType==null&&this.serviceType==2){
-                this.$message({
-                    message:'请选择服务类型!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.formData.userAndPrjItem.arriveTime==null){
-                this.$message({
-                    message:'请填写到场时间!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.formData.userAndPrjItem.leaveTime==null){
-                this.$message({
-                    message:'请填写离场时间!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.formData.userAndPrjItem.realWork==null&&this.serviceType==2){
-                this.$message({
-                    message:'请填写实际工时!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.formData.workResult==null&&this.serviceType==2){
-                this.$message({
-                    message:'请填写工作结果!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            
-            if(this.formData.userAndPrjItem.workContent==null&&this.serviceType==2){
-                this.$message({
-                    message:'请填写工作内容!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.formData.userAndPrjItem.problemPlan==null&&this.serviceType==2){
-                this.$message({
-                    message:'请填写存在问题!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.formData.userAndPrjItem.faultDesc==null&&this.serviceType==1){
-                this.$message({
-                    message:'请选择工作结果!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.formData.userAndPrjItem.analysis==null&&this.serviceType==1){
-                this.$message({
-                    message:'请填写分析诊断!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.formData.userAndPrjItem.implementResult==null&&this.serviceType==1){
-                this.$message({
-                    message:'请填写实施结果!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            if(this.formData.userAndPrjItem.problemSuggest==null&&this.serviceType==1){
-                this.$message({
-                    message:'请填写遗留问题及建议!',
-                    type: 'warning',
-                    center: true,
-                    customClass:'msgdefine'
-                });
-                loading.close();
-                return false
-            }
-            return true;
-        },
         submitForm(formName){
             const loading = this.$loading({
                 lock: true,
@@ -507,7 +374,8 @@ export default {
             let vm= this;
             this.$refs[formName].validate((valid) => {
                 if(valid){
-                    if(!vm.check(loading)) return;
+                    // if(!vm.check(loading)) return;
+                    if(!slacommon.check(loading,this.formData,this.serviceType)) return;
                     var data = {};
                         data.serviceId = this.formData.userAndPrjItem.serviceId;
                         data.opFlg = 1;
