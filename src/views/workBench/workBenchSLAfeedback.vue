@@ -538,7 +538,7 @@
                         <div class="serviceInfoTit">服务单确认人信息</div>
                         <div class="des">若预选设置内没有需要选择的客户信息，工程师可直补充客户信息后点击“发送评价连接”。</div>
                         <el-form-item label="客户联系人" label-width="1.1rem">
-                            <el-select v-model="customerForm.empname" filterable placeholder="请选择" @change="npmNameChange()">
+                            <el-select v-model="customerForm.empname" filterable allow-create placeholder="请选择" @change="npmNameChange()">
                                 <el-option 
                                     v-for="item in customerList" 
                                     :key="item.empid"
@@ -550,6 +550,10 @@
                         <el-form-item label="客户联系人手机" label-width="1.1rem">
                             <el-input v-model="customerForm.mobileno" placeholder="请输入客户联系人手机" clearable></el-input>
                         </el-form-item>
+                        <el-form-item label="上传纸质服务单（选填）" label-width="1.8rem">
+                            <img id="showpic" :src="uploadres" ref="showpic" class="imgout" @click="takePhoto">
+                        </el-form-item>
+                        <input id='message' type="hidden" v-model ="formData.docId">
                     </div>
                     <div style="height: 0.6rem;"></div>
                     <el-form-item class="serviceSubmitBtn" v-if="serviceStatus==='1'">
@@ -574,7 +578,7 @@
         center>
         <el-form :model="formData" ref="formData">
           <el-form-item label="客户联系人" label-width="1.1rem">
-            <el-select v-model="customerForm.empname" filterable placeholder="请选择" @change="npmNameChange()">
+            <el-select v-model="customerForm.empname" filterable allow-create placeholder="请选择" @change="npmNameChange()">
                 <el-option 
                     v-for="item in customerList" 
                     :key="item.empid"
@@ -586,6 +590,10 @@
           <el-form-item label="客户联系人手机" label-width="1.1rem">
             <el-input v-model="customerForm.mobileno" placeholder="请输入客户联系人手机" clearable></el-input>
           </el-form-item>
+          <el-form-item label="上传纸质服务单（选填）" label-width="1.8rem">
+              <img id="showpic1" :src="uploadres" ref="showpic1" class="imgout" @click="takePhoto">
+          </el-form-item>
+          <input id="tk" type="hidden" v-model ="formData.docId">
           <el-form-item class="submit">
             <el-button @click="editCustomerInfoVisible=false" >取消</el-button>
             <el-button type="primary" class="onsubmit" @click="submitSendForm()" >发送</el-button>
@@ -641,11 +649,11 @@ export default {
         customerCellnumber:''
       },
       formData:{
-        caseServiceQuestion:{
-        },//实施前确认参数
+        caseServiceQuestion:{},//实施前确认参数
         userAndPrjItem:{},//完成后总结参数
         serviceType:"",
-        workResult:""//完成后总结参数
+        workResult:"",//完成后总结参数
+        docId:''
       },
       customerForm:{
           empname:'',
@@ -700,6 +708,7 @@ export default {
       content:"工作内容",
       result:"工作结果",//完成后总结参数
       serviceCd:'',//短信链接
+      uploadres:require('../../assets/images/takephoto.png')
     };
   },
   props: {
@@ -721,6 +730,9 @@ export default {
     if(this.$route.query.dialogVisible0){
       this.dialogVisible0 = this.$route.query.dialogVisible0
     }
+    // this.serviceType = slacommon.getServiceType(this.workTypeId,this.serviceType);//根据工单判断服务单类型
+    console.log("serviceType",this.serviceType);
+    console.log("workTypeId",this.workTypeId);
     if(this.workTypeId=='XCSS'){//现场实施用case故障处理
       this.serviceType = 1;
     }else if(this.workTypeId=='XXSJ'||this.workTypeId=='XJ'||this.workTypeId=='XJBG'||this.workTypeId=='ZCFW'||this.workTypeId=='JSZC'){
@@ -735,7 +747,9 @@ export default {
     }
     this.randomPic();
   },
-  
+  mounted(){
+    window.photoResult = this.getPhotoUrl;
+  },
   methods: {   
     //动态获取背景图片功能
     randomPic:function() {
@@ -799,7 +813,9 @@ export default {
             console.log("customerPhone",this.customerForm.mobileno);
             let content = "尊敬的客户您好，工程师已完成了现场实施，请您对我们的服务进行评价，谢谢！"+shortUrl
             fetch.get("?action=/work/sendCustEvaluate&MOBILE="+this.customerForm.mobileno+"&CONTENT="+content+
-                              "&SERVICE_TYPE="+this.serviceType+"&SERVICE_ID="+this.serviceId+"&EMPNAME="+this.customerForm.empname).then(res=>{
+                              "&SERVICE_TYPE="+this.serviceType+"&SERVICE_ID="+this.serviceId+
+                              "&EMPNAME="+this.customerForm.empname+
+                              "&serviceFile="+this.formData.docId).then(res=>{
                 console.log("sendCustEvaluate",res);
                 loading.close();
                 if(res.STATUSCODE=='0'){
@@ -1633,11 +1649,8 @@ export default {
                               center: true,
                               customClass: 'msgdefine'
                           });
-                          // vm.isShow = true;
-                          // vm.submitSendForm();
                           vm.getEndSummary();
                           vm.editCustomerInfoVisible = true;
-                          // vm.summaryFlag = false;
                       }else{
                           this.$message({
                           message:res.MESSAGE+"发生错误",
@@ -1650,7 +1663,51 @@ export default {
               }
           }
       })
-    }
+    },
+    takePhoto:function(){
+      let ua = navigator.userAgent.toLowerCase();
+      console.log(ua);
+      if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
+          var info={action:"takePhoto"}
+          window.webkit.messageHandlers.ioshandle.postMessage({body: info});
+      }else if(/(Android)/i.test(ua) && /mobile/i.test(ua)){
+          var value = "{action:takePhoto}";
+          android.getClient(value);
+      }
+    },
+    getPhotoUrl: function(photodata){
+      let loading = this.$loading({
+          lock: true,
+          text: '上传中...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(255, 255, 255, 0.3)'
+      });
+      var data=new FormData();
+      data.append("FILETYPE","jpg")
+      data.append("FILE", photodata);
+      let config = {
+          headers:{'Content-Type':'multipart/form-data'}
+      };
+      fetch.post("?action=upload",data,config).then(res=>{
+          console.log("upload",res)
+          if(res['STATUSCODE'] == '0'){
+              this.formData.docId= res.data.docId
+              if(this.ifSendEvaluate===1){
+                this.$refs.showpic.src = photodata;
+              }else{
+                this.$refs.showpic1.src = photodata;
+              }
+              // this.$refs.showpic.src = photodata;
+          }
+          else{
+              this.$toast(res.MESSAGE);
+          }
+          loading.close();
+      });
+    },
+  },
+  beforeDestroy(){
+    window.photoResult = null;
   }
 
   
@@ -1721,4 +1778,6 @@ export default {
 
 .sendMessageView{padding: 0.1rem}
 .sendMessageView>>>.des{padding: 0.1rem}
+.sendMessageView>>>.imgout{padding: 0.1rem}
+.dialogdc >>>.imgout{height:0.3rem;width:0.3rem;margin-left:0.2rem}
 </style>

@@ -108,7 +108,7 @@
                         <div class="serviceInfoTit">服务单确认人信息</div>
                         <div class="des">若预选设置内没有需要选择的客户信息，工程师可直补充客户信息后点击“发送评价连接”。</div>
                         <el-form-item label="客户联系人" label-width="1.1rem">
-                            <el-select v-model="customerForm.empname" filterable placeholder="请选择" @change="npmNameChange()">
+                            <el-select v-model="customerForm.empname" filterable allow-create placeholder="请选择" @change="npmNameChange()">
                                 <el-option 
                                     v-for="item in customerList" 
                                     :key="item.empid"
@@ -120,18 +120,10 @@
                         <el-form-item label="客户联系人手机" label-width="1.1rem">
                             <el-input v-model="customerForm.mobileno" placeholder="请输入客户联系人手机" clearable></el-input>
                         </el-form-item>
-                        <!-- <el-form-item label="是否已签纸质服务单" label-width="1.3rem">
-                            <el-radio v-model="radio" label="1">无</el-radio>
-                            <el-radio v-model="radio" label="2">有</el-radio>
+                        <el-form-item label="上传纸质服务单（选填）" label-width="1.8rem">
                             <img id="showpic" :src="uploadres" ref="showpic" class="imgout" @click="takePhoto">
-                        </el-form-item> -->
-                        <!-- <input type="hidden" v-model ="formData.docId">
-                        <el-form-item class="takephbox" style="padding-left:10px;">
-                            <el-button type="success" style="margin-top:10px;"  @click="takePhoto">上传照片</el-button>
-                            <div class="imgout">
-                                <img id="showpic" :src="uploadres" ref="showpic" >
-                            </div>                     
-                        </el-form-item> -->
+                        </el-form-item>
+                        <input id='docId' type="hidden" v-model ="formData.docId">
                     </div>
                     <div style="height: 0.6rem;"></div>
                     <el-form-item class="serviceSubmitBtn" v-if="serviceStatus==='1'">
@@ -154,7 +146,7 @@
                 center>
                 <el-form :model="formData" ref="formData">
                     <el-form-item label="客户联系人" label-width="1.1rem">
-                        <el-select v-model="customerForm.empname" filterable placeholder="请选择" @change="npmNameChange()">
+                        <el-select v-model="customerForm.empname" filterable allow-create placeholder="请选择" @change="npmNameChange()">
                             <el-option 
                                 v-for="item in customerList" 
                                 :key="item.empid"
@@ -166,6 +158,10 @@
                     <el-form-item label="客户联系人手机" label-width="1.1rem">
                         <el-input v-model="customerForm.mobileno" placeholder="请输入客户联系人手机" clearable></el-input>
                     </el-form-item>
+                    <el-form-item label="上传纸质服务单（选填）" label-width="1.8rem">
+                        <img id="showpic1" :src="uploadres" ref="showpic1" class="imgout" @click="takePhoto">
+                    </el-form-item>
+                    <input id="docId1" type="hidden" v-model ="formData.docId">
                     <el-form-item class="submit">
                         <el-button @click="editCustomerInfoVisible=false" >取消</el-button>
                         <el-button type="primary" class="onsubmit" @click="submitSendForm()" >发送</el-button>
@@ -207,7 +203,9 @@ export default {
             formData:{
                 userAndPrjItem:{},
                 serviceType:"",
-                workResult:""
+                workResult:"",
+                docId:'',
+                // docId1:''
             },
             workResultInfo:'',
             workResultArr:[],
@@ -234,7 +232,7 @@ export default {
             submitName:'提交并发送客户评价连接',
             editCustomerInfoVisible:false,
             shortUrl:'',
-            radio:'0',
+            // radio:'0',
             uploadres:require('../../assets/images/takephoto.png')
         }
     },
@@ -252,7 +250,7 @@ export default {
                  if(res.STATUSCODE=='0'){
                      this.customerList = res.data;
                  }else{
-                     this.$message({
+                    this.$message({
                         message:res.MESSAGE,
                         type: 'error',
                         center: true,
@@ -339,7 +337,9 @@ export default {
                     console.log("customerPhone",this.customerForm.mobileno);
                     let content = "尊敬的客户您好，工程师已完成了现场实施，请您对我们的服务进行评价，谢谢！"+shortUrl
                     fetch.get("?action=/work/sendCustEvaluate&MOBILE="+this.customerForm.mobileno+"&CONTENT="+content+
-                                "&SERVICE_TYPE="+this.serviceType+"&SERVICE_ID="+this.serviceId+"&EMPNAME="+this.customerForm.empname).then(res=>{
+                                "&SERVICE_TYPE="+this.serviceType+"&SERVICE_ID="+this.serviceId+
+                                "&EMPNAME="+this.customerForm.empname+
+                                "&serviceFile="+this.formData.docId).then(res=>{
                         console.log("sendCustEvaluate",res);
                         loading.close();
                         if(res.STATUSCODE=='0'){
@@ -416,10 +416,8 @@ export default {
                                 center: true,
                                 customClass: 'msgdefine'
                                 });
-                                // vm.submitSendForm();
                                 vm.getEndSummary();
                                 vm.editCustomerInfoVisible = true;
-                                // vm.isShow = true;
                             }else{
                                 this.$message({
                                 message:res.MESSAGE+"发生错误",
@@ -440,10 +438,8 @@ export default {
                                     center: true,
                                     customClass: 'msgdefine'
                                 });
-                                // vm.submitSendForm();
                                 vm.getEndSummary();
                                 vm.editCustomerInfoVisible = true;
-                                // vm.isShow = true;
                             }else{
                                 this.$message({
                                 message:res.MESSAGE+"发生错误",
@@ -477,14 +473,23 @@ export default {
             });
             var data=new FormData();
             data.append("FILETYPE","jpg")
-            data.append("FILE",'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==')
-            data.append("FILE", photodata)
-            fetch.post("?action=/api/upload",data).then(res=>{
+            // data.append("FILE",'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==')
+            data.append("FILE", photodata);
+            let config = {
+                headers:{'Content-Type':'multipart/form-data'}
+            };
+            fetch.post("?action=upload",data,config).then(res=>{
                 console.log("upload",res)
                 if(res['STATUSCODE'] == '0'){
-                    this.formData.docId= res.data.docId
-                    this.$refs.showpic.src = photodata;
-                // this.$toast(this.form.docId);
+                    this.formData.docId= res.data.docId;
+                    if(this.ifSendEvaluate===1){
+                        // this.formData.docId= res.data.docId;
+                        this.$refs.showpic.src = photodata;
+                    }else{
+                        // this.formData.docId1 = res.data.docId;
+                        this.$refs.showpic1.src = photodata;
+                    }
+                    // this.$refs.showpic.src = photodata;
                 }
                 else{
                     this.$toast(res.MESSAGE);
@@ -516,8 +521,9 @@ export default {
     .tableTd span:nth-child(2){width: 100%;text-align: left}
     .sendMessageView{padding: 0.1rem}
     .sendMessageView>>>.des{padding: 0.1rem}
-    .sendMessageView>>>.imgout{height:0.3rem;width:0.3rem;margin-left:0.2rem}
+    .dialogdc >>>.imgout{height:0.3rem;width:0.3rem;margin-left:0.2rem}
 
+    .sendMessageView >>>.imgout{height:0.3rem;width:0.3rem;margin-left:0.2rem}
     .endSummaryView .dialogdc >>> .el-dialog__body{padding: 0px 0px}
   .endSummaryView .dialogdc >>> .el-dialog__header{padding: 0px 0px 0px}
   .endSummaryView .dialogdc >>> .el-dialog__footer{padding: 0px 0px 0px}
@@ -530,7 +536,7 @@ export default {
     .serviceSubmitBtn >>> .el-form-item__content{margin: 0!important;}
     .serviceSubmitBtn >>> .el-form-item__content .el-button{width: 100%; border: 0.01rem solid #ffffff; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: fixed; bottom: 0;z-index:1}
 
-.takephbox{ }
+.takephbox{ padding-left: 10px;}
   .takephbox .imgout{ border:1px solid #ccc; width: 124px; height: 124px; margin-top: 10px;; padding: 1px; text-align: center;}
   .takephbox .imgout img{ height: 120px; width: auto; margin: 0 auto; max-width: 120px;}
 

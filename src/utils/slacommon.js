@@ -339,5 +339,16 @@ export default{
         return false;                       
     }
     return true
+  },
+  getServiceType:function(workTypeId,serviceType){
+    if(this.workTypeId=='XCSS'){//现场实施用case故障处理
+        serviceType = 1;
+    }else if(workTypeId=='XXSJ'||workTypeId=='XJ'||workTypeId=='XJBG'||workTypeId=='ZCFW'||workTypeId=='JSZC'){
+        serviceType = 2
+    }else{
+        serviceType = 0//无服务单
+    }
+    console.log("serviceType111",serviceType);
+    return serviceType
   }
 }

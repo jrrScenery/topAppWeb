@@ -28,13 +28,7 @@ export default {
 
   methods: {
       newService(serviceType){ 
-        console.log("serviceId1",this.serviceId);
-        console.log("caseId",this.caseId);
-        console.log("workId",this.workId);
-        console.log("taskId",this.taskId);
-        console.log("serviceType",serviceType);
         if(serviceType == 2){
-            console.log("serviceId",this.serviceId);
             if(!this.serviceId){
               fetch.get("?action=/work/SubmitSceneServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
                 console.log(res);
@@ -43,10 +37,6 @@ export default {
               })
             }
         }else if(serviceType == 1){
-          console.log("serviceId1",this.serviceId);
-          console.log("caseId",this.caseId);
-          console.log("workId",this.workId);
-          console.log("taskId",this.taskId);
           if(!this.serviceId){
             fetch.get("?action=/work/SubmitCaseTroubleShootingServiceFormInfo&CASE_ID="+this.caseId+"&WORK_ID="+this.workId+"&TASK_ID="+this.taskId).then(res=>{
                 console.log("SubmitCaseTroubleShootingServiceFormInfo",res);
