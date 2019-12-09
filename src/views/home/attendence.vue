@@ -6,7 +6,7 @@
             <div v-if="items.arr.length!=0">
                 <ul class="ul_workBench" >
                     <template v-for="item in items.arr">
-                        <li class="li_workBench" :key="item.id" v-if="item.text!='打卡'">
+                        <li class="li_workBench" :key="item.id" v-if="item.text!='打卡'"><!-- v-if="item.text!='打卡'"-->
                             <router-link :to="{name:item.href,params:item.params}">
                                 <img :src="item.imgSrc" alt="">
                             </router-link>
@@ -71,7 +71,7 @@
             </el-dialog>
         </div>
         <!-- 打卡不再范围时询问框 -->
-        <div class="dialogdc">
+        <!-- <div class="dialogdc">
             <el-dialog
                 title="提示"
                 :visible.sync="warnVisible"
@@ -83,12 +83,11 @@
                     <span>{{desc}}</span>
                 </div>
                 <el-form-item class="submit">
-                    <el-button @click="warnVisible = false" >取 消</el-button>
                     <el-button type="primary" class="onsubmit" @click="confirm()">确 定</el-button>
                 </el-form-item>
                 </el-form>
             </el-dialog>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
@@ -111,7 +110,7 @@ export default {
             form:{
                 radioItem:[]
             },
-            warnVisible:false,
+            // warnVisible:false,
             location:[],
             latitude:'',
             longitude:'',
@@ -120,10 +119,12 @@ export default {
             question:"",
             options:[],
             differDistance:null,
-            zcInfo:null,  //驻场为空信息
-            desc:"您当前不在驻场区域，无法进行打卡，是否进行情况说明？",
+            desc:"您当前不在驻场区域，无法进行打卡,请联系项目经理维护驻场信息",
             isInPunchTime:false
         }
+    },
+    beforeCreate(){
+        console.log("desc:",this.desc);
     },
     created(){
         this.obj = [
@@ -138,14 +139,15 @@ export default {
     },
     methods:{
         getObj(){
-            this.obj[0].arr[0]={imgSrc: require('@/assets/images/punch.png'), text: '打卡', display:false};
-            this.obj[0].arr[1] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
+            this.obj[0].arr[0]={imgSrc: require('@/assets/images/punch.png'), text: '打卡', href: 'punch',display:false};
+            this.obj[0].arr[1]={imgSrc: require('@/assets/images/punchRecord.png'), text: '打卡记录', href: 'punchCardRecord',display:true};
             this.obj[0].arr[2] = {imgSrc: require('@/assets/images/makeupAttendence.png'), text: '补考勤', href: 'makeUpAttendence',display:true};
-            this.obj[1].arr[0] = {imgSrc: require('@/assets/images/attendetail.png'), text: '考勤明细', href: 'checkAttenDetail',display:true};
+            this.obj[1].arr[0] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
+            this.obj[1].arr[1] = {imgSrc: require('@/assets/images/attendetail.png'), text: '员工打卡明细', href: 'checkAttenDetail',display:true};
         },
         confirm(){
             this.warnVisible=false;
-            this.$router.push({name:'punchFailShow',query:{lat:this.latitude,lng:this.longitude,address:this.address,zcInfo:this.zcInfo}})
+            // this.$router.push({name:'punchFailShow',query:{lat:this.latitude,lng:this.longitude,address:this.address,zcInfo:this.zcInfo}})
         },
         getQuestion(){
             fetch.get("?action=/risk/getQuestion",{}).then(res=>{
@@ -170,89 +172,96 @@ export default {
             };
             this.getLocation();
         },
-        getZcLocationInfo:function(){
-            fetch.get("?action=/system/getProAttendanceAddress",{}).then(res=>{
-                console.log("getProAttendanceAddress:",res);
-                if(res.STATUSCODE=='1'){
-                    let location = res.data;
-                    this.location = location;
+        // getZcLocationInfo:function(){
+        //     fetch.get("?action=/system/getProAttendanceAddress",{}).then(res=>{
+        //         console.log("getProAttendanceAddress:",res);
+        //         if(res.STATUSCODE=='1'){
+        //             let location = res.data;
+        //             this.location = location;
+        //         }else{
+        //             this.$message({
+        //                 message:res.MESSAGE+"发生错误",
+        //                 type: 'error',
+        //                 center: true,
+        //                 duration:1000,
+        //                 customClass: 'msgdefine'
+        //             });
+        //         }
+        //     })
+        // },
+         // 测量百度地图两个点间的距离
+        // getDistance:function (location) {
+        //     let latitude = location.LATITUDE;
+        //     let longitude = location.LONGITUDE;
+        //     // let addressId = location.ADDRESS_ID;
+        //     var map = new BMap.Map('')
+        //     var pointB = new BMap.Point(parseFloat(longitude), parseFloat(latitude))  // 店铺的经纬度
+        //     var distance = (map.getDistance(this.pointA, pointB) / 1000).toFixed(2) // 保留小数点后两位
+        //     //  return distance    
+        //     if(this.differDistance!=null){
+        //     if(distance<this.differDistance){
+        //         this.differDistance = distance;
+        //         this.addressId = addressId;
+        //         this.amStartTime = location.amStartTime;
+        //         this.pmEndTime = location.pmEndTime;
+        //     }
+        //     }else{
+        //         this.differDistance = distance;
+        //         this.addressId = addressId;
+        //         this.distance = location.distance;
+        //         this.amStartTime = location.amStartTime;
+        //         this.pmEndTime = location.pmEndTime;
+        //     }
+        // },
+        //工程师操作时间差计算
+    //     differTime:function(startTime,endTime){
+    //         let strstart = startTime.split(":");
+    //         let strend = endTime.split(":");
+    //         let amDate = new Date();
+    //         let bmDate = new Date();
+    //         let c = new Date();
+    //         amDate.setHours(strstart[0]);
+    //         amDate.setMinutes(strstart[1]);
+    //         amDate.setSeconds('00');
+    //         bmDate.setHours(strend[0]);
+    //         bmDate.setMinutes(strend[1]);
+    //         bmDate.setSeconds('00');
+    //         let befoream = new Date(amDate.getTime()-3*60*60*1000);
+    //         let afterpm = new Date(bmDate.getTime()+3*60*60*1000);
+    //         let amdiffer1 = c.getTime()-befoream.getTime();
+    //         let amdiffer2 = amDate.getTime()-c.getTime();
+    //         let pmdiffer1 = c.getTime()-bmDate.getTime();
+    //         let pmdiffer2 = afterpm.getTime()-c.getTime();
+    //         if((amdiffer1>0&&amdiffer2>0)||(pmdiffer1>0&&pmdiffer2>0)){ 
+    //             return true
+    //         }else{
+    //             this.desc = "当前不在打卡时间范围内，无法进行打卡！";
+    //             this.warnVisible = true;  
+    //         }
+    //     },
+        postPunchInfo(){
+            const loading = this.$loading({
+                lock: true,
+                text: '正在打卡',
+                spinner: 'el-icon-loading',
+                background: 'rgba(255, 255, 255, 0.3)'
+            });
+            // let param = {latitude:this.latitude,longitude:this.longitude,address:this.address,addressId:this.addressId,flg:1};
+            let param = {latitude:this.latitude,longitude:this.longitude};
+            // fetch.get("?action=/risk/savePosition",param).then(res=>{
+                fetch.get("?action=/attendance/savePunch",param).then(res=>{
+                console.log("savePosition",res);
+                loading.close();
+                if(res.STATUSCODE=="1"){
+                    this.homeWarnFlag = true;
+                    this.getQuestion();
                 }else{
                     this.$message({
-                        message:res.MESSAGE+"发生错误",
+                        message:"打卡失败！"+res.MESSAGE,
                         type: 'error',
                         center: true,
-                        duration:1000,
-                        customClass: 'msgdefine'
+                        customClass:'msgdefine'
                     });
-                }
-            })
-        },
-         // 测量百度地图两个点间的距离
-        getDistance:function (location) {
-            let latitude = location.LATITUDE;
-            let longitude = location.LONGITUDE;
-            let addressId = location.ADDRESS_ID;
-            var map = new BMap.Map('')
-            var pointB = new BMap.Point(parseFloat(longitude), parseFloat(latitude))  // 店铺的经纬度
-            var distance = (map.getDistance(this.pointA, pointB) / 1000).toFixed(2) // 保留小数点后两位
-            //  return distance    
-            if(this.differDistance!=null){
-            if(distance<this.differDistance){
-                this.differDistance = distance;
-                this.addressId = addressId;
-                this.amStartTime = location.amStartTime;
-                this.pmEndTime = location.pmEndTime;
-            }
-            }else{
-                this.differDistance = distance;
-                this.addressId = addressId;
-                this.distance = location.distance;
-                this.amStartTime = location.amStartTime;
-                this.pmEndTime = location.pmEndTime;
-            }
-        },
-        //工程师操作时间差计算
-        differTime:function(startTime,endTime){
-            let strstart = startTime.split(":");
-            let strend = endTime.split(":");
-            let amDate = new Date();
-            let bmDate = new Date();
-            let c = new Date();
-            amDate.setHours(strstart[0]);
-            amDate.setMinutes(strstart[1]);
-            amDate.setSeconds('00');
-            bmDate.setHours(strend[0]);
-            bmDate.setMinutes(strend[1]);
-            bmDate.setSeconds('00');
-            let befoream = new Date(amDate.getTime()-3*60*60*1000);
-            let afterpm = new Date(bmDate.getTime()+3*60*60*1000);
-            let amdiffer1 = c.getTime()-befoream.getTime();
-            let amdiffer2 = amDate.getTime()-c.getTime();
-            let pmdiffer1 = c.getTime()-bmDate.getTime();
-            let pmdiffer2 = afterpm.getTime()-c.getTime();
-            if((amdiffer1>0&&amdiffer2>0)||(pmdiffer1>0&&pmdiffer2>0)){ 
-                return true
-            }else{
-                this.zcInfo = '当前不在打卡时间范围内，请填写说明';
-                this.desc = "当前不在打卡时间范围内，无法进行打卡，是否进行情况说明？";
-                this.warnVisible = true;  
-            }
-        },
-        postPunchInfo(){
-            let param = {latitude:this.latitude,longitude:this.longitude,address:this.address,addressId:this.addressId,flg:1};
-            fetch.get("?action=/risk/savePosition",param).then(res=>{
-                console.log("savePosition",res);
-                // loading.close();
-                if(res.STATUSCODE=="1"){
-                this.homeWarnFlag = true;
-                this.getQuestion();
-                }else{
-                this.$message({
-                    message:'打卡失败',
-                    type: 'error',
-                    center: true,
-                    customClass:'msgdefine'
-                });
                 }
             })
         },
@@ -264,7 +273,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
-            self.getZcLocationInfo();
+            // self.getZcLocationInfo();
             function success(res){
                 console.log("res",res);
                 var lat = res.latitude;//gps经纬度
@@ -279,26 +288,25 @@ export default {
                         self.latitude = point.points[0].lat;
                         self.longitude = point.points[0].lng;
                         self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
-                        if(self.location.length==0){
-                            self.zcInfo = '驻场地址为空，请填写说明并维护地址';
-                            self.desc = "您的驻场地址为空，无法进行打卡，是否进行情况说明？";
-                            self.warnVisible = true;  
-                        }else{
-                            for(let i=0;i<self.location.length;i++){
-                                if(self.location[i].LATITUDE!=null&&self.location[i].LONGITUDE!=null){
-                                    self.getDistance(self.location[i]);
-                                }
-                            }
-                        }
-                        if(self.differDistance&&self.differDistance<=self.distance/1000){
-                            let isInPunchTime = self.differTime(self.amStartTime,self.pmEndTime);
-                            if(isInPunchTime){
+                        // if(self.location.length==0){
+                        //     self.desc = "您的驻场地址为空，无法进行打卡，请联系项目经理维护驻场信息";
+                        //     self.warnVisible = true;  
+                        // }else{
+                        //     for(let i=0;i<self.location.length;i++){
+                        //         if(self.location[i].LATITUDE!=null&&self.location[i].LONGITUDE!=null){
+                        //             self.getDistance(self.location[i]);
+                        //         }
+                        //     }
+                        // }
+                        // if(self.differDistance&&self.differDistance<=self.distance/1000){
+                            // let isInPunchTime = self.differTime(self.amStartTime,self.pmEndTime);
+                            // if(isInPunchTime){
                                 self.postPunchInfo();
-                            }
+                            // }
                         // self.postPunchInfo();
-                        }else{
-                        self.warnVisible = true;      
-                        }
+                        // }else{
+                        //     self.warnVisible = true;      
+                        // }
                         var geoc = new BMap.Geocoder(); 
                         geoc.getLocation(self.pointA, function(rs){
                         console.log("rs:",rs);
@@ -350,14 +358,10 @@ export default {
                     }
                 }
                 let data = {};
-                // data.workId = vm.workId;
                 data.excuteType = vm.questionObj.EXCUTE_TYPE;
                 data.questionId = vm.questionObj.QUESTION_ID;
                 data.answerIds = answerIds;
                 data.ifAnswerTrue = ifAnswerTrue;
-                // var params = new URLSearchParams();
-                // params.append("data",JSON.stringify(data));
-                // console.log("params",params); 
                 fetch.questionPost("?action=/risk/saveAnswer",data).then(res=>{
                     console.log("saveAnswer",res);
                     if(res.STATUSCODE=='1'){
@@ -369,8 +373,7 @@ export default {
                             customClass:'msgdefine'
                         });  
                         vm.homeWarnFlag = false;
-                        setTimeout(function(){vm.$router.push({ name: 'home'})},1000);
-                        // vm.onUndertake();
+                        // setTimeout(function(){vm.$router.push({ name: 'home'})},1000);
                     }else{
                         vm.$message({
                             message:res.MESSAGE,

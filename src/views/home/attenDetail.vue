@@ -1,8 +1,8 @@
 <template>
     <div class="attenDetailView">
-        <header-atten-detail :title="attenDetailTit" :searchType='searchType' @searchNotice="searchNotice"></header-atten-detail>
+        <header-last :title="attenDetailTit"></header-last>
         <div style="height:0.45rem"></div>
-        <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+        <div class="content">
             <ul>
                 <li v-for="item in detailArr" :key="item.id">
                 <div class="div_Img">
@@ -11,25 +11,26 @@
                     <p>{{item.name}}</p>
                 </div>
                 <div class="article">
-                    <div class="title"><span class="tit_l">打卡时间:</span><span class="tit_r">{{item.punchDate}} {{item.beginTime}}-{{item.endTime}}</span></div>
+                    <div class="title"><span class="tit_l">打卡日期:</span><span class="tit_r">{{item.punchDate}}</span></div>
+                    <div> 打卡时间：{{item.beginTime}}-{{item.endTime}}</div>
                     <div class="desc">补提考勤:{{item.absBeginTime}}-{{item.absEndTime}}</div>
                     <div class="desc">请假类型:{{leaveType[item.leaveType]}}</div>
-                    <div class="desc">说明:{{item.reason}}</div>
+                    <div class="desc">请假原因:{{item.reason}}</div>
                 </div>
                 </li>
             </ul>
-            <loadingtmp :busy="busy" :loadall="loadall"></loadingtmp>
         </div>
     </div>
 </template>
 <script>
-import headerAttenDetail from "../header/headerAttenDetail";
+import headerLast from "../header/headerLast";
 import loadingtmp from '@/components/load/loading'
 import transfrom from "@/utils/dateTransform.js"
+import fetch from '../../utils/ajax'
 export default {
     name:'attenDetail',
     components:{
-        headerAttenDetail,
+        headerLast,
         loadingtmp
     },
     data(){
@@ -38,83 +39,31 @@ export default {
             searchType:'attenDetail',
             detailArr:[],
             formData: [],
-            searchPage: '',
-            page:1,
-            pageSize:10,
-            busy:false,
-            loadall: false,
             id:this.$route.query.id
         }
     },
     created(){      
         this.leaveType = transfrom.getLeaveType().leaveType;
         this.processStatus = transfrom.getLeaveType().processStatus;
-        this.detailArr = [
-            {name:'杜鑫',punchDate:'2019-08-16',absBeginTime: "09:00",absEndTime: "18:00",
-                addrId: 64,beginTime: "",endTime: "",groupId: 33,id: 66026,isNew: 3,
-                leaveType: 1,prjId: 33,processStatus: 3,reason: ""},
-            // {name:'杜鑫',punchTime:'2019-08-15 10:00- ',isSubmitDesc:'是',desc:'因公外出',isAudit:'是',auditMana:'胡素标'}
-        ]
+        this.getAttenDetail();
     },
     methods:{
-        getAttenDetail(flag){
-            // let url = "?action=GetTaskMessage&PAGE_NUM="+this.page+"&PAGE_TOTAL="+this.pageSize;
-            // fetch.get(url,"").then(res=>{
-            //     console.log(res);
-            //     if(flag){
-            //         this.detailArr = this.detailArr.concat(res.data);
-            //     }else{
-            //         this.detailArr = res.data;
-            //     }
-            //     if(0 == res.data.length || res.data.length<this.pageSize ){
-            //     this.busy = true;
-            //     this.loadall = true;
-            //     }
-            //     else{
-            //     this.busy = false;
-            //     this.page++
-            //     }
-            // });
-        },
-        loadMore(){
-            this.busy = true;
-            setTimeout(() => {
-                if ( this.searchPage == 1) {
-                    this.searchNoticeIn(this.formData)
-                } else {
-                    this.getAttenDetail(this.page>1);
+        getAttenDetail(){
+            fetch.get("?action=/attendance/queryProjectAttendance&processId="+this.id,'').then(res=>{
+                console.log("queryProjectAttendance",res);
+                if(res.STATUSCODE==='1'){
+                    this.detailArr = res.data;
+                }else{
+                    this.$message({
+                        message:res.MESSAGE,
+                        type: 'error',
+                        center: true,
+                        duration:2000,
+                        customClass: 'msgdefine'
+                    })
                 }
-            }, 500);
+            })
         },
-        searchNotice (formData) {
-            this.page = 1;
-            this.detailArr = []
-            this.searchNoticeIn(formData);
-        },
-        // 搜索条件data
-        searchNoticeIn (formData) {
-            this.formData = formData
-            console.log(this.formData)
-            this.loadall = false
-            this.searchPage = 1
-            // let notice = {PAGE_NUM:this.page,PAGE_TOTAL:this.pageSize,TITLE: this.formData.title,SEND_NAME: this.formData.sendName};
-            // fetch.get("?action=GetTaskMessage",notice).then(res=>{
-            //     console.log(res)
-            //     if(this.page > 1){
-            //     this.detailArr = this.detailArr.concat(res.data);
-            //     }else{
-            //     this.detailArr = res.data;
-            //     }
-            //     if(0 == res.data.length || res.data.length<this.pageSize ){
-            //     this.busy = true;
-            //     this.loadall = true;
-            //     }
-            //     else{
-            //     this.busy = false;
-            //     this.page++
-            //     }
-            // })
-        }
     }
 }
 </script>

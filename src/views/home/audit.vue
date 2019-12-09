@@ -6,7 +6,7 @@
             <el-tabs v-model="activeName">
                 <el-tab-pane :label="firstTabTit" name="first"><todo-audit></todo-audit></el-tab-pane>
                 <el-tab-pane :label="secondTabTit" name="second" lazy><done-audit></done-audit> </el-tab-pane>
-            </el-tabs>
+            </el-tabs> 
         </div>
     </div>
 </template>

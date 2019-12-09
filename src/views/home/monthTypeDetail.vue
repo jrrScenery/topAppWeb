@@ -3,12 +3,12 @@
         <header-last :title='monthTypeDetailTit'></header-last>
         <div style="height:0.45rem"></div>
             <div class="tableTh"><span>打卡日期</span><span>首次打卡</span><span>末次打卡</span></div>
-            <div class="tableTd" v-for="items in monthDetail" :key="items.staffName">
+            <div class="tableTd" v-for="(items) in monthDetail" :key="items.projectId">
                 <div class="tableTitle">{{items.staffName}}</div>
-                <div class="divTable" v-for="item in items.punchdetail" :key="item.id">
-                    <span class="bolder">{{item.punchDate}}</span>          
-                    <span class="bolder">{{item.punchBeginTime}}</span>        
-                    <span class="bolder">{{item.punchEndTime}}</span> 
+                <div class="divTable">
+                    <span class="bolder">{{items.punchDate}}</span>          
+                    <span class="bolder">{{items.absBeginTime}}</span>        
+                    <span class="bolder">{{items.absEndTime}}</span> 
                 </div>
             </div>
     </div>
@@ -16,6 +16,7 @@
 </template>
 <script>
 import headerLast from "../header/headerLast";
+import fetch from '../../utils/ajax'
 export default {
     name:'monthTypeDetail',
     components:{
@@ -24,34 +25,33 @@ export default {
     data(){
         return{
             monthTypeDetailTit:'月统计明细',
-            monthDetail:[
-                {
-                    staffName:'郭丽',
-                    punchdetail:[{
-                        punchDate:"2019-10-10",
-                        punchBeginTime:"09:01",
-                        punchEndTime:"18:03"
-                    },{
-                        punchDate:"2019-10-11",
-                        punchBeginTime:"09:30",
-                        punchEndTime:"18:00"
-                    }]
-                },{
-                    staffName:'杜鑫',
-                    punchdetail:[{
-                        punchDate:"2019-10-11",
-                        punchBeginTime:"09:20",
-                        punchEndTime:"18:03"
-                    }]
-                }
-            ]
+            monthDetail:[],
+            projectId:this.$route.query.projectId,
+            dateStr:this.$route.query.dateStr,
+            leaveType:this.$route.query.leaveType
         }
     },
     created(){
-
+        this.getMonthTypeDetail();
     },
     methods:{
-
+        getMonthTypeDetail:function(){
+            let params = "&projectId="+this.projectId+"&type=2&dateStr="+this.dateStr+"&leaveType="+this.leaveType;
+            fetch.get("?action=/attendance/queryPunchCollect"+params,'').then(res=>{
+                console.log("queryPunchCollect",res);
+                if(res.STATUSCODE === '1'){
+                    this.monthDetail = res.data;
+                }else{
+                    this.$message({
+                        message:res.MESSAGE,
+                        type: 'error',
+                        center: true,
+                        duration:2000,
+                        customClass: 'msgdefine'
+                    })
+                }
+            })
+        }
     }
 }
 </script>

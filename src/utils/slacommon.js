@@ -17,8 +17,10 @@ export default{
         return y + '/' + m + '/' + d+' '+h+':'+minute+':'+second;  
     },    
     check:function(loading,formData,serviceType){
-        if(formData.serviceType==null&&serviceType==2){
-            ElementUI.Message({
+        console.log("formData.serviceType:",formData.serviceType);
+        console.log("serviceType:",serviceType);
+        if((formData.serviceType==null||formData.serviceType=='')&&serviceType==2){
+            ElementUI.Message({ 
                 message:'请选择服务类型!',
                 type: 'warning',
                 center: true,

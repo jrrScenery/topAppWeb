@@ -142,6 +142,11 @@ export default new Router({
       name: 'attendence',
       component: resolve => require(['@/views/home/attendence'], resolve)
     },
+    {
+      path: '/home/punch',
+      name: 'punch',
+      component: resolve => require(['@/views/home/punch'], resolve)
+    },
     //首页->考勤->审批
     {
       path: '/home/audit',
@@ -153,6 +158,12 @@ export default new Router({
       path: '/home/auditDetail',
       name: 'auditDetail',
       component: resolve => require(['@/views/home/auditDetail'], resolve)
+    },
+    //首页->考勤->打卡记录
+    {
+      path: '/home/punchCardRecord',
+      name: 'punchCardRecord',
+      component: resolve => require(['@/views/home/punchCardRecord'], resolve)
     },
     //首页->考勤->补考勤
     {

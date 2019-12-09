@@ -270,7 +270,7 @@ export default {
         getEndSummary(){
             if(this.serviceType==2){
                 fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
-                    console.log("GetOnsiteServiceFormInfo",res);
+                    // console.log("GetOnsiteServiceFormInfo",res);
                     this.formData.userAndPrjItem = res.DATA[0];
                     this.workResultInfo = res.DATA[0].workResult;
                     this.ifSendEvaluate = res.DATA[0].ifSendEvaluate;
@@ -296,7 +296,7 @@ export default {
                 })
             }else{
                 fetch.get("?action=/work/GetCaseroubleShootingServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
-                    console.log("GetCaseroubleShootingServiceFormInfo",res);
+                    // console.log("GetCaseroubleShootingServiceFormInfo",res);
                     this.formData.userAndPrjItem = res.DATA[0];
                     this.workResultInfo = res.DATA[0].implementResult;
                     this.ifSendEvaluate = res.DATA[0].ifSendEvaluate;

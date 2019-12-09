@@ -3,6 +3,23 @@
         <header-base-eight :title="sparePartsSortOutTit"></header-base-eight>
         <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
             <div class="SelectListCell">
+                <el-form ref="form" :model="form" style="display:flex" v-if="onceFlg==='1'">
+                        <input type="hidden" v-model ="form.docId">
+                        <el-form-item class="takephbox" style="padding-left:10px;">
+                            <el-button data-id='bj' type="success" size="mini" style="margin-top:10px;" @click="takePhoto($event)">上传备件到场照片</el-button>
+                            <div class="imgout">
+                                <img data-id="bj" :src="uploadres" ref="showpic" >
+                            </div>                   
+                        </el-form-item>
+                        <input type="hidden" v-model ="form.docId1">
+                        <el-form-item class="takephbox" style="padding-left:10px;">
+                            <el-button data-id='kd' type="success" size="mini" style="margin-top:10px;"  @click="takePhoto($event)">上传快递单照片</el-button>
+                            <div class="imgout">
+                                <img data-id="kd" :src="uploadres" ref="showpic1" >
+                            </div>                   
+                        </el-form-item>
+                </el-form>
+
                 <div class="sortAttentionDiv">特别注意：请对以下供货件进行整理</div>
             <el-table :data="sparePartsSortOutSelectArr" style="width: 100%">
                 
@@ -140,11 +157,17 @@ export default {
     }, 
     data(){
         return{
+            form:{
+                docId:'',
+                docId1:''
+            },
+            uploadres:require('../../assets/images/takephoto.png'),
             isShow: false,
             partsTypeList: [],
             sparePartsSortOutTit:"事件备件列表",
             caseId:this.$route.query.caseId,
             workId:this.$route.query.workId,
+            onceFlg:this.$route.query.onceFlg,
             searchData:[],
             sparePartsSortOutSelectArr:[],
             slaFeedBack:'',
@@ -165,24 +188,24 @@ export default {
                 {"useStatusName": "坏件", "useStatusId": "3"},
                 // {"useStatusName": "DOA不可用", "useStatusId": "4"},
                 {"useStatusName": "未到场", "useStatusId": "5"},
-                ],
+            ],
+            buttonType:''
         };
     },
-
+    mounted(){
+        window.photoResult = this.getPhotoUrl;
+    },
     methods:{
         getModelName(modelName){
             if(modelName){
                 for(let i=0;i<this.modelArray.length;i++){
                     if(this.modelArray[i].modelName == modelName){
-                        // modelId = this.modelArray[i].modelId;
                         modelName = this.modelArray[i].modelName;
                     }
                 } 
             }
         },
         querySearchModel(queryString,cb) {
-            console.log("queryString",queryString);
-            console.log("cb",cb);
             fetch.get("?action=/parts/queryModelName&MODELNAME="+queryString,'').then(res=>{
                 console.log("queryModelName",res);
                 this.modelArray = res.data;
@@ -286,7 +309,6 @@ export default {
 
         onArray (formUpdateParts){
             let params = {};
-            // let params = new URLSearchParams;
             let array = new Array;
             let list = [];
             let params_dict = {};
@@ -301,32 +323,24 @@ export default {
                     array.push(takeArray);
                 }
                 else if (formUpdateParts.takeDownSN==undefined&&formUpdateParts.partsSource=="1"&&formUpdateParts.useStatus=="1") {
-                    // console.log("kkkk")
                     array = "";
                 }
                 else if (formUpdateParts.takeDownSN==undefined&&formUpdateParts.partsSource=="2") {
                     let chageArray = this.changePartsParams(formUpdateParts)
-                    // console.log("DDDDD", chageArray)
                     array.push(chageArray);
                 }
                 else{
                     let chageArray = this.changePartsParams(formUpdateParts)
-                    // console.log("DDDDD", chageArray)
                     array.push(chageArray);
                 }
                 array = JSON.stringify(array);
                 params.DATA = array;
                 params.UPDATE_DATE = this.getCurrentTime();
                 params.CASE_ID = this.caseId;
-                // params.append('DATA', array);
-                // params.append('UPDATE_DATE', this.getCurrentTime());
-                // params.append('CASE_ID', this.caseId);
-                // console.log("qweasd", params, eval(params.get('DATA')).length, eval(params.get('DATA')))
                 return params
             }
             array = "judge_no";
             array = JSON.stringify(array);
-            // params.append("DATA", array);
             params=array;
             return params
         },
@@ -341,10 +355,7 @@ export default {
         },
          
         onSubmit (formUpdateParts) {
-            console.log("formUpdateParts",formUpdateParts);
             let params = this.onArray(formUpdateParts);
-            console.log("params",params);
-            // let params_DATA = eval(params.get('DATA'));
             let params_DATA = JSON.parse(params.DATA);
             console.log("params_DATA:",params_DATA);
             if (params_DATA=="judge_no") {
@@ -404,13 +415,6 @@ export default {
                 }
             }
         },
-        getSearParams (searchData) {
-
-        },
-
-        onPartsArrange(){
-            console.log("ASSSSSSSSSSSSSSS")
-        },
 
         loadMore(){
             if(this.busy || this.loadall)
@@ -436,6 +440,55 @@ export default {
                 this.isShow = false;
             }
         },
+        takePhoto:function(event){
+            event = (event||window.event);
+            console.log("event",event);
+            let target = (event.target || event.srcElement);
+            this.buttonType = target.innerText;
+            console.log(target.innerText);
+            let ua = navigator.userAgent.toLowerCase();
+            console.log(ua);
+            if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
+                var info={action:"takePhoto"}
+                window.webkit.messageHandlers.ioshandle.postMessage({body: info});
+            }else if(/(Android)/i.test(ua) && /mobile/i.test(ua)){
+                var value = "{action:takePhoto}";
+                android.getClient(value);
+            }
+        },
+        getPhotoUrl: function(photodata){
+            let loading = this.$loading({
+                lock: true,
+                text: '上传中...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(255, 255, 255, 0.3)'
+            });
+            var data=new FormData();
+            data.append("FILETYPE","jpg");
+            data.append("FILE", photodata);
+            let config = {
+                headers:{'Content-Type':'multipart/form-data'}
+            };
+            fetch.post("?action=upload",data,config).then(res=>{
+                console.log("upload",res)
+                if(res['STATUSCODE'] == '0'){
+                    if(this.buttonType === '上传备件到场照片'){
+                        this.form.docId= res.data.docId;
+                        this.$refs.showpic.src = photodata;
+                    }else{
+                        this.form.docId1= res.data.docId;
+                        this.$refs.showpic1.src = photodata;
+                    }
+                }
+                else{
+                    this.$toast(res.MESSAGE);
+                }
+                loading.close();
+            });
+        },
+    },
+    beforeDestroy(){
+        window.photoResult = null;
     },
     created(){
         this.getSparePart();
@@ -495,4 +548,7 @@ export default {
 .dialogdc >>> .submit .onsubmit:hover{background: #2698d6;}
 .dialogdc >>> .submit .el-form-item__content{margin: 0!important; display: flex;}
 .dialogdc >>> .submit .onsubmit{background: #2698d6; color: #ffffff;}
+.takephbox{ padding-left: 10px;}
+.takephbox .imgout{ border:1px solid #ccc; width: 0.8rem; height: 0.8rem; margin-top: 10px;; padding: 1px; text-align: center;}
+.takephbox .imgout img{ height: 0.7rem; width: auto; margin: 0 auto; max-width: 0.8rem;}
 </style>

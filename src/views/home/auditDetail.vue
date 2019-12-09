@@ -6,37 +6,40 @@
             <el-form :model="formData" ref="formData">
                 <el-card class="box-card" v-for="(item,index) in auditinfos" :key="item.id">
                     <div slot="header" class="clearfix">
-                        <span>{{item.submitor}}的{{loaType[item.loaType]}}申请</span>
-                        <el-button class="divBtn" type="text" v-if="item.loaType==='2'">查看详情</el-button>
+                        <span>{{item.realname}}的{{loaType[item.loatype]}}申请</span>
+                        <router-link :to="{name:'attenDetail',query:{id:item.processId}}">
+                            <el-button style="float: right; padding: 3px 0;font-size:0.13rem" type="text">查看详情</el-button>
+                        </router-link>
+                        <!-- <el-button class="divBtn" type="text" v-if="item.loatype==='2'">查看详情</el-button> -->
                         <!-- <el-button class="divBtn proBtn" type="text">查看流程</el-button>
                         <el-button class="divBtn proBtn" type="text" v-if="item.loaType==='0'">查看附件</el-button> -->
                     </div>
-                    <el-form-item label="考勤月份：" v-if="item.loaType==='2'">
-                        <div>{{item.attnMonth}}</div>
+                    <el-form-item label="考勤月份：" v-if="item.loatype===2">
+                        <div>{{item.month}}</div>
                     </el-form-item>
                     <el-form-item label="项目编号：">
-                        <div>{{item.prjCode}}</div>
+                        <div>{{item.projectCode}}</div>
                     </el-form-item>
                     <el-form-item label="项目名称：">
-                        <div>{{item.prjName}}</div>
+                        <div>{{item.projectName}}</div>
                     </el-form-item>
-                    <el-form-item label="请假类型：" v-if="item.loaType==='0'">
+                    <el-form-item label="请假类型：" v-if="item.loatype===0">
                         <div>{{item.prjCode}}</div>
                     </el-form-item>
-                    <el-form-item label="开始时间：" v-if="item.loaType==='0'">
+                    <el-form-item label="开始时间：" v-if="item.loatype===0">
                         <div>{{item.beginDate}} {{item.beginTime}}</div>
                     </el-form-item>
-                    <el-form-item label="结束时间：" v-if="item.loaType==='0'">
+                    <el-form-item label="结束时间：" v-if="item.loatype===0">
                         <div>{{item.endDate}} {{item.endTime}}</div>
                     </el-form-item>
-                    <el-form-item label="缺勤时长：" v-if="item.loaType==='2'">
-                        <div>{{item.leavedays}}天{{item.leavehours}}小时</div>
+                    <el-form-item label="缺勤时长：" v-if="item.loatype===2">
+                        <div>{{item.absMinute}}</div>
                     </el-form-item>
-                    <el-form-item label="请假事由：" v-if="item.loaType==='0'">
+                    <el-form-item label="请假事由：" v-if="item.loatype===0">
                         <div>{{item.reason}}</div>
                     </el-form-item>
                     <el-form-item label="提交时间：">
-                        <div>{{item.submitTime}}</div>
+                        <div>{{item.submitOn}}</div>
                     </el-form-item>
                     <el-form-item class="submitBtn">
                         <el-button type="primary" class="okBtn" @click="handleSubmit('ok',index)">同意</el-button>
@@ -100,6 +103,7 @@
 <script>
 import headerLast from "../header/headerLast";
 import transfrom from "@/utils/dateTransform.js"
+import fetch from '../../utils/ajax'
 export default {
     name:'auditDetail',
     components:{
@@ -119,40 +123,59 @@ export default {
                 absenceType:'地点',
                 reason:'因公外出'
             },
-            auditinfos:[{
-                addrId: 10154,
-                applyUser: "jingrr",
-                beginDate: "2019-9-23",
-                beginTime: "09:00",
-                endDate: "2019-9-23",
-                endTime: "18:00",
-                groupId: 10154,
-                id: "625719067436646400",
-                leaveType: 3,
-                loaType: "0",
-                prjCode: "FWSBU_999",
-                prjId: 10154,
-                prjName: "闲置资源池-开发",
-                processStatus: "1",
-                reason: "111",
-                submitTime: "2019-09-23 15:44:11",
-                submitor: "景瑞瑞"
-            }],
+            auditinfos:[],
             loaType:[],
             id:this.$route.query.id,
-            loaType:this.$route.query.loaType,
+            loatype:this.$route.query.loatype,
         }
     },
     created(){
         this.loaType = transfrom.getLeaveType().loaType;
+        this.getProjectAttendance();
     },
     methods:{
-        handleSubmit(flag,index){
-
+        getProjectAttendance:function(){
+            console.log("loatype",this.loatype);
+            fetch.get("?action=/attendance/queryProjectAttendance&processStatus=1&projectId="+this.id+"&loaType="+this.loatype,'').then(res=>{
+                console.log("queryProjectAttendance",res);
+                if(res.STATUSCODE==='1'){
+                    this.auditinfos = res.data;
+                }else{
+                    this.$message({
+                        message:res.MESSAGE,
+                        type: 'error',
+                        center: true,
+                        duration:2000,
+                        customClass: 'msgdefine'
+                    })
+                }
+            })
         },
         handleSubmit(flag,index){
-
-        }
+            let url = "";
+            let temp = {};
+            console.log("auditinfos",this.auditinfos);
+            temp.processId = this.auditinfos[index].processId;
+            temp.loaType = this.auditinfos[index].loatype;
+            if(flag === 'ok'){
+                temp.auditType = 0;
+            }else{
+                temp.auditType = 1;
+            }
+            let params = "&processId="+temp.processId+"&loaType="+temp.loatype+"&auditType="+temp.auditType
+            fetch.questionPost("?action=/attendance/approveAttendance"+params,'').then(res=>{
+                console.log("approveAttendance",res);
+                if(res.STATUSCODE === '1'){
+                    this.$message({
+                        message:'提交成功',
+                        type: 'success',
+                        center: true,
+                        customClass: 'msgdefine'
+                    });
+                    this.getProjectAttendance();
+                }
+            })
+        },
     }
 }
 </script>

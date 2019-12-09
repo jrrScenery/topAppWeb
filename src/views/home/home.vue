@@ -187,15 +187,15 @@ export default {
           this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_4.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false};
           this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计',href: 'reportBusinessForm',params: {type: 'my'},display:true};
           this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉', href: 'tabshowTest',params: {type: 'my'},display:true};
-          // this.workBenchObj[2].arr[2] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
           this.workBenchObj[2].arr[2] = {imgSrc: require('@/assets/images/kq.png'), text: '考勤',href: 'attendence',params: {type: 'my'},display:true};
+          this.workBenchObj[3].arr[0] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
         }else{
           this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/my_5.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true};
           this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/my_6.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
           this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计', href: 'reportBusinessForm',params: {type: 'my'},display:true};
           this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉', href: 'tabshowTest',params: {type: 'my'},display:true};
-          // this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
           this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/kq.png'), text: '考勤',href: 'attendence',params: {type: 'my'},display:true};
+          this.workBenchObj[2].arr[2] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
         }
       }else{
         this.workBenchObj[0].arr[0] = {imgSrc: require('@/assets/images/my_2.png'), text: '我的事件', href: 'workBenchMyEvent',params: {type: 'my'},display:true};
@@ -206,16 +206,15 @@ export default {
           this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/my_4.png'), text: '单次报价', href: 'bidClass', params: {type: 'my'},display:false};
           this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计',href: 'reportBusinessForm',params: {type: 'my'},display:true};
           this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉', href: 'tabshowTest',params: {type: 'my'},display:true};
-          // this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
           this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/kq.png'), text: '考勤',href: 'attendence',params: {type: 'my'},display:true};
+          this.workBenchObj[2].arr[2] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
         }else{
           this.workBenchObj[0].arr[2] = {imgSrc: require('@/assets/images/my_5.png'), text: '事件总览', href: 'workBenchMyEventAll', params: {type: 'all'},display:true},
           this.workBenchObj[1].arr[0] = {imgSrc: require('@/assets/images/my_6.png'), text: '项目总览', href: 'workBenchMyProAll', params: {type: 'all'},display:true};
           this.workBenchObj[1].arr[1] = {imgSrc: require('@/assets/images/my_8.png'), text: '报表统计',href: 'reportBusinessForm',params: {type: 'my'},display:true};
           this.workBenchObj[1].arr[2] = {imgSrc: require('@/assets/images/my_7.png'), text: '意见投诉', href: 'tabshowTest',params: {type: 'my'},display:true};
-          // this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
           this.workBenchObj[2].arr[0] = {imgSrc: require('@/assets/images/kq.png'), text: '考勤',href: 'attendence',params: {type: 'my'},display:true};
-          // this.workBenchObj[2].arr = []
+          this.workBenchObj[2].arr[1] = {imgSrc: require('@/assets/images/my_7.png'), text: '值班信息', href: 'workBenchWorkInfo',params: {type: 'my'},display:true};
         }
       }
     },
@@ -258,18 +257,14 @@ export default {
         var lat = res.latitude;//gps经纬度
         var lng = res.longitude;
         setTimeout(function () {
-          console.log("000");
           self.gpsPoint = new BMap.Point(lng,lat);
           var convertor = new BMap.Convertor();
           var pointArr = [];
               pointArr.push(self.gpsPoint);
-              // console.log(pointArr);
           convertor.translate(pointArr, 1,5, function (point) {  
-            console.log("111",point);
             self.latitude = point.points[0].lat;
             self.longitude = point.points[0].lng;
             self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
-            // console.log(JSON.stringify(self.location)); 
             if(self.location.length==0){
               self.zcInfo = '驻场地址为空，请填写说明并维护地址';
               self.desc = "您的驻场地址为空，无法进行打卡，是否进行情况说明？";
@@ -286,13 +281,11 @@ export default {
               if(isInPunchTime){
                 self.postPunchInfo();
               }
-              // self.postPunchInfo();
             }else{
               self.warnVisible = true;      
             }
             var geoc = new BMap.Geocoder(); 
             geoc.getLocation(self.pointA, function(rs){
-              console.log("rs:",rs);
               if(rs.surroundingPois.length!=0){
                 self.address = rs.surroundingPois[0].address+rs.surroundingPois[0].title;             
               }else{
@@ -312,7 +305,6 @@ export default {
      var map = new BMap.Map('')
      var pointB = new BMap.Point(parseFloat(longitude), parseFloat(latitude))  // 店铺的经纬度
      var distance = (map.getDistance(this.pointA, pointB) / 1000).toFixed(2) // 保留小数点后两位
-    //  return distance    
      if(this.differDistance!=null){
        if(distance<this.differDistance){
          this.differDistance = distance;
@@ -343,22 +335,13 @@ export default {
       bmDate.setSeconds('00');
       let befoream = new Date(amDate.getTime()-3*60*60*1000);
       let afterpm = new Date(bmDate.getTime()+3*60*60*1000);
-      console.log("amDate:"+amDate);
-      console.log("bmDate:"+bmDate);
-      console.log("befoream:"+befoream);
-      console.log("afterpm:"+afterpm);
       let amdiffer1 = c.getTime()-befoream.getTime();
       let amdiffer2 = amDate.getTime()-c.getTime();
       let pmdiffer1 = c.getTime()-bmDate.getTime();
       let pmdiffer2 = afterpm.getTime()-c.getTime();
-      console.log("amdiffer1",amdiffer1);
-      console.log("amdiffer2",amdiffer2);
-      console.log("pmdiffer1",pmdiffer1);
-      console.log("pmdiffer2",pmdiffer2);
       if((amdiffer1>0&&amdiffer2>0)||(pmdiffer1>0&&pmdiffer2>0)){ 
         return true
       }else{
-        console.log("ssssssssss");
         this.zcInfo = '当前不在打卡时间范围内，请填写说明';
         this.desc = "当前不在打卡时间范围内，无法进行打卡，是否进行情况说明？";
         this.warnVisible = true;  
@@ -440,7 +423,6 @@ export default {
             }
         }
         let data = {};
-        // data.workId = vm.workId;
         data.excuteType = vm.questionObj.EXCUTE_TYPE;
         data.questionId = vm.questionObj.QUESTION_ID;
         data.answerIds = answerIds;
@@ -459,7 +441,6 @@ export default {
                   customClass:'msgdefine'
                 });  
                 vm.homeWarnFlag = false;
-                // vm.onUndertake();
             }else{
                 this.$message({
                     message:res.MESSAGE,

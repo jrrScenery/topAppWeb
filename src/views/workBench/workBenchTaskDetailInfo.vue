@@ -62,13 +62,9 @@
             <router-link :to="{name:'casePartEvaluate',query:{caseId:this.taskDetailInfo.caseId,workId:this.taskDetailInfo.workId,templateType:2,bjflg:1}}">
             <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/sla.png" alt="">备件评价</li>
             </router-link>
-            <router-link :to="{name: 'sparePartsSortOut',query:{caseId:this.caseId,workId:this.workId,slaDcFeedback:this.slaDcFeedback}}">
+            <router-link :to="{name: 'sparePartsSortOut',query:{caseId:this.caseId,workId:this.workId,slaDcFeedback:this.slaDcFeedback,onceFlg:taskDetailInfo.onceFlg}}">
                 <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件整理</li>
             </router-link>
-            <!-- <div v-else @click="clickbjzl">
-                <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件整理</li>
-            </div> -->
-
             <router-link :to="{name:'workBenchPartRecycle',query:{caseId:this.caseId}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件回收</li>
             </router-link>
