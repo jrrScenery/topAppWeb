@@ -164,7 +164,7 @@
                         <el-button @click="handleSubmit">提交</el-button>
                     </el-form-item>       
                 </div>
-                <div class="norecord" v-else>暂无缺勤记录</div>
+                <div class="norecord" v-else>暂无考勤记录</div>
             </el-form>
         </div>
     </div>

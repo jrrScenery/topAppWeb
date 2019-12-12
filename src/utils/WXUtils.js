@@ -17,7 +17,6 @@ export default class Location {
                 },
                 (err) => {
                     loading.close();
-                    // callback.error(res);
                     switch(err.code) { 
                         case err.PERMISSION_DENIED: 
                         that.$message({
@@ -53,7 +52,7 @@ export default class Location {
                             center: true,
                             duration:3000,
                             customClass: 'msgdefine'
-                          })
+                        })
                           break; 
                     } 
                 },

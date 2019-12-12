@@ -4,7 +4,7 @@
         <div style="height: 0.45rem;"></div>
         <div style="text-align:center;margin-top:0.1rem" v-for="items in obj" :key="items.id" >
             <div v-if="items.arr.length!=0">
-                <ul class="ul_workBench" >
+                <ul class="ul_workBench">
                     <template v-for="item in items.arr">
                         <li class="li_workBench" :key="item.id" v-if="item.text!='打卡'"><!-- v-if="item.text!='打卡'"-->
                             <router-link :to="{name:item.href,params:item.params}">
@@ -13,11 +13,19 @@
                             <span>{{item.text}}</span>
                         </li>
                         <li class="li_workBench" :key="item.id" v-else @click="punchCard()">
-                            <img  :src="item.imgSrc" alt="">
+                            <img :src="item.imgSrc" alt="">
                             <span>{{item.text}}</span>
                         </li>
                     </template>
                 </ul>
+                <!-- <ul class="ul_workBench" v-else>
+                    <template v-for="item in items.arr">
+                        <li class="li_workBench" :key="item.id" v-if="item.text=='打卡'" @click="punchCard()">
+                            <img :src="item.imgSrc" alt="">
+                            <span>{{item.text}}</span>
+                        </li>
+                    </template>
+                </ul> -->
             </div>
         </div>
 
@@ -64,30 +72,11 @@
                     </el-form-item>
                 </div>
                 <el-form-item  class="submit">
-                    <!-- <el-button @click="questionVisible = false" >取 消</el-button> -->
                     <el-button type="primary"  class="onsubmit"  @click="onSubmit()">提 交</el-button>
                 </el-form-item>
                 </el-form>
             </el-dialog>
         </div>
-        <!-- 打卡不再范围时询问框 -->
-        <!-- <div class="dialogdc">
-            <el-dialog
-                title="提示"
-                :visible.sync="warnVisible"
-                :show-close="false"
-                width="80%"
-                center>
-                <el-form>
-                <div style="margin:0.2rem">
-                    <span>{{desc}}</span>
-                </div>
-                <el-form-item class="submit">
-                    <el-button type="primary" class="onsubmit" @click="confirm()">确 定</el-button>
-                </el-form-item>
-                </el-form>
-            </el-dialog>
-        </div> -->
     </div>
 </template>
 <script>
@@ -119,14 +108,19 @@ export default {
             question:"",
             options:[],
             differDistance:null,
-            desc:"您当前不在驻场区域，无法进行打卡,请联系项目经理维护驻场信息",
-            isInPunchTime:false
+            isInPunchTime:false,
+            LABOUR_RELATION:'',
+            isZB:true
         }
     },
     beforeCreate(){
-        console.log("desc:",this.desc);
     },
     created(){
+        let LABOUR_RELATION = localStorage.getItem("LABOUR_RELATION");
+        if(LABOUR_RELATION==='ZB'){
+            this.isZB = false
+        }
+        console.log("LABOUR_RELATION",LABOUR_RELATION);
         this.obj = [
             {arr: []},
             {arr:[]},
@@ -139,15 +133,21 @@ export default {
     },
     methods:{
         getObj(){
-            this.obj[0].arr[0]={imgSrc: require('@/assets/images/punch.png'), text: '打卡', href: 'punch',display:false};
-            this.obj[0].arr[1]={imgSrc: require('@/assets/images/punchRecord.png'), text: '打卡记录', href: 'punchCardRecord',display:true};
-            this.obj[0].arr[2] = {imgSrc: require('@/assets/images/makeupAttendence.png'), text: '补考勤', href: 'makeUpAttendence',display:true};
-            this.obj[1].arr[0] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
-            this.obj[1].arr[1] = {imgSrc: require('@/assets/images/attendetail.png'), text: '员工打卡明细', href: 'checkAttenDetail',display:true};
+            if(this.isZB){
+                this.obj[0].arr[0]={imgSrc: require('@/assets/images/punch.png'), text: '打卡', href: 'punch',display:false};
+                this.obj[0].arr[1]={imgSrc: require('@/assets/images/punchRecord.png'), text: '打卡记录', href: 'punchCardRecord',display:true};
+                this.obj[0].arr[2] = {imgSrc: require('@/assets/images/makeupAttendence.png'), text: '补考勤', href: 'makeUpAttendence',display:true};
+                this.obj[1].arr[0] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
+                this.obj[1].arr[1] = {imgSrc: require('@/assets/images/attendetail.png'), text: '员工打卡明细', href: 'checkAttenDetail',display:true};
+            }else{
+                this.obj[0].arr[0]={imgSrc: require('@/assets/images/punch.png'), text: '打卡', href: 'punch',display:false};
+                this.obj[0].arr[1]={imgSrc: require('@/assets/images/punchRecord.png'), text: '打卡记录', href: 'punchCardRecord',display:true};
+                this.obj[0].arr[2] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
+                this.obj[1].arr[0] = {imgSrc: require('@/assets/images/attendetail.png'), text: '员工打卡明细', href: 'checkAttenDetail',display:true};
+            }
         },
         confirm(){
             this.warnVisible=false;
-            // this.$router.push({name:'punchFailShow',query:{lat:this.latitude,lng:this.longitude,address:this.address,zcInfo:this.zcInfo}})
         },
         getQuestion(){
             fetch.get("?action=/risk/getQuestion",{}).then(res=>{
@@ -172,73 +172,6 @@ export default {
             };
             this.getLocation();
         },
-        // getZcLocationInfo:function(){
-        //     fetch.get("?action=/system/getProAttendanceAddress",{}).then(res=>{
-        //         console.log("getProAttendanceAddress:",res);
-        //         if(res.STATUSCODE=='1'){
-        //             let location = res.data;
-        //             this.location = location;
-        //         }else{
-        //             this.$message({
-        //                 message:res.MESSAGE+"发生错误",
-        //                 type: 'error',
-        //                 center: true,
-        //                 duration:1000,
-        //                 customClass: 'msgdefine'
-        //             });
-        //         }
-        //     })
-        // },
-         // 测量百度地图两个点间的距离
-        // getDistance:function (location) {
-        //     let latitude = location.LATITUDE;
-        //     let longitude = location.LONGITUDE;
-        //     // let addressId = location.ADDRESS_ID;
-        //     var map = new BMap.Map('')
-        //     var pointB = new BMap.Point(parseFloat(longitude), parseFloat(latitude))  // 店铺的经纬度
-        //     var distance = (map.getDistance(this.pointA, pointB) / 1000).toFixed(2) // 保留小数点后两位
-        //     //  return distance    
-        //     if(this.differDistance!=null){
-        //     if(distance<this.differDistance){
-        //         this.differDistance = distance;
-        //         this.addressId = addressId;
-        //         this.amStartTime = location.amStartTime;
-        //         this.pmEndTime = location.pmEndTime;
-        //     }
-        //     }else{
-        //         this.differDistance = distance;
-        //         this.addressId = addressId;
-        //         this.distance = location.distance;
-        //         this.amStartTime = location.amStartTime;
-        //         this.pmEndTime = location.pmEndTime;
-        //     }
-        // },
-        //工程师操作时间差计算
-    //     differTime:function(startTime,endTime){
-    //         let strstart = startTime.split(":");
-    //         let strend = endTime.split(":");
-    //         let amDate = new Date();
-    //         let bmDate = new Date();
-    //         let c = new Date();
-    //         amDate.setHours(strstart[0]);
-    //         amDate.setMinutes(strstart[1]);
-    //         amDate.setSeconds('00');
-    //         bmDate.setHours(strend[0]);
-    //         bmDate.setMinutes(strend[1]);
-    //         bmDate.setSeconds('00');
-    //         let befoream = new Date(amDate.getTime()-3*60*60*1000);
-    //         let afterpm = new Date(bmDate.getTime()+3*60*60*1000);
-    //         let amdiffer1 = c.getTime()-befoream.getTime();
-    //         let amdiffer2 = amDate.getTime()-c.getTime();
-    //         let pmdiffer1 = c.getTime()-bmDate.getTime();
-    //         let pmdiffer2 = afterpm.getTime()-c.getTime();
-    //         if((amdiffer1>0&&amdiffer2>0)||(pmdiffer1>0&&pmdiffer2>0)){ 
-    //             return true
-    //         }else{
-    //             this.desc = "当前不在打卡时间范围内，无法进行打卡！";
-    //             this.warnVisible = true;  
-    //         }
-    //     },
         postPunchInfo(){
             const loading = this.$loading({
                 lock: true,
@@ -246,9 +179,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
-            // let param = {latitude:this.latitude,longitude:this.longitude,address:this.address,addressId:this.addressId,flg:1};
             let param = {latitude:this.latitude,longitude:this.longitude};
-            // fetch.get("?action=/risk/savePosition",param).then(res=>{
                 fetch.get("?action=/attendance/savePunch",param).then(res=>{
                 console.log("savePosition",res);
                 loading.close();
@@ -273,7 +204,6 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
-            // self.getZcLocationInfo();
             function success(res){
                 console.log("res",res);
                 var lat = res.latitude;//gps经纬度
@@ -288,25 +218,7 @@ export default {
                         self.latitude = point.points[0].lat;
                         self.longitude = point.points[0].lng;
                         self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
-                        // if(self.location.length==0){
-                        //     self.desc = "您的驻场地址为空，无法进行打卡，请联系项目经理维护驻场信息";
-                        //     self.warnVisible = true;  
-                        // }else{
-                        //     for(let i=0;i<self.location.length;i++){
-                        //         if(self.location[i].LATITUDE!=null&&self.location[i].LONGITUDE!=null){
-                        //             self.getDistance(self.location[i]);
-                        //         }
-                        //     }
-                        // }
-                        // if(self.differDistance&&self.differDistance<=self.distance/1000){
-                            // let isInPunchTime = self.differTime(self.amStartTime,self.pmEndTime);
-                            // if(isInPunchTime){
-                                self.postPunchInfo();
-                            // }
-                        // self.postPunchInfo();
-                        // }else{
-                        //     self.warnVisible = true;      
-                        // }
+                        self.postPunchInfo();
                         var geoc = new BMap.Geocoder(); 
                         geoc.getLocation(self.pointA, function(rs){
                         console.log("rs:",rs);
@@ -326,7 +238,7 @@ export default {
             if(vm.form.radioItem.length==0){
                 this.$message({
                     message:'请选择答案',
-                    type: 'error',
+                    type: 'warning',
                     center: true,
                     duration:2000,
                     customClass: 'msgdefine'
@@ -357,11 +269,23 @@ export default {
                         }
                     }
                 }
+                // if(ifAnswerTrue===0){
+                //     this.$message({
+                //         message:'回答错误，请继续答题',
+                //         type: 'warning',
+                //         center: true,
+                //         duration:2000,
+                //         customClass: 'msgdefine'
+                //     })
+                //     return false
+                // }
+                let params = {};
+                params.excuteType = vm.questionObj.EXCUTE_TYPE;
+                params.questionId = vm.questionObj.QUESTION_ID;
+                params.answerIds = answerIds;
+                params.ifAnswerTrue = ifAnswerTrue;
                 let data = {};
-                data.excuteType = vm.questionObj.EXCUTE_TYPE;
-                data.questionId = vm.questionObj.QUESTION_ID;
-                data.answerIds = answerIds;
-                data.ifAnswerTrue = ifAnswerTrue;
+                data.data = JSON.stringify(params);
                 fetch.questionPost("?action=/risk/saveAnswer",data).then(res=>{
                     console.log("saveAnswer",res);
                     if(res.STATUSCODE=='1'){
@@ -373,7 +297,6 @@ export default {
                             customClass:'msgdefine'
                         });  
                         vm.homeWarnFlag = false;
-                        // setTimeout(function(){vm.$router.push({ name: 'home'})},1000);
                     }else{
                         vm.$message({
                             message:res.MESSAGE,
@@ -391,7 +314,7 @@ export default {
 </script>
 <style scoped>
 .attendenceView{width: 100%;height:100%}
-.attendenceView .ul_workBench{display: flex;flex-wrap: wrap;padding: 0.15rem 0.1rem;margin-top: 0.01rem;background: #ffffff;font-size: 0.15rem}
+.attendenceView .ul_workBench{display: flex;flex-wrap: wrap;padding: 0.15rem 0.1rem;margin-top: 0.01rem;background: #ffffff;font-size: 0.15rem;height:100%}
 .attendenceView .ul_workBench:first-child .li_workBench:first-child span{width: 110%; margin-left: -5%;}
 .attendenceView .ul_workBench .li_workBench{display: flex; flex-direction: column; align-content: space-around; justify-content: space-around; width: 33%; height: 0.55rem; text-align: center;}
 .attendenceView .ul_workBench .li_workBench:nth-child(n+5){margin-top: 0.15rem;}
@@ -409,8 +332,6 @@ export default {
 .optionTextView{word-wrap:break-word;word-break: break-all;white-space:normal;margin-right:0.2rem}
 
 .homeWarn  .submit{position: relative;left: 0; right: 0; height: 0.4rem;bottom: 0;}
-/* .submit >>> .el-form-item__content{margin: 0!important;}
-.submit >>> .el-form-item__content .el-button{width: 50%; border: 0.01rem solid #2698d6; background: #2698d6; border-radius: 0; font-size: 0.16rem; color: #ffffff; height: 0.5rem; position: absolute; bottom: 0;} */
 .homeWarn >>> .submit .el-button{width: 100%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
 .homeWarn >>> .submit .el-button:hover{background: #ffffff;}
 .homeWarn >>> .submit .onsubmit:hover{background: #2698d6;}

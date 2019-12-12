@@ -56,17 +56,17 @@
                                                               expectWorkload:this.taskDetailInfo.expectWorkload}}">
             <li><img src="../../assets/images/eventBaseInfo_4.png" alt="">工作量申报</li>
             </router-link>
-            <router-link :to="{name:'casePartEvaluate',query:{caseId:this.taskDetailInfo.caseId,workId:this.taskDetailInfo.workId,templateType:1,bjflg:0}}">
-            <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">人员评价</li>
-            </router-link>
-            <router-link :to="{name:'casePartEvaluate',query:{caseId:this.taskDetailInfo.caseId,workId:this.taskDetailInfo.workId,templateType:2,bjflg:1}}">
-            <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/sla.png" alt="">备件评价</li>
-            </router-link>
             <router-link :to="{name: 'sparePartsSortOut',query:{caseId:this.caseId,workId:this.workId,slaDcFeedback:this.slaDcFeedback,onceFlg:taskDetailInfo.onceFlg}}">
                 <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件整理</li>
             </router-link>
             <router-link :to="{name:'workBenchPartRecycle',query:{caseId:this.caseId}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">备件回收</li>
+            </router-link>
+            <router-link :to="{name:'casePartEvaluate',query:{caseId:this.taskDetailInfo.caseId,workId:this.taskDetailInfo.workId,templateType:1,bjflg:0}}">
+            <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">人员评价</li>
+            </router-link>
+            <router-link :to="{name:'casePartEvaluate',query:{caseId:this.taskDetailInfo.caseId,workId:this.taskDetailInfo.workId,templateType:2,bjflg:1}}">
+            <li class="slali"><img style="width:20px;height:16px;margin:0px" src="../../assets/images/sla.png" alt="">备件评价</li>
             </router-link>
             <router-link :to="{name:'eventReplenish',query:{caseId:this.$route.query.caseId,type:'process',workId:this.$route.query.workId}}">
             <li><img src="../../assets/images/eventBaseInfo_5.png" alt="">过程记录</li>
@@ -229,9 +229,12 @@ export default {
     },
     created:function(){
         console.log("workId",this.$route.query.workId); 
+        console.log("caseId",this.$route.query.caseId);
+        console.log("slaDcFeedback",this.slaDcFeedback);
         fetch.get("?action=/work/getWorkInfo&WORK_ID="+this.$route.query.workId,{}).then(res=>{     
             console.log("getWorkInfo",res);   
             this.taskDetailInfo = res.DATA[0];
+            console.log("onceFlg",this.taskDetailInfo.onceFlg)
             this.taskDetailInfo.refuseReason = '';
             this.specialNotes = res.DATA[0].specialNotes;
             this.riskInfos = res.DATA[0].riskInfos;

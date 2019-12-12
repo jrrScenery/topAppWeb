@@ -96,7 +96,7 @@ console.log("login",res);
 
               let token = res.data.token;
               localStorage.setItem("token", token);
-
+              localStorage.setItem("LABOUR_RELATION",res.data.userInfo[0].LABOUR_RELATION);
               localStorage.setItem("empId", res.data.userInfo[0].EMPID);
               localStorage.setItem("realName", res.data.userInfo[0].REALNAME);
               localStorage.setItem("mobile", res.data.userInfo[0].MOBILE);

@@ -14,16 +14,14 @@
       </div>
       <div class="tabdetail">
         <el-row v-for="item in SLAObj" :key="item.slaTypeId"><!--这几条数据在一个json数组slaStatus中，workid相同。-->
-          <!-- <div v-if="item.slaTypeId!=='1'&&item.slaTypeId!=='2'&&item.slaTypeId!=='3'"> -->
-            <el-col :span="7"><div style="text-align:left">{{item.slaType}}</div></el-col>
-            <el-col :span="8" v-if="item.operateDate!=null"><div style="font-size:0.13rem;line-height:0.2rem;">{{item.operateDate}}</div></el-col>
-            <el-col :span="8" v-else><div style="font-size:0.13rem;line-height:0.2rem;">无</div></el-col>
-            <el-col :span="6"><div style="word-wrap: break-word;font-size:0.13rem;padding-right:5px;line-height:0.2rem;">{{item.feedbackDescription}}</div></el-col><!--反馈说明-->
-            <el-col :span="3" style="float:right;color:#2698d6" >
-              <div v-if="item.ifFeedback==0" @click="dialogopen(item.slaTypeId)">反馈</div>
-              <div v-if="item.ifFeedback!=0" style="color:#666666" >已反馈</div>
-            </el-col>
-          <!-- </div> -->
+          <el-col :span="7"><div style="text-align:left">{{item.slaType}}</div></el-col>
+          <el-col :span="8" v-if="item.operateDate!=null"><div style="font-size:0.13rem;line-height:0.2rem;">{{item.operateDate}}</div></el-col>
+          <el-col :span="8" v-else><div style="font-size:0.13rem;line-height:0.2rem;">无</div></el-col>
+          <el-col :span="6"><div style="word-wrap: break-word;font-size:0.13rem;padding-right:5px;line-height:0.2rem;">{{item.feedbackDescription}}</div></el-col><!--反馈说明-->
+          <el-col :span="3" style="float:right;color:#2698d6" >
+            <div v-if="item.ifFeedback==0" @click="dialogopen(item.slaTypeId)">反馈</div>
+            <div v-if="item.ifFeedback!=0" style="color:#666666" >已反馈</div>
+          </el-col>
         </el-row>
       </div>
     </div>
@@ -694,6 +692,7 @@ export default {
       feedbackDesc:"请先完成结果反馈再进行离场（故障解决，故障解决不成功，任务已完成，任务未完成四选一）",
       workTypeWarn:'',
       workTypeStatus:'',//离场进行工单类型的判断（未备件整理；未使用件）
+      typeIdParams:'',
       checked:[
         {ifY1:false,ifF1:false},
         {ifY2:false,ifF2:false},
@@ -1068,6 +1067,7 @@ export default {
       else {
         this.dialogVisible0 = true;
       }
+      console.log("feedbackType",this.feedbackType);
     },
     //实施结果反馈前对到场操作的控制
     dcCheck(slaTypeId){
@@ -1086,6 +1086,8 @@ export default {
           }
       }else if(slaTypeId == 6 || slaTypeId == 9){
         this.typeid = slaTypeId;
+        console.log("slaTypeId0000000000",slaTypeId);
+        this.typeIdParams += slaTypeId+","
           if(this.isDcFeedBack){
             this.dialogVisible0 = true;
           }else{
@@ -1104,6 +1106,7 @@ export default {
       if(type==='task'){//仅需完成任务的工单
         this.taskVisible = false;
         if(this.form.taskradio==1){//任务完成
+          console.log("9999999999");
           this.dcCheck('9');
         }else if(this.form.taskradio==2){//任务未完成
           this.dcCheck('10');
@@ -1111,6 +1114,7 @@ export default {
       }else{//先完成任务反馈在完成故障反馈
         this.taskVisible = false;
         if(this.form.taskradio==1){//任务完成弹出故障解决和未解决单选框
+         this.typeIdParams += '9,';
           this.caseVisible = true;
         }else if(this.form.taskradio==2){//任务未完成
           this.dcCheck('10');
@@ -1121,6 +1125,7 @@ export default {
     caseRadio(){
       this.caseVisible = false;
       if(this.form.caseradio==1){//故障解决成功
+      console.log("66666666");
         this.dcCheck('6');
       }else if(this.form.caseradio==2){//故障解决不成功
         this.dcCheck('8');

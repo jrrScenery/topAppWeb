@@ -86,14 +86,13 @@
 <script>
 import transfrom from "@/utils/dateTransform.js"
 import fetch from '../../utils/ajax'
-import loadingtmp from '@/components/load/loading'
 export default {
     name:'todoAudit',
     props:{
         prorepairpage: Number
     },
     components:{
-        loadingtmp
+        // loadingtmp
     },
     data(){
         return{

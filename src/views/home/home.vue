@@ -76,7 +76,6 @@
             </el-form-item>
           </div>
           <el-form-item  class="submit">
-              <!-- <el-button @click="questionVisible = false" >取 消</el-button> -->
               <el-button type="primary"  class="onsubmit"  @click="onSubmit('form')">提 交</el-button>
           </el-form-item>
           </el-form>
