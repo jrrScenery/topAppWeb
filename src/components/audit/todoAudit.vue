@@ -135,7 +135,7 @@ export default {
                     // }
                     this.combineInfos = res.data;
                 }else{
-                    this.busy = false;
+                    // this.busy = false;
                     this.$message({
                         message:res.MESSAGE,
                         type: 'error',
@@ -144,7 +144,7 @@ export default {
                         customClass: 'msgdefine'
                     })
                 }
-                this.$emit('emitbusy', {busy:false,loadall:this.loadall});
+                // this.$emit('emitbusy', {busy:false,loadall:this.loadall});
             })
         },
         //批量审批同意或拒绝操作
@@ -157,6 +157,8 @@ export default {
             let index = target.getAttribute('data-index');
             let url = "";
             let temp = {};
+            console.log("index",index);
+            console.log("dataName",dataName);
             console.log("combineInfos",this.combineInfos);
             if(index!=null){
                 temp.projectId = this.combineInfos[index].projectId;
@@ -168,7 +170,7 @@ export default {
                 }
                 // let data = {};
                 // data.data = JSON.stringify(temp);
-                let params = "&processId="+temp.processId+"&loaType="+temp.loaType+"&auditType="+temp.auditType
+                let params = "&projectId="+temp.projectId+ "&loaType="+temp.loaType+"&auditType="+temp.auditType
                 fetch.questionPost("?action=/attendance/approveAttendance"+params,'').then(res=>{
                     console.log("approveAttendance",res);
                     if(res.STATUSCODE === '1'){

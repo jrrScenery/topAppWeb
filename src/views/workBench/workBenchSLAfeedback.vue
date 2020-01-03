@@ -679,6 +679,8 @@ export default {
       cities: cityOptions,
       targetLatitude:this.$route.query.latitude,
       targetLongitude:this.$route.query.longitude,
+      latitude:'',
+      longitude:'',
       bgDef:'',
       questionObj:'',
       selectAnwser:0,
@@ -686,6 +688,7 @@ export default {
       wrongMessage:'',
       requestNum:0,
       requireArriveTime:'',
+      expectLeave:'',//预计结束时间
       seconds:5,
       type:this.$route.query.type,
       feedbackNum:0,
@@ -854,6 +857,7 @@ export default {
             }
           }
           this.requireArriveTime = res.DATA[0].requireArriveTime.replace(/\-/g, "/");
+          this.expectLeave = res.DATA[0].expectLeave.replace(/\-/g, "/");
           this.workTypeStatus = res.DATA[0].leave[0].STATUS;
           this.hasService = res.DATA[0].leave[0].HAS_SERVICE;
         }
@@ -881,11 +885,12 @@ export default {
             self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
             self.differDistance = self.getDistance(self.targetLatitude,self.targetLongitude);
             if(self.differDistance<=4){
+              let now = new Date();
+              let currentdate = slacommon.formatDateTime(now);//到场时间限制
               if(slaTypeId==5){
-                let now = new Date();
-                let currentdate = slacommon.formatDateTime(now);//到场时间限制
-                self.intervalTime(self.requireArriveTime,currentdate);
+                self.intervalTime(self.requireArriveTime,currentdate,slaTypeId);
               }else if(slaTypeId==7){
+                // self.intervalTime(self.expectLeave,currentdate,slaTypeId);
                 self.leavebjCheck();
               }
             }else{
@@ -938,8 +943,18 @@ export default {
         duration:0
       });
     },
+    notifyLeave(endTime,hours){
+      this.$notify.info({
+        title: '提示',
+        message: '预计离场时间为'+endTime+'，当前不在任务要求离场时间范围内，无法操作;如果“要求离场时间”设置不正确，请联系CMO修改',
+        type: 'warning',
+        duration:0
+      });
+    },
     //工程师操作时间差计算
-    intervalTime:function(startTime,endTime){
+    intervalTime:function(startTime,endTime,slaTypeId){
+      console.log("startTime",startTime);
+      console.log("endTime",endTime);
       var self = this;
       function tranDate (time) {
         return new Date(time.replace(/-/g, '/')).getTime();
@@ -962,27 +977,43 @@ export default {
        //计算出小时数
       let leave1 = date3 % (24 * 3600 * 1000);    //计算天数后剩余的毫秒数
       let hours = Math.floor(leave1 / (3600 * 1000))+days*24;
-      if(expect>=restrict1&&expect<=restrict2){//如果在预计到场当日的08：00-19：00
-        if(hours<=3){
+      if(slaTypeId==5){
+        if(hours<=0){
           self.inHours();
         }else{
           self.notify(startTime,hours);
         }
-      }else if(expect>=restrict2&&expect<=restrict3){//19:00-次日08:00
-        if(hours<=6){
-          self.inHours();
-        }else{
-          self.notify(startTime,hours);
-        }
-      }else if(expect<restrict1){
-        if(hours<=6){
-          self.inHours();
-        }else{
-          self.notify(startTime,hours);
-        }
-      }else{
-        self.notify(startTime,hours);
       }
+      // if(slaTypeId==7){
+      //   console.log('hours',hours);
+      //   if(hours<=1){
+      //     self.leavebjCheck();
+      //     // self.inHours();
+      //   }else{
+      //     self.notifyLeave(startTime,hours);
+      //   }
+      // }
+      // if(expect>=restrict1&&expect<=restrict2){//如果在预计到场当日的08：00-19：00
+      //   if(hours<=3){
+      //     self.inHours();
+      //   }else{
+      //     self.notify(startTime,hours);
+      //   }
+      // }else if(expect>=restrict2&&expect<=restrict3){//19:00-次日08:00
+      //   if(hours<=6){
+      //     self.inHours();
+      //   }else{
+      //     self.notify(startTime,hours);
+      //   }
+      // }else if(expect<restrict1){
+      //   if(hours<=6){
+      //     self.inHours();
+      //   }else{
+      //     self.notify(startTime,hours);
+      //   }
+      // }else{
+      //   self.notify(startTime,hours);
+      // }
     },
     getTime:function() {
       var date = new Date();
@@ -1286,7 +1317,8 @@ export default {
         background: 'rgba(255, 255, 255, 0.3)'
       });
       var vm = this;
-      let params="&REASON="+this.form.des2+"&EXPLAIN="+this.form.des1+this.form.des3;
+      let params="&REASON="+this.form.des2+"&EXPLAIN="+this.form.des1+this.form.des3
+                  +"&LATITUDE="+this.targetLatitude+"&LONGITUDE="+this.targetLongitude;
       fetch.get("?action=/work/UpdateWorkSLAStatus&WORK_ID="+vm.$route.query.workId+
       "&SLA_TYPE="+vm.typeid+"&OPERATE_DATE="+vm.date+params).then(res=>{
         console.log("UpdateWorkSLAStatus",res);

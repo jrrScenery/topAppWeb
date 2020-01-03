@@ -43,6 +43,7 @@ class Draw {
         })
         this.clear(btn)
     }
+    //开始绘制
     drawBegin(e) {
         var that = this;
         window.getSelection() ? window.getSelection().removeAllRanges() : document.selection.empty()
@@ -58,6 +59,7 @@ class Draw {
             that.drawing(event)
         })
     }
+    //绘制中
     drawing(e) {
         this.cxt.lineTo(
             e.changedTouches[0].clientX - this.stage_info.left,
@@ -71,7 +73,6 @@ class Draw {
         document.removeEventListener('touchstart', preHandler, false); 
         document.removeEventListener('touchend', preHandler, false);
         document.removeEventListener('touchmove', preHandler, false);
-        //canvas.ontouchmove = canvas.ontouchend = null
     }
     clear(btn) {
         this.cxt.clearRect(0, 0, 300, 600)

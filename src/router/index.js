@@ -56,6 +56,12 @@ export default new Router({
       name: 'workBenchMyTask',
       component: resolve => require(['@/views/workBench/workBenchMyTask'], resolve),
     },
+    //首页我的任务
+    {
+      path: '/home/rateTest',
+      name: 'rateTest',
+      component: resolve => require(['@/views/home/rateTest'], resolve),
+    },
     //首页我的事件
     {
       path: '/workBench/workBenchMyEvent',
@@ -175,7 +181,17 @@ export default new Router({
     {
       path: '/home/checkAttenDetail',
       name: 'checkAttenDetail',
-      component: resolve => require(['@/views/home/checkAttenDetail'], resolve)
+      component: resolve => require(['@/views/home/checkAttenDetail'], resolve),
+      meta: {
+        isUseCache: false,
+        keepAlive: true
+      }
+    },
+    //首页->考勤->考勤明细报表
+    {
+      path: '/home/punchReportForm',
+      name: 'punchReportForm',
+      component: resolve => require(['@/views/home/punchReportForm'], resolve)
     },
      //首页->考勤->考勤明细
      {

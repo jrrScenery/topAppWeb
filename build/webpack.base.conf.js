@@ -93,6 +93,7 @@ module.exports = {
     vue: 'Vue',
     'element-ui':'ELEMENT',
     'echarts': 'echarts',
-    'BMap': 'BMap'
+    'BMap': 'BMap',
+    'AMap':'AMap'
   }
 }

@@ -49,13 +49,13 @@
                                             </div>
                                         </div>
                                         <div v-else>
-                                            <div v-if="scope.row.leaveType!==null">{{leaveTypeArr[scope.row.leaveType][scope.row.leaveType]}}</div>
+                                            <div v-if="scope.row.leaveType!==null">{{leaveTypeArr[leaveTypeList[scope.$index]][leaveTypeList[scope.$index]]}}</div>
                                             <div>{{scope.row.absBeginTime}}-{{scope.row.absEndTime}}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <div v-if="scope.row.leaveType!==null">{{leaveTypeArr[scope.row.leaveType][scope.row.leaveType]}}</div>
+                                    <div v-if="scope.row.leaveType!==null">{{leaveTypeArr[leaveTypeList[scope.$index]][leaveTypeList[scope.$index]]}}</div>
                                     <div>{{scope.row.absBeginTime}}-{{scope.row.absEndTime}}</div>
                                 </div>
                                 <!-- <div v-if="!isBigDateList[scope.$index]">
@@ -187,7 +187,7 @@ export default {
             leaveTypeArr:[{0:'请选择'},{1:'因公'},{2:'病假'},{3:'事假'},
                         {4:'年假'},{5:'婚假'},{6:'产假'},{7:'哺乳假'},
                         {8:'丧假'},{9:'产检假'},{10:'陪产假'},{11:'分包替岗'},
-                        {12:'漏打卡'},{13:'去case地'}],
+                        {12:'漏打卡'}],
             processStatus:[],//{0:"未提交"},{1:"审批中"},{2:"已审批"},{3:"修改"},{4:"关闭"}
             leaveTypeList:[],//各条记录选中请假类型值
             selectTimeList:[],//选择时间列表
@@ -264,7 +264,9 @@ export default {
                 console.log("111111111111");
                 for(let i=0;i<this.tableData.length;i++){
                     if(this.tableData[i].processStatus===0||this.tableData[i].processStatus===3){
-                        if(this.selectTimeList[i]!=this.tableData[i].absEndTime&&this.addFlagList[i]){
+                        console.log("selectTimeList",this.selectTimeList[i]);
+                        console.log("absEndTime",this.tableData[i].absEndTime);
+                        if(this.selectTimeList[i]<this.tableData[i].absEndTime&&this.selectTimeList[i]!=this.tableData[i].absEndTime&&this.addFlagList[i]){
                             loading.close();
                             this.$message({
                                 message:'当天考勤未补满',
@@ -369,14 +371,17 @@ export default {
                     for(let i=0;i<res.data.length;i++){
                         if(res.data[i].leaveType!=null){
                             let myabsencereserve = transfrom.getLeaveType().myabsencereserve[res.data[i].leaveType];
-                            if(res.data[i].processStatus===3||res.data[i].processStatus===0){
-                                this.leaveTypeList[i] = myabsencereserve;
-                            }else{
-                                this.leaveTypeList[i] = res.data[i].leaveType;
-                            }
+                            console.log("myabsencereserve",myabsencereserve);
+                            this.leaveTypeList[i] = myabsencereserve;
+                            // if(res.data[i].processStatus===3||res.data[i].processStatus===0){
+                            //     this.leaveTypeList[i] = myabsencereserve;
+                            // }else{
+                            //     this.leaveTypeList[i] = res.data[i].leaveType;
+                            // }
                         }else{
                             this.leaveTypeList[i] = null
                         }
+                        console.log("leaveTypeList",this.leaveTypeList)
                         // this.leaveTypeList[i]=res.data[i].leaveType;
                         this.selectTimeList[i]=res.data[i].absEndTime;
                         this.selectAbsBeginTime[i] =  res.data[i].absBeginTime;

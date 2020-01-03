@@ -18,14 +18,6 @@
                         </li>
                     </template>
                 </ul>
-                <!-- <ul class="ul_workBench" v-else>
-                    <template v-for="item in items.arr">
-                        <li class="li_workBench" :key="item.id" v-if="item.text=='打卡'" @click="punchCard()">
-                            <img :src="item.imgSrc" alt="">
-                            <span>{{item.text}}</span>
-                        </li>
-                    </template>
-                </ul> -->
             </div>
         </div>
 
@@ -77,6 +69,24 @@
                 </el-form>
             </el-dialog>
         </div>
+        <!-- 答错问题提示 -->
+        <div class="dialogdc">
+            <el-dialog
+                title="提示"
+                :visible.sync="warnVisible"
+                :show-close="false"
+                width="80%"
+                center>
+                <el-form>
+                <div style="margin:0.2rem">
+                    <span>{{wrongMessage}}</span>
+                </div>
+                <el-form-item class="submit">
+                    <el-button type="primary" class="onsubmit" @click="getNewQuestion()">确 定</el-button>
+                </el-form-item>
+                </el-form>
+            </el-dialog>
+        </div>
     </div>
 </template>
 <script>
@@ -99,7 +109,8 @@ export default {
             form:{
                 radioItem:[]
             },
-            // warnVisible:false,
+            warnVisible:false,
+            wrongMessage:'',
             location:[],
             latitude:'',
             longitude:'',
@@ -110,7 +121,10 @@ export default {
             differDistance:null,
             isInPunchTime:false,
             LABOUR_RELATION:'',
-            isZB:true
+            isZB:true,
+            requestNum:0,
+            isGps:true
+            // isReportVisiable:false
         }
     },
     beforeCreate(){
@@ -138,18 +152,18 @@ export default {
                 this.obj[0].arr[1]={imgSrc: require('@/assets/images/punchRecord.png'), text: '打卡记录', href: 'punchCardRecord',display:true};
                 this.obj[0].arr[2] = {imgSrc: require('@/assets/images/makeupAttendence.png'), text: '补考勤', href: 'makeUpAttendence',display:true};
                 this.obj[1].arr[0] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
-                this.obj[1].arr[1] = {imgSrc: require('@/assets/images/attendetail.png'), text: '员工打卡明细', href: 'checkAttenDetail',display:true};
+                    this.obj[1].arr[1] = {imgSrc: require('@/assets/images/attendetail.png'), text: '员工考勤明细', href: 'punchReportForm',display:true};//checkAttenDetail  punchReportForm
             }else{
                 this.obj[0].arr[0]={imgSrc: require('@/assets/images/punch.png'), text: '打卡', href: 'punch',display:false};
                 this.obj[0].arr[1]={imgSrc: require('@/assets/images/punchRecord.png'), text: '打卡记录', href: 'punchCardRecord',display:true};
                 this.obj[0].arr[2] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
-                this.obj[1].arr[0] = {imgSrc: require('@/assets/images/attendetail.png'), text: '员工打卡明细', href: 'checkAttenDetail',display:true};
+                this.obj[1].arr[0] = {imgSrc: require('@/assets/images/attendetail.png'), text: '员工考勤明细', href: 'punchReportForm',display:true};//checkAttenDetail
             }
         },
-        confirm(){
-            this.warnVisible=false;
-        },
         getQuestion(){
+            this.questionObj='';
+            this.form.radioItem=[];
+            this.warnVisible = false;
             fetch.get("?action=/risk/getQuestion",{}).then(res=>{
                 console.log("queryQuestion",res);
                 if(res.STATUSCODE=='1'){ 
@@ -166,13 +180,34 @@ export default {
                 }
             })
         },
+        getNewQuestion(){//点击问题答错框确定按钮，关闭此弹框，显示问题界面
+            this.requestNum+=1;  
+            console.log("requestNum",this.requestNum);
+            if(this.requestNum==1){
+                this.getQuestion();
+            }else if(this.requestNum==2){
+                this.getQuestion();
+            }else{//回答3道题，不管对错，进行到场反馈
+                this.$message({
+                    message:'打卡成功',
+                    type: 'success',
+                    center: true,
+                    duration:2000,
+                    customClass:'msgdefine'
+                }); 
+                this.requestNum = 0; 
+                this.warnVisible = false;
+                this.homeWarnFlag = false;
+            }     
+        },
         punchCard(){
             this.form={
                 radioItem:[]
             };
             this.getLocation();
+            // this.getGgLocation();
         },
-        postPunchInfo(){
+        postPunchInfo(type){
             const loading = this.$loading({
                 lock: true,
                 text: '正在打卡',
@@ -187,14 +222,59 @@ export default {
                     this.homeWarnFlag = true;
                     this.getQuestion();
                 }else{
-                    this.$message({
-                        message:"打卡失败！"+res.MESSAGE,
-                        type: 'error',
-                        center: true,
-                        customClass:'msgdefine'
-                    });
+                    if(type=='GPS'){
+                        this.$confirm('打卡失败！'+res.MESSAGE+"，是否使用高德定位？", '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            center:true,
+                            type: 'warning'
+                            }).then(() => {
+                                console.log("1111111111");
+                                LocationSdk.getGgLocation(this,this.success,loading);
+                            }).catch(() => {
+                            console.log("2222222222");
+                            this.isGps = true;
+                            this.$message({
+                                type: 'info',
+                                message: '您已取消高德定位，请检查GPS定位权限是否打开'
+                            });          
+                        });
+                    }else{
+                        this.$message({
+                            message:"打卡失败！"+res.MESSAGE+",请检查项目地址是否是正确",
+                            type: 'error',
+                            center: true,
+                            customClass:'msgdefine'
+                        });
+                    }
                 }
             })
+        },
+        success:function(res){
+            let self = this;
+            var lat = res.latitude;//gps经纬度或者高德经纬度
+            var lng = res.longitude;
+            let type = res.type;
+            setTimeout(function () {
+                self.gpsPoint = new BMap.Point(lng,lat);
+                var convertor = new BMap.Convertor();
+                var pointArr = [];
+                    pointArr.push(self.gpsPoint);
+                convertor.translate(pointArr, 1,5, function (point) {  
+                    self.latitude = point.points[0].lat;
+                    self.longitude = point.points[0].lng;
+                    self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
+                    self.postPunchInfo(type);
+                    var geoc = new BMap.Geocoder(); 
+                    geoc.getLocation(self.pointA, function(rs){
+                        if(rs.surroundingPois.length!=0){
+                            self.address = rs.surroundingPois[0].address+rs.surroundingPois[0].title;             
+                        }else{
+                            self.address = rs.address+rs.business;  
+                        }
+                    })  
+                });
+            },1000)
         },
         getLocation:function(){
             var self = this;
@@ -204,34 +284,46 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
-            function success(res){
-                console.log("res",res);
-                var lat = res.latitude;//gps经纬度
-                var lng = res.longitude;
-                setTimeout(function () {
-                    self.gpsPoint = new BMap.Point(lng,lat);
-                    var convertor = new BMap.Convertor();
-                    var pointArr = [];
-                        pointArr.push(self.gpsPoint);
-                    convertor.translate(pointArr, 1,5, function (point) {  
-                        console.log("111",point);
-                        self.latitude = point.points[0].lat;
-                        self.longitude = point.points[0].lng;
-                        self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
-                        self.postPunchInfo();
-                        var geoc = new BMap.Geocoder(); 
-                        geoc.getLocation(self.pointA, function(rs){
-                        console.log("rs:",rs);
-                        if(rs.surroundingPois.length!=0){
-                            self.address = rs.surroundingPois[0].address+rs.surroundingPois[0].title;             
-                        }else{
-                            self.address = rs.address+rs.business;  
-                        }
-                        })  
-                    });
-                },1000)
-            }
-            LocationSdk.getLocation(this,success,loading)
+            // let ua = navigator.userAgent.toLowerCase();
+            // console.log("ua",ua);
+            // if(/(Android)/i.test(ua)){
+            //     if(typeof(android)!="undefined"){
+            //         loading.close();
+            //       let locationObj = android.bdLocation();   
+            //       this.$message({
+            //         message:'locationObj:'+JSON.stringify(locationObj),
+            //         type: 'warning',
+            //         center: true,
+            //         duration:2000,
+            //         customClass: 'msgdefine'
+            //     })               
+            //     }
+            // }
+            // function success(res){
+            //     var lat = res.latitude;//gps经纬度或者高德经纬度
+            //     var lng = res.longitude;
+            //     setTimeout(function () {
+            //         self.gpsPoint = new BMap.Point(lng,lat);
+            //         var convertor = new BMap.Convertor();
+            //         var pointArr = [];
+            //             pointArr.push(self.gpsPoint);
+            //         convertor.translate(pointArr, 1,5, function (point) {  
+            //             self.latitude = point.points[0].lat;
+            //             self.longitude = point.points[0].lng;
+            //             self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
+            //             self.postPunchInfo();
+            //             var geoc = new BMap.Geocoder(); 
+            //             geoc.getLocation(self.pointA, function(rs){
+            //                 if(rs.surroundingPois.length!=0){
+            //                     self.address = rs.surroundingPois[0].address+rs.surroundingPois[0].title;             
+            //                 }else{
+            //                     self.address = rs.address+rs.business;  
+            //                 }
+            //             })  
+            //         });
+            //     },1000)
+            // }
+            LocationSdk.getLocation(this,this.success,loading)
         },
         onSubmit(){
             var vm= this;
@@ -269,16 +361,6 @@ export default {
                         }
                     }
                 }
-                // if(ifAnswerTrue===0){
-                //     this.$message({
-                //         message:'回答错误，请继续答题',
-                //         type: 'warning',
-                //         center: true,
-                //         duration:2000,
-                //         customClass: 'msgdefine'
-                //     })
-                //     return false
-                // }
                 let params = {};
                 params.excuteType = vm.questionObj.EXCUTE_TYPE;
                 params.questionId = vm.questionObj.QUESTION_ID;
@@ -296,15 +378,18 @@ export default {
                             duration:2000,
                             customClass:'msgdefine'
                         });  
+                        vm.requestNum = 0; 
                         vm.homeWarnFlag = false;
                     }else{
-                        vm.$message({
-                            message:res.MESSAGE,
-                            type: 'error',
-                            center: true,
-                            duration:2000,
-                            customClass: 'msgdefine'
-                        })
+                        vm.warnVisible = true;
+                        vm.wrongMessage = res.MESSAGE;  
+                        // vm.$message({
+                        //     message:res.MESSAGE,
+                        //     type: 'error',
+                        //     center: true,
+                        //     duration:2000,
+                        //     customClass: 'msgdefine'
+                        // })
                     }
                 })
             }

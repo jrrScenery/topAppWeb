@@ -5,7 +5,8 @@
             <ul class="ul_AttenView" @click="getMonthTypeDetail($event)" v-if="monthDetailArr.length!=0">
                 <li class="li_AttenView" v-for="item in monthDetailArr" :key="item.projectId" :data-id='item.projectId'>
                     <template>
-                        <span :data-id='item.projectId'>{{leaveType[item.leaveType]}}</span>
+                        <span :data-id='item.projectId' v-if="item.leaveType==0">未补考勤</span>
+                        <span :data-id='item.projectId' v-else>{{leaveType[item.leaveType]}}</span>
                         <span style="text-align:right;padding-right:0.2rem" :data-id='item.projectId' :data-type='item.leaveType'>{{item.num}}人</span>
                         <i class="el-icon-arrow-right" :data-id='item.projectId' :data-type='item.leaveType'></i>
                     </template>
@@ -65,7 +66,7 @@ export default {
             this.$router.push({name:'monthTypeDetail',query:{projectId:id,dateStr:this.date,leaveType:leaveType}})
         },
         noKeyword () {
-
+            this.getMonthDetail();
         },
     }
 }

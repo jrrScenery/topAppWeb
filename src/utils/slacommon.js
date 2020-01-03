@@ -266,7 +266,6 @@ export default{
       return true
   },
   customerInfoCheck:function(loading,customerForm){
-      
     if(customerForm.empname===''){
         ElementUI.Message({
             message:'请选择客户联系人!',
@@ -280,6 +279,15 @@ export default{
     if(customerForm.mobileno===''){
         ElementUI.Message({
             message:'请选择客户联系人电话!',
+            type: 'warning',
+            center: true,
+            customClass:'msgdefine'
+        });
+        loading.close();
+        return false
+    }else if(customerForm.mobileno==localStorage.getItem("mobile")){
+        ElementUI.Message({
+            message:'不能输入自己手机号!',
             type: 'warning',
             center: true,
             customClass:'msgdefine'

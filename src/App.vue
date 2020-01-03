@@ -26,7 +26,10 @@
     height:100%; touch-action: pan-y!important;
     height:100%;
   }
-
+  
+</style>
+<style>
+.el-message-box{width: 80%}
 </style>
 
 <script>

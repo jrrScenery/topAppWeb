@@ -5,10 +5,10 @@
             <div class="tableTh"><span>打卡日期</span><span>首次打卡</span><span>末次打卡</span></div>
             <div class="tableTd" v-for="(items) in monthDetail" :key="items.projectId">
                 <div class="tableTitle">{{items.staffName}}</div>
-                <div class="divTable">
-                    <span class="bolder">{{items.punchDate}}</span>          
-                    <span class="bolder">{{items.absBeginTime}}</span>        
-                    <span class="bolder">{{items.absEndTime}}</span> 
+                <div class="divTable" v-for="item in items.list" :key="item.projectId">
+                    <span class="bolder">{{item.punchDate}}</span>          
+                    <span class="bolder">{{item.absBeginTime}}</span>        
+                    <span class="bolder">{{item.absEndTime}}</span> 
                 </div>
             </div>
     </div>
@@ -40,7 +40,7 @@ export default {
             fetch.get("?action=/attendance/queryPunchCollect"+params,'').then(res=>{
                 console.log("queryPunchCollect",res);
                 if(res.STATUSCODE === '1'){
-                    this.monthDetail = res.data;
+                    this.monthDetail = res.list;
                 }else{
                     this.$message({
                         message:res.MESSAGE,

@@ -88,12 +88,14 @@ export default {
   created: function() {
     var date = new Date();
     var month = date.getMonth() + 1;
+    if (month < 10) month = "0" + month;
     var day = date.getDate();
     if (day < 10) day = "0" + day;
     var param = date.getFullYear() + "-" + month + "-" + day;
     this.initCalendar(
       this.formatDate(date.getFullYear(), date.getMonth() + 1, 1)
     );
+    console.log("ppppppppparam:"+param);
     fetch
       .get("?action=/attendance/queryPunchList&day=" + param, {})
       .then(res => {
@@ -445,8 +447,11 @@ li {
 }
 .days .momo_mark {
   position: absolute;
-  left: 0.08rem;
-  bottom: 0.1rem;
+  /* left: 0.08rem; */
+  /* bottom: 0.1rem;  */
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
   width: 0.3rem;
   height: 0.3rem;
   border-radius: 50%;
@@ -471,8 +476,11 @@ li {
 }
 .pick{
   position: absolute;
-  left: 0.08rem;
-  bottom: 0.1rem;
+  /* left: 0.08rem;
+  bottom: 0.1rem; */
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
   width: 0.3rem;
   height: 0.3rem;
   border-radius: 50%;

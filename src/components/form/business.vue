@@ -183,6 +183,8 @@ export default {
         }
         this.oneData = dataArray;
         this.oneDataX = dataArrayX;
+        console.log("fetch1-oneData",this.oneData);
+        console.log("fetch1-oneDataX",this.oneDataX);
         this.drawLineOne();
       });
     },
@@ -201,6 +203,8 @@ export default {
         }
         this.factoryData = dataArray;
         this.factoryDataX = dataArrayX;
+        console.log("fetch2-factoryData",this.factoryData);
+        console.log("fetch2-factoryDataX",this.factoryDataX);
         this.drawLineTwo();
       });
     },
@@ -295,6 +299,7 @@ export default {
     },
 
     drawLineSeven () {
+      console.log("slaModelXConcat",this.slaModelXConcat);
       let myChartBox = document.getElementById('myChartSeven')
       // myChartBox.style.width = window.innerWidth - 30  + 'px'
       myChartBox.style.height = '300px'
@@ -354,6 +359,7 @@ export default {
       })
     },
     drawLineOne () {
+      console.log("this.oneData",this.oneData);
       let myChartBox = document.getElementById('myChartOne')
       this.myChartOne = echarts.init(myChartBox)
       this.myChartOne.setOption({
@@ -396,8 +402,10 @@ export default {
       })
     },
     drawLineTwo () {
-      console.log(this.factoryDataX)
+      console.log("factoryDataX",this.factoryDataX)
+      console.log("factoryData",this.factoryData)
       let myChartBox = document.getElementById('myChartTwo')
+      console.log("myChartBox",myChartBox);
       // myChartBox.style.width = window.innerWidth - 30  + 'px'
       this.myChartTwo = echarts.init(myChartBox)
 

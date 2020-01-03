@@ -13,6 +13,9 @@
             <template v-else-if="searchType=='punchDetail'">
                 <search-punch-detail @change="updatePopBg" @search="searchData" :queryData="queryData"></search-punch-detail>
             </template>
+            <template v-else-if="searchType=='punchReportForm'">
+                <search-punch-report @change="updatePopBg" @search="searchData" :queryData="queryData"></search-punch-report>
+            </template>
             <template v-else>
                 <search-atten-detail @change="updatePopBg" @search="searchData" :queryData='queryData'></search-atten-detail>
             </template>
@@ -24,12 +27,14 @@
 import searchAttenDetail from '@/components/searchAttenDetail'
 import searchMakeAttenView from '@/components/searchMakeAttenView'
 import searchPunchDetail from '@/components/searchPunchDetail'
+import searchPunchReport from "@/components/searchPunchReport"
 export default {
     name: 'headerAttenDetail',
     components:{
         searchAttenDetail,
         searchMakeAttenView,
-        searchPunchDetail
+        searchPunchDetail,
+        searchPunchReport
     },
     data () {
         return {
@@ -43,7 +48,11 @@ export default {
             this.popBg = data.popBg
         },
         searchData (data) {
-            this.$emit('searchNotice', data)
+            if(this.searchType=='punchReportForm'){
+                this.$emit('searchPro', data)
+            }else{
+                this.$emit('searchNotice', data)
+            }
         },
         back: function (event) {
             this.$router.back(-1)
