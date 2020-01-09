@@ -1,7 +1,7 @@
 <template>
     <div class='monthDetailView'>
         <div class="monthContent">
-            <el-date-picker type="month" placeholder="请选择日期" v-model="date" style="width: 80%;" value-format="yyyy-MM-dd" @change="noKeyword"></el-date-picker>
+            <el-date-picker type="month" placeholder="请选择日期" v-model="date" style="width: 80%;" value-format="yyyy-MM" @change="noKeyword"></el-date-picker>
             <ul class="ul_AttenView" @click="getMonthTypeDetail($event)" v-if="monthDetailArr.length!=0">
                 <li class="li_AttenView" v-for="item in monthDetailArr" :key="item.projectId" :data-id='item.projectId'>
                     <template>
@@ -33,7 +33,8 @@ export default {
     },
     created(){
         let current = new Date();
-        this.date = current.getFullYear()+"-"+(current.getMonth()+1);
+        let month = (current.getMonth() + 1) < 10 ? "0" + (current.getMonth() + 1) : (current.getMonth() + 1);//获取当前月份的日期，不足10补0
+        this.date = current.getFullYear()+"-"+month;
         this.leaveType = transfrom.getLeaveType().leaveType;
         this.getMonthDetail();
     },
@@ -66,6 +67,9 @@ export default {
             this.$router.push({name:'monthTypeDetail',query:{projectId:id,dateStr:this.date,leaveType:leaveType}})
         },
         noKeyword () {
+            // console.log("event",event);
+            // this.date = this.date.slice(0,7);
+            // console.log("date",this.date);
             this.getMonthDetail();
         },
     }

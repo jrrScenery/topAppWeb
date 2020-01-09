@@ -148,6 +148,12 @@ export default new Router({
       name: 'attendence',
       component: resolve => require(['@/views/home/attendence'], resolve)
     },
+    //首页-考勤-考勤历史attenHistory
+    {
+      path: '/home/attenHistory',
+      name: 'attenHistory',
+      component: resolve => require(['@/views/home/attenHistory'], resolve)
+    },
     {
       path: '/home/punch',
       name: 'punch',

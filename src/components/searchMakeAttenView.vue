@@ -51,6 +51,9 @@ export default {
             year = year-1;
             lastMonth = 12
         }
+        if(currentMonth<=9){
+            currentMonth = "0"+currentMonth
+        }
         this.form.month = date.getFullYear()+"-"+currentMonth;
         let current = date.getFullYear()+"-"+currentMonth;
         let last = year+"-"+lastMonth;

@@ -6,10 +6,10 @@
             <div class="chartPunchOne">
                 <div class="BtmTit">{{chartOneTit}}</div>
                 <div id="myChartOne" :style="{width: '100%', height: '2rem'}"></div>
-            </div>
+            </div> 
             <div class="chartPunchTwo">               
                 <div class="BtmTit">{{chartTwoTit}}</div>
-                <router-link :to="{name:'checkAttenDetail',query:{area:searchData.area,projectGroup:searchData.projectGroup,date:searchData.date}}">
+                <router-link :to="{name:'checkAttenDetail',query:{area:searchData.area,projectGroup:searchData.projectGroup,prjName:searchData.prjName,staffName:searchData.staffName,date:searchData.date}}">
                     <div class="checkDetail">查看详情</div>
                 </router-link>
                 <div id="myChartTwo" :style="{width: '100%'}"></div>
@@ -35,7 +35,9 @@ export default {
             searchData:{
                 area:'',
                 projectGroup:'',
-                date:''
+                date:'',
+                prjName:'',
+                staffName:''
             },
             isSearch:false,
             resizefun:null,
@@ -44,10 +46,6 @@ export default {
         }
     },
     created(){
-        // this.$nextTick(()=> {
-        //     this.getChartData()
-        // })
-
     },
     mounted(){  
         this.$nextTick(()=> {
@@ -57,11 +55,6 @@ export default {
         window.onresize = function() {
                 this.myChartTwo.resize()
         }
-        // this.getChartData();
-        // this.resizefun = ()=>{
-        //     this.$echarts.init(document.getElementById('myChartTwo')).resize(); //这里的myChartTwo就是要自适应的图表容器Id
-        // }
-        // window.addEventListener('resize',this.resizefun)
     },
     //移除事件监听，避免内存泄漏
     beforeDestroy() {
@@ -200,7 +193,6 @@ export default {
                             label:{
                                 fontSize:'12',
                                 show:true,
-                                // formatter: '{b} : {c} \n ({d}%)',
                                 formatter: function(params){
                                     let total = 0;
                                     var params_list = []
@@ -236,9 +228,13 @@ export default {
         },
         getSearParams (searchData) {
             console.log("searchData",searchData);
-            this.isSearch = true;
-            this.searchData = searchData;
-            this.getChartData();
+            if(searchData.staffName!=""){
+                this.$router.push({name:'attenHistory',query:{staffName:searchData.staffName,dateStr:searchData.date}})
+            }else{
+                this.isSearch = true;
+                this.searchData = searchData;
+                this.getChartData();
+            }
         },
         getChartData(){
             let params = {};
@@ -246,10 +242,14 @@ export default {
                 params.parentArea = this.searchData.area;
                 params.projectArea = this.searchData.projectGroup;
                 params.day = this.searchData.date;
+                params.prjName = this.searchData.prjName;
+                params.staffName = this.searchData.staffName;
             }else{
                 params.parentArea ='';
                 params.projectArea = '';
                 params.day = '';
+                params.prjName = "";
+                params.staffName = '';
             }
             console.log("isSearch",this.isSearch)
             console.log("params",params)

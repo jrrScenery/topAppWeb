@@ -57,46 +57,7 @@
                                 <div v-else>
                                     <div v-if="scope.row.leaveType!==null">{{leaveTypeArr[leaveTypeList[scope.$index]][leaveTypeList[scope.$index]]}}</div>
                                     <div>{{scope.row.absBeginTime}}-{{scope.row.absEndTime}}</div>
-                                </div>
-                                <!-- <div v-if="!isBigDateList[scope.$index]">
-                                    <div v-if="scope.row.processStatus==0||scope.row.processStatus==3">
-                                        <div v-if="addFlagList[scope.$index]">
-                                            <el-select class="leaveTypeSelect" v-model="leaveTypeList[scope.$index]" placeholder="请选择" @change="selectChange(scope.$index, scope.row)">
-                                                <el-option
-                                                    v-for="(item,key) in leaveTypeArr"
-                                                    :key="key"
-                                                    :label="item[key]"
-                                                    :value="key">
-                                                </el-option>
-                                            </el-select>
-                                        </div>
-                                        <div v-else>
-                                            <div v-if="scope.row.leaveType!==null">{{leaveTypeArr[scope.row.leaveType][scope.row.leaveType]}}</div>
-                                        </div>
-                                    </div>
-                                    <div v-else>{{leaveTypeArr[scope.row.leaveType][scope.row.leaveType]}}</div>
-                                    <div v-if="scope.row.processStatus==0||scope.row.processStatus==3">
-                                        <div v-if="addFlagList[scope.$index]">
-                                            <div>{{scope.row.absBeginTime}}-</div>
-                                            <div>
-                                                <el-time-select
-                                                    v-model="selectTimeList[scope.$index]"
-                                                    :picker-options="{
-                                                        start: pickerOptions.start,
-                                                        step: '00:15',
-                                                        end: pickerOptions.end
-                                                    }"
-                                                    size='small'
-                                                    class="timePicker"
-                                                    @change="timeSelectChange(scope.$index, scope.row,$event)">
-                                                </el-time-select>
-                                            </div>
-                                        </div>
-                                        <div v-else>{{scope.row.absBeginTime}}-{{scope.row.absEndTime}}</div>
-                                    </div>
-                                    <div v-else>{{scope.row.absBeginTime}}-{{scope.row.absEndTime}}</div>
-                                    <el-button style="width:100%" type="text" v-if="caseFlag[scope.$index]" @click="selectCaseNo(scope.$index)">选择case地</el-button>
-                                </div> -->
+                                </div>                               
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -109,12 +70,6 @@
                                         <div v-else>
                                                 <el-input type="textarea" v-model="scope.row.reason" @change="handleEdit(scope.$index, scope.row)"></el-input>
                                         </div>
-                                        <!-- <div v-if="scope.row.processStatus==0||scope.row.processStatus==3"> -->
-                                        <!-- <div v-if="addFlagList[scope.$index]">
-                                            <el-input type="textarea" v-model="scope.row.reason" @change="handleEdit(scope.$index, scope.row)"></el-input>
-                                        </div> -->
-                                        <!-- </div>
-                                        <div v-else>{{ scope.row.reason}}</div> -->
                                     </div>                     
                                 </div>
                                 <div v-else>{{ scope.row.reason}}</div>
@@ -216,7 +171,7 @@ export default {
     created(){     
         let currentDate = new Date();
         let year = currentDate.getFullYear();
-        let month = currentDate.getMonth()+1;
+        let month = (currentDate.getMonth() + 1) < 10 ? "0" + (currentDate.getMonth() + 1) : (currentDate.getMonth() + 1);
         this.searchData.month = year+"-"+month;       
         this.getAttenInfo();
     },
@@ -231,12 +186,8 @@ export default {
             let vm= this;
             let leavetypeNullNum = 0;//记录请假类型是否全部空值
             let isAllSubmit = 0;//记录是否全部提交
-            console.log("tableData",this.tableData);
             //判断请假类型是全部是“请选择”选项，若有则提示输入请假类型
-            console.log("tableData",this.tableData);
-            console.log("leaveTypeList",this.leaveTypeList);
             for(let i=0;i<this.tableData.length;i++){
-                console.log("i:"+i+"-----"+this.tableData[i]);
                 if(this.tableData[i].processStatus===0||this.tableData[i].processStatus===3){
                     if(this.tableData[i].leaveType!==0){
                         leavetypeNullNum++;
@@ -261,11 +212,8 @@ export default {
                 //提交操作
                 let dataArr = new Array();
                 let num = 0;
-                console.log("111111111111");
                 for(let i=0;i<this.tableData.length;i++){
                     if(this.tableData[i].processStatus===0||this.tableData[i].processStatus===3){
-                        console.log("selectTimeList",this.selectTimeList[i]);
-                        console.log("absEndTime",this.tableData[i].absEndTime);
                         if(this.selectTimeList[i]<this.tableData[i].absEndTime&&this.selectTimeList[i]!=this.tableData[i].absEndTime&&this.addFlagList[i]){
                             loading.close();
                             this.$message({
@@ -297,7 +245,6 @@ export default {
                         dataObj.groupId = this.tableData[i].groupId;
                         dataObj.prjId = this.tableData[i].prjId;
                         let processStatus1 = this.tableData[i].processStatus;
-                        console.log("processStatus1",processStatus1);
                         dataObj.processStatus = processStatus1;
                         if(processStatus1===0||processStatus1===3){
                             if(this.tableData[i].id!==''){
@@ -371,18 +318,10 @@ export default {
                     for(let i=0;i<res.data.length;i++){
                         if(res.data[i].leaveType!=null){
                             let myabsencereserve = transfrom.getLeaveType().myabsencereserve[res.data[i].leaveType];
-                            console.log("myabsencereserve",myabsencereserve);
                             this.leaveTypeList[i] = myabsencereserve;
-                            // if(res.data[i].processStatus===3||res.data[i].processStatus===0){
-                            //     this.leaveTypeList[i] = myabsencereserve;
-                            // }else{
-                            //     this.leaveTypeList[i] = res.data[i].leaveType;
-                            // }
                         }else{
                             this.leaveTypeList[i] = null
                         }
-                        console.log("leaveTypeList",this.leaveTypeList)
-                        // this.leaveTypeList[i]=res.data[i].leaveType;
                         this.selectTimeList[i]=res.data[i].absEndTime;
                         this.selectAbsBeginTime[i] =  res.data[i].absBeginTime;
                         if(res.data[i].leaveType!==null){
@@ -405,7 +344,6 @@ export default {
                         this.caseFlag[i] = false; 
                         this.pmendtime = res.data[i].pmEndWorktime     
                     }
-                    // console.log()
                 }else{
                     this.$message({
                         message:res.MESSAGE,
@@ -416,11 +354,8 @@ export default {
                     })
                 }
             })
-            // this.tableData = transfrom.getDataTable(params.wholeMonth,params.MONTH);
         },
         selectChange(index, row){
-            console.log("index:"+index);
-            console.log("row:",row);//
             this.tableData[index].leaveType = this.leaveTypeList[index];
             if(this.tableData[index].leaveType===13){
                 this.caseFlag[index] = true
@@ -429,8 +364,6 @@ export default {
             }
         },
         timeSelectChange(index, row,event){
-            console.log("row",row);
-            console.log("event",event);//selectTimeList
             if(row.absBeginTime>=event){
                 this.$message({
                     message:'结束时间应大于开始时间',
@@ -439,22 +372,9 @@ export default {
                     duration:2000,
                     customClass: 'msgdefine'
                 })
-                // this.selectTimeList[index] = row.absEndTime
             }else{
                 this.selectTimeList[index] = event
             }
-            // this.tableData[index].absEndTime = this.selectTimeList[index];
-            // if(this.selectAbsBeginTime[index] === this.selectTimeList[index]){
-            //     this.$message({
-            //         message:'结束时间应大于开始时间',
-            //         type: 'warning',
-            //         center: true,
-            //         duration:2000,
-            //         customClass: 'msgdefine'
-            //     })
-            // }else{
-            //     this.tableData[index].absEndTime = this.selectTimeList[index];
-            // }
         },
         selectCaseNo(index){
 
@@ -463,15 +383,9 @@ export default {
             this.reason = row.reason
         },
         handleAdd(index, row){ 
-            console.log("selectTimeList",this.selectTimeList);   
-            console.log("row",row);
             if(this.isBigDateList[index]){
                 this.$set(this.isBigDateList,index,false);
                 this.$set(this.isShowDeleteList,index,true);
-                // this.$set(this.leaveTypeList,index,0);
-                // this.tableData[index].leaveType = 0;
-                // this.isBigDateList[index] = false;
-                // this.isShowDeleteList[index] = true;
             }else{
                 let currentAbsBeginTime = this.tableData[index].absBeginTime;
                 let currentAbsEndTime = this.tableData[index].absEndTime;
@@ -591,9 +505,6 @@ export default {
             let punch = new Date(punchDate.replace(/\-/g, "\/"));
             let punchDate1 = punchDate.replace(/\-/g, "\/");
 
-            // let year = new Date().getFullYear();
-            // let month = new Date().getMonth()+1;
-            // let date = new Date().getDate();
             let current = new Date();
             let sameDateNum = 0;//打卡日期相同的记录条数
             for(let i=index+1;i<this.tableData.length;i++){
@@ -683,7 +594,6 @@ export default {
             }
         },
         deleteData(index,selectTime){
-            console.log("aaaaaaaaa");
            //将当前条记录之后的记录依次前移
            for(let i=index+1;i<this.tableData.length;i++){
                if(i==index+1){//将当前记录选中的缺勤结束时间赋值给前一条的缺勤结束时间
@@ -715,7 +625,6 @@ export default {
 
         },
         searchNotice (formData) {
-            console.log("formData",formData);
             this.leaveTypeList = [];
             this.selectTimeList = [];
             this.selectAbsBeginTime = [];
@@ -730,6 +639,7 @@ export default {
             this.caseFlag = [];//控制case所在地
             this.isSearch = true;
             this.searchData = formData;
+            this.tableData = [];
             this.getAttenInfo();
         },
     }

@@ -43,7 +43,9 @@ export default {
             liObj: [],
             area:this.$route.query.area,
             projectGroup:this.$route.query.projectGroup,
-            date:this.$route.query.date
+            date:this.$route.query.date,
+            prjName:this.$route.query.prjName,
+            staffName:this.$route.query.staffName,
         }
     },
     activated(){
@@ -58,7 +60,7 @@ export default {
     },
     methods:{
         getProjectList:function(){
-            let params = {parentArea:this.area,projectArea:this.projectGroup,day:this.date};
+            let params = {parentArea:this.area,projectArea:this.projectGroup,prjName:this.prjName,staffName:this.staffName,day:this.date};
             fetch.get("?action=/attendance/queryProjectList",params).then(res=>{
                 console.log("queryProjectList",res);
                 if(res.STATUSCODE === '1'){
@@ -83,10 +85,6 @@ export default {
                 this.$router.push({name:'punchDetail',query:{id:id}})
             }
         },
-        // pushDtail(caseId){
-        //     console.log("caseId:",caseId);
-        //     this.$router.push({name:'attenDetail',query:{caseId:caseId}})
-        // }
     },
     //在页面离开时记录滚动位置
   beforeRouteLeave (to, from, next) {
@@ -112,7 +110,6 @@ export default {
 <style scoped>
 .checkAttenDetailView{position: absolute; top: 0; width: 100%;overflow: scroll}
 .ul_AttenView .li_AttenView{display: flex; justify-content: space-between; align-items: center;height: 0.55rem; background: #ffffff; border-top: 0.01rem solid #e5e5e5; font-size: 0.14rem; line-height: 0.5rem; padding: 0 0.2rem;}
-/* .ul_AttenView .li_AttenView:nth-child(4){margin-top: 0.1rem; border-top: 0.01rem solid #e5e5e5;} */
 .ul_AttenView .li_AttenView img{width: 0.24rem; height: 0.24rem; margin-right: 0.15rem;}
 .ul_AttenView .li_AttenView span{width: 100%; text-align: left; color: #262626;font-size:0.12rem;line-height: 0.2rem}
 .checkAttenDetailView>>>.norecord{text-align: center;margin-top: 0.3rem;color: #999999}

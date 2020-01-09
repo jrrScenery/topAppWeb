@@ -11,6 +11,12 @@
                     <el-option v-for="item in projectGroupArr" :label="item.DICTNAME" :value="item.DICTID" :key="item.DICTID"></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="项目名称">
+                <el-input v-model="form.prjName" class="bInput"></el-input>
+            </el-form-item>
+            <el-form-item label="员工姓名">
+                <el-input v-model="form.staffName" class="bInput"></el-input>
+            </el-form-item>
             <el-form-item label="时间">
                 <el-date-picker type="date" placeholder="请选择日期" v-model="form.date" style="width: 80%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
             </el-form-item>
@@ -30,7 +36,9 @@ export default {
             form:{
                 area:'',
                 projectGroup:'',
-                date:''
+                date:'',
+                prjName:'',
+                staffName:''
             },
             areaArr:[],
             projectGroupArr:[]
@@ -44,6 +52,8 @@ export default {
         }
         this.form.projectGroup = this.queryData.projectGroup;
         this.form.date = this.queryData.date;
+        this.form.prjName = this.queryData.prjName;
+        this.form.staffName = this.queryData.staffName;
     },
     methods:{
         queryArea(){

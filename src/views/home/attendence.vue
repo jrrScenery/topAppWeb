@@ -152,12 +152,14 @@ export default {
                 this.obj[0].arr[1]={imgSrc: require('@/assets/images/punchRecord.png'), text: '打卡记录', href: 'punchCardRecord',display:true};
                 this.obj[0].arr[2] = {imgSrc: require('@/assets/images/makeupAttendence.png'), text: '补考勤', href: 'makeUpAttendence',display:true};
                 this.obj[1].arr[0] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
-                    this.obj[1].arr[1] = {imgSrc: require('@/assets/images/attendetail.png'), text: '员工考勤明细', href: 'punchReportForm',display:true};//checkAttenDetail  punchReportForm
+                this.obj[1].arr[1] = {imgSrc: require('@/assets/images/attendetail.png'), text: '员工考勤明细', href: 'punchReportForm',display:true};//checkAttenDetail  punchReportForm
+                // this.obj[1].arr[2] = {imgSrc: require('@/assets/images/attendetail.png'), text: '考勤历史', href: 'attenHistory',display:true};
             }else{
                 this.obj[0].arr[0]={imgSrc: require('@/assets/images/punch.png'), text: '打卡', href: 'punch',display:false};
                 this.obj[0].arr[1]={imgSrc: require('@/assets/images/punchRecord.png'), text: '打卡记录', href: 'punchCardRecord',display:true};
                 this.obj[0].arr[2] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
                 this.obj[1].arr[0] = {imgSrc: require('@/assets/images/attendetail.png'), text: '员工考勤明细', href: 'punchReportForm',display:true};//checkAttenDetail
+                // this.obj[1].arr[1] = {imgSrc: require('@/assets/images/attendetail.png'), text: '考勤历史', href: 'attenHistory',display:true};
             }
         },
         getQuestion(){
@@ -205,7 +207,6 @@ export default {
                 radioItem:[]
             };
             this.getLocation();
-            // this.getGgLocation();
         },
         postPunchInfo(type){
             const loading = this.$loading({
@@ -222,31 +223,38 @@ export default {
                     this.homeWarnFlag = true;
                     this.getQuestion();
                 }else{
-                    if(type=='GPS'){
-                        this.$confirm('打卡失败！'+res.MESSAGE+"，是否使用高德定位？", '提示', {
-                            confirmButtonText: '确定',
-                            cancelButtonText: '取消',
-                            center:true,
-                            type: 'warning'
-                            }).then(() => {
-                                console.log("1111111111");
-                                LocationSdk.getGgLocation(this,this.success,loading);
-                            }).catch(() => {
-                            console.log("2222222222");
-                            this.isGps = true;
-                            this.$message({
-                                type: 'info',
-                                message: '您已取消高德定位，请检查GPS定位权限是否打开'
-                            });          
-                        });
-                    }else{
-                        this.$message({
-                            message:"打卡失败！"+res.MESSAGE+",请检查项目地址是否是正确",
-                            type: 'error',
-                            center: true,
-                            customClass:'msgdefine'
-                        });
-                    }
+                    this.$message({
+                        message:"打卡失败！"+res.MESSAGE,
+                        type: 'error',
+                        center: true,
+                        customClass:'msgdefine'
+                    });
+                    // if(type=="phoneOrigin"){
+                    //     LocationSdk.getGgLocation(this,this.success,loading);
+                    // }
+                    // if(type=='GPS'){                        
+                    //     this.$confirm('打卡失败！'+res.MESSAGE+"，是否使用高德定位？", '提示', {
+                    //         confirmButtonText: '确定',
+                    //         cancelButtonText: '取消',
+                    //         center:true,
+                    //         type: 'warning'
+                    //         }).then(() => {
+                    //             LocationSdk.getGgLocation(this,this.success,loading);
+                    //         }).catch(() => {
+                    //         this.isGps = true;
+                    //         this.$message({
+                    //             type: 'info',
+                    //             message: '您已取消高德定位，请检查GPS定位权限是否打开'
+                    //         });          
+                    //     });
+                    // }else{
+                    //     this.$message({
+                    //         message:"打卡失败！"+res.MESSAGE+",请检查项目地址是否是正确",
+                    //         type: 'error',
+                    //         center: true,
+                    //         customClass:'msgdefine'
+                    //     });
+                    // }
                 }
             })
         },
@@ -284,46 +292,31 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
-            // let ua = navigator.userAgent.toLowerCase();
-            // console.log("ua",ua);
-            // if(/(Android)/i.test(ua)){
-            //     if(typeof(android)!="undefined"){
-            //         loading.close();
-            //       let locationObj = android.bdLocation();   
-            //       this.$message({
-            //         message:'locationObj:'+JSON.stringify(locationObj),
-            //         type: 'warning',
-            //         center: true,
-            //         duration:2000,
-            //         customClass: 'msgdefine'
-            //     })               
-            //     }
-            // }
-            // function success(res){
-            //     var lat = res.latitude;//gps经纬度或者高德经纬度
-            //     var lng = res.longitude;
-            //     setTimeout(function () {
-            //         self.gpsPoint = new BMap.Point(lng,lat);
-            //         var convertor = new BMap.Convertor();
-            //         var pointArr = [];
-            //             pointArr.push(self.gpsPoint);
-            //         convertor.translate(pointArr, 1,5, function (point) {  
-            //             self.latitude = point.points[0].lat;
-            //             self.longitude = point.points[0].lng;
-            //             self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
-            //             self.postPunchInfo();
-            //             var geoc = new BMap.Geocoder(); 
-            //             geoc.getLocation(self.pointA, function(rs){
-            //                 if(rs.surroundingPois.length!=0){
-            //                     self.address = rs.surroundingPois[0].address+rs.surroundingPois[0].title;             
-            //                 }else{
-            //                     self.address = rs.address+rs.business;  
-            //                 }
-            //             })  
-            //         });
-            //     },1000)
-            // }
-            LocationSdk.getLocation(this,this.success,loading)
+            let ua = navigator.userAgent.toLowerCase();
+            console.log("ua",ua);
+            if(/(Android)/i.test(ua)){               
+                if(typeof(android)!="undefined"){
+                    loading.close();
+                    if(typeof(android.bdLocation)=='function'){
+                        let location = android.bdLocation(); 
+                        if(JSON.stringify(location) != "{}"){
+                            let locationArr = location.split(",") ;
+                            // let locationObj = {};
+                            self.latitude = locationArr[0];
+                            self.longitude = locationArr[1];
+                            self.postPunchInfo('phoneOrigin');
+                        }else{
+                            LocationSdk.getLocation(this,this.success,loading)
+                        }
+                    }else{
+                        LocationSdk.getLocation(this,this.success,loading)
+                    }
+                }else{
+                    LocationSdk.getLocation(this,this.success,loading)
+                }
+            }else{
+                LocationSdk.getLocation(this,this.success,loading)
+            }
         },
         onSubmit(){
             var vm= this;
@@ -383,13 +376,6 @@ export default {
                     }else{
                         vm.warnVisible = true;
                         vm.wrongMessage = res.MESSAGE;  
-                        // vm.$message({
-                        //     message:res.MESSAGE,
-                        //     type: 'error',
-                        //     center: true,
-                        //     duration:2000,
-                        //     customClass: 'msgdefine'
-                        // })
                     }
                 })
             }

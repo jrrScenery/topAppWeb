@@ -16,6 +16,9 @@
             <template v-else-if="searchType=='punchReportForm'">
                 <search-punch-report @change="updatePopBg" @search="searchData" :queryData="queryData"></search-punch-report>
             </template>
+            <template v-else-if="searchType=='attenHistory'">
+                <search-atten-history @change="updatePopBg" @search="searchData" :queryData="queryData"></search-atten-history>
+            </template>
             <template v-else>
                 <search-atten-detail @change="updatePopBg" @search="searchData" :queryData='queryData'></search-atten-detail>
             </template>
@@ -28,13 +31,15 @@ import searchAttenDetail from '@/components/searchAttenDetail'
 import searchMakeAttenView from '@/components/searchMakeAttenView'
 import searchPunchDetail from '@/components/searchPunchDetail'
 import searchPunchReport from "@/components/searchPunchReport"
+import searchAttenHistory from "@/components/searchAttenHistory";
 export default {
     name: 'headerAttenDetail',
     components:{
         searchAttenDetail,
         searchMakeAttenView,
         searchPunchDetail,
-        searchPunchReport
+        searchPunchReport,
+        searchAttenHistory
     },
     data () {
         return {

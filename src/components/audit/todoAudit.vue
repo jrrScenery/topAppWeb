@@ -149,7 +149,6 @@ export default {
         },
         //批量审批同意或拒绝操作
         handleSubmit:function(event){
-            console.log("0");
             event = (event||window.event);
             let target = (event.target || event.srcElement);
             console.log("target000",target);
