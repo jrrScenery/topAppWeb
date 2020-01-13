@@ -217,6 +217,12 @@ export default new Router({
       name: 'monthTypeDetail',
       component: resolve => require(['@/views/home/monthTypeDetail'], resolve)
     },
+    // //首页->考勤->年假/调休假
+    // {
+    //   path: '/home/monthTypeDetail',
+    //   name: 'monthTypeDetail',
+    //   component: resolve => require(['@/views/home/monthTypeDetail'], resolve)
+    // },
     //首页报表统计（业务）
     {
       path: '/home/reportBusinessForm',

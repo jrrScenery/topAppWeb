@@ -45,8 +45,7 @@ export default {
             counts:''
         }
     },
-    created(){
-    },
+    created(){},
     mounted(){  
         this.$nextTick(()=> {
             this.getChartData()

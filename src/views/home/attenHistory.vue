@@ -7,26 +7,26 @@
           <el-table :data="tableData" border current-row-key style="height: 100%;font-size:0.12rem">
             <el-table-column label="打卡时间" min-width="25%">
               <template slot-scope="scope">
-                <div>{{ scope.row.punchDate }}</div>
-                <div>{{ scope.row.beginTime }}-{{scope.row.endTime}}</div>
+                <div>{{ scope.row.PUNCH_DATE }}</div>
+                <div>{{ scope.row.BEGIN_TIME }}-{{scope.row.END_TIME}}</div>
               </template>
             </el-table-column>
             <el-table-column label="请假" min-width="30%">
               <template slot-scope="scope">
                 <div>{{leaveType[scope.$index]}}</div>
-                <div>{{scope.row.absBeginTime}}-</div>
-                <div>{{scope.row.absEndTime}}</div>
+                <div>{{scope.row.ABS_BEGIN_TIME}}-{{scope.row.ABS_END_TIME}}</div>
+                <!-- <div></div> -->
               </template>
             </el-table-column>
             <el-table-column label="说明" min-width="25%">
               <template slot-scope="scope">                
-                <div>{{ scope.row.reason}}</div>
+                <div>{{ scope.row.REASON}}</div>
               </template>
             </el-table-column>
             <el-table-column label="状态" min-width="15%" class="statusColumn">
               <template slot-scope="scope">
                   <div>
-                    <span>{{ processStatus[scope.row.processStatus]}}</span>
+                    <span>{{ processStatus[scope.row.PROCESS_STATUS]}}</span>
                   </div>
               </template>
             </el-table-column>
@@ -60,15 +60,22 @@ export default {
       },
       searchData: {
         wholeMonth: "1", //type=0代办查看全月，type=1代表查看缺勤
-        month: ""
+        month: this.$route.query.dateStr
       }
     };
   },
   created() {
-    let currentDate = new Date();
-    let year = currentDate.getFullYear();
-    let month = (currentDate.getMonth() + 1) < 10 ? "0" + (currentDate.getMonth() + 1) : (currentDate.getMonth() + 1);
-    this.searchData.month = year + "-" + month;
+    console.log("bbbbbbbb",this.searchData);
+    console.log(this.searchData.month.length);
+    if(this.searchData.month==""){
+      let currentDate = new Date();
+      let year = currentDate.getFullYear();
+      let month = (currentDate.getMonth() + 1) < 10 ? "0" + (currentDate.getMonth() + 1) : (currentDate.getMonth() + 1);
+      this.searchData.month = year + "-" + month;
+    }
+    if(this.searchData.month.length>7){
+      this.searchData.month = this.searchData.month.slice(0,7);
+    }
     this.leaveType = transfrom.getLeaveType().leaveType;
     this.getAttenInfo();
   },
@@ -77,7 +84,8 @@ export default {
       this.processStatus = transfrom.getLeaveType().processStatus;
       let params = {
         wholeMonth: this.searchData.wholeMonth,
-        month: this.searchData.month
+        month: this.searchData.month,
+        staffName:this.$route.query.staffName
       };
       // if (this.isSearch) {
       //   params.month = this.searchData.month;
@@ -99,8 +107,6 @@ export default {
       });
     },
     searchNotice(formData) {
-      console.log("formData", formData);
-      console.log("formData",formData.month);
       this.isSearch = true;
       this.searchData = formData;
       this.getAttenInfo();

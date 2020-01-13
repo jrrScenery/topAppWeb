@@ -374,7 +374,6 @@ export default {
             let vm= this;
             this.$refs[formName].validate((valid) => {
                 if(valid){
-                    // if(!vm.check(loading)) return;
                     if(!slacommon.check(loading,this.formData,this.serviceType)) return;
                     var data = {};
                         data.serviceId = this.formData.userAndPrjItem.serviceId;
@@ -483,13 +482,26 @@ export default {
                 if(res['STATUSCODE'] == '0'){
                     this.formData.docId= res.data.docId;
                     if(this.ifSendEvaluate===1){
-                        // this.formData.docId= res.data.docId;
                         this.$refs.showpic.src = photodata;
                     }else{
-                        // this.formData.docId1 = res.data.docId;
                         this.$refs.showpic1.src = photodata;
                     }
-                    // this.$refs.showpic.src = photodata;
+                    fetch.get("?action=/work/sendCustEvaluate&SERVICE_TYPE="+this.serviceType+"&SERVICE_ID="+this.serviceId+
+                                "&EMPNAME="+this.customerForm.empname+
+                                "&serviceFile="+this.formData.docId).then(res=>{
+                        console.log("sendCustEvaluate",res);
+                        loading.close();
+                        if(res.STATUSCODE=='0'){
+                            this.editCustomerInfoVisible = false;
+                        }else{
+                            this.$message({
+                                message:res.MESSAGE,
+                                type: 'error',
+                                center: true,
+                                customClass: 'msgdefine'
+                            });
+                        }
+                    })
                 }
                 else{
                     this.$toast(res.MESSAGE);

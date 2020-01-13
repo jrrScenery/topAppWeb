@@ -11,12 +11,6 @@
       </el-form-item>
       <el-form-item label="查询月份" label-width="0.8rem">
         <el-date-picker type="month" v-model="form.month" clearable placeholder="请选择" style="width: 80%;" value-format="yyyy-MM">
-          <!-- <el-option
-            v-for="item in monthArr"
-            :key="item.id"
-            :label="item.value"
-            :value="item.value"
-          ></el-option> -->
         </el-date-picker>
       </el-form-item>
       <el-form-item class="searchBtn">
@@ -47,53 +41,12 @@ export default {
     };
   },
   created() {
-    // this.startMonth = this.GetMonthStr(-360);
-    // this.endMonth = this.GetMonthStr(0);
+    console.log("aaaaaaaaaaa");
     this.form.wholeMonth = this.queryData.wholeMonth;
-    let date = new Date();
-    let year = date.getFullYear();
-    let currentMonth = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)
-    // console.log("date.getMonth的值是多少呀：" + date.getMonth());
-    // var month = [];
-    // var selectItem = [];
-    // month[0] = date.getMonth();
-    // if (date.getMonth() == 0) { 
-    //   month[0] = 12;
-    //   year = year - 1;
-    // }
-    // selectItem[0] = year + "-" + month[0];
-    // for (var i = 1; i < 11; i++) {   
-    //   month[i] = month[i - 1] - 1;
-    //   if (month[i] == 0) {
-    //     month[i] = 12;
-    //     year = year - 1;
-    //   }
-    //   if (month[i] < 10) {
-    //     month[i] = "0" + month[i];
-    //   }
-    //   selectItem[i] = year + "-" + month[i];
-    // }
-    this.form.month = date.getFullYear() + "-" + currentMonth;
-    // let current = date.getFullYear() + "-" + currentMonth;
-    // let last = year + "-" + lastMonth;
-    // this.monthArr = [
-    //   { id: 0, value: current },
-    //   { id: 1, value: selectItem[0] },
-    //   { id: 2, value: selectItem[1] },
-    //   { id: 3, value: selectItem[2] },
-    //   { id: 4, value: selectItem[3] },
-    //   { id: 5, value: selectItem[4] },
-    //   { id: 6, value: selectItem[5] },
-    //   { id: 7, value: selectItem[6] },
-    //   { id: 8, value: selectItem[7] },
-    //   { id: 9, value: selectItem[8] },
-    //   { id: 10, value: selectItem[9] },
-    //   { id: 11, value: selectItem[10] }
-    // ];
+    this.form.month = this.queryData.month;
   },
   methods: {
     onCancel() {
-      console.log("sssssssss");
       let data = {
         popBg: false
       };
