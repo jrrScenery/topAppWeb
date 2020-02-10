@@ -41,14 +41,16 @@ export default {
             checkAttenDetailTit:'项目列表',
             activeName:1,
             liObj: [],
-            area:this.$route.query.area,
-            projectGroup:this.$route.query.projectGroup,
-            date:this.$route.query.date,
-            prjName:this.$route.query.prjName,
-            staffName:this.$route.query.staffName,
+            searchData:this.$route.query.searchData
+            // area:this.$route.query.area,
+            // projectGroup:this.$route.query.projectGroup,
+            // date:this.$route.query.date,
+            // prjName:this.$route.query.prjName,
+            // staffName:this.$route.query.staffName,
         }
     },
     activated(){
+        console.log("isUseCache",this.$route.meta.isUseCache);
         if(!this.$route.meta.isUseCache){
             this.liObj = [];
             this.getProjectList();
@@ -60,7 +62,14 @@ export default {
     },
     methods:{
         getProjectList:function(){
-            let params = {parentArea:this.area,projectArea:this.projectGroup,prjName:this.prjName,staffName:this.staffName,day:this.date};
+            console.log("11111111111",this.$route.query.searchData);
+            let area = this.$route.query.searchData.area;
+            let projectArea = this.$route.query.searchData.projectGroup;
+            let prjName = this.$route.query.searchData.prjName;
+            let staffName = this.$route.query.searchData.staffName;
+            let day = this.$route.query.searchData.date;
+            let params = {parentArea:area,projectArea:projectArea,prjName:prjName,staffName:staffName,day:day};
+            console.log("params111",params);
             fetch.get("?action=/attendance/queryProjectList",params).then(res=>{
                 console.log("queryProjectList",res);
                 if(res.STATUSCODE === '1'){
@@ -81,8 +90,9 @@ export default {
             let target = (event.target || event.srcElement);
             let id = target.getAttribute('data-id');
             console.log('data-id',id);
+            let searchData = this.$route.query.searchData;
             if(id!=null){
-                this.$router.push({name:'punchDetail',query:{id:id}})
+                this.$router.push({name:'punchDetail',query:{id:id,searchData:searchData}})
             }
         },
     },

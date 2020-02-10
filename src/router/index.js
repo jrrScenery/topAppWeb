@@ -197,7 +197,7 @@ export default new Router({
     {
       path: '/home/punchReportForm',
       name: 'punchReportForm',
-      component: resolve => require(['@/views/home/punchReportForm'], resolve)
+      component: resolve => require(['@/views/home/punchReportForm'], resolve),
     },
      //首页->考勤->考勤明细
      {
@@ -217,12 +217,36 @@ export default new Router({
       name: 'monthTypeDetail',
       component: resolve => require(['@/views/home/monthTypeDetail'], resolve)
     },
-    // //首页->考勤->年假/调休假
-    // {
-    //   path: '/home/monthTypeDetail',
-    //   name: 'monthTypeDetail',
-    //   component: resolve => require(['@/views/home/monthTypeDetail'], resolve)
-    // },
+    //首页->考勤->请假申请
+    {
+      path: '/attence/askForLeave',
+      name: 'askForLeave',
+      component: resolve => require(['@/views/attence/askForLeave'], resolve)
+    },
+    //首页->考勤->导出报表
+    {
+      path: '/attence/exportRecord',
+      name: 'exportRecord',
+      component: resolve => require(['@/views/attence/exportRecord'], resolve)
+    },
+    //首页->考勤->年假/调休假
+    {
+      path: '/attence/holiday',
+      name: 'holiday',
+      component: resolve => require(['@/views/attence/holiday'], resolve)
+    },
+    //首页->考勤->年假/调休假详情
+    {
+      path: '/attence/holidayDetail',
+      name: 'holidayDetail',
+      component: resolve => require(['@/views/attence/holidayDetail'], resolve)
+    },
+    //首页->考勤->我的
+    {
+      path: '/attence/mineAudit',
+      name: 'mineAudit',
+      component: resolve => require(['@/views/attence/mineAudit'], resolve)
+    },
     //首页报表统计（业务）
     {
       path: '/home/reportBusinessForm',

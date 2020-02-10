@@ -6,16 +6,16 @@
             <div v-if="items.arr.length!=0">
                 <ul class="ul_workBench">
                     <template v-for="item in items.arr">
-                        <li class="li_workBench" :key="item.id" v-if="item.text!='打卡'"><!-- v-if="item.text!='打卡'"-->
+                        <li class="li_workBench" :key="item.id"><!-- v-if="item.text!='打卡'"-->
                             <router-link :to="{name:item.href,params:item.params}">
                                 <img :src="item.imgSrc" alt="">
                             </router-link>
                             <span>{{item.text}}</span>
                         </li>
-                        <li class="li_workBench" :key="item.id" v-else @click="punchCard()">
+                        <!-- <li class="li_workBench" :key="item.id" v-else @click="punchCard()">
                             <img :src="item.imgSrc" alt="">
                             <span>{{item.text}}</span>
-                        </li>
+                        </li> -->
                     </template>
                 </ul>
             </div>
@@ -118,12 +118,11 @@ export default {
             questionObj:{},
             question:"",
             options:[],
-            differDistance:null,
-            isInPunchTime:false,
             LABOUR_RELATION:'',
             isZB:true,
             requestNum:0,
-            isGps:true
+            isGps:true,
+            isExport:false
             // isReportVisiable:false
         }
     },
@@ -134,9 +133,20 @@ export default {
         if(LABOUR_RELATION==='ZB'){
             this.isZB = false
         }
-        console.log("LABOUR_RELATION",LABOUR_RELATION);
+        let userRole = JSON.parse(localStorage.getItem("userRole"));
+        console.log("1111111111",userRole);
+        for(let i=0;i<userRole.length;i++){
+            // console.log(userRole[i].ROLE_CODE);
+            if(userRole[i].ROLE_CODE=='area_chief_manager'
+                ||userRole[i].ROLE_CODE=='area_manage'
+                ||userRole[i].ROLE_CODE=='project_management_director'){
+                    console.log("000000000000");
+                    this.isExport= true
+            }
+        }
         this.obj = [
             {arr: []},
+            {arr:[]},
             {arr:[]},
         ];
         this.getObj();
@@ -153,13 +163,23 @@ export default {
                 this.obj[0].arr[2] = {imgSrc: require('@/assets/images/makeupAttendence.png'), text: '补考勤', href: 'makeUpAttendence',display:true};
                 this.obj[1].arr[0] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
                 this.obj[1].arr[1] = {imgSrc: require('@/assets/images/attendetail.png'), text: '员工考勤明细', href: 'punchReportForm',display:true};//checkAttenDetail  punchReportForm
-                // this.obj[1].arr[2] = {imgSrc: require('@/assets/images/attendetail.png'), text: '考勤历史', href: 'attenHistory',display:true};
+                this.obj[1].arr[2] = {imgSrc: require('@/assets/images/askforleave.png'), text: '请假申请', href: 'askForLeave',display:true};
+                this.obj[2].arr[0] = {imgSrc: require('@/assets/images/holiday.png'), text: '查看年假调休假', href: 'holiday',display:true};
+                this.obj[2].arr[1] = {imgSrc: require('@/assets/images/mine.png'), text: '我的', href: 'mineAudit',display:true};
+                if(this.isExport){
+                    this.obj[2].arr[2] = {imgSrc: require('@/assets/images/exportTitle.png'), text: '导出报表', href: 'exportRecord',display:true};
+                }
             }else{
                 this.obj[0].arr[0]={imgSrc: require('@/assets/images/punch.png'), text: '打卡', href: 'punch',display:false};
                 this.obj[0].arr[1]={imgSrc: require('@/assets/images/punchRecord.png'), text: '打卡记录', href: 'punchCardRecord',display:true};
                 this.obj[0].arr[2] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
                 this.obj[1].arr[0] = {imgSrc: require('@/assets/images/attendetail.png'), text: '员工考勤明细', href: 'punchReportForm',display:true};//checkAttenDetail
-                // this.obj[1].arr[1] = {imgSrc: require('@/assets/images/attendetail.png'), text: '考勤历史', href: 'attenHistory',display:true};
+                this.obj[1].arr[1] = {imgSrc: require('@/assets/images/askforleave.png'), text: '请假申请', href: 'askForLeave',display:true};
+                this.obj[1].arr[2] = {imgSrc: require('@/assets/images/holiday.png'), text: '查看年假调休假', href: 'holiday',display:true};
+                this.obj[2].arr[0] = {imgSrc: require('@/assets/images/mine.png'), text: '我的', href: 'mineAudit',display:true};
+                if(this.isExport){
+                    this.obj[2].arr[1] = {imgSrc: require('@/assets/images/exportTitle.png'), text: '导出报表', href: 'exportRecord',display:true};
+                }
             }
         },
         getQuestion(){

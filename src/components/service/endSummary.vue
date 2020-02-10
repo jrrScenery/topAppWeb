@@ -1,6 +1,6 @@
 <template>
     <div class="endSummaryView">
-        <div class="serviceInfoCell">
+        <div class="serviceInfoCell">         
             <div class="serviceInfoTit">用户及项目信息</div>
             <div class="serviceContent">
                 <el-form :model="formData" ref="formData">
@@ -125,7 +125,7 @@
                         </el-form-item>
                         <input id='docId' type="hidden" v-model ="formData.docId">
                     </div>
-                    <div style="height: 0.6rem;"></div>
+                    <div style="height: 0.3rem;"></div>
                     <el-form-item class="serviceSubmitBtn" v-if="serviceStatus==='1'">
                         <el-button type="primary" @click="submitForm('formData')">提交</el-button>
                     </el-form-item>
@@ -134,6 +134,21 @@
                         <el-button @click="submitSendForm('customerForm')" type="primary" v-else>{{submitName}}</el-button>
                     </el-form-item>                             
                 </el-form>
+            </div>
+            <div v-if="bjInfoArr.length!=0">
+                <div class="serviceInfoTit">备件信息</div>
+                <div class="serviceContent">
+                    <div style="padding:0 0.1rem">
+                        <el-collapse v-model="activeName" accordion v-for="(item,index) in bjInfoArr" :key="item.id" >
+                            <el-collapse-item :title="item.PARTS_NAME" :name="index">
+                                <div>备件名称：{{item.PARTS_NAME}}</div>
+                                <div>备件分类：{{item.PARTS_TYPE}}</div>
+                                <div>PN：{{item.PART_PN}}</div>
+                                <div>SN：{{item.SN_ID}}</div>
+                            </el-collapse-item>
+                        </el-collapse>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- 点击客户远程确认及评价编辑客户信息 -->
@@ -207,6 +222,8 @@ export default {
                 docId:'',
                 // docId1:''
             },
+            activeName:['1'],
+            bjInfoArr:[],
             workResultInfo:'',
             workResultArr:[],
             serviceTypeArr:[],
@@ -238,12 +255,28 @@ export default {
     },
     created(){
         this.getEndSummary();
+        this.getCasePartInfo();
         this.getWorkCustList();
     },
     mounted(){
         window.photoResult = this.getPhotoUrl;
     },
-    methods:{     
+    methods:{  
+        getCasePartInfo(){
+            fetch.get("?action=/parts/getCasePartInfo&CASE_ID="+this.caseId).then(res=>{
+                console.log("getCasePartInfo",res);
+                if(res.STATUSCODE=='1'){
+                     this.bjInfoArr = res.data;
+                 }else{
+                    this.$message({
+                        message:res.MESSAGE,
+                        type: 'error',
+                        center: true,
+                        customClass: 'msgdefine'
+                    });
+                 }
+            })
+        },
          getWorkCustList(){
              fetch.get("?action=/work/getWorkCustList&WORK_ID="+this.workId).then(res=>{
                  console.log("getWorkCustList",res);
@@ -396,6 +429,7 @@ export default {
                     }
                     temp.arriveTime = this.formData.userAndPrjItem.arriveTime;
                     temp.leaveTime = this.formData.userAndPrjItem.leaveTime;
+                    temp.engineer = localStorage.getItem("empId");
                     console.log(temp);
                     data.data=JSON.stringify(temp);
                     console.log(data);
@@ -523,7 +557,7 @@ export default {
     .serviceInfoCell .serviceInfoTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
     .serviceInfoCell .serviceInfoTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
     /* .summaryView{margin:0.1rem;line-height: 0.2rem} */
-    .serviceContent{background: #ffffff; color: #999999; padding: 0.1rem 0}
+    .serviceContent{background: #ffffff; color: #999999; padding: 0.05rem 0 0.5rem}
     .serviceContent >>> .el-form-item{border-bottom: 0.01rem; margin: 0.03rem 0;}
     .serviceContent >>> .el-form-item__label{font-size: 0.13rem; text-align: left}
     .article{line-height: 0.3rem; }

@@ -305,7 +305,12 @@ export default {
                 params.month = this.searchData.month;
                 params.wholeMonth = this.searchData.wholeMonth;
             }
-            let last = year+'-'+currentDate.getMonth();
+            let last ="";
+            if(currentDate.getMonth()<=9){
+                last = year+'-0'+currentDate.getMonth();
+            }else{
+                last = year+'-'+currentDate.getMonth();
+            }
             if(last===this.searchData.month){
                 if(date!==1){
                     this.isSumit = false;
@@ -324,12 +329,6 @@ export default {
                         }
                         this.selectTimeList[i]=res.data[i].absEndTime;
                         this.selectAbsBeginTime[i] =  res.data[i].absBeginTime;
-                        if(res.data[i].leaveType!==null){
-                            this.addFlagList[i] = true;   
-                        }else{
-                            this.addFlagList[i] = false;
-                        }
-                        this.cancleFlagList[i] = false; 
                         if(this.searchData.wholeMonth==="0"){
                             let punchDate = new Date(res.data[i].punchDate.replace(/\-/g, "\/"))
                             if(punchDate.getTime()>=currentDate1.getTime()){
@@ -340,10 +339,17 @@ export default {
                         }else{
                             this.isBigDateList[i] = false;
                         }
+                        if(res.data[i].leaveType!==null && !this.isBigDateList[i]){
+                            this.addFlagList[i] = true;   
+                        }else{
+                            this.addFlagList[i] = false;
+                        }
+                        this.cancleFlagList[i] = false; 
                         this.isShowDeleteList[i] = false; 
                         this.caseFlag[i] = false; 
-                        this.pmendtime = res.data[i].pmEndWorktime     
+                        this.pmendtime = res.data[i].pmEndWorktime 
                     }
+                        console.log("addFlagList",this.addFlagList)    
                 }else{
                     this.$message({
                         message:res.MESSAGE,

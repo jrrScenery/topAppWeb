@@ -1,8 +1,8 @@
 <template>
-  <div class="addHolidayView">
-    <div class="addHolidayContent">
-      <div v-if="addList.length!=0">
-        <ul class="ul_mineView" v-for="item in addList" :key="item.id">
+  <div class="consumeHolidayView">
+    <div class="consumeHolidayContent">
+      <div v-if="consumeList.length!=0">
+        <ul class="ul_mineView" v-for="item in consumeList" :key="item.id">
           <li class="li_mineView">
             <template>
               <div style="width:100%;padding-top:0.1rem;padding-left:0.2rem;padding-bottom:0.07rem;">{{item.date}}</div>
@@ -23,19 +23,20 @@
 import transfrom from "@/utils/dateTransform.js";
 import fetch from "../../utils/ajax";
 export default {
-  name: "addHoliday",
+  name: "consumeHoliday",
   components: {
     // loadingtmp
   },
   data() {
     return {
       name:this.$route.query.name,
-      text:"年假增加",
+      text:"",
       text1:"天",
-      addList: [
+      id:this.$route.query.id,
+      consumeList: [
         {
-          date: "2019-10-12",
-          days: "7.250"
+          date: "2019-11-12",
+          days: "1.125"
         },
         {
           date: "2020-01-01",
@@ -45,25 +46,28 @@ export default {
     };
   },
   created() {
-    // fetch.get("?action=/work/GetWorkStatusList", {}).then(res => {
-    //   console.log(res);
-    //   this.addList = res.DATA;
-    // });
+    if(this.id=='0'){
+      this.text='年假消耗';
+    }else{
+      if(this.id=='1'){
+        this.text='调休假消耗';
+      }
+    }
   },
   methods: {}
 };
 </script>
 <style scoped>
-.addHolidayView {
+.consumeHolidayView {
   width: 100%;
   height: 100%;
 }
-.addHolidayContent {
+.consumeHolidayContent {
   /* padding: 0.1rem; */
   background: #ffffff;
   overflow: scroll;
 }
-.addHolidayContent >>> .norecord {
+.consumeHolidayContent >>> .norecord {
   text-align: center;
   margin-top: 0.3rem;
   color: #999999;

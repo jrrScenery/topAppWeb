@@ -29,12 +29,17 @@ export default {
             date:'',
             projectId:this.$route.query.id,
             leaveType:[],
+            searchData:this.$route.query.searchData
         }
     },
     created(){
         let current = new Date();
         let month = (current.getMonth() + 1) < 10 ? "0" + (current.getMonth() + 1) : (current.getMonth() + 1);//获取当前月份的日期，不足10补0
         this.date = current.getFullYear()+"-"+month;
+        if(this.searchData.date){
+            this.date = this.searchData.date.slice(0,7);
+        }
+        console.log("222222",this.date);
         this.leaveType = transfrom.getLeaveType().leaveType;
         this.getMonthDetail();
     },

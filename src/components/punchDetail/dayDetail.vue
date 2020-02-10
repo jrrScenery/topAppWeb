@@ -38,6 +38,7 @@ export default {
             },
             dayDetailArr:[],
             projectId:this.$route.query.id,
+            searchData:this.$route.query.searchData
             // page:1,
             // pageSize:1,
             // busy:false,
@@ -45,7 +46,11 @@ export default {
         } 
     },
     created(){
+        console.log("searchData:",this.searchData);
         this.getDayDetail();
+        if(this.searchData.date){
+            this.form.date = this.searchData.date
+        }
     },
     methods:{
         GetDateStr(AddDayCount){

@@ -1,11 +1,8 @@
 <template>
   <div class="viewHolidaysView">
-    <!-- <header-atten-detail2 :title="viewHolidaysTit"></header-atten-detail2> -->
     <header-atten-detail
       :title="viewHolidaysTit"
       :searchType="searchType"
-      :queryData="searchData"
-      @searchNotice="searchNotice"
     ></header-atten-detail>
     <div style="height:0.45rem"></div>
     <div class="SelectListCell">
@@ -21,25 +18,21 @@
           <div class="proSLAInfoTit">{{items.itemName}}</div>
           <div class="divTable" v-for="item in items.detail" :key="item.id" style="width:100%;background:#f7f7f7;">
             <span class="bolder">{{item.name}}</span>
-            <span class="bolder"><router-link :to="{name:'holidayDetail',query:{name:item.name}}">{{item.holiday}}</router-link></span>
-            <span class="bolder"><router-link :to="{name:'holidayDetail2',query:{name:item.name}}">{{item.holiday2}}</router-link></span>
+            <span class="bolder">
+              <router-link :to="{name:'holidayDetail',query:{name:item.name,id:'0'}}" style="color:#2698d6;text-decoration:underline">{{item.ngHoliday}}</router-link>
+            </span>
+            <span class="bolder">
+              <router-link :to="{name:'holidayDetail',query:{name:item.name,id:'1'}}" style="color:#2698d6;text-decoration:underline">{{item.txHoliday}}</router-link>
+            </span>
           </div>
-    <!-- <div v-for="items in tableData" :key="items.name">
-            <span style="width:34%">{{items.name}}</span>
-            <router-link :to="{name:'holidayDetail'}"><span style="width:33%">{{items.holiday}}</span></router-link>
-            <span style="width:33%">{{items.holiday2}}</span>
-    </div>-->
-    </div>
-    </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import headerAttenDetail from "../header/headerAttenDetail";
-// import global_ from "../../components/Global";
-// import headerBaseEight from "../header/headerBaseEight";
-// import loadingtmp from "@/components/load/loading";
 import fetch from "../../utils/ajax";
 export default {
   name: "holiday",
@@ -55,13 +48,13 @@ export default {
           detail: [
             {
               name: "程文静",
-              holiday: "3",
-              holiday2: "0.2"
+              ngHoliday: "3",
+              txHoliday: "0.2"
             },
             {
               name: "罗儿",
-              holiday: "2",
-              holiday2: "3"
+              ngHoliday: "2",
+              txHoliday: "3"
             }
           ]
         },
@@ -70,46 +63,20 @@ export default {
           detail: [
             {
               name: "文静",
-              holiday: "1",
-              holiday2: "0.5"
+              ngHoliday: "1",
+              txHoliday: "0.5"
             }
           ]
         }
       ],
       searchType: "holiday",
-      // tableData: [
-      //   {
-      //     name: "程文静",
-      //     holiday: "2",
-      //     holiday2: "0.3"
-      //   },
-      //   {
-      //     name: "罗儿",
-      //     holiday: "1.5",
-      //     holiday2: "2"
-      //   },
-      //   {
-      //     name: "小罗",
-      //     holiday: "3.5",
-      //     holiday2: "3"
-      //   },
-      //   {
-      //     name: "萝莉",
-      //     holiday: "4",
-      //     holiday2: "2"
-      //   }
-      // ],
     };
   },
 
   methods: {
-    // searchNotice(formData) {
-    //   console.log("formData", formData);
-    //   this.searchData = formData;
-    //   this.getAttenInfo();
-    // }
   },
-  created() {}
+  created() {
+  }
 };
 </script>
 
@@ -126,16 +93,6 @@ export default {
   margin-top: 0.05rem;
   overflow: scroll;
 }
-/* .el-table__header tr,
-  .el-table__header th {
-    padding: 0;
-    height: 20px!important;
-}
-.el-table__body tr,
-  .el-table__body td {
-    padding: 0;
-    height: 40px;
-} */
 .viewHolidaysView >>> .proSLAInfoCell span {
   display: inline-block;
   width: 33%;
@@ -170,9 +127,9 @@ export default {
   overflow: hidden;
   text-align: center;
 }
-.el-table >>> td,
-.el-table >>> th {
-  padding: 0.04rem;
+.SelectListCell>>> .el-table th {
+  padding: 0.08rem!important;
+  color:#666;
 }
 .SelectListCell >>> .el-table__body {
   width: 100% !important;
@@ -218,12 +175,9 @@ export default {
   content: "";
   background: #2698d6;
 }
-.el-table--border::after,
+/* .el-table--border::after,
 .el-table--group::after,
 .el-table::before {
   height: 0;
-}
-.el-table >>> thead {
-  color: #606266;
-}
+} */
 </style>

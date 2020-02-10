@@ -117,25 +117,11 @@ export default {
     },
     methods:{
         getProjectAttendance(flag){
-            // let param = {processStatus:1,PAGE_NUM:this.prorepairpage,PAGE_TOTAL:this.pageSize};
             fetch.get("?action=/attendance/queryProjectAttendance&processStatus=1",'').then(res=>{
                 console.log("queryProjectAttendance",res);
                 if(res.STATUSCODE==='1'){
-                    // if(flag){
-                    //     this.combineInfos = this.combineInfos.concat(res.data);
-                    // }else{
-                    //     this.combineInfos = res.data;
-                    // }
-                    // if(0 == res.data.length || res.data.length<this.pageSize ){
-                    //     this.busy = true;
-                    //     this.loadall = true;
-                    // }
-                    // else{
-                    //     this.busy = false;
-                    // }
                     this.combineInfos = res.data;
                 }else{
-                    // this.busy = false;
                     this.$message({
                         message:res.MESSAGE,
                         type: 'error',
@@ -144,7 +130,6 @@ export default {
                         customClass: 'msgdefine'
                     })
                 }
-                // this.$emit('emitbusy', {busy:false,loadall:this.loadall});
             })
         },
         //批量审批同意或拒绝操作

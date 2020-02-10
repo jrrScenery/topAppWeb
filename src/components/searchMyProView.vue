@@ -35,7 +35,7 @@
       </el-form-item>
     </el-form>
   </div>
-</template>
+</template> 
 
 <script>
 import fetch from '../utils/ajax'
@@ -97,7 +97,6 @@ export default {
     },
     onSearch () {
       let form = this.form
-      console.log(form)
       this.$emit('search', form)
       // console.log(this.form, '------------------')
       let data = {

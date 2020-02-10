@@ -28,12 +28,19 @@ export default {
             activeName: 'first',
             firstTabTit: '日统计',
             secondTabTit: '月统计',
+            searchData:this.$route.query.searchData
         }
     },
     created(){
-
-    },
+        console.log("searchData",this.searchData);
+    }, 
     methods:{
+    },
+    beforeRouteLeave( to, from,next){
+        if (to.name == 'checkAttenDetail') {
+            to.meta.isUseCache = true;    
+        }        
+        next();
     }
 }
 </script>

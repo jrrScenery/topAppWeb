@@ -1,6 +1,6 @@
 <template>
     <div class="punchReportFormView">
-        <header-atten-detail :title="headerAttenDetailTit" :searchType="searchType" :queryData='searchData' @searchPro='getSearParams'></header-atten-detail>
+        <header-punch-report :title="headerPunchReportTit" :searchType="searchType" :queryData='searchData' @searchPro='getSearParams'></header-punch-report>
         <div style="height:0.45rem"></div>
         <div class="echarsPunchView" v-if="isVisiable">
             <div class="chartPunchOne">
@@ -9,7 +9,7 @@
             </div> 
             <div class="chartPunchTwo">               
                 <div class="BtmTit">{{chartTwoTit}}</div>
-                <router-link :to="{name:'checkAttenDetail',query:{area:searchData.area,projectGroup:searchData.projectGroup,prjName:searchData.prjName,staffName:searchData.staffName,date:searchData.date}}">
+                <router-link :to="{name:'checkAttenDetail',query:{searchData:this.searchData}}">
                     <div class="checkDetail">查看详情</div>
                 </router-link>
                 <div id="myChartTwo" :style="{width: '100%'}"></div>
@@ -19,16 +19,16 @@
     </div>
 </template>
 <script>
-import headerAttenDetail from "../header/headerAttenDetail";
+import headerPunchReport from "../header/headerPunchReport";
 import fetch from '../../utils/ajax'
 export default {
     name:'punchReportForm',
     components:{
-        headerAttenDetail
+        headerPunchReport
     },
     data(){
         return{
-            headerAttenDetailTit:'考勤明细汇总表',
+            headerPunchReportTit:'考勤明细汇总表',
             searchType:'punchReportForm',
             chartOneTit:'考勤统计',
             chartTwoTit:'异常打卡项目部',
@@ -37,7 +37,8 @@ export default {
                 projectGroup:'',
                 date:'',
                 prjName:'',
-                staffName:''
+                staffName:'',
+                itcode:''
             },
             isSearch:false,
             resizefun:null,
@@ -45,16 +46,11 @@ export default {
             counts:''
         }
     },
-    created(){},
-    mounted(){  
-        this.$nextTick(()=> {
-            this.getChartData()
-        }) 
-        let myChartTwo = echarts.init(document.getElementById('myChartTwo'))    
-        window.onresize = function() {
-                this.myChartTwo.resize()
-        }
+    created(){
+        console.log("0000000000000");
+        this.getChartData();
     },
+    mounted(){},
     //移除事件监听，避免内存泄漏
     beforeDestroy() {
         window.removeEventListener('resize', this.resizefun)
@@ -92,6 +88,7 @@ export default {
         fetch2(params){
             var url = "?action=/attendance/querySummary";
             fetch.get(url,params).then(res=>{
+                console.log("fetch2",res);
                 if(res.STATUSCODE=='1'){
                     this.counts = res.detail;
                     let attenSumDetail = res.detail;
@@ -102,7 +99,6 @@ export default {
                         xLabel[1] = attenSumDetail[i].NUM;
                         xLabel[2] = attenSumDetail[i].RATIO;
                         xLabels[attenSumDetail.length-i-1] = xLabel;
-
                         xData[attenSumDetail.length-i-1] = attenSumDetail[i].RATIO;
                         yData[attenSumDetail.length-i-1] = attenSumDetail[i].PROJECT_AREA;
                     }
@@ -193,7 +189,6 @@ export default {
                                 fontSize:'12',
                                 show:true,
                                 formatter: function(params){
-                                    let total = 0;
                                     var params_list = []
                                     var params_split = params.seriesName.split(",")
                                     for (var i=0; i<params_split.length; i=i+3){
@@ -216,9 +211,6 @@ export default {
             }) 
             this.autoHeight = this.counts.length * 35 + 50;
             myChartTwo.getDom().style.height = this.autoHeight + "px";
-            myChartTwo.getDom().childNodes[0].style.height = this.autoHeight + "px";
-            myChartTwo.getDom().childNodes[0].childNodes[0].setAttribute("height",this.autoHeight);
-            myChartTwo.getDom().childNodes[0].childNodes[0].style.height = this.autoHeight + "px";
             myChartTwo.resize();            
         },
         freshCharts(params){
@@ -226,43 +218,40 @@ export default {
             this.fetch2(params);
         },
         getSearParams (searchData) {
-            console.log("searchData",searchData);
-            if(searchData.staffName!=""){
-                this.$router.push({name:'attenHistory',query:{staffName:searchData.staffName,dateStr:searchData.date}})
-            }else{
-                this.isSearch = true;
+            // if(searchData.staffName!=""){
+            //     this.$router.push({name:'attenHistory',query:{staffName:searchData.staffName,dateStr:searchData.date}})
+            // }else{
                 this.searchData = searchData;
                 this.getChartData();
-            }
+            // }
         },
         getChartData(){
             let params = {};
-            if(this.isSearch){
                 params.parentArea = this.searchData.area;
                 params.projectArea = this.searchData.projectGroup;
                 params.day = this.searchData.date;
                 params.prjName = this.searchData.prjName;
                 params.staffName = this.searchData.staffName;
-            }else{
-                params.parentArea ='';
-                params.projectArea = '';
-                params.day = '';
-                params.prjName = "";
-                params.staffName = '';
-            }
-            console.log("isSearch",this.isSearch)
-            console.log("params",params)
+                params.itcode = this.searchData.itcode;
+            this.counts = [];
             this.freshCharts(params)
         },
     }
 }
 </script>
 <style scoped>
-.punchReportFormView{margin-top: 0.05rem; width: 100%; background: #ffffff;}
-.echarsPunchView{width: 96%;margin: auto 0}
+.echarsPunchView{width: 100%; position: absolute; top: 0.45rem; bottom: 0.45rem;overflow: scroll;background: #ffffff}
+.BtmTit{margin-top: 15px;position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.16rem; color: #2698d6;}
+.BtmTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
+.BtmTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
+.checkDetail{float:right;color:#2698d6;margin-right:0.2rem}
+.punchReportFormView>>>.norecord{text-align: center;margin-top: 0.3rem;color: #999999}
+
+/* .punchReportFormView{margin-top: 0.05rem; width: 100%; background: #ffffff;}
+.echarsPunchView{width: 100%;margin: auto 0;background: red}
 .BtmTit{margin-top: 15px;position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.16rem; color: #2698d6;}
 .BtmTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
 .BtmTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
 .checkDetail{float:right;color:#2698d6}
-.punchReportFormView>>>.norecord{text-align: center;margin-top: 0.3rem;color: #999999}
+.punchReportFormView>>>.norecord{text-align: center;margin-top: 0.3rem;color: #999999} */
 </style>

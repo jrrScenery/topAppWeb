@@ -15,7 +15,8 @@
                         v-for="item in monthArr"
                         :key="item.id"
                         :label="item.value"
-                        :value="item.value">
+                        :value="item.value" 
+                        >
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -43,6 +44,7 @@ export default {
     },
     created(){
         this.form.wholeMonth = this.queryData.wholeMonth;
+        this.form.month = this.queryData.month;
         let date = new Date();
         let year = date.getFullYear();
         let currentMonth = date.getMonth()+1;
@@ -53,6 +55,7 @@ export default {
         }
         if(currentMonth<=9){
             currentMonth = "0"+currentMonth
+            lastMonth = "0"+lastMonth;
         }
         this.form.month = date.getFullYear()+"-"+currentMonth;
         let current = date.getFullYear()+"-"+currentMonth;

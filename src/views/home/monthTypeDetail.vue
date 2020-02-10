@@ -3,12 +3,12 @@
         <header-last :title='monthTypeDetailTit'></header-last>
         <div style="height:0.45rem"></div>
             <div class="tableTh"><span>打卡日期</span><span>首次打卡</span><span>末次打卡</span></div>
-            <div class="tableTd" v-for="items in monthDetail" :key="items.projectId">
+            <div class="tableTd" v-for="items in monthDetail" :key="items.id">
                 <div class="tableTitle">
                     <div style="width:80%">{{items.staffName}}</div>
                     <div style="width:20%" @click="staffPunchDetail(items.staffName)">查看详情</div>
                 </div>
-                <div class="divTable" v-for="item in items.list" :key="item.projectId">
+                <div class="divTable" v-for="item in items.list" :key="item.id">
                     <span class="bolder">{{item.punchDate}}</span>          
                     <span class="bolder">{{item.absBeginTime}}</span>        
                     <span class="bolder">{{item.absEndTime}}</span> 
@@ -39,6 +39,7 @@ export default {
     },
     methods:{
         getMonthTypeDetail:function(){
+            console.log("projectId",this.projectId);
             let params = "&projectId="+this.projectId+"&type=2&dateStr="+this.dateStr+"&leaveType="+this.leaveType;
             fetch.get("?action=/attendance/queryPunchCollect"+params,'').then(res=>{
                 console.log("queryPunchCollect",res);

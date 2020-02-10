@@ -164,6 +164,7 @@ export default {
       let permissions = JSON.parse(localStorage.getItem("userPermission"));
       var m=0;
       var n=0;
+      console.log("permissions",permissions);
       for(let i=0;i<permissions.length;i++){
         if(permissions[i].PRIVID=='workFlow_my_task'){
           m++;

@@ -7,7 +7,7 @@
                 <el-card class="box-card" v-for="(item,index) in auditinfos" :key="item.id">
                     <div slot="header" class="clearfix">
                         <span>{{item.realname}}的{{loaType[item.loatype]}}申请</span>
-                        <router-link :to="{name:'attenDetail',query:{id:item.processId}}">
+                        <router-link :to="{name:'attenDetail',query:{id:item.processId}}" v-if="item.loatype===2">
                             <el-button style="float: right; padding: 3px 0;font-size:0.13rem" type="text">查看详情</el-button>
                         </router-link>
                         <!-- <el-button class="divBtn" type="text" v-if="item.loatype==='2'">查看详情</el-button> -->
@@ -24,13 +24,13 @@
                         <div>{{item.projectName}}</div>
                     </el-form-item>
                     <el-form-item label="请假类型：" v-if="item.loatype===0">
-                        <div>{{item.prjCode}}</div>
+                        <div>{{leaveType[item.leaveType]}}</div>
                     </el-form-item>
                     <el-form-item label="开始时间：" v-if="item.loatype===0">
-                        <div>{{item.beginDate}} {{item.beginTime}}</div>
+                        <div>{{item.beginTime}}</div>
                     </el-form-item>
                     <el-form-item label="结束时间：" v-if="item.loatype===0">
-                        <div>{{item.endDate}} {{item.endTime}}</div>
+                        <div>{{item.endTime}}</div>
                     </el-form-item>
                     <el-form-item label="缺勤时长：" v-if="item.loatype===2">
                         <div>{{item.absMinute}}</div>
@@ -125,12 +125,14 @@ export default {
             },
             auditinfos:[],
             loaType:[],
+            leaveType:[],
             id:this.$route.query.id,
             loatype:this.$route.query.loatype,
         }
     },
     created(){
         this.loaType = transfrom.getLeaveType().loaType;
+        this.leaveType = transfrom.getLeaveType().leaveType;
         this.getProjectAttendance();
     },
     methods:{
@@ -154,6 +156,7 @@ export default {
         handleSubmit(flag,index){
             let url = "";
             let temp = {};
+            console.log("index",index);
             console.log("auditinfos",this.auditinfos);
             temp.processId = this.auditinfos[index].processId;
             temp.loaType = this.auditinfos[index].loatype;
@@ -162,7 +165,7 @@ export default {
             }else{
                 temp.auditType = 1;
             }
-            let params = "&processId="+temp.processId+"&loaType="+temp.loatype+"&auditType="+temp.auditType
+            let params = "&processId="+temp.processId+"&loaType="+temp.loaType+"&auditType="+temp.auditType
             fetch.questionPost("?action=/attendance/approveAttendance"+params,'').then(res=>{
                 console.log("approveAttendance",res);
                 if(res.STATUSCODE === '1'){

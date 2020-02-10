@@ -13,7 +13,7 @@
             </el-table-column>
             <el-table-column label="请假" min-width="30%">
               <template slot-scope="scope">
-                <div>{{leaveType[scope.$index]}}</div>
+                <div>{{leaveType[scope.row.LEAVE_TYPE]}}</div>
                 <div>{{scope.row.ABS_BEGIN_TIME}}-{{scope.row.ABS_END_TIME}}</div>
                 <!-- <div></div> -->
               </template>
@@ -59,7 +59,7 @@ export default {
         end: "18:00"
       },
       searchData: {
-        wholeMonth: "1", //type=0代办查看全月，type=1代表查看缺勤
+        wholeMonth: "0", //type=0代办查看全月，type=1代表查看缺勤
         month: this.$route.query.dateStr
       }
     };

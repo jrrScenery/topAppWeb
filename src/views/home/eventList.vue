@@ -90,7 +90,7 @@ export default {
       eventNum:'',
       industry:[],
       keyWord:'',
-      PM:'',
+      PM:'', 
       proName:'',
       sale:'',
       startTime:'',

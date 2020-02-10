@@ -466,10 +466,17 @@ export default {
             var data=new FormData();
             data.append("FILETYPE","jpg");
             data.append("FILE", photodata);
+            data.append("caseId",this.caseId);
+            data.append("workId",this.workId);
+            if(this.buttonType === '上传备件到场照片'){
+                data.append("type","1");
+            }else{
+                data.append("type","2");
+            }
             let config = {
                 headers:{'Content-Type':'multipart/form-data'}
             };
-            fetch.post("?action=upload",data,config).then(res=>{
+            fetch.post("?action=uploadPartsPic",data,config).then(res=>{
                 console.log("upload",res)
                 if(res['STATUSCODE'] == '0'){
                     if(this.buttonType === '上传备件到场照片'){

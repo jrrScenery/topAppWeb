@@ -31,14 +31,25 @@ export default {
     return {
       holidayDetailTit: "假期详情",
       activeName: 'first',
-      firstTabTit: '年假累计',
-      secondTabTit: '年假消耗',
+      firstTabTit: '',
+      secondTabTit: '',
+      id:this.$route.query.id
     //   todoListArr:[],
     }
   },
 
   methods: {},
-  created() {}
+  created() {
+    if(this.id=='0'){
+      this.firstTabTit='年假累计';
+      this.secondTabTit='年假消耗';
+    }else{
+      if(this.id=='1'){
+        this.firstTabTit='调休假累计';
+        this.secondTabTit='调休假消耗';
+      }
+    }
+  }
 };
 </script>
 

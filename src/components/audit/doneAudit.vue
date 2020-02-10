@@ -5,7 +5,7 @@
                 <!-- 单个审批 -->
                 <div v-if="singleInfos.length!=0"><!-- @click="clickMethod" -->
                     <el-card class="box-card" v-for="item in singleInfos" :key="item.id" >
-                        <div v-if="item.loaType==2">
+                        <!-- <div v-if="item.loaType==2"> -->
                             <div slot="header" class="clearfix">
                                 <span>{{item.realname}}的{{loaType[item.loaType]}}申请</span>
                                 <div :data-id='item.id' class="divBtn" type="text">{{item.month}}</div>
@@ -19,28 +19,50 @@
                             <el-form-item label="缺勤时长：" v-if="item.loaType===2" label-width="0.9rem">
                                 <div>{{item.absMinute}}</div>
                             </el-form-item>
+                            <div v-if="item.loaType===0">
+                                <el-form-item label="请假类型：" label-width="0.9rem">
+                                    <div>{{leaveType[item.leaveType]}}</div>
+                                </el-form-item>
+                                <el-form-item label="开始时间：" label-width="0.9rem">
+                                    <div>{{item.beginTime}}</div>
+                                </el-form-item>
+                                <el-form-item label="结束时间：" label-width="0.9rem">
+                                    <div>{{item.endTime}}</div>
+                                </el-form-item>
+                                <el-form-item label="请假原因：" label-width="0.9rem">
+                                    <div>{{item.reason}}</div>
+                                </el-form-item>
+                            </div>
+                            <el-form-item label="提交时间：" label-width="0.9rem">
+                                <div>{{item.submitOn}}</div>
+                            </el-form-item>
+                            <el-form-item label="审批状态：" label-width="0.9rem">
+                                <div>{{processStatus[item.processStatus]}}</div>
+                            </el-form-item>
                             <!-- <el-form-item class="submitBtn">
                             <el-button type="primary" :data-loatype='item.loaType' :data-index='index' class="okBtn modifyBtn">查看详情</el-button>
                         </el-form-item> -->
-                        </div>
-                        <!-- <el-form-item label="请假类型：" v-if="item.loaType==='0'" label-width="0.9rem">
-                            <div>{{leaveType[item.leaveType]}}</div>
-                        </el-form-item> -->
-                        <!-- <el-form-item label="开始时间：" label-width="0.9rem">
-                            <div>{{item.beginDate}} {{item.beginTime}}</div>
-                        </el-form-item>
-                        <el-form-item label="结束时间：" label-width="0.9rem">
-                            <div>{{item.endDate}} {{item.endTime}}</div>
-                        </el-form-item> -->
-                        <!-- <el-form-item label="请假原因：" v-if="item.loaType==='0'" label-width="0.9rem">
-                            <div>{{item.reason}}</div>
-                        </el-form-item> -->
-                        <el-form-item label="提交时间：" label-width="0.9rem">
-                            <div>{{item.submitOn}}</div>
-                        </el-form-item>
-                        <el-form-item label="审批状态：" label-width="0.9rem">
-                            <div>{{processStatus[item.processStatus]}}</div>
-                        </el-form-item>
+                        <!-- </div>
+                        <div v-else>
+                            <el-form-item label="请假类型：" v-if="item.loaType==='0'" label-width="0.9rem">
+                                <div>{{leaveType[item.leaveType]}}</div>
+                            </el-form-item>
+                            <el-form-item label="开始时间：" label-width="0.9rem">
+                                <div>{{item.beginDate}} {{item.beginTime}}</div>
+                            </el-form-item>
+                            <el-form-item label="结束时间：" label-width="0.9rem">
+                                <div>{{item.endDate}} {{item.endTime}}</div>
+                            </el-form-item>
+                            <el-form-item label="请假原因：" v-if="item.loaType==='0'" label-width="0.9rem">
+                                <div>{{item.reason}}</div>
+                            </el-form-item>
+                            <el-form-item label="提交时间：" label-width="0.9rem">
+                                <div>{{item.submitOn}}</div>
+                            </el-form-item>
+                            <el-form-item label="审批状态：" label-width="0.9rem">
+                                <div>{{processStatus[item.processStatus]}}</div>
+                            </el-form-item>
+                        </div> -->
                         <!-- <el-form-item class="submitBtn" v-if="item.loaType===2">
                             <el-button type="primary" :data-loatype='item.loaType' :data-index='item.index' data-name='detail' class="okBtn modifyBtn">查看详情</el-button>
                         </el-form-item> -->

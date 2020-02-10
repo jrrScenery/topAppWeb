@@ -25,8 +25,8 @@ export default {
         return{
             activeName: 'first',
             todoAuditTit:'审批',
-            firstTabTit: '待审批',
-            secondTabTit: '已审批',
+            firstTabTit: '待我审批',
+            secondTabTit: '我已审批',
             todoListArr:[],
         }
     },

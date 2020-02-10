@@ -17,6 +17,9 @@
             <el-form-item label="员工姓名">
                 <el-input v-model="form.staffName" class="bInput"></el-input>
             </el-form-item>
+            <el-form-item label="ITCode">
+                <el-input v-model="form.itcode" class="bInput"></el-input>
+            </el-form-item>
             <el-form-item label="时间">
                 <el-date-picker type="date" placeholder="请选择日期" v-model="form.date" style="width: 80%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
             </el-form-item>
@@ -38,7 +41,8 @@ export default {
                 projectGroup:'',
                 date:'',
                 prjName:'',
-                staffName:''
+                staffName:'',
+                itcode:''
             },
             areaArr:[],
             projectGroupArr:[]
@@ -54,6 +58,7 @@ export default {
         this.form.date = this.queryData.date;
         this.form.prjName = this.queryData.prjName;
         this.form.staffName = this.queryData.staffName;
+        this.form.itcode = this.queryData.itcode;
     },
     methods:{
         queryArea(){
@@ -81,14 +86,18 @@ export default {
         },
         onSearch(){
             let form = this.form;
-            this.$emit('search',form);
             let data = {
                 popBg:false
             }
-            this.$emit('change',data);
+            if(form.staffName!=""||form.itcode!=''){
+                this.$router.push({name:'attenHistory',query:{staffName:form.staffName,dateStr:form.date}})
+            }else{
+                this.$emit('search',form);
+                this.$emit('change',data);
+            }
         },
         noKeyword () {
-            document.activeElement.blur()
+            document.activeElement.blur();
         }
     }
 }
@@ -109,11 +118,4 @@ export default {
   .searchpunchReportView >>> .submitBtn .searchBtnCell:hover{background: #2698d6;}
   .searchpunchReportView >>> .submitBtn .el-form-item__content{margin: 0!important; display: flex;}
   .searchpunchReportView >>> .submitBtn .searchBtnCell{background: #2698d6; color: #ffffff;}
-/* .searchpunchReportView{background: #ffffff;position: relative;padding: 0.15rem 0.2rem 0.5rem}
-.searchpunchReportView>>>.submitBtn{width: 100%;position: absolute;height:0.4rem;bottom: -0.15rem; left: 0; right: 0; }
-.searchpunchReportView>>>.submitBtn .el-button{width: 50%;border: none;padding: 0;padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
-.searchpunchReportView>>>.submitBtn .el-form-item__content{margin: 0!important; display: flex;}
-.searchpunchReportView>>> .submitBtn .el-button:hover{background: #ffffff;}
-.searchpunchReportView>>> .submitBtn .searchBtnCell:hover{background: #2698d6;}
- .searchAttenDetailView >>> .submitBtn .searchBtnCell{background: #2698d6; color: #ffffff;} */
 </style>
