@@ -7,7 +7,7 @@
             <el-tabs v-model="activeName">
                 <el-tab-pane label="实施前确认" name="first"><before-work-confirm></before-work-confirm></el-tab-pane>
                 <el-tab-pane label="完成后总结" name="second" lazy><end-summary></end-summary> </el-tab-pane>
-                <el-tab-pane label="客户评价" name="third" lazy><customer-edit-rate></customer-edit-rate> </el-tab-pane>
+                <!-- <el-tab-pane label="客户评价" name="third" lazy><customer-edit-rate></customer-edit-rate> </el-tab-pane> -->
             </el-tabs>
         </div>
     </div>
@@ -16,7 +16,7 @@
 <script>
 import beforeWorkConfirm from '../../components/service/beforeWorkConfirm'
 import endSummary from '../../components/service/endSummary'
-import customerEditRate from '../../components/service/customerEditRate'
+// import customerEditRate from '../../components/service/customerEditRate'
 import HeaderLast from '../header/headerLast'
 export default {
     name: 'onsiteServiceInfo',
@@ -24,7 +24,7 @@ export default {
         HeaderLast,
         beforeWorkConfirm,
         endSummary,
-        customerEditRate
+        // customerEditRate
     },
 
     data(){
@@ -67,7 +67,7 @@ export default {
     .eventShowTabs >>> .el-tabs__item.is-active{color: #2698d6;}
     .eventShowTabs >>> .el-tabs__active-bar{background: #2698d6;}
     .eventShowTabs >>> .el-tabs__nav{width: 100%; text-align: center;}
-    .eventShowTabs >>> .el-tabs__item{width: 33%; padding: 0; font-size: 0.14rem; color: #666666;text-align: center}
+    .eventShowTabs >>> .el-tabs__item{width: 50%; padding: 0; font-size: 0.14rem; color: #666666;text-align: center}
 </style>
 
 

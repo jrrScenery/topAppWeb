@@ -6,7 +6,7 @@
             <div class="tableTd" v-for="items in monthDetail" :key="items.id">
                 <div class="tableTitle">
                     <div style="width:80%">{{items.staffName}}</div>
-                    <div style="width:20%" @click="staffPunchDetail(items.staffName)">查看详情</div>
+                    <div style="width:20%" @click="staffPunchDetail(items.staffName,items.list[0].empId)">查看详情</div>
                 </div>
                 <div class="divTable" v-for="item in items.list" :key="item.id">
                     <span class="bolder">{{item.punchDate}}</span>          
@@ -56,8 +56,8 @@ export default {
                 }
             })
         },
-        staffPunchDetail(staffName){
-            this.$router.push({name:'attenHistory',query:{dateStr:this.dateStr,staffName:staffName}})
+        staffPunchDetail(staffName,staffId){
+            this.$router.push({name:'attenHistory',query:{dateStr:this.dateStr,staffName:staffName,staffId:staffId}})
         }
     }
 }

@@ -2,21 +2,17 @@
     <div class="punchView">
         <header-last :title="punchTit"></header-last>
         <div style="height: 0.45rem;"></div>
-        <div class="punchCard">
+        <div class="punchCard" v-loading="loading">
             <div class="locationLoading">
                 <div>您当前位置为：{{address}}</div>
-                <!-- <div>您当前驻场位置为:{{zcAddress}}</div> -->
                 <div></div>
             </div>
 
             <div class="buttonDiv">
-                <el-button class="punchButton" @click="punchCard('0')">{{workPunch}}</el-button>
-                <el-button class="punchButton" @click="punchCard('1')">{{offPunch}}</el-button>
+                <el-button class="punchButton" @click="punchCard(1)">{{workPunch}}</el-button>
+                <el-button class="punchButton" @click="punchCard(2)">{{offPunch}}</el-button>
             </div>
-            <!-- <div class="buttonDiv">
-                <el-button class="punchButton" @click="punchCard">{{offPunch}}</el-button>
-            </div> -->
-            <div class="locationLoading">
+            <div class="locationLoading" v-if="activities.length!=0">
                 <el-timeline>
                     <el-timeline-item
                         v-for="(activity, index) in activities"
@@ -26,11 +22,11 @@
                     </el-timeline-item>
                 </el-timeline>
             </div>
-            <div class="workTime">
-                上午：9：00-12：00
+            <div class="workTime" v-if="workTime.length!=0">
+                上午：{{workTime[0].AM_WORKTIME_START_TIME}}-{{workTime[0].AM_WORKTIME_END_TIME}}
             </div>
-            <div class="workTime">
-                下午：13：00-18：00
+            <div class="workTime" v-if="workTime.length!=0">
+                下午：{{workTime[0].PM_WORKTIME_START_TIME}}-{{workTime[0].PM_WORKTIME_END_TIME}}
             </div>
         </div>
         <div class="homeWarn">
@@ -130,22 +126,55 @@ export default {
             question:"",
             options:[],
             requestNum:0,
-            activities:[
-                {content:'上班打卡成功',timestamp:'2019-01-21 08:46'},
-                {content:'下班打卡成功',timestamp:'2019-01-21 18:50'}
-            ],
+            activities:[],
             workPunch:'上班打卡',
-            offPunch:"下班打卡"
+            offPunch:"下班打卡",
+            workTime:[],
+            punchType:'',
+            loading:true
         }
     },
     created(){
+        console.log(this.loading);
         this.getLocation();
         if(this.$route.query.homeWarnFlag){
             this.homeWarnFlag = Boolean(this.$route.query.homeWarnFlag);
             this.getQuestion();
         }
+        this.getPunchSetting();
     },
     methods:{
+        getPunchSetting(){
+            this.activities=[];
+            fetch.get("?action=/attendance/queryPunchSetting").then(res=>{
+                console.log("queryPunchSetting",res);
+                if(res.STATUSCODE === '1'){
+                    this.workTime = res.setting;
+                    console.log(this.workTime[0].AM_WORKTIME_START_TIME);
+                    let punch = res.punch;
+                    for(let i=0;i<punch.length;i++){
+                        if(punch[i].TYPE=='1'){
+                            let punchInfoObj = {};
+                            punchInfoObj.content = "上班打卡成功";
+                            punchInfoObj.timestamp = punch[i].PUNCH_TIME;
+                            this.activities.push(punchInfoObj)
+                        }else{
+                            let punchInfoObj = {};
+                            punchInfoObj.content = "下班打卡成功";
+                            punchInfoObj.timestamp = punch[i].PUNCH_TIME;
+                            this.activities.push(punchInfoObj)
+                        }
+                    }
+                }else{
+                    this.$message({
+                    message:res.MESSAGE+"发生错误",
+                    type: 'error',
+                    center: true,
+                    customClass: 'msgdefine'
+                    });
+                }
+            })
+        },
         getQuestion(){
             this.questionObj='';
             this.form.radioItem=[];
@@ -186,11 +215,12 @@ export default {
                 this.homeWarnFlag = false;
             }     
         },
-        punchCard(){
+        punchCard(punchType){
             this.form={
                 radioItem:[]
             };
             this.getLocation('refresh');
+            this.punchType = punchType;
         },
         success:function(res){
             let self = this;
@@ -204,12 +234,14 @@ export default {
                 convertor.translate(pointArr, 1,5, function (point) {  
                     self.latitude = point.points[0].lat;
                     self.longitude = point.points[0].lng;
+                    self.loading = false;
                     self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
                     if(self.type==='refresh'){
-                        self.postPunchInfo();
+                        self.postPunchInfo(self.punchType);
                     }
                     var geoc = new BMap.Geocoder(); 
                     geoc.getLocation(self.pointA, function(rs){
+                        console.log(rs);
                         if(rs.surroundingPois.length!=0){
                             self.address = rs.surroundingPois[0].address+rs.surroundingPois[0].title;             
                         }else{
@@ -218,6 +250,19 @@ export default {
                     })  
                 });
             },1000)
+        },
+        getAddress(lat,lng){
+            let self = this;
+            // 创建地理编码实例      
+            var myGeo = new BMap.Geocoder();      
+            // 根据坐标得到地址描述    
+            myGeo.getLocation(new BMap.Point(lng, lat), function(rs){      
+                if(rs.surroundingPois.length!=0){
+                    self.address = rs.surroundingPois[0].address+rs.surroundingPois[0].title;             
+                }else{
+                    self.address = rs.address+rs.business;  
+                }     
+            });
         },
         getLocation:function(type){
             var self = this;
@@ -231,17 +276,20 @@ export default {
             self.type = type;
             let ua = navigator.userAgent.toLowerCase();
             console.log("ua",ua);
-            if(/(Android)/i.test(ua)){               
+            if(/(Android)/i.test(ua)){              
                 if(typeof(android)!="undefined"){
                     loading.close();
+                    // self.loading = false;
                     if(typeof(android.bdLocation)=='function'){
                         let location = android.bdLocation(); 
                         if(JSON.stringify(location) != "{}"){
                             let locationArr = location.split(",") ;
                             self.latitude = locationArr[0];
                             self.longitude = locationArr[1];
+                            self.loading = false;
+                            self.getAddress(self.latitude,self.longitude);
                             if(type==='refresh'){
-                                self.postPunchInfo();
+                                self.postPunchInfo(self.punchType);
                             }                           
                         }else{
                             LocationSdk.getLocation(this,this.success,loading)
@@ -250,35 +298,38 @@ export default {
                         LocationSdk.getLocation(this,this.success,loading)
                     }
                 }else{
+                    console.log("2222222",self.loading);
                     LocationSdk.getLocation(this,this.success,loading)
                 }
             }else{
                 LocationSdk.getLocation(this,this.success,loading)
             }
         },
-        postPunchInfo(type){
+        postPunchInfo(){
             const loading = this.$loading({
                 lock: true,
                 text: '正在打卡',
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             });
-            let param = {latitude:this.latitude,longitude:this.longitude};
-                fetch.get("?action=/attendance/savePunch",param).then(res=>{
-                console.log("savePosition",res);
-                loading.close();
-                if(res.STATUSCODE=="1"){
-                    this.homeWarnFlag = true;
-                    this.getQuestion();
-                }else{
-                    this.$message({
-                        message:"打卡失败！"+res.MESSAGE,
-                        type: 'error',
-                        center: true,
-                        customClass:'msgdefine'
-                    });
-                }
-            })
+            let param = "&latitude="+this.latitude+"&longitude="+this.longitude+"&type="+this.punchType;
+            // let param = "&latitude=40.053231"+"&longitude=116.288415"+"&type="+this.punchType;
+                fetch.get("?action=/attendance/savePunch"+param).then(res=>{
+                    console.log("savePosition",res);
+                    loading.close();
+                    if(res.STATUSCODE=="1"){
+                        this.homeWarnFlag = true;
+                        this.getQuestion();
+                        this.getPunchSetting();
+                    }else{
+                        this.$message({
+                            message:"打卡失败！"+res.MESSAGE,
+                            type: 'error',
+                            center: true,
+                            customClass:'msgdefine'
+                        });
+                    }
+                })
         },
         onSubmit(){
             var vm= this;
@@ -350,20 +401,8 @@ export default {
 .locationLoading{text-align: center;margin-top: 0.3rem}
 .buttonDiv{text-align: center;margin: 0.5rem;display: flex;justify-content:center}
 .punchButton{background: #2698d6;color: #ffffff;border-radius: 50%;width: 1.2rem;height: 1.2rem;}
-.punchView .el-timeline{margin-left: 0.2rem;width: 50%}
-.punchView .workTime{margin-left: 20%}
-/* .punchView .el-timeline-item__content{width: 20%} */
-
-/* .dialogdc >>> .el-dialog__body{padding: 0px 0px}
-.dialogdc >>> .el-dialog__header{padding: 0px 0px 0px}
-.dialogdc >>> .el-dialog__footer{padding: 0px 0px 0px}
-.dialogdc >>>.warnTextView{padding:0.1rem;background-color:#B22222;color:#ffffff;}
-
-.dialogdc >>> .submit .el-button{width: 100%; border: none; padding: 0; margin: 0; height: 0.4rem; border-radius: 0; color: #999999; font-size: 0.13rem;}
-.dialogdc >>> .submit .el-button:hover{background: #ffffff;}
-.dialogdc >>> .submit .onsubmit:hover{background: #2698d6;}
-.dialogdc >>> .submit .el-form-item__content{margin: 0!important; display: flex;}
-.dialogdc >>> .submit .onsubmit{background: #2698d6; color: #ffffff;} */
+.punchView .el-timeline{margin-left: 25%;width: 50%}
+.punchView .workTime{margin-left: 25%;width: 50%;text-align: center}
 
 .homeWarn >>> .el-dialog__body{padding: 0px 0px}
 .homeWarn >>> .el-dialog__header{padding: 0px 0px 0px}

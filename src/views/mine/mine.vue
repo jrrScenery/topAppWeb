@@ -16,6 +16,10 @@
             <span v-on:click="ChangePd">{{item.text}}</span>
             <i class="el-icon-arrow-right"></i>
           </template>
+          <!-- <template v-if="item.action == 'wikiHelp'">
+            <span v-on:click="wikiHelp">{{item.text}}</span>
+            <i class="el-icon-arrow-right"></i>
+          </template> -->
         </li>
       </ul>
       <div style="text-align:center;width:100%"><el-button class="btn" v-on:click="onLogout"><span>退出当前账户</span></el-button></div>
@@ -41,6 +45,7 @@ export default {
       liObj: [  
         {imgSrc: "", text: '反馈建议',action:'Feedback'},
         {imgSrc:"", text: '修改密码',action:'ChangePd'}, 
+        {imgSrc:"", text: 'wiki帮助',action:'wikiHelp'}, 
       ]
     }
   },
@@ -79,6 +84,9 @@ export default {
     },
     Feedback(){
        this.$router.push({name:'mineAppFeedBack',query:{TYPE:'my'}});
+    },
+    wikiHelp(){
+      this.$router.push({name:'wikiHelp',query:{TYPE:'my'}});
     }
   }
 }

@@ -764,6 +764,21 @@ export default new Router({
       name: 'mineNotice',
       component: resolve => require(['@/views/mine/mineNotice'], resolve)
     },
+    {
+      path: '/mine/wikiHelp',
+      name: 'wikiHelp',
+      component: resolve => require(['@/views/mine/wikiHelp'], resolve)
+    },
+    // {
+    //   path: '/mine/help',
+    //   name: 'help',
+    //   component: resolve => require(['@/views/mine/help'], resolve)
+    // },
+    // {
+    //   path: '/mine/helpDetail',
+    //   name: 'helpDetail',
+    //   component: resolve => require(['@/views/mine/helpDetail'], resolve)
+    // },
     //设置-反馈建议（App）
     {
       path: '/mine/mineAppFeedBack',

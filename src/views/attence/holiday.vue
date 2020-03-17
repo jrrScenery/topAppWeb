@@ -1,15 +1,11 @@
 <template>
   <div class="viewHolidaysView">
-    <header-atten-detail
-      :title="viewHolidaysTit"
-      :searchType="searchType"
-    ></header-atten-detail>
+    <header-last :title="viewHolidaysTit"></header-last>
     <div style="height:0.45rem"></div>
-    <div class="SelectListCell">
+    <div class="tableHead">
       <el-table style="width: 100%">
-        <el-table-column prop="name" label="姓名" width="34%" style="text-align:center"></el-table-column>
-        <el-table-column prop="holiday" label="剩余年假" width="33%" style="text-align:center"></el-table-column>
-        <el-table-column prop="holiday2" label="剩余调休假" width="33%" style="text-align:center"></el-table-column>
+        <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="holiday" label="剩余年假"></el-table-column>
       </el-table>
     </div>
     <div class="SelectListCell">
@@ -17,12 +13,9 @@
         <div class="proSLAInfoCell" v-for="items in itemLists" :key="items.itemName">
           <div class="proSLAInfoTit">{{items.itemName}}</div>
           <div class="divTable" v-for="item in items.detail" :key="item.id" style="width:100%;background:#f7f7f7;">
-            <span class="bolder">{{item.name}}</span>
-            <span class="bolder">
-              <router-link :to="{name:'holidayDetail',query:{name:item.name,id:'0'}}" style="color:#2698d6;text-decoration:underline">{{item.ngHoliday}}</router-link>
-            </span>
-            <span class="bolder">
-              <router-link :to="{name:'holidayDetail',query:{name:item.name,id:'1'}}" style="color:#2698d6;text-decoration:underline">{{item.txHoliday}}</router-link>
+            <span class="bolder" style="width:40%;text-align:left;margin-left:0.4rem">{{item.REALNAME}}</span>
+            <span class="bolder" style="width:37%;text-align:right;">
+              <router-link :to="{name:'holidayDetail',query:{staffId:item.EMPID,name:item.REALNAME}}" style="color:#2698d6;text-decoration:underline">{{item.LEAVE_REMAIN_DAYS}}</router-link>
             </span>
           </div>
         </div>
@@ -32,51 +25,42 @@
 </template>
 
 <script>
-import headerAttenDetail from "../header/headerAttenDetail";
+import headerLast from "../header/headerLast";
 import fetch from "../../utils/ajax";
 export default {
   name: "holiday",
   components: {
-    headerAttenDetail
+    headerLast
   },
   data() {
     return {
-      viewHolidaysTit: "查看年假/调休假",
-      itemLists: [
-        {
-          itemName: "神州数码维保项目",
-          detail: [
-            {
-              name: "程文静",
-              ngHoliday: "3",
-              txHoliday: "0.2"
-            },
-            {
-              name: "罗儿",
-              ngHoliday: "2",
-              txHoliday: "3"
-            }
-          ]
-        },
-        {
-          itemName: "去哪儿网外包框架项目",
-          detail: [
-            {
-              name: "文静",
-              ngHoliday: "1",
-              txHoliday: "0.5"
-            }
-          ]
-        }
-      ],
+      viewHolidaysTit: "查看年假",
+      itemLists: [],
       searchType: "holiday",
     };
   },
-
-  methods: {
-  },
   created() {
-  }
+    this.queryAnnualLeave();
+  },
+  methods: {
+    queryAnnualLeave(){
+      fetch.get("?action=/attendance/queryAnnualLeave",{}).then(res=>{
+        console.log("queryAnnualLeave",res);
+        if(res.STATUSCODE=='1'){
+          this.itemLists = res.data;
+        }else{
+          this.$message({
+              message:res.MESSAGE,
+              type: 'error',
+              center: true,
+              duration:2000,
+              customClass: 'msgdefine'
+          })
+        }
+      })
+    }
+  },
+  
 };
 </script>
 
@@ -95,7 +79,7 @@ export default {
 }
 .viewHolidaysView >>> .proSLAInfoCell span {
   display: inline-block;
-  width: 33%;
+  width: 50%;
   color: #666666;
   line-height: 0.3rem;
   text-align: center;
@@ -123,9 +107,44 @@ export default {
 }
 .viewHolidaysView >>> .tableTd .divTable span {
   display: inline-block;
-  width: 33%;
+  width: 50%;
   overflow: hidden;
   text-align: center;
+}
+.tableHead >>> .el-table th {
+  padding-top: 0.08rem !important;
+  padding-bottom: 0.08rem !important;
+  color: #666;
+}
+/* .tableHead >>> .el-table__body {
+  width: 100% !important;
+} */
+.tableHead >>> .el-table__header {
+  width: 100% !important;
+}
+.tableHead >>> .el-table {
+  font-size: 0.13rem;
+  text-align: center;
+}
+.tableHead >>> .el-table th:nth-child(1) {
+  text-align: left;
+  background: #f7f7f7;
+  padding-left:0.35rem;
+}
+.tableHead >>> .el-table th:nth-child(2) {
+  text-align: left;
+  background: #f7f7f7;
+  padding-left:0.95rem;
+}
+/* .tableHead >>> .el-table td {
+  border: none;
+  text-align: center;
+} */
+.tableHead >>> .el-table__row {
+  background: #f7f7f7 !important;
+}
+.tableHead >>> .el-table__empty-block {
+  display: none;
 }
 .SelectListCell>>> .el-table th {
   padding: 0.08rem!important;

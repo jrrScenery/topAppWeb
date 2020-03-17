@@ -212,6 +212,8 @@ export default {
                 //提交操作
                 let dataArr = new Array();
                 let num = 0;
+                console.log("000000000",this.addFlagList);
+                console.log("111111111",this.leaveTypeList);
                 for(let i=0;i<this.tableData.length;i++){
                     if(this.tableData[i].processStatus===0||this.tableData[i].processStatus===3){
                         if(this.selectTimeList[i]<this.tableData[i].absEndTime&&this.selectTimeList[i]!=this.tableData[i].absEndTime&&this.addFlagList[i]){
@@ -224,9 +226,11 @@ export default {
                                 customClass: 'msgdefine'
                             })
                             return false;
-                        }                        
+                        }       
+
                         if(!this.addFlagList[i]){
-                            if(this.leaveTypeList[i]!=null&&this.leaveTypeList[i+1]===0){
+                            console.log("aaaaaaaaaaaaa",this.leaveTypeList[i+1]===0);
+                            if(this.leaveTypeList[i]!==null&&this.leaveTypeList[i+1]===0){
                                 loading.close();
                                 this.$message({
                                     message:'请选择新增考勤时段考勤请假类型',
@@ -339,7 +343,7 @@ export default {
                         }else{
                             this.isBigDateList[i] = false;
                         }
-                        if(res.data[i].leaveType!==null && !this.isBigDateList[i]){
+                        if(res.data[i].leaveType!==null){// && !this.isBigDateList[i]
                             this.addFlagList[i] = true;   
                         }else{
                             this.addFlagList[i] = false;

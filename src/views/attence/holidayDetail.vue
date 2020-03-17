@@ -33,22 +33,18 @@ export default {
       activeName: 'first',
       firstTabTit: '',
       secondTabTit: '',
-      id:this.$route.query.id
+      staffId:this.$route.query.staffId,
+      name:this.$route.query.name
     //   todoListArr:[],
     }
   },
 
   methods: {},
   created() {
-    if(this.id=='0'){
       this.firstTabTit='年假累计';
       this.secondTabTit='年假消耗';
-    }else{
-      if(this.id=='1'){
-        this.firstTabTit='调休假累计';
-        this.secondTabTit='调休假消耗';
-      }
-    }
+     },
+  methods:{
   }
 };
 </script>

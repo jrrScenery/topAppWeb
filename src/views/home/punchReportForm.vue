@@ -1,14 +1,15 @@
 <template>
     <div class="punchReportFormView">
         <header-punch-report :title="headerPunchReportTit" :searchType="searchType" :queryData='searchData' @searchPro='getSearParams'></header-punch-report>
-        <div style="height:0.45rem"></div>
+        <div style="height:0.5rem"></div>
         <div class="echarsPunchView" v-if="isVisiable">
+            <!-- <div class="norecord" style="color:blue">{{searchData.date}}</div> -->
             <div class="chartPunchOne">
-                <div class="BtmTit">{{chartOneTit}}</div>
+                <div class="BtmTit">{{chartOneTit}}  {{searchData.date}}</div>
                 <div id="myChartOne" :style="{width: '100%', height: '2rem'}"></div>
             </div> 
             <div class="chartPunchTwo">               
-                <div class="BtmTit">{{chartTwoTit}}</div>
+                <div class="BtmTit">{{chartTwoTit}}  {{searchData.date}}</div>
                 <router-link :to="{name:'checkAttenDetail',query:{searchData:this.searchData}}">
                     <div class="checkDetail">查看详情</div>
                 </router-link>
@@ -47,7 +48,7 @@ export default {
         }
     },
     created(){
-        console.log("0000000000000");
+        this.searchData.date = this.GetDateStr(-1);
         this.getChartData();
     },
     mounted(){},
@@ -57,6 +58,15 @@ export default {
         this.resizefun = null
     },
     methods:{
+        GetDateStr(AddDayCount){
+            var dd = new Date();
+            dd.setDate(dd.getDate() + AddDayCount);//获取AddDayCount天后的日期
+            var y = dd.getFullYear();
+            var m = (dd.getMonth() + 1) < 10 ? "0" + (dd.getMonth() + 1) : (dd.getMonth() + 1);//获取当前月份的日期，不足10补0
+            var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate();//获取当前几号，不足10补0
+            console.log(y + "-" + m + "-" + d);
+            return y + "-" + m + "-" + d;
+        },
         fetch1(params){
             var url = "?action=/attendance/querySummary";
             fetch.get(url,params).then(res=>{
@@ -163,7 +173,7 @@ export default {
             let myChartTwo = this.$echarts.init(document.getElementById('myChartTwo'));
             myChartTwo.setOption({
                 grid: {
-                    top: '5%',
+                    top: '2%',
                     left: '0',
                     right: '4%',
                     bottom: '2%',
@@ -240,10 +250,10 @@ export default {
 }
 </script>
 <style scoped>
-.echarsPunchView{width: 100%; position: absolute; top: 0.45rem; bottom: 0.45rem;overflow: scroll;background: #ffffff}
+.echarsPunchView{width: 100%; position: absolute; top: 0.45rem; bottom: 0.05rem;overflow: scroll;background: #ffffff}
 .BtmTit{margin-top: 15px;position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.16rem; color: #2698d6;}
 .BtmTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
-.BtmTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 80%; height: 0.01rem; content: ''; background: #e5e5e5;}
+/* .BtmTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 40%; height: 0.01rem; content: ''; background: #e5e5e5;} */
 .checkDetail{float:right;color:#2698d6;margin-right:0.2rem}
 .punchReportFormView>>>.norecord{text-align: center;margin-top: 0.3rem;color: #999999}
 

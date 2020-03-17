@@ -3,7 +3,7 @@
         <div class="monthContent">
             <el-date-picker type="month" placeholder="请选择日期" v-model="date" style="width: 80%;" value-format="yyyy-MM" @change="noKeyword"></el-date-picker>
             <ul class="ul_AttenView" @click="getMonthTypeDetail($event)" v-if="monthDetailArr.length!=0">
-                <li class="li_AttenView" v-for="item in monthDetailArr" :key="item.projectId" :data-id='item.projectId'>
+                <li class="li_AttenView" v-for="item in monthDetailArr" :key="item.id" :data-id='item.projectId'>
                     <template>
                         <span :data-id='item.projectId' v-if="item.leaveType==0">未补考勤</span>
                         <span :data-id='item.projectId' v-else>{{leaveType[item.leaveType]}}</span>

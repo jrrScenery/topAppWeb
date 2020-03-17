@@ -237,6 +237,7 @@ export default {
         console.log(res.data);
         this.caseData = res.data;
         this.eventTitleTotal = res.total;
+        console.log("GetFocusCase",res.data);
       });
       fetch.get("?action=GetFocusProject&PAGE_NUM=1&PAGE_TOTAL=3",{}).then(res=>{
         console.log("GetFocusProject:",res)

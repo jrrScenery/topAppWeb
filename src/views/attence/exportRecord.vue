@@ -2,9 +2,6 @@
   <div class="exportRecordView">
     <header-last :title="exportRecordTit"></header-last>
     <div style="height:0.45rem"></div>
-    <!-- <div style="background:white">
-      <img src="../../assets/images/export.png" class="img" @click="centerDialogVisible = true" />
-    </div> -->
     <div style="text-align:center;margin-top:0.1rem" v-for="items in obj" :key="items.id" >
           <div v-if="items.arr.length!=0">
               <ul class="ul_workBench">
@@ -43,6 +40,17 @@
             value-format="yyyy-MM"
           ></el-date-picker>
         </el-form-item>
+        <!-- <el-form-item label="日期类型" :label-width="formLabelWidth">
+          <el-select v-model="form.dateType" placeholder="请选择日期类型" clearable>
+            <el-option
+              v-for="item in dateTypeArr"
+              :key="item.id"
+              :label="item.name"
+              :value="item.type"
+              style="max-width: 300px">
+            </el-option>
+          </el-select>
+        </el-form-item> -->
         <el-form-item label="类型" :label-width="formLabelWidth">
           <el-radio-group v-model="form.radio">
             <el-radio :label="1">考勤汇总</el-radio>
@@ -75,6 +83,7 @@ export default {
         email: "",
         project: "",
         date: "",
+        dateType:'',
         radio: 1
       },
       pickerOptions0: {
@@ -82,8 +91,12 @@ export default {
           return time.getTime() > Date.now();
         }
       },
-      formLabelWidth: "0.5rem",
+      formLabelWidth: "0.8rem",
       projectArr:[],
+      dateTypeArr:[
+        {id:0,name:'工作日',type:"g"},
+        {id:1,name:'自然日',type:'z'},
+      ],
       obj:[
         {arr:[]},
       ]
@@ -163,6 +176,7 @@ export default {
               params.email = this.form.email;
               params.projectId = this.form.project;
               params.month = this.form.date;
+              // params.dateType = this.form.dateType;
               params.type = this.form.radio;
               fetch
                 .questionPost("?action=/attendance/exportExl", params)
@@ -177,6 +191,7 @@ export default {
                       duration: 1000,
                       customClass: "msgdefine"
                     });
+                    this.centerDialogVisible=false
                   } else {
                     this.$message({
                       message: res.MESSAGE + "发生错误",
@@ -208,13 +223,8 @@ export default {
 .exportRecordView .ul_workBench .li_workBench{display: flex; flex-direction: column; align-content: space-around; justify-content: space-around; width: 33%; height: 0.55rem; text-align: center;}
 .exportRecordView .ul_workBench .li_workBench:nth-child(n+5){margin-top: 0.15rem;}
 .ul_workBench img{ width: 0.3rem; height: 0.3rem; margin: auto;}
-.demo-ruleForm {
-  margin: 0 0;
-}
-.fy {
-  text-align: center;
-  margin-top: 0.1rem;
-}
+.demo-ruleForm {margin: 0 0;}
+.fy {text-align: center;margin-top: 0.1rem;}
 .export {
   background-color: #2698d6;
   color: white;
@@ -225,29 +235,19 @@ export default {
   float: right;
   margin-right: 0.2rem;
 }
-.exportRecordView >>> .el-dialog {
-  width: 90%;
-}
-.exportRecordView >>> .el-radio-group {
-  line-height: 0.2rem;
-}
-.exportRecordView >>> .el-date-editor.el-input,
-.el-date-editor.el-input__inner {
-  width: 100%;
-}
+.exportRecordView >>> .el-dialog {width: 90%;}
+.exportRecordView >>> .el-radio-group {line-height: 0.2rem;}
+.exportRecordView >>> .el-date-editor.el-input,.el-date-editor.el-input__inner {width: 100%;}
 .exportRecordView >>> .img {
   width: 0.5rem;
   height: 0.6rem;
   margin-left: 0.2rem;
   margin-top: 0.2rem;
 }
-.exportRecordView .el-radio + .el-radio {
-  margin-left: 0;
-}
-.exportRecordView .el-radio-group {
-  padding-top: 0.1rem;
-}
+.exportRecordView .el-radio + .el-radio {margin-left: 0;}
+.exportRecordView .el-radio-group {padding-top: 0.1rem;}
 .exportRecordView .el-select-dropdown__wrap{max-width: 200px}
+.exportRecordView .el-dialog .el-form-item{margin-bottom: 0.08rem}
 </style>
 <style>
 .exportRecordView .el-dialog__body{padding: 0.1rem 0.05rem}

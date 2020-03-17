@@ -174,11 +174,11 @@ export default {
                 this.obj[0].arr[1]={imgSrc: require('@/assets/images/punchRecord.png'), text: '打卡记录', href: 'punchCardRecord',display:true};
                 this.obj[0].arr[2] = {imgSrc: require('@/assets/images/audit.png'), text: '审批', href: 'audit',display:true};
                 this.obj[1].arr[0] = {imgSrc: require('@/assets/images/attendetail.png'), text: '员工考勤明细', href: 'punchReportForm',display:true};//checkAttenDetail
-                this.obj[1].arr[1] = {imgSrc: require('@/assets/images/askforleave.png'), text: '请假申请', href: 'askForLeave',display:true};
-                this.obj[1].arr[2] = {imgSrc: require('@/assets/images/holiday.png'), text: '查看年假调休假', href: 'holiday',display:true};
-                this.obj[2].arr[0] = {imgSrc: require('@/assets/images/mine.png'), text: '我的', href: 'mineAudit',display:true};
+                // this.obj[1].arr[1] = {imgSrc: require('@/assets/images/askforleave.png'), text: '请假申请', href: 'askForLeave',display:true};
+                // this.obj[1].arr[2] = {imgSrc: require('@/assets/images/holiday.png'), text: '查看年假调休假', href: 'holiday',display:true};
+                // this.obj[2].arr[0] = {imgSrc: require('@/assets/images/mine.png'), text: '我的', href: 'mineAudit',display:true};
                 if(this.isExport){
-                    this.obj[2].arr[1] = {imgSrc: require('@/assets/images/exportTitle.png'), text: '导出报表', href: 'exportRecord',display:true};
+                    this.obj[1].arr[1] = {imgSrc: require('@/assets/images/exportTitle.png'), text: '导出报表', href: 'exportRecord',display:true};
                 }
             }
         },

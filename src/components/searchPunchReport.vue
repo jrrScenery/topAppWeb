@@ -11,14 +11,14 @@
                     <el-option v-for="item in projectGroupArr" :label="item.DICTNAME" :value="item.DICTID" :key="item.DICTID"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="项目名称">
-                <el-input v-model="form.prjName" class="bInput"></el-input>
+            <el-form-item label="项目名称" class="bInput">
+                <el-input v-model="form.prjName" clearable></el-input>
             </el-form-item>
-            <el-form-item label="员工姓名">
-                <el-input v-model="form.staffName" class="bInput"></el-input>
+            <el-form-item label="员工姓名" class="bInput">
+                <el-input v-model="form.staffName" clearable></el-input>
             </el-form-item>
-            <el-form-item label="ITCode">
-                <el-input v-model="form.itcode" class="bInput"></el-input>
+            <el-form-item label="ITCode" class="bInput">
+                <el-input v-model="form.itcode" clearable></el-input>
             </el-form-item>
             <el-form-item label="时间">
                 <el-date-picker type="date" placeholder="请选择日期" v-model="form.date" style="width: 80%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
@@ -90,7 +90,7 @@ export default {
                 popBg:false
             }
             if(form.staffName!=""||form.itcode!=''){
-                this.$router.push({name:'attenHistory',query:{staffName:form.staffName,dateStr:form.date}})
+                this.$router.push({name:'attenHistory',query:{staffName:form.staffName,dateStr:form.date,itcode:form.itcode}})
             }else{
                 this.$emit('search',form);
                 this.$emit('change',data);
@@ -108,7 +108,7 @@ export default {
   .searchpunchReportView >>> .el-select{width: 90%;}
   .searchpunchReportView >>> .el-select .el-input__inner:focus{border-color: #dcdfe6;}
   .searchpunchReportView >>> .el-form-item__label{text-align: left; color: #999999; font-size: 0.13rem;}
-  .searchpunchReportView >>> .bInput .el-input__inner{width: 90%;}
+  .searchpunchReportView >>> .bInput .el-input{width: 90%;}
   .searchpunchReportView >>> .bInput .el-input__inner:focus{border-color: #dcdfe6;}
   .searchpunchReportView >>> .el-select-dropdown__item.selected{color: #2698d6;}
   .searchpunchReportView >>> .el-select-dropdown__item span{color: #2698d6!important;}

@@ -55,43 +55,7 @@ export default {
     },
     data(){
         return{
-            singleInfos:[
-            //   {
-            //       absMinute:null,
-            //       approver:10004,
-            //       beginTime:null,
-            //       empid:1080833,
-            //       endTime:null,
-            //       ids:'147',
-            //       leaveType:null,
-            //       loaType:2,
-            //       month:'2019-12',
-            //       processId:102,
-            //       processStatus:1,
-            //       projectCode:"RVJAGZSTWS",
-            //       projectName:'金税三期身份认证售后服务项目',
-            //       realname:'覃远明',
-            //       reason:null,
-            //       submitOn:'2020-01-13 17:52:44'
-            //   },{
-            //       absMinute:null,
-            //       approver:10004,
-            //       beginTime:'2020-01-16 17:00:00',
-            //       empid:1080833,
-            //       endTime:"2020-01-16 18:00:00",
-            //       ids:null,
-            //       leaveType:2,
-            //       loaType:0,
-            //       month:null,
-            //       processId:203,
-            //       processStatus:1,
-            //       projectCode:'RVJAGZSTWS',
-            //       projectName:'金税三期身份认证售后服务项目',
-            //       realname:'覃远明',
-            //       reason:'bbbbbbbbb',
-            //       submitOn:'2020-01-16 16:54:52'
-            //   }
-            ],
+            singleInfos:[],
             loaType:[],//loaType（分类）: 0 : 请假 1 : 加班 2 : 考勤 3 : 报派工 4 ：批量加班
             leaveType:[],
             processStatus:[],

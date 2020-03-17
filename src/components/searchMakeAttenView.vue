@@ -60,7 +60,7 @@ export default {
         this.form.month = date.getFullYear()+"-"+currentMonth;
         let current = date.getFullYear()+"-"+currentMonth;
         let last = year+"-"+lastMonth;
-        this.monthArr = [{id:0,value:current},{id:0,value:last}]
+        this.monthArr = [{id:0,value:current},{id:1,value:last}]
     },
     methods:{
         onCancel () {

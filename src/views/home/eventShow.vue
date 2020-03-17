@@ -147,6 +147,7 @@ export default {
 
   },
   created:function(){
+    console.log("sssssssss",this.caseId);
     let userRole = JSON.parse(localStorage.getItem("userRole"));
     this.orgType = localStorage.getItem("orgType");
     for(let i =0;i<userRole.length;i++){
@@ -156,7 +157,7 @@ export default {
     }
     console.log("userRole",userRole);
     fetch.get("?action=GetCaseInfo&CASE_ID="+this.$route.query.caseId,{}).then(res=>{
-      console.log(res.data);
+      console.log("111111111",res.data);
       let baseInfo = res.data;
       this.projectId = baseInfo.PROJECT_ID ;
       this.slaLevel = baseInfo.SLA_LEVEL;

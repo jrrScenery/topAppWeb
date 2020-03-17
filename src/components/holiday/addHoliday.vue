@@ -5,11 +5,11 @@
         <ul class="ul_mineView" v-for="item in addList" :key="item.id">
           <li class="li_mineView">
             <template>
-              <div style="width:100%;padding-top:0.1rem;padding-left:0.2rem;padding-bottom:0.07rem;">{{item.date}}</div>
-              <span style="padding-left:0.2rem;color:#2698D6">{{name}}</span>
-              <span>{{text}}</span>
+              <div style="width:100%;padding-top:0.1rem;padding-left:0.2rem;padding-bottom:0.07rem;">{{item.OP_TIME}}</div>
+              <span style="padding-left:0.2rem;">{{item.DESCRIB}}</span>
+              <!-- <span>{{text}}</span>
               <span style="color:#2698D6">{{item.days}}</span>
-              <span>{{text1}}</span>
+              <span>{{text1}}</span> -->
             </template>
           </li>
         </ul>
@@ -31,30 +31,40 @@ export default {
     return {
       name:this.$route.query.name,
       id:this.$route.query.id,
+      staffId:this.$route.query.staffId,
       text:"",
       text1:"天",
-      addList: [
-        {
-          date: "2019-10-12",
-          days: "7.250"
-        },
-        {
-          date: "2020-01-01",
-          days: "1.875"
-        }
-      ]
+      addList: []
     };
   },
   created() {
-    if(this.id=='0'){
+    if(this.id=='1'){
       this.text='年假增加';
     }else{
-      if(this.id=='1'){
+      if(this.id=='0'){
         this.text='调休假增加';
       }
     }
+    this.queryAnnualLeaveDetail();
   },
-  methods: {}
+  methods: {
+    queryAnnualLeaveDetail(){
+      fetch.get("?action=/attendance/queryAnnualLeaveDetail&type="+this.id+"&staffId="+this.staffId).then(res=>{
+        console.log("queryAnnualLeaveDetail",res);
+        if(res.STATUSCODE=='1'){
+          this.addList = res.add
+        }else{
+          this.$message({
+              message:res.MESSAGE,
+              type: 'error',
+              center: true,
+              duration:2000,
+              customClass: 'msgdefine'
+          })
+        }
+      })
+    }
+  }
 };
 </script>
 <style scoped>

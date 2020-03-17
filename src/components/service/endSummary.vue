@@ -42,7 +42,7 @@
                         <el-form-item v-if="serviceType==2" label="服务类型">
                             <el-col :span="15">
                                 <el-select clearable placeholder="请选择服务类型" v-model="formData.serviceType" style="width:100%">
-                                    <el-option v-for="item in serviceTypeArr" :label="item.DICTNAME" :value="item.DICTID" :key="item.value">
+                                    <el-option v-for="item in serviceTypeArr" :label="item.DICTNAME" :value="item.DICTID" :key="item.id">
                                 </el-option>
                                 </el-select>
                             </el-col>
@@ -111,7 +111,7 @@
                             <el-select v-model="customerForm.empname" filterable allow-create placeholder="请选择" @change="npmNameChange()">
                                 <el-option 
                                     v-for="item in customerList" 
-                                    :key="item.empid"
+                                    :key="item.id"
                                     :label="item.empname"
                                     :value="item.empname">
                                 </el-option>
@@ -164,7 +164,7 @@
                         <el-select v-model="customerForm.empname" filterable allow-create placeholder="请选择" @change="npmNameChange()">
                             <el-option 
                                 v-for="item in customerList" 
-                                :key="item.empid"
+                                :key="item.id"
                                 :label="item.empname"
                                 :value="item.empname">
                             </el-option>
@@ -303,7 +303,7 @@ export default {
         getEndSummary(){
             if(this.serviceType==2){
                 fetch.get("?action=/work/GetOnsiteServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
-                    // console.log("GetOnsiteServiceFormInfo",res);
+                    console.log("GetOnsiteServiceFormInfo",res);
                     this.formData.userAndPrjItem = res.DATA[0];
                     this.workResultInfo = res.DATA[0].workResult;
                     this.ifSendEvaluate = res.DATA[0].ifSendEvaluate;

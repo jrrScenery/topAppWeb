@@ -28,80 +28,12 @@
         </ul>
       </div>
     </div>
-
-    <div class="homeWarn">
-      <el-dialog
-          top="5%"
-          width="100%"
-          :visible.sync="homeWarnFlag"
-          :show-close="false"
-          :fullscreen="true"
-          center>
-          <el-form class="form1">
-          <div>
-            <div class="warnTextView">
-                <li>每一次严谨，都是风险的消逝！</li>
-                <li>风险事故猛于虎！请！立刻！马上！谨慎起来！</li>
-            </div>
-            <div class="imgView">
-                <div class="imgViewCol"><img src="../../assets/images/warn.jpg" alt=""></div>
-                <div class="imgViewCol"><img src="../../assets/images/prepare.jpg" alt=""></div>
-                <div class="imgViewCol"><img src="../../assets/images/warnLogo.jpg" alt=""></div>           
-            </div>
-            <div class="itemsView">
-                <div class='itemView'>评估能力</div>
-                <div class='itemView'>了解环境</div>
-                <div class='itemView'>分析关联</div>
-                <div class='itemView'>评估风险</div>
-                <div class='itemView'>重大变更</div>
-                <div class='itemView'>书面确认</div>
-                <div class='itemView'>数据重要</div>
-                <div class='itemView'>备份核实</div>
-            </div>
-            <div style="text-indent: 2em;padding:0.1rem;color:#B22222">如果这道题你都答不出来，赶紧连线你的部门经理手把手教你操作。</div>
-            <div style="text-indent: 2em;padding:0.1rem">{{question}}</div>
-            <el-form-item prop="options" class="radioView">
-                <el-checkbox-group 
-                    v-model="form.radioItem" 
-                    :min="0"
-                    :max="4"
-                    v-for="item in options" 
-                    :key="item.OPTION_ID">
-                    <el-checkbox :label="item.OPTION_ID"><div class="optionTextView">{{item.OPTION_NAME}}</div></el-checkbox>
-                </el-checkbox-group>
-            </el-form-item>
-          </div>
-          <el-form-item  class="submit">
-              <el-button type="primary"  class="onsubmit"  @click="onSubmit('form')">提 交</el-button>
-          </el-form-item>
-          </el-form>
-      </el-dialog>
-    </div>
-    <!-- 打卡不再范围时询问框 -->
-    <div class="dialogdc">
-      <el-dialog
-        title="提示"
-        :visible.sync="warnVisible"
-        :show-close="false"
-        width="80%"
-        center>
-        <el-form>
-          <div style="margin:0.2rem">
-            <span>{{desc}}</span>
-          </div>
-          <el-form-item class="submit">
-            <el-button @click="warnVisible = false" >取 消</el-button>
-            <el-button type="primary" class="onsubmit" @click="confirm()">确 定</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
-    </div>
   </div>
 </template>
 
 <script>
 import fetch from '../../utils/ajax'
-import LocationSdk from "@/utils/wxUtils"
+import Location from "@/utils/getRefreshLocation"
 import BMap from 'BMap'
 export default {
   name: 'workBench',
@@ -125,21 +57,17 @@ export default {
         {arr: []}
       ],
       location:[],
-      differDistance:null,
       latitude:'',
       longitude:'',
-      form:{
-          radioItem:[]
-      },
-      homeWarnFlag:false,
-      questionObj:{},
-      question:"",
-      options:[],
-      warnVisible:false,
-      zcInfo:null,  //驻场为空信息
-      desc:"您当前不在驻场区域，无法进行打卡，是否进行情况说明？",
-      isInPunchTime:false
     }
+  },
+  mounted() {
+    let _this = this; // 定时器
+    console.log("111111111111111111")
+    this.getLocation();
+    this.timer = setInterval(function() {
+      _this.address = _this.getLocation(); // =>获取位置的方法
+    }, 1000*60*60);
   },
   activated(){
     console.log("000000000000");
@@ -150,10 +78,6 @@ export default {
         {arr: []}
     ];
     this.getWorkBenchObj();  
-    if(this.$route.query.homeWarnFlag){
-      this.homeWarnFlag = this.$route.query.homeWarnFlag;
-      this.getQuestion();
-    }
   },
   created(){
     console.log("000000000000");
@@ -218,240 +142,43 @@ export default {
         }
       }
     },
-    punchCard(){
-      console.log("00000000");
-      this.form={
-          radioItem:[]
-      };
-      var vm = this;
-      this.getLocation();
-    },
-    getZcLocationInfo:function(){
-      fetch.get("?action=/system/getProAttendanceAddress",{}).then(res=>{
-        console.log("getProAttendanceAddress:",res);
-        if(res.STATUSCODE=='1'){
-          let location = res.data;
-          this.location = location;
-        }else{
-          this.$message({
-              message:res.MESSAGE+"发生错误",
-              type: 'error',
-              center: true,
-              duration:1000,
-              customClass: 'msgdefine'
-          });
-        }
-      })
-    },
-    getLocation:function(){
-      const loading = this.$loading({
-        lock: true,
-        text: '正在获取位置信息...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(255, 255, 255, 0.3)'
-      });
+    getLocation: function(type) {
       var self = this;
-      self.getZcLocationInfo();
-      function success(res){
-        console.log("res",res);
-        var lat = res.latitude;//gps经纬度
-        var lng = res.longitude;
-        setTimeout(function () {
-          self.gpsPoint = new BMap.Point(lng,lat);
-          var convertor = new BMap.Convertor();
-          var pointArr = [];
-              pointArr.push(self.gpsPoint);
-          convertor.translate(pointArr, 1,5, function (point) {  
-            self.latitude = point.points[0].lat;
-            self.longitude = point.points[0].lng;
-            self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
-            if(self.location.length==0){
-              self.zcInfo = '驻场地址为空，请填写说明并维护地址';
-              self.desc = "您的驻场地址为空，无法进行打卡，是否进行情况说明？";
-              self.warnVisible = true;  
-            }else{
-              for(let i=0;i<self.location.length;i++){
-                if(self.location[i].LATITUDE!=null&&self.location[i].LONGITUDE!=null){
-                  self.getDistance(self.location[i]);
-                }
-              }
+      self.type = type;
+      let ua = navigator.userAgent.toLowerCase();
+      console.log("ua", ua);
+      if (/(Android)/i.test(ua)) {
+        console.log(typeof android);
+        if (typeof android != "undefined") {
+          if (typeof android.bdLocation == "function") {
+            let location = android.bdLocation();
+            if (JSON.stringify(location) != "{}") {
+              let locationArr = location.split(",");
+              self.latitude = locationArr[0];
+              self.longitude = locationArr[1];
+            } else {
+              Location.getLocation(this.success);
             }
-            if(self.differDistance&&self.differDistance<=self.distance/1000){
-              let isInPunchTime = self.differTime(self.amStartTime,self.pmEndTime);
-              if(isInPunchTime){
-                self.postPunchInfo();
-              }
-            }else{
-              self.warnVisible = true;      
-            }
-            var geoc = new BMap.Geocoder(); 
-            geoc.getLocation(self.pointA, function(rs){
-              if(rs.surroundingPois.length!=0){
-                self.address = rs.surroundingPois[0].address+rs.surroundingPois[0].title;             
-              }else{
-                self.address = rs.address+rs.business;  
-              }
-            })  
-          });
-        },1000)
+          } else {
+            Location.getLocation(this.success);
+          }
+        } else {
+          console.log("222222222222");
+          Location.getLocation(this.success);
+        }
+      } else {
+        Location.getLocation(this.success);
       }
-      LocationSdk.getLocation(self,success,loading)
     },
-    // 测量百度地图两个点间的距离
-   getDistance:function (location) {
-     let latitude = location.LATITUDE;
-     let longitude = location.LONGITUDE;
-     let addressId = location.ADDRESS_ID;
-     var map = new BMap.Map('')
-     var pointB = new BMap.Point(parseFloat(longitude), parseFloat(latitude))  // 店铺的经纬度
-     var distance = (map.getDistance(this.pointA, pointB) / 1000).toFixed(2) // 保留小数点后两位
-     if(this.differDistance!=null){
-       if(distance<this.differDistance){
-         this.differDistance = distance;
-         this.addressId = addressId;
-         this.amStartTime = location.amStartTime;
-         this.pmEndTime = location.pmEndTime;
-       }
-     }else{
-       this.differDistance = distance;
-       this.addressId = addressId;
-       this.distance = location.distance;
-       this.amStartTime = location.amStartTime;
-       this.pmEndTime = location.pmEndTime;
-     }
-   },
-    //工程师操作时间差计算
-    differTime:function(startTime,endTime){
-      let strstart = startTime.split(":");
-      let strend = endTime.split(":");
-      let amDate = new Date();
-      let bmDate = new Date();
-      let c = new Date();
-      amDate.setHours(strstart[0]);
-      amDate.setMinutes(strstart[1]);
-      amDate.setSeconds('00');
-      bmDate.setHours(strend[0]);
-      bmDate.setMinutes(strend[1]);
-      bmDate.setSeconds('00');
-      let befoream = new Date(amDate.getTime()-3*60*60*1000);
-      let afterpm = new Date(bmDate.getTime()+3*60*60*1000);
-      let amdiffer1 = c.getTime()-befoream.getTime();
-      let amdiffer2 = amDate.getTime()-c.getTime();
-      let pmdiffer1 = c.getTime()-bmDate.getTime();
-      let pmdiffer2 = afterpm.getTime()-c.getTime();
-      if((amdiffer1>0&&amdiffer2>0)||(pmdiffer1>0&&pmdiffer2>0)){ 
-        return true
-      }else{
-        this.zcInfo = '当前不在打卡时间范围内，请填写说明';
-        this.desc = "当前不在打卡时间范围内，无法进行打卡，是否进行情况说明？";
-        this.warnVisible = true;  
-      }
-    },
-   confirm(){
-     this.warnVisible=false;
-     this.$router.push({name:'punchFailShow',query:{lat:this.latitude,lng:this.longitude,address:this.address,zcInfo:this.zcInfo}})
-   },
-   getQuestion(){
-     fetch.get("?action=/risk/getQuestion",{}).then(res=>{
-      console.log("queryQuestion",res);
-      if(res.STATUSCODE=='1'){ 
-        this.question = res.data.QUESTION;
-        this.options = res.data.options;
-        this.questionObj = res.data;
-      }else{
-        this.$message({
-          message:res.MESSAGE+"发生错误",
-          type: 'error',
-          center: true,
-          customClass: 'msgdefine'
-        });
-      }
-    })
-   },
-    postPunchInfo(){
-      let param = {latitude:this.latitude,longitude:this.longitude,address:this.address,addressId:this.addressId,flg:1};
-      fetch.get("?action=/risk/savePosition",param).then(res=>{
-        console.log("savePosition",res);
-        // loading.close();
-        if(res.STATUSCODE=="1"){
-          this.homeWarnFlag = true;
-          this.getQuestion();
-        }else{
-          this.$message({
-            message:'打卡失败',
-            type: 'error',
-            center: true,
-            customClass:'msgdefine'
-          });
-        }
-      })
-    },
-    onSubmit(formName){
-      let vm= this;
-      if(vm.form.radioItem.length==0){
-          this.$message({
-              message:'请选择答案',
-              type: 'error',
-              center: true,
-              duration:2000,
-              customClass: 'msgdefine'
-          })
-      }else{
-        let ifAnswerTrue = 1;
-        let rightAnwser = 0;
-        let answerIds = '';
-        for(let i = 0;i<vm.options.length;i++){
-            if(vm.options[i].IF_TRUE=="1"){
-                rightAnwser = rightAnwser+1;
-            }
-        }
-        for(let i = 0;i<vm.form.radioItem.length;i++){
-            vm.selectAnwser = vm.form.radioItem.length;
-            if(i==vm.form.radioItem.length-1){
-                answerIds+=vm.form.radioItem[i]
-            }else{
-                answerIds+=vm.form.radioItem[i]+","
-            }
-        }
-        for(let i = 0;i<vm.form.radioItem.length;i++){
-            for(let j =0;j<vm.options.length;j++){
-                if(vm.form.radioItem[i] == this.options[j].OPTION_ID){
-                    if(vm.options[j].IF_TRUE!="1"||(rightAnwser!=vm.selectAnwser)){
-                        ifAnswerTrue = 0;
-                    }
-                }
-            }
-        }
-        let data = {};
-        data.excuteType = vm.questionObj.EXCUTE_TYPE;
-        data.questionId = vm.questionObj.QUESTION_ID;
-        data.answerIds = answerIds;
-        data.ifAnswerTrue = ifAnswerTrue;
-        var params = new URLSearchParams();
-        params.append("data",JSON.stringify(data));
-        console.log("params",params);
-        fetch.post("?action=/risk/saveAnswer",params).then(res=>{
-            console.log("saveAnswer",res);
-            if(res.STATUSCODE=='1'){
-                this.$message({
-                  message:'打卡成功',
-                  type: 'success',
-                  center: true,
-                  duration:1000,
-                  customClass:'msgdefine'
-                });  
-                vm.homeWarnFlag = false;
-            }else{
-                this.$message({
-                    message:res.MESSAGE,
-                    type: 'error',
-                    center: true,
-                    duration:2000,
-                    customClass: 'msgdefine'
-                })
-            }
-        })
-      }
+    success: function(res) {
+      let self = this;
+      var lat = res.latitude; //gps经纬度或者高德经纬度
+      var lng = res.longitude;
+      let params = "&longitude="+lng+"&latitude=" +lat;
+      console.log("看一下参数嗷嗷："+params) 
+      fetch.get("?action=/workerposition/saveWorkerPosition", params).then(res => {
+        console.log("传参数啊啊啊啊", res);
+      });
     },
   },
 
