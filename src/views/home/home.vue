@@ -63,14 +63,12 @@ export default {
   },
   mounted() {
     let _this = this; // 定时器
-    console.log("111111111111111111")
     this.getLocation();
     this.timer = setInterval(function() {
       _this.address = _this.getLocation(); // =>获取位置的方法
     }, 1000*60*60);
   },
   activated(){
-    console.log("000000000000");
     this.workBenchObj = [
         {arr: []},
         {arr: []},
@@ -80,7 +78,6 @@ export default {
     this.getWorkBenchObj();  
   },
   created(){
-    console.log("000000000000");
     this.getWorkBenchObj();  
   },
   methods: {
@@ -88,7 +85,6 @@ export default {
       let permissions = JSON.parse(localStorage.getItem("userPermission"));
       var m=0;
       var n=0;
-      console.log("permissions",permissions);
       for(let i=0;i<permissions.length;i++){
         if(permissions[i].PRIVID=='workFlow_my_task'){
           m++;
@@ -146,9 +142,7 @@ export default {
       var self = this;
       self.type = type;
       let ua = navigator.userAgent.toLowerCase();
-      console.log("ua", ua);
       if (/(Android)/i.test(ua)) {
-        console.log(typeof android);
         if (typeof android != "undefined") {
           if (typeof android.bdLocation == "function") {
             let location = android.bdLocation();
@@ -163,7 +157,6 @@ export default {
             Location.getLocation(this.success);
           }
         } else {
-          console.log("222222222222");
           Location.getLocation(this.success);
         }
       } else {
@@ -175,9 +168,8 @@ export default {
       var lat = res.latitude; //gps经纬度或者高德经纬度
       var lng = res.longitude;
       let params = "&longitude="+lng+"&latitude=" +lat;
-      console.log("看一下参数嗷嗷："+params) 
       fetch.get("?action=/workerposition/saveWorkerPosition", params).then(res => {
-        console.log("传参数啊啊啊啊", res);
+        // console.log("传参数啊啊啊啊", res);
       });
     },
   },
@@ -222,7 +214,6 @@ export default {
   },
   
   deactivated(){
-    console.log('移除');
     window.onpopstate = null
   }
 }
