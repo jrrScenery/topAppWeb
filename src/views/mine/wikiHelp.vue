@@ -16,11 +16,12 @@
 import headerLast from "../header/headerLast";
 import fetch from '../../utils/ajax'
 import global_ from '../../components/Global'
-// import pdf from 'vue-pdf'
+import pdf from 'vue-pdf'
 export default {
     name:'wikiHelp',
     components:{
-        headerLast
+        headerLast,
+        pdf
     },
     data(){
         return{

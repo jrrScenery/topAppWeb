@@ -9,6 +9,14 @@
           </el-radio-group>
         </template>
       </el-form-item>
+      <el-form-item label="日期类型" style="position: relative" label-width="0.8rem">
+        <template>
+          <div style="position: absolute; top: 0.25rem; left: -0.65rem; color: #999999; font-size: 0.1rem"></div>
+          <el-radio-group v-model="form.dateType" size="small">
+            <el-radio-button v-for="item in dateType" :label="item.value" :key="item.id">{{item.name}}</el-radio-button>
+          </el-radio-group>
+        </template>
+      </el-form-item>
       <el-form-item label="查询月份" label-width="0.8rem">
         <el-date-picker type="month" v-model="form.month" clearable placeholder="请选择" style="width: 80%;" value-format="yyyy-MM">
         </el-date-picker>
@@ -29,11 +37,16 @@ export default {
     return {
       form: {
         wholeMonth: "",
-        month: ""
+        month: "",
+        dateType:''
       },
       Type: [
         { name: "全月", value: "0", id: 0 },
         { name: "缺勤", value: "1", id: 1 }
+      ],
+      dateType:[
+        {name:"工作日", value:1, id:1},
+        {name:"自然日", value:2, id:2}
       ],
       monthArr: [],
       startMonth:'',
@@ -44,6 +57,7 @@ export default {
     console.log("aaaaaaaaaaa");
     this.form.wholeMonth = this.queryData.wholeMonth;
     this.form.month = this.queryData.month;
+    this.form.dateType = this.queryData.dateType;
   },
   methods: {
     onCancel() {

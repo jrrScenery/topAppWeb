@@ -55,7 +55,7 @@
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <div v-if="scope.row.leaveType!==null">{{leaveTypeArr[leaveTypeList[scope.$index]][leaveTypeList[scope.$index]]}}</div>
+                                    <div v-if="scope.row.leaveType!==null">{{leaveType[leaveTypeList[scope.$index]]}}</div>
                                     <div>{{scope.row.absBeginTime}}-{{scope.row.absEndTime}}</div>
                                 </div>                               
                             </template>
@@ -143,6 +143,7 @@ export default {
                         {4:'年假'},{5:'婚假'},{6:'产假'},{7:'哺乳假'},
                         {8:'丧假'},{9:'产检假'},{10:'陪产假'},{11:'分包替岗'},
                         {12:'漏打卡'}],
+            leaveType:'',
             processStatus:[],//{0:"未提交"},{1:"审批中"},{2:"已审批"},{3:"修改"},{4:"关闭"}
             leaveTypeList:[],//各条记录选中请假类型值
             selectTimeList:[],//选择时间列表
@@ -304,6 +305,7 @@ export default {
             let date = currentDate.getDate();
             var currentDate1 = new Date((year + "/" + month + "/" + date).replace(/\-/g, "\/"));
             this.processStatus = transfrom.getLeaveType().processStatus;
+            this.leaveType = transfrom.getLeaveType().leaveType;
             let params ={wholeMonth:this.searchData.wholeMonth,month:this.searchData.month};
             if(this.isSearch){
                 params.month = this.searchData.month;
@@ -327,7 +329,12 @@ export default {
                     for(let i=0;i<res.data.length;i++){
                         if(res.data[i].leaveType!=null){
                             let myabsencereserve = transfrom.getLeaveType().myabsencereserve[res.data[i].leaveType];
-                            this.leaveTypeList[i] = myabsencereserve;
+                            if (res.data[i].processStatus == 3 || res.data[i].processStatus == 0){
+                                this.leaveTypeList[i] = myabsencereserve;
+                            }else{
+                                this.leaveTypeList[i] = res.data[i].leaveType;
+                            }
+                            // this.leaveTypeList[i] = myabsencereserve;
                         }else{
                             this.leaveTypeList[i] = null
                         }
@@ -353,7 +360,8 @@ export default {
                         this.caseFlag[i] = false; 
                         this.pmendtime = res.data[i].pmEndWorktime 
                     }
-                        console.log("addFlagList",this.addFlagList)    
+                        console.log("addFlagList",this.addFlagList) ;
+                        console.log("leaveTypeList",this.leaveTypeList);   
                 }else{
                     this.$message({
                         message:res.MESSAGE,
@@ -366,6 +374,7 @@ export default {
             })
         },
         selectChange(index, row){
+            console.log("index",index+":"+this.leaveTypeList);
             this.tableData[index].leaveType = this.leaveTypeList[index];
             if(this.tableData[index].leaveType===13){
                 this.caseFlag[index] = true

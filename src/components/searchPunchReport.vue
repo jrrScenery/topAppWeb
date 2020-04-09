@@ -14,14 +14,24 @@
             <el-form-item label="项目名称" class="bInput">
                 <el-input v-model="form.prjName" clearable></el-input>
             </el-form-item>
-            <el-form-item label="员工姓名" class="bInput">
+            <el-form-item label="员工姓名" class="bInput"> 
                 <el-input v-model="form.staffName" clearable></el-input>
             </el-form-item>
             <el-form-item label="ITCode" class="bInput">
                 <el-input v-model="form.itcode" clearable></el-input>
             </el-form-item>
-            <el-form-item label="时间">
-                <el-date-picker type="date" placeholder="请选择日期" v-model="form.date" style="width: 80%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
+            <el-form-item label="时间" label-width="0.8rem">
+                <el-col :span="9">
+                    <el-form-item prop="date">
+                        <el-date-picker type="date" size="mini" placeholder="请选择日期" v-model="form.date" style="width: 100%;" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
+                    </el-form-item>
+                </el-col>
+                <el-col class="line" :span="1">~</el-col>
+                <el-col :span="9">
+                    <el-form-item prop="date1">
+                        <el-date-picker type="date" size="mini" placeholder="请选择日期" v-model="form.date1" style="width: 100%;" :picker-options="pickerOptions" value-format="yyyy-MM-dd" @focus="noKeyword"></el-date-picker>
+                    </el-form-item>
+                </el-col>
             </el-form-item>
             <el-form-item class="submitBtn">
                 <el-button @click="onCancle">取消</el-button>
@@ -40,9 +50,15 @@ export default {
                 area:'',
                 projectGroup:'',
                 date:'',
+                date1:'',
                 prjName:'',
                 staffName:'',
                 itcode:''
+            },
+            pickerOptions: {
+                disabledDate: (time) => {
+                    return time.getTime() > Date.now();
+                }
             },
             areaArr:[],
             projectGroupArr:[]
@@ -56,6 +72,7 @@ export default {
         }
         this.form.projectGroup = this.queryData.projectGroup;
         this.form.date = this.queryData.date;
+        this.form.date1 = this.queryData.date1;
         this.form.prjName = this.queryData.prjName;
         this.form.staffName = this.queryData.staffName;
         this.form.itcode = this.queryData.itcode;
@@ -90,7 +107,7 @@ export default {
                 popBg:false
             }
             if(form.staffName!=""||form.itcode!=''){
-                this.$router.push({name:'attenHistory',query:{staffName:form.staffName,dateStr:form.date,itcode:form.itcode}})
+                this.$router.push({name:'attenHistory',query:{staffName:form.staffName,dateStr:form.date1,itcode:form.itcode}})
             }else{
                 this.$emit('search',form);
                 this.$emit('change',data);
@@ -118,4 +135,9 @@ export default {
   .searchpunchReportView >>> .submitBtn .searchBtnCell:hover{background: #2698d6;}
   .searchpunchReportView >>> .submitBtn .el-form-item__content{margin: 0!important; display: flex;}
   .searchpunchReportView >>> .submitBtn .searchBtnCell{background: #2698d6; color: #ffffff;}
+  /* .searchpunchReportView >>> .el-col{text-align: left;font-size: 0.13rem}
+  .searchpunchReportView >>> .el-col-1{text-align: center; line-height: 0.4rem} */
+  .searchpunchReportView >>> .el-form .line{text-align: center; line-height: 0.3rem}
+  .searchpunchReportView >>> .el-input__icon{display: none}
+  .searchpunchReportView >>> .el-date-editor .el-input__inner{padding: 0 0;text-align: center;}
 </style>

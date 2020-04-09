@@ -43,6 +43,9 @@
               placeholder="选择时间"
               format="HH:mm"
               value-format="HH:mm"
+              :picker-options="{
+                selectableRange
+              }"
               v-model="ruleForm.startTime"
               style="width:90%"
             ></el-time-picker>
@@ -69,6 +72,9 @@
               placeholder="选择时间"
               format="HH:mm"
               value-format="HH:mm"
+              :picker-options="{
+                selectableRange
+              }"
               v-model="ruleForm.endTime"
               style="width:90%"
             ></el-time-picker>
@@ -138,18 +144,20 @@ export default {
           }
         }
       },
+      selectableRange:'',
       options: [
         {value: 0,label: "请选择"},
-        {value: 1,label: "调休"},
-        {value: 2,label: "病假"},
-        {value: 3,label: "事假"},
-        {value: 4,label: "年假"},
-        {value: 5,label: "婚假"},
-        {value: 6,label: "产假"},
-        {value: 7,label: "哺乳假"},
-        {value: 8,label: "丧假"},
-        {value: 9,label: "产检假"},
-        {value: 10,label: "陪产假"}
+        {value: 1,label: "因公"},
+        {value: 2,label: "调休"},
+        {value: 3,label: "病假"},
+        {value: 4,label: "事假"},
+        {value: 5,label: "年假"},
+        {value: 6,label: "婚假"},
+        {value: 7,label: "产假"},
+        {value: 8,label: "哺乳假"},
+        {value: 9,label: "丧假"},
+        {value: 10,label: "产检假"},
+        {value: 11,label: "陪产假"}
       ],
       projectArr: [],
       uploadres: require("../../assets/images/takephoto.png")
@@ -169,8 +177,11 @@ export default {
       if (res.STATUSCODE == "1") {
         this.projectArr = res.data;
         if(res.data.length!=0){
+          this.ruleForm.name = res.data[0].PROJECT_ID;
           this.ruleForm.startTime=res.data[0].START_TIME;
           this.ruleForm.endTime=res.data[0].END_TIME;
+          this.selectableRange = res.data[0].START_TIME+":00-"+res.data[0].END_TIME+":00"
+          console.log("00000000",this.selectableRange);
         }
       } else {
         this.$message({
@@ -188,6 +199,7 @@ export default {
   },
   methods: {
     submitForm(formName) {
+      let self = this;
       if (this.ruleForm.name == "") {
         this.$message({
           message: "请选择项目编号",
@@ -273,7 +285,8 @@ export default {
                     spinner: "el-icon-loading",
                     background: "rgba(255, 255, 255, 0.3)"
                   });
-                  console.log(this.ruleForm);
+                  console.log("pppppppppppp",this.ruleForm);
+                  console.log("000000000",this.ruleForm.region);
                   let dataJson = {};
                   dataJson.projectId = this.ruleForm.name;
                   dataJson.beginTime = this.ruleForm.startDate;
@@ -285,8 +298,7 @@ export default {
                   dataJson.file = this.ruleForm.docId;
                   let data = {};
                   data.data = JSON.stringify(dataJson);
-                  fetch
-                    .questionPost("?action=/attendance/submitLeave", data)
+                  fetch.questionPost("?action=/attendance/submitLeave", data)
                     .then(res => {
                       console.log("res", res);
                       loading.close();

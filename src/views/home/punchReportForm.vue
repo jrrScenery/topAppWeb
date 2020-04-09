@@ -5,11 +5,11 @@
         <div class="echarsPunchView" v-if="isVisiable">
             <!-- <div class="norecord" style="color:blue">{{searchData.date}}</div> -->
             <div class="chartPunchOne">
-                <div class="BtmTit">{{chartOneTit}}  {{searchData.date}}</div>
+                <div class="BtmTit">{{chartOneTit}}  {{searchData.date}}~{{searchData.date1}}</div>
                 <div id="myChartOne" :style="{width: '100%', height: '2rem'}"></div>
             </div> 
             <div class="chartPunchTwo">               
-                <div class="BtmTit">{{chartTwoTit}}  {{searchData.date}}</div>
+                <div class="BtmTit">{{chartTwoTit}}  {{searchData.date}}~{{searchData.date1}}</div>
                 <router-link :to="{name:'checkAttenDetail',query:{searchData:this.searchData}}">
                     <div class="checkDetail">查看详情</div>
                 </router-link>
@@ -37,6 +37,7 @@ export default {
                 area:'',
                 projectGroup:'',
                 date:'',
+                date1:'',
                 prjName:'',
                 staffName:'',
                 itcode:''
@@ -48,7 +49,8 @@ export default {
         }
     },
     created(){
-        this.searchData.date = this.GetDateStr(-1);
+        this.searchData.date = this.GetDateStr(-30);
+        this.searchData.date1 = this.GetDateStr(-1);
         this.getChartData();
     },
     mounted(){},
@@ -171,6 +173,8 @@ export default {
         drawLineTwo(){
             // 初始化echarts实例
             let myChartTwo = this.$echarts.init(document.getElementById('myChartTwo'));
+            console.log("this.twoDataY",this.twoDataY);
+            console.log("this.twoDataX",this.twoDataX);
             myChartTwo.setOption({
                 grid: {
                     top: '2%',
@@ -191,7 +195,7 @@ export default {
                     name: this.twoDataX[1],
                     type: 'bar',
                     data: this.twoDataX[0],
-                    barWidth: 20,
+                    barWidth: 20,//设置柱状图宽度
                     itemStyle: {
                         normal:{
                             color: '#FF0000',
@@ -240,6 +244,7 @@ export default {
                 params.parentArea = this.searchData.area;
                 params.projectArea = this.searchData.projectGroup;
                 params.day = this.searchData.date;
+                params.day1 = this.searchData.date1;
                 params.prjName = this.searchData.prjName;
                 params.staffName = this.searchData.staffName;
                 params.itcode = this.searchData.itcode;
@@ -251,7 +256,7 @@ export default {
 </script>
 <style scoped>
 .echarsPunchView{width: 100%; position: absolute; top: 0.45rem; bottom: 0.05rem;overflow: scroll;background: #ffffff}
-.BtmTit{margin-top: 15px;position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.16rem; color: #2698d6;}
+.BtmTit{margin-top: 15px;position: relative; line-height: 0.35rem; margin-left: 0.15rem; font-size: 0.15rem; color: #2698d6;}
 .BtmTit::before{position: absolute; top: 0.1rem; left: -0.1rem; width: 0.05rem; height: 0.15rem; content: ''; background: #2698d6;}
 /* .BtmTit::after{position: absolute; bottom: 0.1rem; right: 0; width: 40%; height: 0.01rem; content: ''; background: #e5e5e5;} */
 .checkDetail{float:right;color:#2698d6;margin-right:0.2rem}

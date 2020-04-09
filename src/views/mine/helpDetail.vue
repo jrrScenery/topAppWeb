@@ -4,15 +4,26 @@
     <div style="height:0.45rem"></div>
     <div class="pdf" v-show="fileType === 'pdf'">
       <p class="arrow">
-        <el-button @click="changePdfPage(0)" class="turn" :class="{grey: currentPage==1}">上一页</el-button>
+        <el-button size="mini" @click="changePdfPage(0)" class="turn" :class="{grey: currentPage==1}">上一页</el-button>
         {{currentPage}} / {{pageCount}}
         <el-button
+          size="mini"
           @click="changePdfPage(1)"
           class="turn"
           :class="{grey: currentPage==pageCount}"
         >下一页</el-button>
+        <el-button size="mini" :class="{select:idx==0}"
+            @touchstart="idx=0"
+            @touchend="idx=-1"
+            @click="scaleD">放大
+        </el-button>
+        <el-button size="mini" :class="{select:idx==1}"
+            @touchstart="idx=1"
+            @touchend="idx=-1"
+            @click="scaleX">缩小
+        </el-button>
       </p>
-      <pdf
+      <pdf ref="pdf"
         :src="src"
         :page="currentPage"
         @num-pages="pageCount=$event"
@@ -38,6 +49,8 @@ export default {
       pageCount: 0, // pdf文件总页数
       fileType: "pdf", // 文件类型
       src: this.$route.params.value, // pdf文件地址
+      idx:-1,
+      scale: 100, //放大系数
     }
   },
   created() {
@@ -52,7 +65,20 @@ export default {
         this.currentPage++;
       }
     },
-
+    //放大
+    scaleD() {
+      this.scale += 5;
+      console.log(this.$refs.pdf);
+      this.$refs.pdf.$el.style.width = parseInt(this.scale) + "%";
+    },
+    //缩小
+    scaleX() {
+      if (this.scale == 100) {
+        return;
+      }
+      this.scale += -5;
+      this.$refs.pdf.$el.style.width = parseInt(this.scale) + "%";
+    },
     // pdf加载时
     loadPdfHandler(e) {
       this.currentPage = 1; // 加载的时候先加载第一页

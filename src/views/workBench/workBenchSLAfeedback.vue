@@ -807,7 +807,7 @@ export default {
       let params = "&url=http://wxjfb.dcits.com/home/onsiteServiceInfo&CASE_ID="+this.caseId+
             "&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType+
             "&evaluateId="+this.evaluateId+"&serviceType="+this.serviceType+
-            "&workId="+this.workId+"&userId="+this.customerForm.empId;
+            "&workId="+this.workId+"&userId="+this.customerForm.empId+"&docId="+this.formData.docId;
       fetch.get("?action=/system/getShortUrl"+params).then(res=>{
           console.log("getShortUrl",res);
           if(res.STATUSCODE=='1'){
@@ -866,7 +866,7 @@ export default {
     getLocation:function(slaTypeId){
       const loading = this.$loading({
         lock: true,
-        text: '正在获取位置信息...',
+        text: '正在获取位置信息...', 
         spinner: 'el-icon-loading',
         background: 'rgba(255, 255, 255, 0.3)'
       });
@@ -906,6 +906,97 @@ export default {
       }
       LocationSdk.getLocation(this,success,loading)//通过h5获取位置信息
     },
+    // success(res){
+    //   var lat = res.latitude;//gps经纬度
+    //     var lng = res.longitude;
+    //       self.gpsPoint = new BMap.Point(lng,lat);
+    //       var convertor = new BMap.Convertor();
+    //       var pointArr = [];
+    //           pointArr.push(self.gpsPoint);
+    //       convertor.translate(pointArr, 1,5, function (point) {  
+    //         console.log("111",point);
+    //         self.latitude = point.points[0].lat;
+    //         self.longitude = point.points[0].lng;
+    //         self.pointA = new BMap.Point(point.points[0].lng, point.points[0].lat);  
+    //         self.differDistance = self.getDistance(self.targetLatitude,self.targetLongitude);
+    //         if(self.differDistance<=4){
+    //           let now = new Date();
+    //           let currentdate = slacommon.formatDateTime(now);//到场时间限制
+    //           if(slaTypeId==5){
+    //             self.intervalTime(self.requireArriveTime,currentdate,slaTypeId);
+    //           }else if(slaTypeId==7){
+    //             // self.intervalTime(self.expectLeave,currentdate,slaTypeId);
+    //             self.leavebjCheck();
+    //           }
+    //         }else{
+    //           self.$message({
+    //             message:'当前不在case所在地点，无法操作',
+    //             type: 'error',
+    //             center: true,
+    //             duration:2000,
+    //             customClass: 'msgdefine'
+    //           })
+    //         }
+    //       })
+    // },
+
+    // satisfiedDifferDistance(slaTypeId){
+    //   let self = this;
+    //   if(self.differDistance<=4){
+    //     let now = new Date();
+    //     let currentdate = slacommon.formatDateTime(now);//到场时间限制
+    //     if(slaTypeId==5){
+    //       self.intervalTime(self.requireArriveTime,currentdate,slaTypeId);
+    //     }else if(slaTypeId==7){
+    //       // self.intervalTime(self.expectLeave,currentdate,slaTypeId);
+    //       self.leavebjCheck();
+    //     }
+    //   }else{
+    //     self.$message({
+    //       message:'当前不在case所在地点，无法操作',
+    //       type: 'error',
+    //       center: true,
+    //       duration:2000,
+    //       customClass: 'msgdefine'
+    //     })
+    //   }
+    // },
+
+    // getLocation(){
+    //   var self = this;
+    //   const loading = this.$loading({
+    //       lock: true,
+    //       text: '正在获取位置信息...',
+    //       spinner: 'el-icon-loading',
+    //       background: 'rgba(255, 255, 255, 0.3)'
+    //   });
+    //   let ua = navigator.userAgent.toLowerCase();
+    //   if(/(Android)/i.test(ua)){              
+    //     if(typeof(android)!="undefined"){
+    //         loading.close();
+    //         if(typeof(android.bdLocation)=='function'){
+    //             let location = android.bdLocation(); 
+    //             if(JSON.stringify(location) != "{}"){
+    //                 let locationArr = location.split(",") ;
+    //                 self.latitude = locationArr[0];
+    //                 self.longitude = locationArr[1];
+    //                 self.loading = false;
+    //                 self.getDistance(self.targetLatitude,self.targetLongitude); 
+    //                 self.satisfiedDifferDistance(slaTypeId);         
+    //             }else{
+    //                 LocationSdk.getLocation(this,this.success,loading)
+    //             }
+    //         }else{
+    //             LocationSdk.getLocation(this,this.success,loading)
+    //         }
+    //     }else{
+    //         LocationSdk.getLocation(this,this.success,loading)
+    //     }
+    //   }else{
+    //       LocationSdk.getLocation(this,this.success,loading)
+    //   }
+    // },
+    
     // 测量百度地图两个点间的距离
     getDistance:function (latitude,longitude) {
       var map = new BMap.Map('')
@@ -1366,6 +1457,9 @@ export default {
               this.ifSendEvaluate = res.DATA[0].ifSendEvaluate;
               this.serviceStatus = res.DATA[0].serviceStatus;
               this.evaluateId = res.DATA[0].evaluateId;
+              if(res.DATA[0].docId!=null){
+                  this.formData.docId = res.DATA[0].docId;
+              }
               if(res.DATA[0].serviceStatus==='2'){
                   if(res.DATA[0].ifSendEvaluate===1){  
                     this.isShow = true;                       
@@ -1393,6 +1487,9 @@ export default {
               this.ifSendEvaluate = res.DATA[0].ifSendEvaluate;
               this.serviceStatus = res.DATA[0].serviceStatus;
               this.evaluateId = res.DATA[0].evaluateId;
+              if(res.DATA[0].docId!=null){
+                  this.formData.docId = res.DATA[0].docId;
+              }
               if(res.DATA[0].serviceStatus==='2'){
                 if(res.DATA[0].ifSendEvaluate===1){ 
                   this.isShow = true;    

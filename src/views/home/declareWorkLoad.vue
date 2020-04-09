@@ -43,7 +43,6 @@
         <el-form-item label="实施工作量">
           <el-tooltip class="item" effect="light" content="已确认实施工作量 (单位小时，如：1.5)" placement="right">
             <el-input v-model="form.standardWorkload" class="bInput"></el-input>
-            <el-button></el-button>
           </el-tooltip>
         </el-form-item>
         
@@ -86,6 +85,8 @@ export default {
     }
   },
   created (){
+    console.log("wayWorkload",this.$route.query.wayWorkload);
+    console.log("pgwayWorkload",this.pgwayWorkload);
     this.form.expectStart = this.$route.query.expectStart;
     this.form.expectEnd = this.$route.query.expectEnd;
     this.form.creatorRolename = this.$route.query.creatorRolename;
@@ -93,7 +94,7 @@ export default {
     this.form.caseId = this.$route.query.caseId;
     this.form.workId = this.$route.query.workId;
     console.log(typeof(this.form.expectStart))
-    console.log(this.form.expectStart);
+    console.log(this.form);
   },
   methods: {
     onSubmit (formName) {

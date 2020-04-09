@@ -93,7 +93,7 @@
                         <li>每一次严谨，都是风险的消逝！</li>
                         <li>风险事故猛于虎！请！立刻！马上！谨慎起来！</li>
                     </div>
-                    <div class="imgView">
+                    <div class="imgView"> 
                         <div class="imgViewCol"><img src="../../assets/images/warn.jpg" alt=""></div>
                         <div class="imgViewCol"><img src="../../assets/images/prepare.jpg" alt=""></div>
                         <div class="imgViewCol"><img src="../../assets/images/warnLogo.jpg" alt=""></div>           

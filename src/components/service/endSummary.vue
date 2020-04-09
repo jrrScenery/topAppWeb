@@ -41,7 +41,7 @@
                         </ul>
                         <el-form-item v-if="serviceType==2" label="服务类型">
                             <el-col :span="15">
-                                <el-select clearable placeholder="请选择服务类型" v-model="formData.serviceType" style="width:100%">
+                                <el-select clearable placeholder="请选择服务类型" v-model="formData.userAndPrjItem.serviceType" style="width:100%">
                                     <el-option v-for="item in serviceTypeArr" :label="item.DICTNAME" :value="item.DICTID" :key="item.id">
                                 </el-option>
                                 </el-select>
@@ -81,7 +81,7 @@
                             </el-form-item>
                             <div class="article">{{result}}</div>
                             <el-form-item>
-                                <el-radio-group v-for="item in workResultArr" :key="item.id" v-model="formData.workResult">
+                                <el-radio-group v-for="item in workResultArr" :key="item.id" v-model="formData.userAndPrjItem.workResult">
                                     <el-radio :label="item.DICTID" style="width:100%;margin-left:0.25rem">{{item.DICTNAME}}</el-radio>
                                 </el-radio-group>
                             </el-form-item>
@@ -220,7 +220,6 @@ export default {
                 serviceType:"",
                 workResult:"",
                 docId:'',
-                // docId1:''
             },
             activeName:['1'],
             bjInfoArr:[],
@@ -249,7 +248,6 @@ export default {
             submitName:'提交并发送客户评价连接',
             editCustomerInfoVisible:false,
             shortUrl:'',
-            // radio:'0',
             uploadres:require('../../assets/images/takephoto.png')
         }
     },
@@ -309,6 +307,9 @@ export default {
                     this.ifSendEvaluate = res.DATA[0].ifSendEvaluate;
                     this.serviceStatus = res.DATA[0].serviceStatus;
                     this.evaluateId = res.DATA[0].evaluateId;
+                    if(res.DATA[0].docId!=null){
+                        this.formData.docId = res.DATA[0].docId;
+                    }
                     if(res.DATA[0].serviceStatus==='2'){
                         if(res.DATA[0].ifSendEvaluate===1){ 
                             this.isShow = true;                       
@@ -329,12 +330,15 @@ export default {
                 })
             }else{
                 fetch.get("?action=/work/GetCaseroubleShootingServiceFormInfo&CASE_ID="+this.$route.query.caseId+"&SERVICE_ID="+this.$route.query.serviceId).then(res=>{
-                    // console.log("GetCaseroubleShootingServiceFormInfo",res);
+                    console.log("GetCaseroubleShootingServiceFormInfo",res);
                     this.formData.userAndPrjItem = res.DATA[0];
                     this.workResultInfo = res.DATA[0].implementResult;
                     this.ifSendEvaluate = res.DATA[0].ifSendEvaluate;
                     this.serviceStatus = res.DATA[0].serviceStatus;
                     this.evaluateId = res.DATA[0].evaluateId;
+                    if(res.DATA[0].docId!=null){
+                        this.formData.docId = res.DATA[0].docId;
+                    }
                     if(res.DATA[0].serviceStatus==='2'){
                         if(res.DATA[0].ifSendEvaluate===1){ 
                             this.isShow = true;      
@@ -362,12 +366,11 @@ export default {
             let params = "&url=http://wxjfb.dcits.com/home/onsiteServiceInfo&CASE_ID="+this.caseId+
                 "&SERVICE_ID="+this.serviceId+"&SERVICE_TYPE="+this.serviceType+
                 "&evaluateId="+this.evaluateId+"&serviceType="+this.serviceType+
-                "&workId="+this.workId+"&userId="+this.customerForm.empId;
+                "&workId="+this.workId+"&userId="+this.customerForm.empId+"&docId="+this.formData.docId;
             fetch.get("?action=/system/getShortUrl"+params).then(res=>{
                 console.log("getShortUrl",res);
                 if(res.STATUSCODE=='1'){
                     let shortUrl = res.shorturl;
-                    console.log("customerPhone",this.customerForm.mobileno);
                     let content = "尊敬的客户您好，工程师已完成了现场实施，请您对我们的服务进行评价，谢谢！"+shortUrl
                     fetch.get("?action=/work/sendCustEvaluate&MOBILE="+this.customerForm.mobileno+"&CONTENT="+content+
                                 "&SERVICE_TYPE="+this.serviceType+"&SERVICE_ID="+this.serviceId+

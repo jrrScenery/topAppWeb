@@ -6,7 +6,7 @@
                 <div @click="getPunchDetail" v-if="liObj.length!=0">
                     <el-collapse-item class="ul_AttenView" v-for="(items,index) in liObj" :key="items.id" :name='index+1'>
                         <template slot="title">
-                            <span>{{items.projectArea}} </span>
+                            <span>{{items.projectArea}} ({{searchData.date}})</span>
                             <span style="color:red;float:right">{{items.NUM}}</span>
                         </template>
                         <li class="li_AttenView" v-for="item in items.list" :key="item.projectId" :data-id='item.projectId'>
@@ -58,11 +58,12 @@ export default {
         this.$route.meta.isUseCache = false;
     },
     created(){
+        console.log("11111111111",this.$route.query.searchData);
         // this.getProjectList();
     },
     methods:{
         getProjectList:function(){
-            console.log("11111111111",this.$route.query.searchData);
+            // console.log("11111111111",this.$route.query.searchData);
             let area = this.$route.query.searchData.area;
             let projectArea = this.$route.query.searchData.projectGroup;
             let prjName = this.$route.query.searchData.prjName;
